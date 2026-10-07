@@ -386,7 +386,9 @@ final class ExternalASSRenderingTests: XCTestCase {
             if condition() { return }
             try await Task.sleep(for: .milliseconds(50))
         }
+        struct Timeout: Error {}
         XCTFail("Timed out waiting for the subtitle renderer")
+        throw Timeout()
     }
 
     private func styledImage(_ wrapper: AetherPlayerWrapper) -> NSImage? {
