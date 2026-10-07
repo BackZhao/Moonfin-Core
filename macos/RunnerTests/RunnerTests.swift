@@ -331,6 +331,8 @@ final class ExternalASSRenderingTests: XCTestCase {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        var completed = false
+        defer { if !completed { try? FileManager.default.removeItem(at: directory) } }
         let writer = try AVAssetWriter(outputURL: directory.appendingPathComponent("video.mp4"), fileType: .mp4)
         let input = AVAssetWriterInput(mediaType: .video, outputSettings: [
             AVVideoCodecKey: AVVideoCodecType.h264,
@@ -375,6 +377,7 @@ final class ExternalASSRenderingTests: XCTestCase {
             .write(to: directory.appendingPathComponent("green.ass"), atomically: true, encoding: .utf8)
         try "1\n00:00:00,000 --> 00:01:00,000\nSynthetic plain caption\n"
             .write(to: directory.appendingPathComponent("plain.srt"), atomically: true, encoding: .utf8)
+        completed = true
         return directory
     }
 
@@ -410,6 +413,27 @@ final class ExternalASSRenderingTests: XCTestCase {
         return count
     }
 
+    func testEmbeddedASSStillUsesItsTrackHeader() async throws {
+        _ = NSApplication.shared
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 960, height: 540),
+            styleMask: [.borderless], backing: .buffered, defer: false)
+        window.isReleasedWhenClosed = false
+        let view = try XCTUnwrap(window.contentView)
+        let wrapper = AetherPlayerWrapper()
+        wrapper.attachVideoView(view)
+        defer { wrapper.shutdown(); window.close() }
+        let fixture = try XCTUnwrap(Bundle(for: Self.self)
+            .url(forResource: "embedded-ass", withExtension: "mkv"))
+        await wrapper.play(url: fixture)
+        try await waitUntil { wrapper.subtitleTracks.count == 1 && wrapper.isPlaying }
+        wrapper.setSubtitleTrack(1)
+        try await waitUntil { self.styledImage(wrapper) != nil }
+        let engine = try XCTUnwrap(AetherPlayerWrapper.sharedEngine())
+        XCTAssertNotNil(engine.subtitleTracks.first?.assHeader)
+        XCTAssertNil(engine.sidecarASSHeader)
+        XCTAssertGreaterThan(try colorPixels(try XCTUnwrap(styledImage(wrapper)), red: true), 100)
+    }
+
     func testExternalASSStylesSurviveDecodeTrackChangesAndResize() async throws {
         _ = NSApplication.shared
         let fixtures = try await makeFixtures()
@@ -421,7 +445,7 @@ final class ExternalASSRenderingTests: XCTestCase {
         window.contentView = view
         let wrapper = AetherPlayerWrapper()
         wrapper.attachVideoView(view)
-        defer { wrapper.stop(); window.close() }
+        defer { wrapper.shutdown(); window.close() }
         var source = AetherPlayerWrapper.SourceConfiguration()
         source.externalSubtitles = ["red.ass", "green.ass", "plain.srt"].map {
             ExternalSubtitleTrack(url: fixtures.appendingPathComponent($0), language: "eng")
@@ -461,11 +485,12 @@ final class ExternalASSRenderingTests: XCTestCase {
         try await waitUntil { self.styledImage(wrapper) != nil }
 
         // The bitmap follows the backing-pixel canvas at both HD and UHD.
-        for size in [NSSize(width: 960, height: 540), NSSize(width: 1920, height: 1080)] {
+        let scale = window.backingScaleFactor
+        for pixels in [NSSize(width: 1920, height: 1080), NSSize(width: 3840, height: 2160)] {
+            let size = NSSize(width: pixels.width / scale, height: pixels.height / scale)
             view.setFrameSize(size)
             view.layoutSubtreeIfNeeded()
             wrapper.subtitleOverlay.layoutSubtreeIfNeeded()
-            let scale = window.backingScaleFactor
             try await waitUntil { self.styledImage(wrapper)?.size == NSSize(
                 width: size.width * scale, height: size.height * scale) }
             let image = try XCTUnwrap(styledImage(wrapper))
