@@ -81,6 +81,12 @@ class PluginSyncService extends ChangeNotifier {
   bool get mdblistAvailable => _mdblistAvailable;
   bool _tmdbAvailable = false;
   bool get tmdbAvailable => _tmdbAvailable;
+
+  /// Whether the plugin can hand out the titled TMDB thumb for a title the
+  /// server doesn't have. An older plugin, or one without a TMDB key, can't.
+  bool _tmdbThumbsSupported = false;
+  bool get tmdbThumbsAvailable =>
+      _pluginAvailable && _tmdbAvailable && _tmdbThumbsSupported;
   bool _recommendationsSupported = false;
   bool get recommendationsSupported =>
       _pluginAvailable && _recommendationsSupported;
@@ -218,6 +224,7 @@ class PluginSyncService extends ChangeNotifier {
     _seerrInfoAvailable = false;
     _mdblistAvailable = false;
     _tmdbAvailable = false;
+    _tmdbThumbsSupported = false;
     _recommendationsSupported = false;
     _clientLogSupported = false;
     _activeThemeCacheServerId = null;
@@ -276,6 +283,8 @@ class PluginSyncService extends ChangeNotifier {
       _seerrEnabled = _readBool(pingResult, 'seerrEnabled') ?? false;
       _mdblistAvailable = _readBool(pingResult, 'mdblistAvailable') ?? false;
       _tmdbAvailable = _readBool(pingResult, 'tmdbAvailable') ?? false;
+      _tmdbThumbsSupported =
+          _readBool(pingResult, 'tmdbThumbsSupported') ?? false;
       _recommendationsSupported =
           _readBool(pingResult, 'recommendationsSupported') ?? false;
       // Older plugins leave this out, which reads as false and hides the button.

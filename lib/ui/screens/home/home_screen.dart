@@ -27,7 +27,7 @@ import '../../../data/repositories/mdblist_repository.dart';
 import '../../../data/repositories/seerr_repository.dart';
 import '../../widgets/seerr/seerr_shortcuts.dart';
 import '../../../data/services/background_service.dart';
-import '../../widgets/rating_display.dart';
+import '../../widgets/modern_row.dart';
 import '../../../data/services/theme_music_service.dart';
 import '../../../data/services/media_server_client_factory.dart';
 import '../../../data/services/plugin_sync_service.dart';
@@ -46,7 +46,6 @@ import '../../widgets/exit_confirmation_dialog.dart';
 import '../../widgets/overlay_sheet.dart';
 import '../../widgets/quick_return_wrapper.dart';
 import '../../../util/app_exit.dart';
-import '../../../util/overview_text.dart';
 import '../../../util/global_shortcut_focus.dart';
 import '../../widgets/focus/context_menu_sheet.dart';
 import '../../widgets/focus/locked_focus_row.dart';
@@ -56,6 +55,7 @@ import '../../../util/artwork_request_size.dart';
 import '../../../util/device_performance.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/server_url.dart';
+import '../../../util/tmdb_thumb.dart';
 import '../../navigation/app_router.dart';
 import '../../navigation/destinations.dart';
 import '../../../data/models/media_bar_state.dart';
@@ -916,36 +916,7 @@ class _ContentRowsState extends State<_ContentRows>
   bool _wasSidebarFocused = false;
   VoidCallback? _previousFocusContentFromNavbarCallback;
   FocusNode? _lastGlobalPrimaryFocus;
-  // Which v2 card is expanded by touch, by mouse, and by a D-pad dwell. Kept
-  // as notifiers rather than state, because a hover or a 70 ms dwell settle
-  // used to rebuild the whole rows subtree when only two cards changed. Each
-  // card watches these through a selector and rebuilds when its own answer
-  // flips.
-  final ValueNotifier<String?> _mobilePressedV2Key = ValueNotifier(null);
-  final ValueNotifier<String?> _mouseHoveredV2Key = ValueNotifier(null);
-  final ValueNotifier<String?> _settledV2PreviewKey = ValueNotifier(null);
-  late final Listenable _v2ExpansionListenable = Listenable.merge([
-    _mobilePressedV2Key,
-    _mouseHoveredV2Key,
-    _settledV2PreviewKey,
-  ]);
-
-  /// Whether the card for [previewKey] paints expanded.
-  bool _effectiveV2Focused({
-    required String previewKey,
-    required bool isFocused,
-    required bool isRowsV2,
-    required bool isV2MobileTouch,
-    required bool delayExpansion,
-  }) {
-    if (!isRowsV2) return isFocused;
-    if (isV2MobileTouch) return _mobilePressedV2Key.value == previewKey;
-    final isHoverFocused = _mouseHoveredV2Key.value == previewKey;
-    final isDwellSettled =
-        !delayExpansion || _settledV2PreviewKey.value == previewKey;
-    return isHoverFocused || (isFocused && isDwellSettled);
-  }
-  Timer? _v2ExpansionDwellTimer;
+  final _v2Expansion = ModernCardExpansion();
   final Set<String> _v2FocusPrefetchedUrls = <String>{};
 
   // Warming the next rows' posters. Debounced like the backdrop, because a
@@ -1409,9 +1380,7 @@ class _ContentRowsState extends State<_ContentRows>
   void dispose() {
     HardwareKeyboard.instance.removeHandler(_handleGlobalHardwareKey);
     _rowPrefetchDebounce?.cancel();
-    _mobilePressedV2Key.dispose();
-    _mouseHoveredV2Key.dispose();
-    _settledV2PreviewKey.dispose();
+    _v2Expansion.dispose();
     _audioArbiter.unregister(this);
     appRouter.routerDelegate.removeListener(_onRouteChanged);
     _resizeCheckDebounce?.cancel();
@@ -1443,7 +1412,6 @@ class _ContentRowsState extends State<_ContentRows>
           _previousFocusContentFromNavbarCallback;
     }
     _scrollIdleTimer?.cancel();
-    _v2ExpansionDwellTimer?.cancel();
     _activeFocusedRowNotifier.removeListener(_updateIsScrolledToTop);
     _mediaBarFocusNode.removeListener(_updateIsScrolledToTop);
     _mediaBarFocusNode.dispose();
@@ -2176,16 +2144,10 @@ class _ContentRowsState extends State<_ContentRows>
     return widget.prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
   }
 
-  /// Modern draws posters at twice the card size, so it starts from Small when
-  /// nothing is saved and stops at Extra Large, past which a row is taller
-  /// than a TV screen.
   PosterSize _homePosterSize() {
     final prefs = widget.prefs;
     if (!_isHomeRowsStyleV2()) return prefs.get(UserPreferences.posterSize);
-    if (!prefs.containsPreference(UserPreferences.posterSize)) {
-      return PosterSize.small;
-    }
-    return prefs.get(UserPreferences.posterSize).upToExtraLarge;
+    return modernPosterSize(prefs);
   }
 
   bool _showHomeRowInfoOverlay() {
@@ -2786,7 +2748,7 @@ class _ContentRowsState extends State<_ContentRows>
         final squarePosterSide = _squarePosterSide(posterSize);
         childHeight = squarePosterSide + (56 * metadataScale);
       } else if (isRowsV2) {
-        final imageHeight = posterSize.portraitHeight.toDouble() * platformScale * 2;
+        final imageHeight = modernImageHeight(posterSize, platformScale);
         final budget = _v2MetadataBudgetFor(row, prefs);
         childHeight = imageHeight + (budget * metadataScale) + (10 * metadataScale);
       } else {
@@ -2817,7 +2779,7 @@ class _ContentRowsState extends State<_ContentRows>
       var maxCardHeight = 0.0;
       var maxImageHeight = 0.0;
       if (isRowsV2) {
-        final imageHeight = posterSize.portraitHeight.toDouble() * platformScale * 2;
+        final imageHeight = modernImageHeight(posterSize, platformScale);
         maxImageHeight = imageHeight;
         final budget = _v2MetadataBudgetFor(row, prefs);
         maxCardHeight = imageHeight + (budget * metadataScale);
@@ -3811,7 +3773,7 @@ class _ContentRowsState extends State<_ContentRows>
       var maxImageHeight = 0.0;
       if (isRowsV2) {
         final imageHeight =
-            posterSize.portraitHeight.toDouble() * platformScale * 2;
+            modernImageHeight(posterSize, platformScale);
         maxImageHeight = imageHeight;
         final budget = _v2MetadataBudgetFor(row, prefs);
         maxCardHeight =
@@ -3995,25 +3957,13 @@ class _ContentRowsState extends State<_ContentRows>
   double _v2MetadataBudgetFor(HomeRow row, UserPreferences prefs) =>
       row.rowType == HomeRowType.libraryTiles
       ? _libraryTilesMetadataBudget
-      : _v2MetadataHeightBudget(prefs);
+      : modernMetadataBudget(prefs);
 
   /// Extra room the classic rows setting asks for. Library rows are left out,
   /// since their grid sizes itself and padding there overlaps the next row.
   double _classicRowPadding(HomeRow row, UserPreferences prefs) {
     if (_fullScreenRowsEnabled(prefs) || _isLibraryRow(row)) return 0.0;
     return prefs.get(UserPreferences.classicHomeRowsPadding).toDouble();
-  }
-
-  double _v2MetadataHeightBudget(UserPreferences prefs) {
-    if (PlatformDetection.useMobileUi) {
-      return 50.0;
-    }
-    final hasAdditionalRatings = prefs.get(
-      UserPreferences.enableAdditionalRatings,
-    );
-    final hasAdditionalRatingsPadding = hasAdditionalRatings ? 8.0 : 0.0;
-    final heightBudget = 175.0 + hasAdditionalRatingsPadding;
-    return heightBudget;
   }
 
   Widget _buildShiftedRow({
@@ -4155,7 +4105,7 @@ class _ContentRowsState extends State<_ContentRows>
         ? 1.0
         : (PlatformDetection.useMobileUi ? 1.0 : desktopScale);
     final v2ImageHeight =
-        posterSize.portraitHeight.toDouble() * platformScale * 2;
+        modernImageHeight(posterSize, platformScale);
     final v2PortraitWidth = v2ImageHeight * (2 / 3);
     final cardWidth = isRowsV2
         ? v2PortraitWidth
@@ -4814,7 +4764,7 @@ class _ContentRowsState extends State<_ContentRows>
     final metadataScale = desktopScale;
     final platformScale = _rowPlatformScale(row, desktopScale);
     final v2ImageHeight =
-        posterSize.portraitHeight.toDouble() * platformScale * 2;
+        modernImageHeight(posterSize, platformScale);
     final v2MetadataHeightBudget = _v2MetadataBudgetFor(row, prefs);
     final v2PortraitAspect = row.isAudio ? 1.0 : 2 / 3;
     final v2FocusedAspect = row.isAudio ? 1.0 : 16 / 9;
@@ -4963,15 +4913,10 @@ class _ContentRowsState extends State<_ContentRows>
             final previewKey = _previewKeyFor(item, rowIndex);
             final delayExpansion =
                 prefs.get(UserPreferences.delayCardExpansionOnRapidScroll);
-            if (delayExpansion && !PlatformDetection.useMobileUi) {
-              _v2ExpansionDwellTimer?.cancel();
-              _v2ExpansionDwellTimer =
-                  Timer(const Duration(milliseconds: 70), () {
-                if (mounted) _settledV2PreviewKey.value = previewKey;
-              });
-            } else {
-              _settledV2PreviewKey.value = previewKey;
-            }
+            _v2Expansion.settle(
+              previewKey,
+              delayExpansion: delayExpansion && !PlatformDetection.useMobileUi,
+            );
           }
           if (isRowsV2 && !row.isAudio && !isModernMyMediaStatic) {
             _primeV2FocusedRatings(item);
@@ -5030,14 +4975,16 @@ class _ContentRowsState extends State<_ContentRows>
           final delayExpansion =
               prefs.get(UserPreferences.delayCardExpansionOnRapidScroll);
           return SelectorBuilder<bool>(
-            listenable: _v2ExpansionListenable,
-            select: () => _effectiveV2Focused(
-              previewKey: previewKey,
-              isFocused: isFocused,
-              isRowsV2: isRowsV2,
-              isV2MobileTouch: isV2MobileTouch,
-              delayExpansion: delayExpansion && !PlatformDetection.useMobileUi,
-            ),
+            listenable: _v2Expansion.listenable,
+            select: () => isRowsV2
+                ? _v2Expansion.isExpanded(
+                    previewKey,
+                    isFocused: isFocused,
+                    isTouch: isV2MobileTouch,
+                    delayExpansion:
+                        delayExpansion && !PlatformDetection.useMobileUi,
+                  )
+                : isFocused,
             builder: (ctx, effectiveV2Focused) {
           late final double ar;
           late final double width;
@@ -5252,7 +5199,7 @@ class _ContentRowsState extends State<_ContentRows>
                       );
                       widget.onItemSelected(item);
                       if (isRowsV2) {
-                        _mouseHoveredV2Key.value = previewKey;
+                        _v2Expansion.hoveredKey.value = previewKey;
                         if (!row.isAudio) {
                           _primeV2FocusedRatings(item);
                         }
@@ -5265,8 +5212,8 @@ class _ContentRowsState extends State<_ContentRows>
                     },
                     onHoverEnd: () {
                       if (isRowsV2) {
-                        if (_mouseHoveredV2Key.value == previewKey) {
-                          _mouseHoveredV2Key.value = null;
+                        if (_v2Expansion.hoveredKey.value == previewKey) {
+                          _v2Expansion.hoveredKey.value = null;
                         }
                         _finishSharedPreview();
                       } else {
@@ -5280,23 +5227,17 @@ class _ContentRowsState extends State<_ContentRows>
                     ),
                     onTap: () {
                       if (isV2MobileTouch) {
-                        if (_mobilePressedV2Key.value == previewKey) {
-                          _mobilePressedV2Key.value = null;
+                        if (_v2Expansion.tapToOpen(previewKey)) {
                           _finishSharedPreview(releaseResources: true);
                           navigateToItem();
                         } else {
-                          _mobilePressedV2Key.value = previewKey;
-                          _mouseHoveredV2Key.value = null;
                           widget.onItemSelected(item);
                           _primeV2FocusedRatings(item);
                         }
                         return;
                       }
 
-                      if (isRowsV2) {
-                        _mobilePressedV2Key.value = null;
-                        _mouseHoveredV2Key.value = null;
-                      }
+                      if (isRowsV2) _v2Expansion.clearPointer();
                       _finishSharedPreview(releaseResources: true);
                       navigateToItem();
                     },
@@ -5319,45 +5260,30 @@ class _ContentRowsState extends State<_ContentRows>
                         );
 
                   if (isRowsV2) {
-                    final showExtendedSection = effectiveV2Focused;
-                    final extendedSection = showExtendedSection
-                        ? _buildV2ExtendedSection(
-                            ctx,
-                            item,
-                            // Ratings are cached under the global item key, so
-                            // look them up without the row index.
-                            _previewKeyFor(item),
-                            cardWidth: width,
-                            detailsWidth: _v2DetailsWidth(
-                              controller: _rowHorizontalController(rowIndex),
-                              index: idx,
-                              itemCount: row.items.length,
-                              itemExtent: firstCardWidth,
-                              itemSpacing: itemSpacing,
-                              focusedWidth: width,
-                              maxWidth: v2ExtendedWidth,
-                            ),
-                            isAudioRow: row.isAudio,
-                          )
-                        : null;
-                    final modernSpeed =
-                        prefs.get(UserPreferences.modernCardTransitionSpeed);
-                    return AnimatedSize(
-                      duration: modernSpeed.duration,
-                      curve: Curves.easeInOutCubic,
-                      alignment: Alignment.topLeft,
-                      clipBehavior: Clip.none,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          previewWrappedCard,
-                          if (extendedSection != null) ...[
-                            const SizedBox(height: 4),
-                            extendedSection,
-                          ],
-                        ],
-                      ),
+                    return ModernExpandingCard(
+                      card: previewWrappedCard,
+                      prefs: prefs,
+                      details: effectiveV2Focused
+                          ? _buildV2ExtendedSection(
+                              item,
+                              // Ratings are cached under the global item key,
+                              // so look them up without the row index.
+                              _previewKeyFor(item),
+                              cardWidth: width,
+                              detailsWidth: modernDetailsWidth(
+                                controller: _rowHorizontalController(rowIndex),
+                                index: idx,
+                                itemCount: row.items.length,
+                                itemExtent: firstCardWidth,
+                                itemSpacing: itemSpacing,
+                                focusedWidth: width,
+                                maxWidth: v2ExtendedWidth,
+                                leadingInset: _kHomeRowLabelInset,
+                                trailingInset: _kHomeRowTrailingInset,
+                              ),
+                              isAudioRow: row.isAudio,
+                            )
+                          : null,
                     );
                   }
 
@@ -5373,37 +5299,7 @@ class _ContentRowsState extends State<_ContentRows>
     );
   }
 
-  /// How far the focused card's ratings and overview can run before the row
-  /// ends. Focus parks a card at the leading edge, but the last few cards
-  /// can't scroll that far, so they get less room.
-  double _v2DetailsWidth({
-    required ScrollController controller,
-    required int index,
-    required int itemCount,
-    required double itemExtent,
-    required double itemSpacing,
-    required double focusedWidth,
-    required double maxWidth,
-  }) {
-    if (!controller.hasClients || !controller.position.hasViewportDimension) {
-      return maxWidth;
-    }
-    final viewport = controller.position.viewportDimension;
-    final stride = itemExtent + itemSpacing;
-    final contentWidth = _kHomeRowLabelInset +
-        itemCount * stride -
-        itemSpacing +
-        (focusedWidth - itemExtent) +
-        _kHomeRowTrailingInset;
-    final maxOffset = (contentWidth - viewport).clamp(0.0, double.infinity);
-    final cardStart = _kHomeRowLabelInset + index * stride;
-    final settledLeft = cardStart - cardStart.clamp(0.0, maxOffset);
-    return (viewport - settledLeft - _kHomeRowTrailingInset)
-        .clamp(0.0, maxWidth);
-  }
-
   Widget _buildV2ExtendedSection(
-    BuildContext context,
     AggregatedItem item,
     String itemKey, {
     required double cardWidth,
@@ -5412,81 +5308,16 @@ class _ContentRowsState extends State<_ContentRows>
   }) {
     return ValueListenableBuilder<Map<String, Map<String, double>>>(
       valueListenable: _v2AdditionalRatingsNotifier,
-      builder: (context, ratingsByKey, _) {
-        final additionalRatings = ratingsByKey[itemKey] ?? {};
-        final hasAnyRating = item.communityRating != null ||
-            item.criticRating != null ||
-            additionalRatings.isNotEmpty;
-        final overview = isAudioRow ? '' : (item.overview ?? '');
-        if (!hasAnyRating && overview.isEmpty) {
-          return SizedBox(width: cardWidth);
-        }
-
-    final isNeon = ThemeRegistry.active.id == ThemeRegistry.neonPulseId;
-    final baseStyle =
-        Theme.of(context).textTheme.bodySmall ?? const TextStyle(fontSize: 12);
-    final overviewStyle = baseStyle.copyWith(
-      color: isNeon
-          ? AppColorScheme.onSurface
-          : Theme.of(context).colorScheme.onSurface.withAlpha(180),
-      shadows: const [Shadow(blurRadius: 4, color: Colors.black54)],
-      height: 1.4,
-    );
-
-        final details = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (hasAnyRating)
-              RatingsRow(
-                ratings: additionalRatings,
-                communityRating: item.communityRating,
-                criticRating: item.criticRating,
-                personalRating: item.personalRating,
-                enableAdditionalRatings: widget.prefs.get(
-                  UserPreferences.enableAdditionalRatings,
-                ),
-                enabledRatings: widget.prefs.get(
-                  UserPreferences.enabledRatings,
-                ),
-                showLabels: widget.prefs.get(
-                  UserPreferences.showRatingLabels,
-                ),
-                showBadges: widget.prefs.get(
-                  UserPreferences.showRatingBadges,
-                ),
-                singleLine: !PlatformDetection.useMobileUi,
-              ),
-            if (overview.isNotEmpty && !widget.prefs.get(UserPreferences.hideHomeMediaDescription))
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  cleanOverview(overview),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: overviewStyle,
-                ),
-              ),
-          ],
-        );
-
-        // The section is only as wide as the card, so the ratings and overview
-        // break out into the rest of the row. Phones keep the card width.
-        return SizedBox(
-          width: cardWidth,
-          child: PlatformDetection.useMobileUi
-              ? details
-              : OverflowBox(
-                  fit: OverflowBoxFit.deferToChild,
-                  alignment: AlignmentDirectional.topStart,
-                  // The last card's room can come out a hair under the card
-                  // width, and a minimum above the maximum breaks the layout.
-                  minWidth: 0,
-                  maxWidth: detailsWidth,
-                  child: details,
-                ),
-        );
-      },
+      builder: (context, ratingsByKey, _) => ModernCardDetails(
+        prefs: widget.prefs,
+        cardWidth: cardWidth,
+        detailsWidth: detailsWidth,
+        overview: isAudioRow ? null : item.overview,
+        communityRating: item.communityRating,
+        criticRating: item.criticRating,
+        personalRating: item.personalRating,
+        additionalRatings: ratingsByKey[itemKey] ?? const {},
+      ),
     );
   }
 
@@ -5687,6 +5518,12 @@ class _ContentRowsState extends State<_ContentRows>
     if (path.startsWith('http')) return path;
     return 'https://image.tmdb.org/t/p/w$width$path';
   }
+
+  static String? _seerrThumbUrl(AggregatedItem item) => seerrThumbUrl(
+        type: item.seerrMediaType,
+        tmdbId: item.tmdbId ?? (int.tryParse(item.id) != null ? item.id : null),
+        imdbId: item.imdbId,
+      );
 
   static void _navigateToSeerrItem(BuildContext context, AggregatedItem item) {
     final shortcut = SeerrShortcut.fromName(
@@ -5891,6 +5728,8 @@ class _ContentRowsState extends State<_ContentRows>
     }
 
     if (item.serverId == 'seerr') {
+      final thumb = _seerrThumbUrl(item);
+      if (thumb != null) return thumb;
       if (!isPrefetch) {
         _fetchBackdropIfNeeded(item);
       }
@@ -6058,7 +5897,7 @@ class _ContentRowsState extends State<_ContentRows>
     final isMyMediaRow = row.rowType == HomeRowType.libraryTiles;
     if (isRowsV2 && !isModernMyMediaStatic) {
       final v2ImageHeight =
-          posterSize.portraitHeight.toDouble() * platformScale * 2;
+          modernImageHeight(posterSize, platformScale);
       final aspect = row.isAudio ? 1.0 : 2 / 3;
       final url = _cachedRowImageUrl(
         item,
@@ -6257,9 +6096,10 @@ class _ContentRowsState extends State<_ContentRows>
         item.rawData['PosterPath'] as String?,
         300,
       );
-      if (imageType == ImageType.thumb || imageType == ImageType.banner) {
-        return backdrop ?? poster;
+      if (imageType == ImageType.thumb) {
+        return _seerrThumbUrl(item) ?? backdrop ?? poster;
       }
+      if (imageType == ImageType.banner) return backdrop ?? poster;
       return poster ?? backdrop;
     }
 
