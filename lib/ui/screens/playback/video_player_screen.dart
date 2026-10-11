@@ -4105,7 +4105,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
                               : null,
                           timeoutMs: _prefs.get(UserPreferences.nextUpTimeout),
                           onPlayNext: _handleNextUpPlay,
-                          onDismiss: _handleNextUpCancel,
+                          // TV dismisses with Back, so its X exits the player.
+                          onDismiss: PlatformDetection.isTV
+                              ? _handleNextUpCancel
+                              : _handleNextUpDismiss,
                           onTimeout:
                               _prefs.get(UserPreferences.autoplayNextEpisode)
                               ? _handleNextUpPlay
