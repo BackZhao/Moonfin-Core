@@ -2678,7 +2678,7 @@
     "@themeAndAppearance": {
         "description": "Appearance settings title"
     },
-    "focusBorderColor": "Keskitä reunaväri",
+    "focusBorderColor": "Fokusreunuksen väri",
     "@focusBorderColor": {
         "description": "Setting for focus border color"
     },
@@ -2746,7 +2746,7 @@
     "@inVideo": {
         "description": "Option: show in video"
     },
-    "seasonalEffects": "Kausivaikutuksia",
+    "seasonalEffects": "Vuodenaikailmiöt",
     "@seasonalEffects": {
         "description": "Setting for seasonal visual effects"
     },
@@ -4003,7 +4003,7 @@
     "@syncControlsDescription": {
         "description": "Description of what sync controls"
     },
-    "recentRequests": "Viimeaikaiset pyynnöt",
+    "recentRequests": "Viimeisimmät pyynnöt",
     "@recentRequests": {
         "description": "Seerr row: recent requests"
     },
@@ -4675,7 +4675,7 @@
     "sessionVolumeDown": "Ääni –",
     "sessionVolumeUp": "Ääni +",
     "uhd4k": "4K",
-    "nowPlaying": "Nyt toistetaan",
+    "nowPlaying": "Nyt esityksessä",
     "volume": "Äänenvoimakkuus",
     "actions": "Toiminnot",
     "videoCodec": "Videokoodekki",
@@ -6208,7 +6208,7 @@
     "syncPlayJoinGroupQuestion": "Liitytkö SyncPlay-ryhmään?",
     "syncPlayJoinGroupWarning": "SyncPlay-ryhmään liittyminen voi korvata nykyisen toistojonosi. Jatkaa?",
     "syncPlayJoin": "Liity",
-    "syncPlayStateIdle": "Tyhjäkäynti",
+    "syncPlayStateIdle": "Toimeton",
     "syncPlayStateWaiting": "Odottaa",
     "syncPlayStatePaused": "Keskeytetty",
     "syncPlayStatePlaying": "Toistetaan",
@@ -6718,7 +6718,7 @@
     "@localAccount": {
         "description": "Auth option label for Seerr sign in using local Seerr credentials"
     },
-    "seasonalEffectsDescription": "Visuaaliset tehosteet ja kausittaiset efektit",
+    "seasonalEffectsDescription": "Visuaaliset tehosteet ja vuodenaika efektit",
     "@seasonalEffectsDescription": {
         "description": "Description for seasonal effects settings"
     },
@@ -7176,7 +7176,7 @@
     "adminRestartServerConfirmation": "Haluatko varmasti käynnistää palvelimen uudelleen?",
     "adminShutdownServerConfirmation": "Oletko varma, että haluat sulkea palvelimen? Sinun on käynnistettävä se manuaalisesti.",
     "internal": "Sisäinen",
-    "idle": "Tyhjäkäynti",
+    "idle": "Toimeton",
     "os": "OS",
     "adminNoUsersFound": "Käyttäjiä ei löytynyt",
     "adminNoUsersMatchSearch": "Yksikään käyttäjä ei vastaa hakuasi",
@@ -9644,15 +9644,15 @@
     "playlistsRowShowEpisodes": "Näytä yksittäiset jaksot",
     "playlistsRowShowEpisodesSubtitle": "Laajenna TV-sarjat, jotta jokainen jakso näkyy erikseen.",
     "audioRowsSortOrderDescription": "Lajittele ääni-rivit nousevaan tai laskevaan järjestykseen.",
-    "addToWatchlist": "Lisää seurantaan",
+    "addToWatchlist": "Seurantalistalle",
     "@addToWatchlist": {
         "description": "Button label to add media to the user's Seerr watchlist"
     },
-    "removeFromWatchlist": "Poista seurannasta",
+    "removeFromWatchlist": "Poista Seurannasta",
     "@removeFromWatchlist": {
         "description": "Button label to remove media from the user's Seerr watchlist"
     },
-    "watchlistUpdateFailed": "Seurantaluetteloa ei voitu päivittää",
+    "watchlistUpdateFailed": "Seurantalistaa ei voitu päivittää",
     "@watchlistUpdateFailed": {
         "description": "Snackbar shown when adding/removing a Seerr watchlist item fails"
     },
