@@ -3725,7 +3725,7 @@
     "@autoLogin": {
         "description": "Setting for auto login"
     },
-    "lastUser": "Viimeinen käyttäjä",
+    "lastUser": "Viimeisin käyttäjä",
     "@lastUser": {
         "description": "Option: last user"
     },
@@ -4043,7 +4043,7 @@
     "@upcomingSeries": {
         "description": "Seerr row: upcoming series"
     },
-    "networks": "Verkot",
+    "networks": "Suoratoistopalvelut",
     "@networks": {
         "description": "Seerr row: networks"
     },
@@ -4563,7 +4563,7 @@
     "uninstall": "Poista asennus",
     "up": "Ylös",
     "update": "Päivittää",
-    "upload": "Lataa",
+    "upload": "Lähetä",
     "unmute": "Poista mykistys",
     "mute": "Mykistä",
     "branding": "Brändäys",
@@ -4682,7 +4682,7 @@
     "audioCodec": "Äänikoodekki",
     "hwAccel": "Laitteistokiihdytys",
     "completion": "Valmistuminen",
-    "direct": "Suoraan",
+    "direct": "Suoratoistossa",
     "adminDisconnect": "Katkaise yhteys",
     "adminClearDates": "Selkeät päivämäärät",
     "adminActivityLoadFailed": "Toimintalokin lataaminen epäonnistui: {error}",
@@ -4717,7 +4717,7 @@
     },
     "adminDevicesLoadFailed": "Laitteiden lataaminen epäonnistui",
     "adminSearchDevices": "Etsi laitteita",
-    "adminThisDevice": "Tämä laite",
+    "adminThisDevice": "This Device",
     "adminEditName": "Muokkaa nimeä",
     "adminLibrariesLoadFailed": "Kirjastojen lataaminen epäonnistui",
     "adminNoLibraries": "Ei määritettyjä kirjastoja",
@@ -13716,5 +13716,13 @@
     "playerSettingsSubtitle": "Ohjaus, kohteen etsiminen, pelaajan painikkeet ja temppupeli",
     "@playerSettingsSubtitle": {
         "description": "Subtitle for the Player entry on the Playback settings screen"
+    },
+    "playerTooltipMinimize": "Pienennä soitin",
+    "@playerTooltipMinimize": {
+        "description": "Tooltip label for shrinking the video player into the mini player bar so the viewer can keep browsing"
+    },
+    "miniPlayerOpenPlayer": "Avaa soitin",
+    "@miniPlayerOpenPlayer": {
+        "description": "Tooltip label for returning from the video mini player bar to the full player"
     }
 }
