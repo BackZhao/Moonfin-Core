@@ -821,14 +821,14 @@ class UserPreferences extends ChangeNotifier {
     if (containsPreference(libraryPosterSize, scopedOnly: true)) {
       return get(libraryPosterSize);
     }
-    return get(posterSize);
+    return get(posterSize).upToExtraLarge;
   }
 
   PosterSize resolvePlaylistPosterSize() {
     if (containsPreference(playlistPosterSize, scopedOnly: true)) {
       return get(playlistPosterSize);
     }
-    return get(posterSize);
+    return get(posterSize).upToExtraLarge;
   }
 
   /// The hardware audio capabilities last detected by the platform probe, or an
@@ -1096,13 +1096,13 @@ class UserPreferences extends ChangeNotifier {
   static final libraryPosterSize = EnumPreference(
     key: 'poster_size_library',
     defaultValue: PosterSize.medium,
-    values: PosterSize.values,
+    values: PosterSize.gridValues,
   );
 
   static final playlistPosterSize = EnumPreference(
     key: 'poster_size_playlist',
     defaultValue: PosterSize.medium,
-    values: PosterSize.values,
+    values: PosterSize.gridValues,
   );
 
   static final homeRowsStyle = EnumPreference(

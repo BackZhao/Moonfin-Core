@@ -297,6 +297,7 @@ class _HomeScreenCategoryScreenState extends State<_HomeScreenCategoryScreen> {
                   PosterSize.medium => l10n.medium,
                   PosterSize.large => l10n.large,
                   PosterSize.extraLarge => l10n.extraLarge,
+                  PosterSize.grandparents => l10n.uiScaleGrandparents,
                 },
                 onChanged: _pushPersonalizationSync,
               ),

@@ -15423,7 +15423,7 @@ class FilmographyRow extends StatelessWidget {
         prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
     final rowScale = isRowsV2 ? 2.0 : 1.0;
 
-    final posterSize = prefs.get(UserPreferences.posterSize);
+    final posterSize = prefs.get(UserPreferences.posterSize).upToExtraLarge;
     final cardHeight =
         posterSize.portraitHeight.toDouble() * platformScale * rowScale;
 
@@ -15536,7 +15536,7 @@ class SeerrAppearancesRow extends StatelessWidget {
         prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
     final rowScale = isRowsV2 ? 2.0 : 1.0;
 
-    final posterSize = prefs.get(UserPreferences.posterSize);
+    final posterSize = prefs.get(UserPreferences.posterSize).upToExtraLarge;
     final cardHeight =
         posterSize.portraitHeight.toDouble() * platformScale * rowScale;
 
@@ -15625,7 +15625,7 @@ class SeerrCrewCreditsRow extends StatelessWidget {
         prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
     final rowScale = isRowsV2 ? 2.0 : 1.0;
 
-    final posterSize = prefs.get(UserPreferences.posterSize);
+    final posterSize = prefs.get(UserPreferences.posterSize).upToExtraLarge;
     final cardHeight =
         posterSize.portraitHeight.toDouble() * platformScale * rowScale;
 

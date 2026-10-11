@@ -1333,9 +1333,7 @@ class _ContentRowsState extends State<_ContentRows>
     if (!mounted) return;
     final rows = widget.viewModel.rows;
     final prefs = widget.prefs;
-    final posterSize = (_isHomeRowsStyleV2() && !prefs.containsPreference(UserPreferences.posterSize))
-        ? PosterSize.small
-        : prefs.get(UserPreferences.posterSize);
+    final posterSize = _homePosterSize();
 
     final includeMediaBar = _isMediaBarIncluded();
     final bannerMode = _isBannerMode();
@@ -2178,6 +2176,18 @@ class _ContentRowsState extends State<_ContentRows>
     return widget.prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
   }
 
+  /// Modern draws posters at twice the card size, so it starts from Small when
+  /// nothing is saved and stops at Extra Large, past which a row is taller
+  /// than a TV screen.
+  PosterSize _homePosterSize() {
+    final prefs = widget.prefs;
+    if (!_isHomeRowsStyleV2()) return prefs.get(UserPreferences.posterSize);
+    if (!prefs.containsPreference(UserPreferences.posterSize)) {
+      return PosterSize.small;
+    }
+    return prefs.get(UserPreferences.posterSize).upToExtraLarge;
+  }
+
   bool _showHomeRowInfoOverlay() {
     if (PlatformDetection.useMobileUi) {
       return false;
@@ -2761,11 +2771,7 @@ class _ContentRowsState extends State<_ContentRows>
     }
 
     final prefs = widget.prefs;
-    final posterSize =
-        (_isHomeRowsStyleV2() &&
-            !prefs.containsPreference(UserPreferences.posterSize))
-        ? PosterSize.small
-        : prefs.get(UserPreferences.posterSize);
+    final posterSize = _homePosterSize();
 
     final desktopScale = _desktopUiScaleFactor();
     final metadataScale = desktopScale;
@@ -4203,11 +4209,7 @@ class _ContentRowsState extends State<_ContentRows>
       _activeFocusedRowIndex = null;
     }
     final prefs = widget.prefs;
-    final posterSize =
-        (_isHomeRowsStyleV2() &&
-            !prefs.containsPreference(UserPreferences.posterSize))
-        ? PosterSize.small
-        : prefs.get(UserPreferences.posterSize);
+    final posterSize = _homePosterSize();
     final watchedBehavior = prefs.get(UserPreferences.watchedIndicatorBehavior);
     final focusColor = Color(prefs.get(UserPreferences.focusColor).colorValue);
     final cardExpansion = prefs.get(UserPreferences.cardFocusExpansion);
@@ -6110,11 +6112,7 @@ class _ContentRowsState extends State<_ContentRows>
 
     final rows = widget.viewModel.rows;
     if (rows.isEmpty) return;
-    final posterSize =
-        (_isHomeRowsStyleV2() &&
-            !prefs.containsPreference(UserPreferences.posterSize))
-        ? PosterSize.small
-        : prefs.get(UserPreferences.posterSize);
+    final posterSize = _homePosterSize();
     final useSeriesThumbs = prefs.get(UserPreferences.seriesThumbnailsEnabled);
     final requestScale = MediaQuery.devicePixelRatioOf(context).clamp(1.0, 2.0);
     final viewportWidth = MediaQuery.sizeOf(context).width;
