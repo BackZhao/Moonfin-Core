@@ -13712,5 +13712,13 @@
     "playerSettingsSubtitle": "Controls, avançar i retrocedir, botons del reproductor i previsualització",
     "@playerSettingsSubtitle": {
         "description": "Subtitle for the Player entry on the Playback settings screen"
+    },
+    "playerTooltipMinimize": "Minimitza el reproductor",
+    "@playerTooltipMinimize": {
+        "description": "Tooltip label for shrinking the video player into the mini player bar so the viewer can keep browsing"
+    },
+    "miniPlayerOpenPlayer": "Obre el reproductor",
+    "@miniPlayerOpenPlayer": {
+        "description": "Tooltip label for returning from the video mini player bar to the full player"
     }
 }
