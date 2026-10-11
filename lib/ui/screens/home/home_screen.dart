@@ -132,6 +132,10 @@ class HomeScreen extends StatelessWidget {
   static bool isModernMyMediaStatic(HomeRow row, UserPreferences prefs) =>
       _ContentRowsState._isModernMyMediaStatic(row, prefs);
 
+  @visibleForTesting
+  static ImageType homeRowImageTypeForRow(HomeRow row, UserPreferences prefs) =>
+      _ContentRowsState._homeRowImageTypeForRow(row, prefs);
+
   @override
   Widget build(BuildContext context) {
     return const ResponsiveLayout(
@@ -5829,38 +5833,8 @@ class _ContentRowsState extends State<_ContentRows>
     return prefs.get(UserPreferences.homeRowImageType(sectionType));
   }
 
-  static HomeSectionType? _sectionTypeForRow(HomeRow row, UserPreferences prefs) {
-    final config = prefs.homeSectionsConfig.firstWhereOrNull((c) => c.stableId == row.id);
-    if (config != null) {
-      return config.type;
-    }
-
-    return switch (row.rowType) {
-      HomeRowType.resume => HomeSectionType.resume,
-      HomeRowType.nextUp => HomeSectionType.nextUp,
-      HomeRowType.latestMedia => HomeSectionType.latestMedia,
-      HomeRowType.favorites => switch (row.id) {
-        'favorites_movies' => HomeSectionType.favoriteMovies,
-        'favorites_series' => HomeSectionType.favoriteSeries,
-        'favorites_episodes' => HomeSectionType.favoriteEpisodes,
-        'favorites_people' => HomeSectionType.favoritePeople,
-        'favorites_artists' => HomeSectionType.favoriteArtists,
-        'favorites_musicvideos' => HomeSectionType.favoriteMusicVideos,
-        'favorites_albums' => HomeSectionType.favoriteAlbums,
-        'favorites_songs' => HomeSectionType.favoriteSongs,
-        _ => HomeSectionType.latestMedia,
-      },
-      HomeRowType.collections => HomeSectionType.collections,
-      HomeRowType.genres => HomeSectionType.genres,
-      HomeRowType.studios => HomeSectionType.studios,
-      HomeRowType.libraryTiles => HomeSectionType.libraryTilesSmall,
-      HomeRowType.playlists => HomeSectionType.playlists,
-      HomeRowType.liveTv => HomeSectionType.liveTv,
-      HomeRowType.activeRecordings => HomeSectionType.activeRecordings,
-      HomeRowType.recentlyReleased => HomeSectionType.recentlyReleased,
-      _ => null,
-    };
-  }
+  static HomeSectionType? _sectionTypeForRow(HomeRow row, UserPreferences prefs) =>
+      HomeViewModel.sectionConfigForRow(row, prefs.homeSectionsConfig)?.type;
 
   static bool _isLatestMusicRow(HomeRow row) {
     if (row.rowType != HomeRowType.latestMedia || row.items.isEmpty) {
