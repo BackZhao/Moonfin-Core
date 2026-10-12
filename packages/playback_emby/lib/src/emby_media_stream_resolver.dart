@@ -22,8 +22,16 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
   }) async {
     final itemId = MediaStreamResolver.extractItemId(mediaItem);
 
-    final resolvedMediaSourceId =
+    final staticMediaSourceId =
         MediaStreamResolver.resolveStaticMediaSourceId(mediaItem, mediaSourceId);
+    // A channel item's lone placeholder source is left off so the server
+    // answers with the source it probes.
+    final resolvedMediaSourceId = MediaStreamResolver.isStreamlessStaticSource(
+      mediaItem,
+      staticMediaSourceId,
+    )
+        ? null
+        : staticMediaSourceId;
     final isLiveChannel = MediaStreamResolver.isLiveTvItem(mediaItem);
     final requestProfile = MediaStreamResolver.shortenLiveHlsStartup(
       MediaStreamResolver.preferMpegTsHlsForLive(
@@ -78,9 +86,27 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     } catch (_) {
       if (!isUnverifiedSourceId) rethrow;
     }
-    info ??= await fetchPlaybackInfo(null);
+    var playbackInfo = info ?? await fetchPlaybackInfo(null);
 
-    final source = _selectBestSource(info.mediaSources, preferredId: resolvedMediaSourceId);
+    var source = _selectBestSource(playbackInfo.mediaSources, preferredId: resolvedMediaSourceId);
+
+    // The same placeholder reached through an item that came without its
+    // sources: the server hands back a source with no streams that it can only
+    // transcode. Ask again without the id and take a probed source if one
+    // comes back, otherwise keep what the caller picked.
+    if (resolvedMediaSourceId != null && _isUnprobedTranscodeOnly(source)) {
+      try {
+        final retry = await fetchPlaybackInfo(null);
+        final probed = retry.mediaSources
+            .where((s) => s.mediaStreams.isNotEmpty)
+            .toList();
+        if (probed.isNotEmpty) {
+          playbackInfo = retry;
+          source = _selectBestSource(probed);
+        }
+      } catch (_) {}
+    }
+
     var (url, playMethod) = _resolveStreamUrl(
       itemId,
       source,
@@ -126,7 +152,7 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
       streamUrl: url,
       mediaSourceId: source.id,
       liveStreamId: source.liveStreamId,
-      playSessionId: info.playSessionId,
+      playSessionId: playbackInfo.playSessionId,
       playMethod: playMethod,
       container: source.container,
       videoRangeType: videoRangeType,
@@ -169,6 +195,12 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     final separator = url.contains('?') ? '&' : '?';
     return '$url${separator}api_key=${Uri.encodeComponent(token)}';
   }
+
+  bool _isUnprobedTranscodeOnly(PlaybackMediaSource source) =>
+      source.mediaStreams.isEmpty &&
+      !source.supportsDirectPlay &&
+      !source.supportsDirectStream &&
+      (source.liveStreamId == null || source.liveStreamId!.isEmpty);
 
   PlaybackMediaSource _selectBestSource(
     List<PlaybackMediaSource> sources, {
