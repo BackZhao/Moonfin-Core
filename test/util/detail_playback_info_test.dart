@@ -80,13 +80,26 @@ void main() {
   setUp(() => GetIt.instance.reset());
   tearDown(() => GetIt.instance.reset());
 
-  Future<PlaybackInfoResult> fetch(String? mediaSourceId) =>
+  Future<PlaybackInfoResult> fetch(
+    String? mediaSourceId, {
+    bool hasOtherVersions = false,
+  }) =>
       fetchDetailPlaybackInfo(
         itemId: '620157',
         mediaSourceId: mediaSourceId,
         audioStreamIndex: null,
         subtitleStreamIndex: null,
+        hasOtherVersions: hasOtherVersions,
       );
+
+  test('keeps the picked version when the item has other versions', () async {
+    register();
+
+    final result = await fetch(_placeholderId, hasOtherVersions: true);
+
+    expect(api.requestedSourceIds, [_placeholderId]);
+    expect(result.mediaSources.map((s) => s.id), [_placeholderId]);
+  });
 
   test('reports on the probed source when the id names a placeholder',
       () async {

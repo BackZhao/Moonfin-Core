@@ -148,6 +148,32 @@ void main() {
       expect(result.playMethod, StreamPlayMethod.transcode);
     });
 
+    test('keeps a picked version of an item that has other versions',
+        () async {
+      final api = _ChannelPlaybackApi();
+      final resolver = EmbyMediaStreamResolver(_FakeClient(api));
+
+      final result = await resolver.resolve(
+        <String, dynamic>{
+          'Id': '620157',
+          'Type': 'Movie',
+          'MediaSources': [
+            {
+              'Id': _probedId,
+              'MediaStreams': [
+                {'Type': 'Video'},
+              ],
+            },
+            {'Id': _placeholderId, 'MediaStreams': <dynamic>[]},
+          ],
+        },
+        mediaSourceId: _placeholderId,
+      );
+
+      expect(api.requestedSourceIds, [_placeholderId]);
+      expect(result.mediaSourceId, _placeholderId);
+    });
+
     test('still sends a picked version that lists its streams', () async {
       final api = _ChannelPlaybackApi();
       final resolver = EmbyMediaStreamResolver(_FakeClient(api));

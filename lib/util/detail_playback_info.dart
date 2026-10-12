@@ -11,6 +11,7 @@ Future<PlaybackInfoResult> fetchDetailPlaybackInfo({
   required String? mediaSourceId,
   required int? audioStreamIndex,
   required int? subtitleStreamIndex,
+  bool hasOtherVersions = false,
 }) async {
   final client = GetIt.instance<MediaServerClient>();
   final profile =
@@ -42,13 +43,17 @@ Future<PlaybackInfoResult> fetchDetailPlaybackInfo({
   }
 
   final result = await fetch(mediaSourceId);
-  if (mediaSourceId == null || !result.mediaSources.every(_isPlaceholder)) {
+  if (mediaSourceId == null ||
+      hasOtherVersions ||
+      !result.mediaSources.every(_isPlaceholder)) {
     return result;
   }
 
   // Asked for by id, a channel item's placeholder source comes back alone and
   // fit only for a transcode, while playback gets the source the server
-  // probes. Report on that one, the same as the resolver plays it.
+  // probes. Report on that one, the same as the resolver plays it. With other
+  // versions on the item the sources that come back would be those, so the
+  // picked one is reported as it is.
   try {
     final retry = await fetch(null);
     final probed =

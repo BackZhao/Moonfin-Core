@@ -93,8 +93,12 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     // The same placeholder reached through an item that came without its
     // sources: the server hands back a source with no streams that it can only
     // transcode. Ask again without the id and take a probed source if one
-    // comes back, otherwise keep what the caller picked.
-    if (resolvedMediaSourceId != null && _isUnprobedTranscodeOnly(source)) {
+    // comes back, otherwise keep what the caller picked. An item known to
+    // have several versions is left alone, since the sources that come back
+    // without the id would be its other versions.
+    if (resolvedMediaSourceId != null &&
+        staticIds.length <= 1 &&
+        _isUnprobedTranscodeOnly(source)) {
       try {
         final retry = await fetchPlaybackInfo(null);
         final probed = retry.mediaSources
