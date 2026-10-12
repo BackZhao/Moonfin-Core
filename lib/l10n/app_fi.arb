@@ -4591,7 +4591,7 @@
     "adminDashboardLoadFailed": "Koontinäyttöä ei voitu ladata",
     "adminMediaOverview": "Median yleiskatsaus",
     "adminMediaTotalsError": "Palvelimen mediakokonaisuuksia ei voitu ladata.",
-    "adminMediaOverviewSubtitle": "Nopea luku siitä, kuinka paljon sisältöä tällä palvelimella on.",
+    "adminMediaOverviewSubtitle": "Katsaus, kuinka paljon sisältöä tällä palvelimella on.",
     "adminPluginUpdatesAvailable": "Lisäosien päivitykset saatavilla: {count}",
     "@adminPluginUpdatesAvailable": {
         "placeholders": {
