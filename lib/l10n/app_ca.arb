@@ -13720,5 +13720,59 @@
     "miniPlayerOpenPlayer": "Obre el reproductor",
     "@miniPlayerOpenPlayer": {
         "description": "Tooltip label for returning from the video mini player bar to the full player"
+    },
+    "videoRenderer": "Renderitzador de vídeo",
+    "@videoRenderer": {
+        "description": "Settings label for choosing where Windows draws video, in its own window or inside the app"
+    },
+    "videoRendererDescription": "La finestra nativa ofereix el moviment més fluid i envia l'HDR a la pantalla sense modificar-lo. Prova una altra opció si el vídeo no funciona bé.",
+    "@videoRendererDescription": {
+        "description": "Settings description for the video renderer choice"
+    },
+    "videoRendererNativeWindow": "Finestra nativa (recomanada)",
+    "@videoRendererNativeWindow": {
+        "description": "Video renderer option that plays every title in its own window"
+    },
+    "videoRendererNativeHdrOnly": "Finestra nativa només per a HDR",
+    "@videoRendererNativeHdrOnly": {
+        "description": "Video renderer option that uses its own window for HDR titles and the in-app renderer for SDR"
+    },
+    "videoRendererInApp": "Dins de l'aplicació (antic)",
+    "@videoRendererInApp": {
+        "description": "Video renderer option that draws every title inside the app and converts HDR to SDR"
+    },
+    "preferredSecondarySubtitleLanguage": "Idioma preferit dels subtítols secundaris",
+    "@preferredSecondarySubtitleLanguage": {
+        "description": "Preferred language used to sort secondary subtitle tracks in the picker. It doesn't turn subtitles on."
+    },
+    "primarySubtitleSlot": "Principal",
+    "@primarySubtitleSlot": {
+        "description": "Label for the primary subtitle selection slot"
+    },
+    "secondarySubtitleSlot": "Secundari",
+    "@secondarySubtitleSlot": {
+        "description": "Label for the secondary subtitle selection slot"
+    },
+    "secondarySubtitleTrack": "Pista de subtítols secundària",
+    "@secondarySubtitleTrack": {
+        "description": "Title of the picker for the secondary subtitle track"
+    },
+    "decreaseValue": "Redueix {setting}",
+    "@decreaseValue": {
+        "description": "Tooltip for the button that lowers a setting's value",
+        "placeholders": {
+            "setting": {
+                "type": "String"
+            }
+        }
+    },
+    "increaseValue": "Augmenta {setting}",
+    "@increaseValue": {
+        "description": "Tooltip for the button that raises a setting's value",
+        "placeholders": {
+            "setting": {
+                "type": "String"
+            }
+        }
     }
 }
