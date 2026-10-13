@@ -5992,7 +5992,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get adminMediaOverviewSubtitle =>
-      'Nopea luku siitä, kuinka paljon sisältöä tällä palvelimella on.';
+      'Katsaus, kuinka paljon sisältöä tällä palvelimella on.';
 
   @override
   String adminPluginUpdatesAvailable(int count) {
