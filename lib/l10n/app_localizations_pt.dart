@@ -13912,7 +13912,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get animeMarkerSubbed => 'Legendado';
 
   @override
-  String get animeMarkerDubbed => 'Apelidado';
+  String get animeMarkerDubbed => 'Dublado';
 
   @override
   String get animeMarkerSubbedAndDubbed => 'Legendado/Dublado';
