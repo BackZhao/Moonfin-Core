@@ -13814,5 +13814,21 @@
     "playlistNoMatchingTracks": "Aktiivisten suodattimien mukaisia kappaleita ei löytynyt",
     "@playlistNoMatchingTracks": {
         "description": "Empty state message shown when playlist filters match no items"
+    },
+    "rendererMode": "Renderöijä",
+    "@rendererMode": {
+        "description": "Label for the TV graphics renderer setting"
+    },
+    "rendererModeSubtitle": "Auto-tila käyttää Impelleriä laitteissa, joiden grafiikka tukee sitä sujuvasti, ja Skiaa kaikissa muissa tapauksissa. Valitse Skia, jos animaatiot tai videot näyttävät virheellisiltä. Muutos astuu voimaan seuraavalla käynnistyksellä.",
+    "@rendererModeSubtitle": {
+        "description": "Explanation under the TV graphics renderer setting"
+    },
+    "rendererModeAuto": "Auto",
+    "@rendererModeAuto": {
+        "description": "Renderer option: let the app choose per device"
+    },
+    "rendererModeSkia": "Skia",
+    "@rendererModeSkia": {
+        "description": "Renderer option: always use the Skia renderer"
     }
 }
