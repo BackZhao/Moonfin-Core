@@ -1650,19 +1650,16 @@ class _ContentRowsState extends State<_ContentRows>
       unawaited(_media3PreviewBackend!.release());
       _media3PreviewBackend.resetVolumeState();
     }
+    Future<void>? appleTvReleased;
     if (_previewUsingAppleTv) {
       _previewUsingAppleTv = false;
-      unawaited(_appleTvPreviewPlayer?.setVolume(0));
-      unawaited(_appleTvPreviewPlayer?.stop());
+      appleTvReleased = _releaseAppleTvPreviewPlayer();
     }
     if (releaseResources || kIsWeb) {
       _previewPlayer?.dispose();
       _previewPlayer = null;
       _previewController = null;
-      _appleTvPreviewCompletedSub?.cancel();
-      _appleTvPreviewCompletedSub = null;
-      unawaited(_appleTvPreviewPlayer?.dispose());
-      _appleTvPreviewPlayer = null;
+      unawaited(_releaseAppleTvPreviewPlayer());
     }
 
     if (_activePreviewKey != null || _previewReady || _pendingPreviewKey != null) {
@@ -1670,24 +1667,38 @@ class _ContentRowsState extends State<_ContentRows>
       _previewReady = false;
       _pendingPreviewKey = null;
     }
-    _stopPreviewEncoding();
+    _stopPreviewEncoding(after: appleTvReleased);
     _themeMusicService.setExternalAudioActive(false);
+  }
+
+  /// Disposes the player instead of stopping it. A stopped player keeps its
+  /// stream loaded and rewinds to the start, and the requests that follow
+  /// make the server start the transcode again right after it was told to stop.
+  Future<void> _releaseAppleTvPreviewPlayer() {
+    _appleTvPreviewCompletedSub?.cancel();
+    _appleTvPreviewCompletedSub = null;
+    final player = _appleTvPreviewPlayer;
+    _appleTvPreviewPlayer = null;
+    return player?.dispose() ?? Future<void>.value();
   }
 
   /// Tells the server to stop the preview's transcode. Scoped to the
   /// preview's own play session, so a running main playback transcode on the
-  /// same device is left alone.
-  void _stopPreviewEncoding() {
+  /// same device is left alone. Waits for [after], so a player that's still
+  /// shutting down can't ask for the transcode again.
+  void _stopPreviewEncoding({Future<void>? after}) {
     final client = _previewEncodingClient;
     final playSessionId = _previewPlaySessionId;
     _previewEncodingClient = null;
     _previewPlaySessionId = null;
     if (client == null || playSessionId == null) return;
     unawaited(
-      client.playbackApi
-          .stopActiveEncodings(
-            deviceId: client.deviceInfo.id,
-            playSessionId: playSessionId,
+      (after ?? Future<void>.value())
+          .then(
+            (_) => client.playbackApi.stopActiveEncodings(
+              deviceId: client.deviceInfo.id,
+              playSessionId: playSessionId,
+            ),
           )
           .catchError((_) {}),
     );
@@ -1722,7 +1733,7 @@ class _ContentRowsState extends State<_ContentRows>
       _previewUsingMedia3 = false;
     }
     if (_previewUsingAppleTv) {
-      await _appleTvPreviewPlayer?.stop();
+      await _releaseAppleTvPreviewPlayer();
       _previewUsingAppleTv = false;
     }
     _stopPreviewEncoding();
