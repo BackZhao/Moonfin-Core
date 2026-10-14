@@ -154,6 +154,10 @@ class DeviceProfileBuilder {
     bool supportsAvcHigh10 = false,
     int avcMainLevel = 0,
     int avcHigh10Level = 0,
+    // Caps H.264 reference frames by width, for decoders that can't handle
+    // more. Apple players turn it off, since there it only forced 1080p
+    // encodes with more than four into a full video transcode.
+    bool capsAvcRefFrames = true,
     bool supportsHevc = false,
     bool supportsHevcMain10 = false,
     // Offers hevc ahead of h264 as the HLS transcode target. Only set from
@@ -453,6 +457,7 @@ class DeviceProfileBuilder {
       supportsAvcHigh10: effectiveSupportsAvcHigh10,
       avcMainLevel: effectiveAvcMainLevel,
       avcHigh10Level: effectiveAvcHigh10Level,
+      capsAvcRefFrames: capsAvcRefFrames,
       supportsHevc: effectiveSupportsHevc,
       supportsHevcMain10: effectiveSupportsHevcMain10,
       hevcMainLevel: effectiveHevcMainLevel,
@@ -1074,6 +1079,7 @@ class DeviceProfileBuilder {
     required bool supportsAvcHigh10,
     required int avcMainLevel,
     required int avcHigh10Level,
+    required bool capsAvcRefFrames,
     required bool supportsHevc,
     required bool supportsHevcMain10,
     required int hevcMainLevel,
@@ -1205,47 +1211,49 @@ class DeviceProfileBuilder {
       );
     }
 
-    profiles.add(
-      _codecProfile(
-        type: 'Video',
-        codec: 'h264',
-        conditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'LessThanEqual',
-            property: 'RefFrames',
-            value: '12',
-          ),
-        ],
-        applyConditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'GreaterThanEqual',
-            property: 'Width',
-            value: '1200',
-          ),
-        ],
-      ),
-    );
+    if (capsAvcRefFrames) {
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          codec: 'h264',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'LessThanEqual',
+              property: 'RefFrames',
+              value: '12',
+            ),
+          ],
+          applyConditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'GreaterThanEqual',
+              property: 'Width',
+              value: '1200',
+            ),
+          ],
+        ),
+      );
 
-    profiles.add(
-      _codecProfile(
-        type: 'Video',
-        codec: 'h264',
-        conditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'LessThanEqual',
-            property: 'RefFrames',
-            value: '4',
-          ),
-        ],
-        applyConditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'GreaterThanEqual',
-            property: 'Width',
-            value: '1900',
-          ),
-        ],
-      ),
-    );
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          codec: 'h264',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'LessThanEqual',
+              property: 'RefFrames',
+              value: '4',
+            ),
+          ],
+          applyConditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'GreaterThanEqual',
+              property: 'Width',
+              value: '1900',
+            ),
+          ],
+        ),
+      );
+    }
 
     profiles.add(
       _codecProfile(

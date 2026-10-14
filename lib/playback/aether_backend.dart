@@ -445,6 +445,7 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
       supportsAvcHigh10: PlatformDetection.supportsAvcHigh10,
       avcMainLevel: PlatformDetection.avcMainLevel,
       avcHigh10Level: PlatformDetection.avcHigh10Level,
+      capsAvcRefFrames: false,
       supportsHevc: PlatformDetection.supportsHevc,
       supportsHevcMain10: PlatformDetection.supportsHevcMain10,
       transcodeHevcAllowed: serverAllowsHevcTranscode(),

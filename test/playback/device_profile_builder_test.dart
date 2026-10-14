@@ -659,6 +659,40 @@ void main() {
     });
   });
 
+  group('DeviceProfileBuilder AVC reference frames', () {
+    List<String> refFrameCaps(Map<String, dynamic> profile) => [
+      for (final codecProfile
+          in (profile['CodecProfiles'] as List<dynamic>)
+              .cast<Map<String, dynamic>>())
+        if (codecProfile['Codec'] == 'h264')
+          for (final condition
+              in (codecProfile['Conditions'] as List<dynamic>)
+                  .cast<Map<String, dynamic>>())
+            if (condition['Property'] == 'RefFrames')
+              condition['Value'] as String,
+    ];
+
+    test('players keep the width based caps by default', () {
+      final profile = DeviceProfileBuilder.build(
+        supportsAvc: true,
+        avcMainLevel: 51,
+      );
+
+      expect(refFrameCaps(profile), ['12', '4']);
+    });
+
+    test('a player without the limit sends no cap, so a 1080p encode with '
+        'more than four reference frames direct plays', () {
+      final profile = DeviceProfileBuilder.build(
+        supportsAvc: true,
+        avcMainLevel: 51,
+        capsAvcRefFrames: false,
+      );
+
+      expect(refFrameCaps(profile), isEmpty);
+    });
+  });
+
   group('DeviceProfileBuilder HEVC Main 10', () {
     test('a device without a 10 bit HEVC decoder transcodes Main 10', () {
       final profile = DeviceProfileBuilder.build(
