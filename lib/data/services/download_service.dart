@@ -325,6 +325,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
   final Map<String, double> _serverTranscodeProgress = {};
   final Map<String, int> _transcodeEtaSeconds = {};
   final Map<String, TransferRateTracker> _transferRates = {};
+  final Set<String> _subtitleRepairsTried = {};
 
   Timer? _rateRefreshTimer;
   static const _rateStaleAfter = Duration(seconds: 5);
@@ -1214,6 +1215,13 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
         ? fileName.substring(0, extensionIndex)
         : fileName;
 
+    // Subtitles go first since iOS can suspend a backgrounded app before the
+    // later steps get their turn.
+    await runBestEffort(
+      _downloadExternalSubtitles(item, dir, fileNameBase),
+      const Duration(seconds: 30),
+    );
+
     await runBestEffort(
       _populateOfflineAssets(item),
       const Duration(seconds: 30),
@@ -1247,11 +1255,6 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
         const Duration(seconds: 10),
       );
     }
-
-    await runBestEffort(
-      _downloadExternalSubtitles(item, dir, fileNameBase),
-      const Duration(seconds: 30),
-    );
   }
 
   String _newTaskId(String itemId) =>
@@ -3395,10 +3398,33 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
           ? deliveryUrl
           : '${_client.baseUrl}$deliveryUrl';
       final subPath = '${dir.path}/${fileNameBase}_sub_$index.$ext';
+      if (await File(subPath).exists()) continue;
       try {
         await _downloadDio.download(subUrl, subPath, options: authOptions);
       } catch (_) {}
     }
+  }
+
+  /// Fetches the subtitle files a finished download should have but doesn't,
+  /// which repairs downloads whose subtitle step never ran. Each item is
+  /// checked once per run so a server that can't serve one isn't asked on
+  /// every play.
+  Future<void> restoreMissingSubtitles(String itemId) async {
+    final row = await _offlineRepo.getItem(itemId);
+    final path = row?.localFilePath;
+    if (row == null || row.downloadStatus != 2 || path == null) return;
+    if (!_subtitleRepairsTried.add(itemId)) return;
+    final file = File(path);
+    if (!await file.exists()) return;
+    await _downloadExternalSubtitles(
+      AggregatedItem(
+        id: itemId,
+        serverId: row.serverId,
+        rawData: _offlineRepo.rowToRawData(row),
+      ),
+      file.parent,
+      _fileNameBaseFromPath(path),
+    );
   }
 
   void cancelDownload(String itemId) {

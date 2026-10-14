@@ -13,6 +13,7 @@ import '../../data/services/audiobook_notes_service.dart';
 import '../../data/services/audiobook_resume_service.dart';
 import '../../data/services/auto_download_service.dart';
 import '../../data/services/connectivity_service.dart';
+import '../../data/services/download_service.dart';
 import '../../data/services/log_service.dart';
 import '../../data/services/blocked_content_gate.dart';
 import '../../data/services/media_server_client_factory.dart';
@@ -804,6 +805,11 @@ void setActiveStreamResolver(MediaServerClient client) {
   final resolver = LocalFirstMediaStreamResolver(
     inner: serverResolver,
     offline: _getIt<OfflineStreamResolver>(),
+    restoreSubtitles: (itemId) async {
+      if (_getIt.isRegistered<DownloadService>()) {
+        await _getIt<DownloadService>().restoreMissingSubtitles(itemId);
+      }
+    },
   );
   final service = LocalAwarePlayerService(
     serverService,
