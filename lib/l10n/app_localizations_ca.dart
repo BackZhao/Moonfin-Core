@@ -2228,20 +2228,20 @@ class AppLocalizationsCa extends AppLocalizations {
       'Inactiu — no s\'ha pogut iniciar; s\'utilitza la via estàndard';
 
   @override
-  String get videoRenderer => 'Video Renderer';
+  String get videoRenderer => 'Renderitzador de vídeo';
 
   @override
   String get videoRendererDescription =>
-      'Native window gives the smoothest motion and sends HDR to the display untouched. Try another option if video misbehaves.';
+      'La finestra nativa ofereix el moviment més fluid i envia l\'HDR a la pantalla sense modificar-lo. Prova una altra opció si el vídeo no funciona bé.';
 
   @override
-  String get videoRendererNativeWindow => 'Native window (recommended)';
+  String get videoRendererNativeWindow => 'Finestra nativa (recomanada)';
 
   @override
-  String get videoRendererNativeHdrOnly => 'Native window for HDR only';
+  String get videoRendererNativeHdrOnly => 'Finestra nativa només per a HDR';
 
   @override
-  String get videoRendererInApp => 'In-app (legacy)';
+  String get videoRendererInApp => 'Dins de l\'aplicació (antic)';
 
   @override
   String get codec => 'Còdec';
@@ -4150,7 +4150,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get preferredSecondarySubtitleLanguage =>
-      'Preferred Secondary Subtitle Language';
+      'Idioma preferit dels subtítols secundaris';
 
   @override
   String get defaultToNoSubtitles => 'Per defecte, Sense subtítols';
@@ -4163,22 +4163,22 @@ class AppLocalizationsCa extends AppLocalizations {
   String get subtitleSize => 'Mida del subtítol';
 
   @override
-  String get primarySubtitleSlot => 'Primary';
+  String get primarySubtitleSlot => 'Principal';
 
   @override
-  String get secondarySubtitleSlot => 'Secondary';
+  String get secondarySubtitleSlot => 'Secundari';
 
   @override
-  String get secondarySubtitleTrack => 'Secondary Subtitle Track';
+  String get secondarySubtitleTrack => 'Pista de subtítols secundària';
 
   @override
   String decreaseValue(String setting) {
-    return 'Decrease $setting';
+    return 'Redueix $setting';
   }
 
   @override
   String increaseValue(String setting) {
-    return 'Increase $setting';
+    return 'Augmenta $setting';
   }
 
   @override

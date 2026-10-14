@@ -182,7 +182,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get detailScreenStyleSpotlight => 'Kiemelt';
 
   @override
-  String get spotlightMoreActions => 'További hatások';
+  String get spotlightMoreActions => 'További lehetőségek';
 
   @override
   String get spotlightCastCrewStudios => 'Szereplők, stáb és stúdiók';
@@ -191,7 +191,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get spotlightChaptersExtras => 'Fejezetek és további tartalmak';
 
   @override
-  String get spotlightFileDetails => 'File Details';
+  String get spotlightFileDetails => 'Fájl részletek';
 
   @override
   String get spotlightSimilarRecommendations => 'Hasonló és javaslatok';
@@ -399,7 +399,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'Lapok tartalmának automatikus megjelenítése a lapok böngészése közben. Kapcsold ki az egyes lapok kézi megnyitásához és bezárásához.';
 
   @override
-  String get showTechnicalDetails => 'Megjelenjenek a technikai részletek?';
+  String get showTechnicalDetails => 'Technikai részletek megjelenítése';
 
   @override
   String get showTechnicalDetailsSubtitle =>
@@ -423,7 +423,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get recommendationsApplyParentalRatingCap =>
-      'Alkalmazod a szülői korhatár-korlátot?';
+      'Értékelési limit alkalmazása a Javaslatokra';
 
   @override
   String get recommendationsApplyParentalRatingCapSubtitle =>
@@ -1579,7 +1579,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get searchingSubtitles => 'Feliratok keresése…';
 
   @override
-  String get fetchingSubtitles => 'Fetching subtitles';
+  String get fetchingSubtitles => 'Feliratok keresése';
 
   @override
   String get downloadingSubtitle => 'Felirat letöltése…';
@@ -1999,37 +1999,37 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get keyboardShortcutsSubtitle =>
-      'Keys for the app, video player and reader';
+      'Gyorsbillentyű az alkalmazáshoz, videólejátszóhoz és olvasóhoz';
 
   @override
   String get keyboardShortcutsPlayerHint =>
-      'Press ? or F1 while a video plays to see this list without leaving the player.';
+      'A ? vagy F1 gomb lenyomásával megtekinteheted a listát a lejátszó elhagyása nélkül.';
 
   @override
-  String get keyboardShortcutsSectionApp => 'Everywhere';
+  String get keyboardShortcutsSectionApp => 'Mindenhol';
 
   @override
-  String get keyboardShortcutsSectionAppScope => 'On any screen';
+  String get keyboardShortcutsSectionAppScope => 'Bármely oldalon';
 
   @override
-  String get keyboardShortcutsSectionPlayer => 'Video player';
+  String get keyboardShortcutsSectionPlayer => 'Videólejátszó';
 
   @override
   String get keyboardShortcutsSectionPlayerScope =>
-      'While a video is open, playing or paused';
+      'Amikor egy videó megtekintés alatt áll vagy szüneteltetett';
 
   @override
-  String get keyboardShortcutsSectionReader => 'Book and comic reader';
+  String get keyboardShortcutsSectionReader => 'Könyv és képregény olvasó';
 
   @override
   String get keyboardShortcutsSectionReaderScope =>
-      'While reading a book or comic';
+      'Amikor olvasol egy könyvet vagy képregényt';
 
   @override
-  String get keyNameArrowKeys => 'Arrow keys';
+  String get keyNameArrowKeys => 'Nyilak';
 
   @override
-  String get keyNameSpace => 'Space';
+  String get keyNameSpace => 'Szóköz';
 
   @override
   String get keyNameEnter => 'Enter';
@@ -2062,29 +2062,29 @@ class AppLocalizationsHu extends AppLocalizations {
   String get keyNameAlt => 'Alt';
 
   @override
-  String get keyNameScrollWheel => 'Scroll wheel';
+  String get keyNameScrollWheel => 'Görgetés';
 
   @override
-  String get shortcutMoveFocus => 'Move between items';
+  String get shortcutMoveFocus => 'Elemek közötti mozgás';
 
   @override
-  String get shortcutActivate => 'Open the selected item';
+  String get shortcutActivate => 'Kiválasztott elem megnyitása';
 
   @override
-  String get shortcutGoBack => 'Go back';
+  String get shortcutGoBack => 'Visszalépés';
 
   @override
-  String get shortcutToggleFullscreen => 'Fullscreen on or off';
+  String get shortcutToggleFullscreen => 'Teljesképernyő be- vagy kikapcsolása';
 
   @override
-  String get shortcutQuit => 'Quit Moonfin';
+  String get shortcutQuit => 'Kilépés a Moonfinből';
 
   @override
-  String get shortcutPlayPause => 'Play or pause';
+  String get shortcutPlayPause => 'Lejátszás vagy szüneteltetés';
 
   @override
   String get shortcutShowControlsOrPlayPause =>
-      'Show controls, or play/pause if shown';
+      'Irányítópanel megjelenítése vagy lejátszás/szüneteltetés ha már látható';
 
   @override
   String get shortcutSeekBack => 'Seek back (hold for bigger jumps)';
@@ -2093,68 +2093,68 @@ class AppLocalizationsHu extends AppLocalizations {
   String get shortcutSeekForward => 'Seek forward (hold for bigger jumps)';
 
   @override
-  String get shortcutVolumeUp => 'Volume up';
+  String get shortcutVolumeUp => 'Hangerő fel';
 
   @override
-  String get shortcutVolumeDown => 'Volume down';
+  String get shortcutVolumeDown => 'Hangerő le';
 
   @override
-  String get shortcutMute => 'Mute or unmute';
+  String get shortcutMute => 'Némítás vagy némítás megszüntetése';
 
   @override
-  String get shortcutToggleSubtitles => 'Subtitles on or off';
+  String get shortcutToggleSubtitles => 'Feliratok be- vagy kikapcsolása';
 
   @override
-  String get shortcutSlower => 'Slow down';
+  String get shortcutSlower => 'Lelassítás';
 
   @override
-  String get shortcutFaster => 'Speed up';
+  String get shortcutFaster => 'Felgyorsítás';
 
   @override
-  String get shortcutPlaybackInfo => 'Show playback information';
+  String get shortcutPlaybackInfo => 'Lejátszási információ megjelenítése';
 
   @override
-  String get shortcutMpvStats => 'mpv statistics on or off';
+  String get shortcutMpvStats => 'mpv statisztikák be- vagy kikapcsolása';
 
   @override
-  String get shortcutRecropBlackBars => 'Recrop black bars';
+  String get shortcutRecropBlackBars => 'Fekete sávok eltüntetése';
 
   @override
   String get shortcutLeaveFullscreenOrStop =>
-      'Exit fullscreen, or stop if not fullscreen';
+      'Teljesképernyő kikapcsolása vagy megállítás, ha teljesképernyős mód aktív';
 
   @override
-  String get shortcutStopPlayback => 'Stop playback';
+  String get shortcutStopPlayback => 'Lejátszás megállítása';
 
   @override
-  String get shortcutNextItem => 'Next item';
+  String get shortcutNextItem => 'Következő elem';
 
   @override
-  String get shortcutPreviousItem => 'Previous item';
+  String get shortcutPreviousItem => 'Előző elem';
 
   @override
-  String get shortcutShowShortcuts => 'Show this list';
+  String get shortcutShowShortcuts => 'Mutasd ezt a listát';
 
   @override
-  String get shortcutNextPage => 'Next page';
+  String get shortcutNextPage => 'Következő oldal';
 
   @override
-  String get shortcutPreviousPage => 'Previous page';
+  String get shortcutPreviousPage => 'Előző oldal';
 
   @override
-  String get shortcutScrollPage => 'Scroll the page (ebooks)';
+  String get shortcutScrollPage => 'Oldal görgetése (ebookok esetén)';
 
   @override
-  String get shortcutFirstPage => 'First page, or start of chapter';
+  String get shortcutFirstPage => 'Első oldal vagy fejezet kezdete';
 
   @override
-  String get shortcutLastPage => 'Last page, or end of chapter';
+  String get shortcutLastPage => 'Utolsó oldal vagy fejezet vége';
 
   @override
-  String get shortcutZoom => 'Zoom in or out (comics)';
+  String get shortcutZoom => 'Be- vagy kizoomolás (képregények esetén)';
 
   @override
-  String get shortcutResetZoom => 'Reset zoom (comics)';
+  String get shortcutResetZoom => 'Zoom visszaállítása (képregények esetén)';
 
   @override
   String get playback => 'Lejátszás';
@@ -2193,42 +2193,43 @@ class AppLocalizationsHu extends AppLocalizations {
   String get hdr => 'HDR';
 
   @override
-  String get hdrOutput => 'HDR output';
+  String get hdrOutput => 'HDR kimenet';
 
   @override
   String hdrOutputActive(String format) {
-    return 'Active — $format';
+    return 'Aktív — $format';
   }
 
   @override
   String get hdrOutputActiveTonemapped =>
-      'Active — tone-mapped to SDR for this display';
+      'Aktív — SDR tónustérképezés ehhez a képernyőhöz';
 
   @override
-  String get hdrOutputContentSdr => 'Inactive — content is SDR';
+  String get hdrOutputContentSdr => 'Inaktív — a tartalom SDR formátumú';
 
   @override
-  String get hdrOutputDisabled => 'Inactive — turned off in settings';
+  String get hdrOutputDisabled => 'Inaktív — kikapcsolva a beállításokban';
 
   @override
   String get hdrOutputFailed =>
-      'Inactive — could not start, using the standard path';
+      'Inakítv — nem sikerült elindítani, a rendszer a hagyományos feldolgozási útvonalat használja';
 
   @override
-  String get videoRenderer => 'Video Renderer';
+  String get videoRenderer => 'Videómegjelenítő';
 
   @override
   String get videoRendererDescription =>
-      'Native window gives the smoothest motion and sends HDR to the display untouched. Try another option if video misbehaves.';
+      'A natív ablak biztosítja a legfolyamatosabb mozgásmegjelenítést, és a HDR-tartalmat módosítás nélkül továbbítja a kijelzőre. Ha problémát tapasztalsz a videólejátszás során, próbálj ki egy másik beállítást.';
 
   @override
-  String get videoRendererNativeWindow => 'Native window (recommended)';
+  String get videoRendererNativeWindow => 'Natív ablak (ajánlott)';
 
   @override
-  String get videoRendererNativeHdrOnly => 'Native window for HDR only';
+  String get videoRendererNativeHdrOnly =>
+      'Natív ablak csak a HDR tartalmaknál';
 
   @override
-  String get videoRendererInApp => 'In-app (legacy)';
+  String get videoRendererInApp => 'Alkalmazásbeli (hagyományos)';
 
   @override
   String get codec => 'Kodek';
@@ -2440,7 +2441,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get premiere => 'Bemutató';
 
   @override
-  String get guideRepeatBadge => 'Repeat';
+  String get guideRepeatBadge => 'Ismétlés';
 
   @override
   String get guideTimeline => 'Műsorújság idővonala';
@@ -2454,7 +2455,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get noChannelsFound => 'Nem található csatorna';
 
   @override
-  String get noProgramData => 'No program data';
+  String get noProgramData => 'Nincs műsoradat';
 
   @override
   String get liveBadge => 'ÉLŐ';
@@ -2504,7 +2505,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String nextSeriesRecording(String dateTime) {
-    return 'Next series recording: $dateTime';
+    return 'A sorozat következő felvétele: $dateTime';
   }
 
   @override
@@ -10433,7 +10434,7 @@ class AppLocalizationsHu extends AppLocalizations {
       'Azt szabályozza, hogy a Dolby Vision 7. profil bővítőrétegű adatfolyamai közvetlenül lejátszhatók-e.';
 
   @override
-  String get settingsAutoAftkrtEnabled => 'Automatikus (AFTKRT engedélyezve)';
+  String get settingsAutoAftkrtEnabled => 'Automatikus';
 
   @override
   String get settingsEnabledOnThisDevice => 'Engedélyezve ezen az eszközön';
@@ -10676,7 +10677,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get hideBackdropsInLibraries =>
-      'Elrejted a háttérképeket böngészés közben?';
+      'Háttérképek elrejtése böngészés közben';
 
   @override
   String get useDetailedSubHeadings => 'Részletes alcímek használata';

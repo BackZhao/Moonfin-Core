@@ -2218,20 +2218,21 @@ class AppLocalizationsFi extends AppLocalizations {
       'Ei aktiivinen — käynnistystä ei voitu suorittaa, käytetään oletuspolkua';
 
   @override
-  String get videoRenderer => 'Video Renderer';
+  String get videoRenderer => 'Videon renderointi';
 
   @override
   String get videoRendererDescription =>
-      'Native window gives the smoothest motion and sends HDR to the display untouched. Try another option if video misbehaves.';
+      'Native-ikkuna tarjoaa sulavimman liikkeen ja välittää HDR-kuvan näytölle muokkaamattomana. Kokeile toista vaihtoehtoa, jos videossa ilmenee ongelmia.';
 
   @override
-  String get videoRendererNativeWindow => 'Native window (recommended)';
+  String get videoRendererNativeWindow => 'Alkuperäinen ikkuna (suositeltava)';
 
   @override
-  String get videoRendererNativeHdrOnly => 'Native window for HDR only';
+  String get videoRendererNativeHdrOnly =>
+      'Vain HDR:ää varten tarkoitettu natiivi-ikkuna';
 
   @override
-  String get videoRendererInApp => 'In-app (legacy)';
+  String get videoRendererInApp => 'Sovelluksen sisäinen (vanha versio)';
 
   @override
   String get codec => 'Koodekki';
@@ -4125,7 +4126,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get preferredSecondarySubtitleLanguage =>
-      'Preferred Secondary Subtitle Language';
+      'Toissijainen tekstityskieli';
 
   @override
   String get defaultToNoSubtitles => 'Oletuksena Ei tekstityksiä';
@@ -4138,22 +4139,22 @@ class AppLocalizationsFi extends AppLocalizations {
   String get subtitleSize => 'Tekstityksen koko';
 
   @override
-  String get primarySubtitleSlot => 'Primary';
+  String get primarySubtitleSlot => 'Ensisijainen';
 
   @override
-  String get secondarySubtitleSlot => 'Secondary';
+  String get secondarySubtitleSlot => 'Toissijainen';
 
   @override
-  String get secondarySubtitleTrack => 'Secondary Subtitle Track';
+  String get secondarySubtitleTrack => 'Toissijainen tekstitysraita';
 
   @override
   String decreaseValue(String setting) {
-    return 'Decrease $setting';
+    return 'Pienennä $setting';
   }
 
   @override
   String increaseValue(String setting) {
-    return 'Increase $setting';
+    return 'Suurenna $setting';
   }
 
   @override
@@ -12074,10 +12075,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get analyticsTopArtists => 'Huippuartistit';
 
   @override
-  String get analyticsTopAuthors => 'Parhaat kirjoittajat';
+  String get analyticsTopAuthors => 'Huippukirjoittajat';
 
   @override
-  String get analyticsTopContributors => 'Ahkerat kirjoittajat';
+  String get analyticsTopContributors => 'Parhaat Avustajat';
 
   @override
   String analyticsLibrariesCount(int count) {
@@ -13881,22 +13882,22 @@ class AppLocalizationsFi extends AppLocalizations {
       'Ohjaus, kohteen etsiminen, pelaajan painikkeet ja temppupeli';
 
   @override
-  String get playlistSortReleaseDate => 'Release Date';
+  String get playlistSortReleaseDate => 'Julkaisupäivä';
 
   @override
-  String get playlistSortCriticRating => 'Critic Rating';
+  String get playlistSortCriticRating => 'Kriitikoiden arvio';
 
   @override
-  String get playlistSortRuntime => 'Runtime';
+  String get playlistSortRuntime => 'Kesto';
 
   @override
-  String get playlistSortLastPlayed => 'Last Played';
+  String get playlistSortLastPlayed => 'Viimeksi toistettu';
 
   @override
-  String get playlistSortPlayCount => 'Play Count';
+  String get playlistSortPlayCount => 'Toistojen määrä';
 
   @override
-  String get playlistSortRandom => 'Random';
+  String get playlistSortRandom => 'Satunnainen';
 
   @override
   String playlistFilterActiveCount(int count) {
@@ -13910,5 +13911,6 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get playlistNoMatchingTracks => 'No tracks match the active filters';
+  String get playlistNoMatchingTracks =>
+      'Aktiivisten suodattimien mukaisia kappaleita ei löytynyt';
 }
