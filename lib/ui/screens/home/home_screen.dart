@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui' as ui;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
@@ -698,23 +697,14 @@ class _Backdrop extends StatelessWidget {
     final maxWidth = targetPxWidth < 480
         ? 480
         : (targetPxWidth > 1280 ? 1280 : targetPxWidth);
-    final image = BoundedNetworkImage(
+    return BoundedNetworkImage(
       imageUrl: imageUrl,
       scale: blur > 0 ? 0.3 : 1.0,
       minWidth: 320,
       maxWidth: maxWidth,
+      blurSigma: blur > 0 ? GlassSettings.decorativeSigma(blur) : 0,
       priority: ImageFetchPriority.high,
       errorBuilder: (_, _, _) => const SizedBox.shrink(),
-    );
-    if (blur <= 0) return image;
-    final sigma = GlassSettings.decorativeSigma(blur);
-    return ImageFiltered(
-      imageFilter: ui.ImageFilter.blur(
-        sigmaX: sigma,
-        sigmaY: sigma,
-        tileMode: TileMode.decal,
-      ),
-      child: image,
     );
   }
 }
