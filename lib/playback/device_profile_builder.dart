@@ -1521,6 +1521,22 @@ class DeviceProfileBuilder {
           ),
         );
       }
+
+      // The web player always plays a file's first audio track, so picking
+      // any other one has the server remux the stream with it.
+      profiles.add(
+        _codecProfile(
+          type: 'VideoAudio',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'Equals',
+              property: 'IsSecondaryAudio',
+              value: 'false',
+              isRequired: false,
+            ),
+          ],
+        ),
+      );
     }
 
     if (isIOSWeb && iOSMajorVersion > 0 && iOSMajorVersion < 13) {
