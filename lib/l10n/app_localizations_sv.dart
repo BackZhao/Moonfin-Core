@@ -1346,6 +1346,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get extras => 'Extramaterial';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Bakom kulisserna';
 
   @override

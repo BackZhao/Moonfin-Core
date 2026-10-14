@@ -1342,6 +1342,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get extras => 'এক্সট্রা';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'নেপথ্যের দৃশ্য';
 
   @override

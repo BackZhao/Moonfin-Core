@@ -1346,6 +1346,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get extras => 'Özel Özellikler';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Kamera Arkası';
 
   @override

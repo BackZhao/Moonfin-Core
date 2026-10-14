@@ -1350,6 +1350,9 @@ class AppLocalizationsTe extends AppLocalizations {
   String get extras => 'అదనపు అంశాలు';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'తెర వెనుక';
 
   @override

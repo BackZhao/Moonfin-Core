@@ -1350,6 +1350,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get extras => 'Priedai';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Užkulisiai';
 
   @override

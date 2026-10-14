@@ -1355,6 +1355,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get extras => 'Πρόσθετα';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Παρασκήνια';
 
   @override

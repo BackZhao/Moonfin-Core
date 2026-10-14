@@ -1347,6 +1347,9 @@ class AppLocalizationsMn extends AppLocalizations {
   String get extras => 'Нэмэлтүүд';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Хөшигний ард';
 
   @override

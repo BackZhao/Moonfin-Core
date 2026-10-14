@@ -1352,6 +1352,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get extras => 'Lisämateriaali';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Kulissien takana';
 
   @override

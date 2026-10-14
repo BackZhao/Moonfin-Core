@@ -1345,6 +1345,9 @@ class AppLocalizationsUg extends AppLocalizations {
   String get extras => 'قوشۇمچىلار';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'سەھنە ئارقىسى';
 
   @override

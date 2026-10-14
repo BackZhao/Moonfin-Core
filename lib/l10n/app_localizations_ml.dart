@@ -1351,6 +1351,9 @@ class AppLocalizationsMl extends AppLocalizations {
   String get extras => 'എക്സ്ട്രാകൾ';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'ബിഹൈൻഡ് ദ സീൻസ്';
 
   @override

@@ -1349,6 +1349,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get extras => 'Extra\'s';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Achter de schermen';
 
   @override

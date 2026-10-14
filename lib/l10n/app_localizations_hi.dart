@@ -1345,6 +1345,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get extras => 'एक्स्ट्रा';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'बिहाइंड द सीन्स';
 
   @override

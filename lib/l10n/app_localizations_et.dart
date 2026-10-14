@@ -1349,6 +1349,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get extras => 'Lisamaterjalid';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Kaadri taga';
 
   @override

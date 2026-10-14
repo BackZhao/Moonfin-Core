@@ -1354,6 +1354,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get extras => 'Extres';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Darrere les càmeres';
 
   @override

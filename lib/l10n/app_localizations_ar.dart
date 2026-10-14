@@ -1353,6 +1353,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get extras => 'إضافات';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'خلف الكواليس';
 
   @override

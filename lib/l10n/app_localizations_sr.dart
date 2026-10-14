@@ -1367,6 +1367,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get extras => 'Додаци';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Иза кулиса';
 
   @override

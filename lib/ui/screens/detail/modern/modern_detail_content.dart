@@ -5780,6 +5780,7 @@ String? _endsAt(
 }
 
 const extraCategoriesOrder = [
+  'additionalParts',
   'extras',
   'behindTheScenes',
   'deletedScenes',
@@ -5791,6 +5792,7 @@ const extraCategoriesOrder = [
 ];
 
 String getExtraCategory(AggregatedItem item) {
+  if (item.rawData['__moonfinAdditionalPart'] == true) return 'additionalParts';
   final extraType = item.rawData['ExtraType'] as String?;
   if (extraType == null) return 'extras';
   switch (extraType) {
@@ -5815,6 +5817,8 @@ String getExtraCategory(AggregatedItem item) {
 
 String getExtraCategoryLabel(String key, AppLocalizations l10n) {
   switch (key) {
+    case 'additionalParts':
+      return l10n.additionalParts;
     case 'behindTheScenes':
       return l10n.behindTheScenes;
     case 'deletedScenes':

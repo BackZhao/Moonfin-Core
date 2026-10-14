@@ -1355,6 +1355,9 @@ class AppLocalizationsSl extends AppLocalizations {
   String get extras => 'Dodatki';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Izza kulis';
 
   @override

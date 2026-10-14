@@ -1347,6 +1347,9 @@ class AppLocalizationsPa extends AppLocalizations {
   String get extras => 'ਵਾਧੂ';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'ਪਰਦੇ ਪਿੱਛੇ';
 
   @override

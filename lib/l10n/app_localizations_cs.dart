@@ -1355,6 +1355,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get extras => 'Bonusy';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Ze zákulisí';
 
   @override

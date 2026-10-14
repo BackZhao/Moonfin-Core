@@ -1368,6 +1368,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get extras => 'Bonusuri';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'În culise';
 
   @override

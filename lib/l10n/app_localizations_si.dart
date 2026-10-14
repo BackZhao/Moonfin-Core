@@ -1342,6 +1342,9 @@ class AppLocalizationsSi extends AppLocalizations {
   String get extras => 'අමතර';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'තිර පිටුපස';
 
   @override

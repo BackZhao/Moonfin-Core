@@ -1352,6 +1352,9 @@ class AppLocalizationsBe extends AppLocalizations {
   String get extras => 'Дадаткі';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'За кадрам';
 
   @override

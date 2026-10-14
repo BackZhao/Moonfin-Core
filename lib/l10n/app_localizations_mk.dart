@@ -1349,6 +1349,9 @@ class AppLocalizationsMk extends AppLocalizations {
   String get extras => 'Додатоци';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Зад сцената';
 
   @override

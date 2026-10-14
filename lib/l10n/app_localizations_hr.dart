@@ -1413,6 +1413,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get extras => 'Dodaci';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Iza scene';
 
   @override

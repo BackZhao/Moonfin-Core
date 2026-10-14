@@ -1347,6 +1347,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get extras => 'Қосымшалар';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Сахна артында';
 
   @override

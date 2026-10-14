@@ -1346,6 +1346,9 @@ class AppLocalizationsEo extends AppLocalizations {
   String get extras => 'Ekstraĵoj';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Malantaŭ la scenejo';
 
   @override

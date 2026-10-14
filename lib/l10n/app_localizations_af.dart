@@ -1351,6 +1351,9 @@ class AppLocalizationsAf extends AppLocalizations {
   String get extras => 'Ekstras';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Agter die skerms';
 
   @override

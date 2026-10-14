@@ -8593,7 +8593,28 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     }
   }
 
-  /// Starts [queue] with any [prerolls] playing ahead of [target].
+  /// The other files of a movie or episode split across several, like DVD1
+  /// and DVD2, so they play on after it.
+  Future<List<AggregatedItem>> _additionalPartsFor(
+    AggregatedItem item,
+    String? mediaSourceId,
+  ) async {
+    if (item.partCount < 2) return const [];
+    // A picked alternate version has its own parts under its own id.
+    final partsId = (mediaSourceId?.isNotEmpty ?? false)
+        ? mediaSourceId!
+        : item.id;
+    try {
+      final client = _clientForItem(item);
+      final parts = await client.itemsApi.getAdditionalParts(partsId);
+      return _mapRawItemsForServer(parts, item.serverId);
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  /// Starts [queue] with any [prerolls] playing ahead of [target] and its
+  /// additional parts after it.
   ///
   /// The prerolls go in front of the target rather than in front of the queue,
   /// which can open on an earlier episode, so [startIndex] ends up pointing at
@@ -8614,6 +8635,12 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     bool audioSelectionExplicit = false,
     bool subtitleSelectionExplicit = false,
   }) async {
+    queue = queueWithAdditionalParts(
+      queue,
+      startIndex: startIndex,
+      target: target,
+      parts: await _additionalPartsFor(target, mediaSourceId),
+    );
     final applyNow = prerolls.isEmpty;
     Future<void> playItems() => manager.playItems(
       applyNow
@@ -10538,6 +10565,26 @@ Future<bool> _anyItemHasCompletedDownload(
     }
   }
   return false;
+}
+
+/// [queue] with [parts] playing right after [target], or unchanged when the
+/// target isn't the item at [startIndex]. Public for its tests. Every
+/// production caller lives in this file.
+@visibleForTesting
+List<AggregatedItem> queueWithAdditionalParts(
+  List<AggregatedItem> queue, {
+  required int startIndex,
+  required AggregatedItem target,
+  required List<AggregatedItem> parts,
+}) {
+  if (parts.isEmpty || queue.elementAtOrNull(startIndex)?.id != target.id) {
+    return queue;
+  }
+  return [
+    ...queue.take(startIndex + 1),
+    ...parts,
+    ...queue.skip(startIndex + 1),
+  ];
 }
 
 /// Whether Android TV playback of [queue] must stream a Dolby Vision

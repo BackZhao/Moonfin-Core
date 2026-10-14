@@ -1351,6 +1351,9 @@ class AppLocalizationsLv extends AppLocalizations {
   String get extras => 'Papildmateriāli';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Aizkulises';
 
   @override

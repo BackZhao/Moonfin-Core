@@ -1352,6 +1352,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get extras => 'Додаткові матеріали';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'За лаштунками';
 
   @override

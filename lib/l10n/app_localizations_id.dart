@@ -1350,6 +1350,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get extras => 'Ekstra';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Di Balik Layar';
 
   @override

@@ -1452,6 +1452,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get extras => 'Dodatki';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Kulisy produkcji';
 
   @override

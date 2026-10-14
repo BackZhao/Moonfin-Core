@@ -1304,6 +1304,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get extras => '额外';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => '幕后花絮';
 
   @override

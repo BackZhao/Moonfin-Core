@@ -1686,6 +1686,10 @@
   "@extras": {
     "description": "Tab label for special features / extras"
   },
+  "additionalParts": "Additional Parts",
+  "@additionalParts": {
+    "description": "Heading for the other files of a movie split across several files, like DVD1 and DVD2"
+  },
   "behindTheScenes": "Behind the Scenes",
   "@behindTheScenes": {
     "description": "Tab label for behind the scenes special features"

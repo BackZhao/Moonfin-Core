@@ -1349,6 +1349,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get extras => 'Extras';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Bastidores';
 
   @override

@@ -1354,6 +1354,9 @@ class AppLocalizationsSw extends AppLocalizations {
   String get extras => 'Nyongeza';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Nyuma ya Pazia';
 
   @override

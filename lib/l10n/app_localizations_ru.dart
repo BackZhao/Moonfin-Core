@@ -1355,6 +1355,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get extras => 'Дополнения';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Со съёмок';
 
   @override

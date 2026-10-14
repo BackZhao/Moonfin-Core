@@ -1351,6 +1351,9 @@ class AppLocalizationsTl extends AppLocalizations {
   String get extras => 'Mga Extra';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Behind the Scenes';
 
   @override

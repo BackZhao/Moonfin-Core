@@ -2102,15 +2102,31 @@ class ItemDetailViewModel extends ChangeNotifier {
   }
 
   Future<void> _loadFeatures() async {
+    final parts = _loadAdditionalParts();
     try {
       final items = await _client.itemsApi.getSpecialFeatures(itemId);
-      _features = _mapItems(
-        items,
-      ).where((item) => item.id != itemId).toList(growable: false);
+      _features = [
+        ...await parts,
+        ..._mapItems(items).where((item) => item.id != itemId),
+      ];
       notifyListeners();
     } catch (_) {
-      _features = const [];
+      _features = await parts;
       notifyListeners();
+    }
+  }
+
+  // A movie split across files, like DVD1 and DVD2, lists the other files as
+  // its parts. They're tagged so the extras rows give them their own heading.
+  Future<List<AggregatedItem>> _loadAdditionalParts() async {
+    if ((_item?.partCount ?? 1) < 2) return const [];
+    try {
+      final parts = await _client.itemsApi.getAdditionalParts(itemId);
+      return _mapItems([
+        for (final part in parts) {...part, '__moonfinAdditionalPart': true},
+      ]);
+    } catch (_) {
+      return const [];
     }
   }
 

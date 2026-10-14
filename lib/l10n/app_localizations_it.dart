@@ -1351,6 +1351,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get extras => 'Contenuti extra';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Dietro le quinte';
 
   @override

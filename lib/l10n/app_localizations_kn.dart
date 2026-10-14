@@ -1349,6 +1349,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get extras => 'ಹೆಚ್ಚುವರಿಗಳು';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'ತೆರೆಯ ಹಿಂದೆ';
 
   @override

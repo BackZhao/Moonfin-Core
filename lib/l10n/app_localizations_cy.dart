@@ -1354,6 +1354,9 @@ class AppLocalizationsCy extends AppLocalizations {
   String get extras => 'Ychwanegion';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Y Tu Ôl i\'r Llenni';
 
   @override

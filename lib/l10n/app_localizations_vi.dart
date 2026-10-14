@@ -1351,6 +1351,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get extras => 'Nội dung thêm';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Hậu trường';
 
   @override

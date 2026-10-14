@@ -1310,6 +1310,9 @@ class AppLocalizationsYue extends AppLocalizations {
   String get extras => '特別收錄';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => '幕後花絮';
 
   @override

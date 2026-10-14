@@ -1342,6 +1342,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get extras => 'موارد اضافی';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'پشت صحنه';
 
   @override

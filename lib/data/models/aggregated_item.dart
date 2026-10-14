@@ -277,6 +277,9 @@ class AggregatedItem {
   /// server recognizes.
   int get localTrailerCount => _toInt(rawData['LocalTrailerCount']) ?? 0;
 
+  /// How many files a video is split across, like DVD1 and DVD2.
+  int get partCount => _toInt(rawData['PartCount']) ?? 1;
+
   List<Map<String, dynamic>> get chapters => _toListOfMaps(rawData['Chapters']);
 
   static const _comicExtensions = {'cbz', 'cbr', 'cb7', 'cbt'};

@@ -1319,6 +1319,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get extras => '부가 영상';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => '비하인드';
 
   @override

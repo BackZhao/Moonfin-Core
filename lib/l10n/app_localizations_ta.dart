@@ -1352,6 +1352,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get extras => 'கூடுதல் அம்சங்கள்';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'திரைக்குப் பின்னால்';
 
   @override

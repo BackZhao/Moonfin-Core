@@ -1347,6 +1347,9 @@ class AppLocalizationsNb extends AppLocalizations {
   String get extras => 'Ekstramateriale';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Bak kulissene';
 
   @override

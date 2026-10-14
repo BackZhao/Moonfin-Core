@@ -2392,6 +2392,12 @@ abstract class AppLocalizations {
   /// **'Extras'**
   String get extras;
 
+  /// Heading for the other files of a movie split across several files, like DVD1 and DVD2
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Parts'**
+  String get additionalParts;
+
   /// Tab label for behind the scenes special features
   ///
   /// In en, this message translates to:

@@ -1353,6 +1353,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get extras => 'Ekstra';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Prapa skenave';
 
   @override

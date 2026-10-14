@@ -1340,6 +1340,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get extras => 'ส่วนเสริม';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'เบื้องหลังการถ่ายทำ';
 
   @override

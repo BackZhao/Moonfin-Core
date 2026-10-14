@@ -1317,6 +1317,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get extras => '特典';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'メイキング';
 
   @override

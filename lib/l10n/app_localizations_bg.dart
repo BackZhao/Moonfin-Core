@@ -1345,6 +1345,9 @@ class AppLocalizationsBg extends AppLocalizations {
   String get extras => 'Допълнения';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Зад кулисите';
 
   @override

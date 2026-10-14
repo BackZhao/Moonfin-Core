@@ -1351,6 +1351,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get extras => 'Extrák';
 
   @override
+  String get additionalParts => 'Additional Parts';
+
+  @override
   String get behindTheScenes => 'Kulisszák mögött';
 
   @override
