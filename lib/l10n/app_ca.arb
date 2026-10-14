@@ -2828,7 +2828,7 @@
     "@fit": {
         "description": "Zoom mode: fit"
     },
-    "autoCrop": "Retall automàtic",
+    "autoCrop": "Ampliar per omplir",
     "@autoCrop": {
         "description": "Zoom mode: auto crop"
     },
@@ -6593,7 +6593,7 @@
     "settingsDoNothing": "No fer res",
     "settingsMaxBitrateDescription": "Limiteu la taxa de bits de transmissió. El contingut per sobre d'aquest llindar es transcodificarà per adaptar-se.",
     "settingsMaxResolutionDescription": "Limiteu la resolució màxima que demanarà el reproductor. El contingut de més alta resolució es transcodificarà cap avall.",
-    "settingsPlayerZoomDescription": "Com s'ha d'escalar el vídeo per adaptar-se a la pantalla.",
+    "settingsPlayerZoomDescription": "Com s'ha d'escalar el vídeo per adaptar-se a la pantalla. «Ampliar per omplir» amplia la imatge fins que omple la pantalla i en retalla les vores. No detecta les franges negres.",
     "settingsPlaybackEngineAndroidTv": "Motor de reproducció (Android TV)",
     "settingsPlaybackEngineAndroidTvDescription": "Trieu el motor de reproducció predeterminat als dispositius Android TV. Els canvis s'apliquen a la següent sessió de reproducció.",
     "settingsPlaybackEngineMedia3Recommended": "Media3 (recomanat)",
@@ -13774,5 +13774,42 @@
                 "type": "String"
             }
         }
+    },
+    "playlistSortReleaseDate": "Data d'estrena",
+    "@playlistSortReleaseDate": {
+        "description": "Label for sorting playlist items by release date"
+    },
+    "playlistSortCriticRating": "Valoració de la crítica",
+    "@playlistSortCriticRating": {
+        "description": "Label for sorting playlist items by critic rating"
+    },
+    "playlistSortRuntime": "Duració",
+    "@playlistSortRuntime": {
+        "description": "Label for sorting playlist items by runtime"
+    },
+    "playlistSortLastPlayed": "Última reproducció",
+    "@playlistSortLastPlayed": {
+        "description": "Label for sorting playlist items by last played date"
+    },
+    "playlistSortPlayCount": "Nombre de reproduccions",
+    "@playlistSortPlayCount": {
+        "description": "Label for sorting playlist items by play count"
+    },
+    "playlistSortRandom": "Aleatori",
+    "@playlistSortRandom": {
+        "description": "Label for sorting playlist items randomly"
+    },
+    "playlistFilterActiveCount": "{count, plural, =1{1 actiu} other{{count} actius}}",
+    "@playlistFilterActiveCount": {
+        "description": "Indicator of how many filters are currently active on a playlist",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "playlistNoMatchingTracks": "Cap pista coincideix amb els filtres actius",
+    "@playlistNoMatchingTracks": {
+        "description": "Empty state message shown when playlist filters match no items"
     }
 }
