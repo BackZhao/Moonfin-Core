@@ -804,6 +804,10 @@ class _ContentRowsState extends State<_ContentRows>
   // as soon as the user navigates or scrolls so the delayed realign on return
   // can never drag them back.
   String? _returnScrollRowId;
+  // How far the viewport sat from that row's top when home was left. The
+  // return puts it back there, since the row's resting band isn't always
+  // where a d-pad scroll left it.
+  double? _returnScrollRowShift;
   int? get _activeFocusedRowIndex => _activeFocusedRowNotifier.value;
   set _activeFocusedRowIndex(int? value) {
     if (_activeFocusedRowNotifier.value != value) {
@@ -2940,10 +2944,16 @@ class _ContentRowsState extends State<_ContentRows>
     var rowIndex = _returnScrollRowId == null
         ? -1
         : rows.indexWhere((r) => r.id == _returnScrollRowId);
+    final shift = rowIndex >= 0 ? _returnScrollRowShift : null;
     if (rowIndex < 0) rowIndex = _activeFocusedRowIndex ?? -1;
     if (rowIndex < 0) return;
 
-    final target = _restingOffsetForRow(rowIndex);
+    final target = shift != null && rowIndex < _rowTopOffsets.length
+        ? (_rowTopOffsets[rowIndex] + shift).clamp(
+            0.0,
+            _scrollController.position.maxScrollExtent,
+          )
+        : _restingOffsetForRow(rowIndex);
     if (target == null) return;
     if ((target - _scrollController.offset).abs() <= 1.0) return;
     // Jumps rather than animates. These routes transition instantly, so an
@@ -3020,12 +3030,21 @@ class _ContentRowsState extends State<_ContentRows>
   void noteLeavingHome() {
     _returnFocusToMediaBar = _mediaBarFocusNode.hasFocus;
     _returnScrollRowId = null;
+    _returnScrollRowShift = null;
     // The media bar return path scrolls itself back to the top.
     if (_returnFocusToMediaBar) return;
     final rowIndex = _activeFocusedRowIndex;
     final rows = widget.viewModel.rows;
     if (rowIndex == null || rowIndex < 0 || rowIndex >= rows.length) return;
     _returnScrollRowId = rows[rowIndex].id;
+    // A scroll still running hasn't reached the row's resting place, so the
+    // return falls back to that instead.
+    if (_scrollController.hasClients &&
+        !_scrollController.position.isScrollingNotifier.value &&
+        rowIndex < _rowTopOffsets.length) {
+      _returnScrollRowShift =
+          _scrollController.offset - _rowTopOffsets[rowIndex];
+    }
   }
 
   /// Points the navbar to content focus bridge back at this live instance,
