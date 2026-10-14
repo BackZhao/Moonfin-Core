@@ -3328,7 +3328,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get fit => 'Sopiva';
 
   @override
-  String get autoCrop => 'Automaattinen rajaus';
+  String get autoCrop => 'Zoomaa täyttämällä';
 
   @override
   String get cropBlackBars => 'Leikkaa mustat palkit pois';
@@ -10330,7 +10330,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get settingsPlayerZoomDescription =>
-      'Kuinka video tulee skaalata näytölle sopivaksi.';
+      'Miten video skaalataan ruudulle. ”Zoom to Fill” -toiminto suurentaa kuvaa, kunnes se täyttää ruudun, ja leikkaa reunat pois. Se ei tunnista mustia palkkeja.';
 
   @override
   String get settingsPlaybackEngineAndroidTv => 'Toistomoottori (Android TV)';

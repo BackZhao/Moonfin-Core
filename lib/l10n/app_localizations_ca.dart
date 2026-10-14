@@ -3350,7 +3350,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get fit => 'Ajustar';
 
   @override
-  String get autoCrop => 'Retall automàtic';
+  String get autoCrop => 'Ampliar per omplir';
 
   @override
   String get cropBlackBars => 'Retalla les bandes negres';
@@ -10445,7 +10445,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get settingsPlayerZoomDescription =>
-      'Com s\'ha d\'escalar el vídeo per adaptar-se a la pantalla.';
+      'Com s\'ha d\'escalar el vídeo per adaptar-se a la pantalla. «Ampliar per omplir» amplia la imatge fins que omple la pantalla i en retalla les vores. No detecta les franges negres.';
 
   @override
   String get settingsPlaybackEngineAndroidTv =>
@@ -14030,34 +14030,35 @@ class AppLocalizationsCa extends AppLocalizations {
       'Controls, avançar i retrocedir, botons del reproductor i previsualització';
 
   @override
-  String get playlistSortReleaseDate => 'Release Date';
+  String get playlistSortReleaseDate => 'Data d\'estrena';
 
   @override
-  String get playlistSortCriticRating => 'Critic Rating';
+  String get playlistSortCriticRating => 'Valoració de la crítica';
 
   @override
-  String get playlistSortRuntime => 'Runtime';
+  String get playlistSortRuntime => 'Duració';
 
   @override
-  String get playlistSortLastPlayed => 'Last Played';
+  String get playlistSortLastPlayed => 'Última reproducció';
 
   @override
-  String get playlistSortPlayCount => 'Play Count';
+  String get playlistSortPlayCount => 'Nombre de reproduccions';
 
   @override
-  String get playlistSortRandom => 'Random';
+  String get playlistSortRandom => 'Aleatori';
 
   @override
   String playlistFilterActiveCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count active',
-      one: '1 active',
+      other: '$count actius',
+      one: '1 actiu',
     );
     return '$_temp0';
   }
 
   @override
-  String get playlistNoMatchingTracks => 'No tracks match the active filters';
+  String get playlistNoMatchingTracks =>
+      'Cap pista coincideix amb els filtres actius';
 }
