@@ -9626,9 +9626,6 @@ class AppLocalizationsKn extends AppLocalizations {
   String get offlineBannerSubtitle => 'ನಿಮ್ಮ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ';
 
   @override
-  String get offlineBannerAction => 'ಡೌನ್‌ಲೋಡ್‌ಗಳು';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'ನಿಮ್ಮ ಸರ್ವರ್ ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ';
 

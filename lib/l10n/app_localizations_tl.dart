@@ -9658,9 +9658,6 @@ class AppLocalizationsTl extends AppLocalizations {
   String get offlineBannerSubtitle => 'Ipinapakita ang iyong mga download';
 
   @override
-  String get offlineBannerAction => 'Mga Download';
-
-  @override
   String get serverUnreachableBannerTitle => 'Hindi maabot ang iyong server';
 
   @override

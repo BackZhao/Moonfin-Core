@@ -9682,9 +9682,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get offlineBannerSubtitle => 'Se afișează descărcările tale';
 
   @override
-  String get offlineBannerAction => 'Descărcări';
-
-  @override
   String get serverUnreachableBannerTitle => 'Serverul nu poate fi contactat';
 
   @override

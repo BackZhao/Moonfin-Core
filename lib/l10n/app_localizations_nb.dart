@@ -9566,9 +9566,6 @@ class AppLocalizationsNb extends AppLocalizations {
   String get offlineBannerSubtitle => 'Viser nedlastingene dine';
 
   @override
-  String get offlineBannerAction => 'Nedlastinger';
-
-  @override
   String get serverUnreachableBannerTitle => 'Får ikke kontakt med serveren';
 
   @override

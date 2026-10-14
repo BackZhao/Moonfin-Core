@@ -9653,9 +9653,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get offlineBannerSubtitle => 'Показват се изтеглянията ви';
 
   @override
-  String get offlineBannerAction => 'Изтегляния';
-
-  @override
   String get serverUnreachableBannerTitle => 'Сървърът не е достъпен';
 
   @override

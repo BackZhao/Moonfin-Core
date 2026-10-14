@@ -9623,9 +9623,6 @@ class AppLocalizationsSk extends AppLocalizations {
   String get offlineBannerSubtitle => 'Zobrazujú sa vaše stiahnuté položky';
 
   @override
-  String get offlineBannerAction => 'Stiahnuté';
-
-  @override
   String get serverUnreachableBannerTitle => 'Server je nedostupný';
 
   @override

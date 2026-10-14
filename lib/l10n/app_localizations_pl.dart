@@ -9868,9 +9868,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get offlineBannerSubtitle => 'Wyświetlane są pobrane materiały';
 
   @override
-  String get offlineBannerAction => 'Pobrane';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Nie można połączyć się z serwerem';
 

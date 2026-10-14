@@ -9358,9 +9358,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get offlineBannerSubtitle => 'ダウンロード済みの項目を表示しています';
 
   @override
-  String get offlineBannerAction => 'ダウンロード';
-
-  @override
   String get serverUnreachableBannerTitle => 'サーバーに接続できません';
 
   @override

@@ -8851,7 +8851,6 @@
     "adminGeneralDisplayLanguage": "Langue d'affichage préférée",
     "offlineBannerTitle": "Vous êtes hors ligne",
     "offlineBannerSubtitle": "Affichage de vos téléchargements",
-    "offlineBannerAction": "Téléchargements",
     "serverUnreachableBannerTitle": "Impossible de joindre votre serveur",
     "serverUnreachableBannerSubtitle": "Lecture depuis vos téléchargements en attendant son retour",
     "contextMenuHideFromContinueWatching": "Masquer de « Continuer de regarder »",

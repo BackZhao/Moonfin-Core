@@ -9561,9 +9561,6 @@ class AppLocalizationsBn extends AppLocalizations {
   String get offlineBannerSubtitle => 'আপনার ডাউনলোড দেখানো হচ্ছে';
 
   @override
-  String get offlineBannerAction => 'ডাউনলোড';
-
-  @override
   String get serverUnreachableBannerTitle => 'আপনার সার্ভারে পৌঁছানো যাচ্ছে না';
 
   @override

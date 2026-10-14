@@ -9695,9 +9695,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get offlineBannerSubtitle => 'Εμφανίζονται οι λήψεις σας';
 
   @override
-  String get offlineBannerAction => 'Λήψεις';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Δεν είναι δυνατή η σύνδεση με τον διακομιστή σας';
 

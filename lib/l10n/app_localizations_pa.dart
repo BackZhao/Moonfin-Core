@@ -9544,9 +9544,6 @@ class AppLocalizationsPa extends AppLocalizations {
   String get offlineBannerSubtitle => 'ਤੁਹਾਡੇ ਡਾਊਨਲੋਡ ਦਿਖਾ ਰਹੇ ਹਾਂ';
 
   @override
-  String get offlineBannerAction => 'ਡਾਊਨਲੋਡ';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'ਤੁਹਾਡੇ ਸਰਵਰ ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਹੋ ਸਕਦੀ';
 

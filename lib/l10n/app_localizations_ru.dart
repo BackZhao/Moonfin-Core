@@ -9635,9 +9635,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get offlineBannerSubtitle => 'Показаны ваши загрузки';
 
   @override
-  String get offlineBannerAction => 'Загрузки';
-
-  @override
   String get serverUnreachableBannerTitle => 'Сервер недоступен';
 
   @override

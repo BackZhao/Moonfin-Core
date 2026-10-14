@@ -9559,9 +9559,6 @@ class AppLocalizationsEo extends AppLocalizations {
   String get offlineBannerSubtitle => 'Montrante viajn elŝutojn';
 
   @override
-  String get offlineBannerAction => 'Elŝutoj';
-
-  @override
   String get serverUnreachableBannerTitle => 'Ne eblas atingi vian servilon';
 
   @override

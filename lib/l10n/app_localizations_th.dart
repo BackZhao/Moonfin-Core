@@ -9522,9 +9522,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get offlineBannerSubtitle => 'กำลังแสดงรายการที่ดาวน์โหลดไว้';
 
   @override
-  String get offlineBannerAction => 'ดาวน์โหลด';
-
-  @override
   String get serverUnreachableBannerTitle => 'เชื่อมต่อเซิร์ฟเวอร์ของคุณไม่ได้';
 
   @override

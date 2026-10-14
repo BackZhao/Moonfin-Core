@@ -8930,7 +8930,6 @@
     },
     "offlineBannerTitle": "Offline vagy",
     "offlineBannerSubtitle": "A letöltéseid megjelenítése",
-    "offlineBannerAction": "Letöltések",
     "serverUnreachableBannerTitle": "A szervered nem érhető el",
     "serverUnreachableBannerSubtitle": "Lejátszás a letöltésekből, amíg újra elérhető nem lesz",
     "imdbTop250Movies": "IMDb Top 250 film",

@@ -9601,9 +9601,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get offlineBannerSubtitle => 'Zobrazujeme vaše stažené položky';
 
   @override
-  String get offlineBannerAction => 'Stažené';
-
-  @override
   String get serverUnreachableBannerTitle => 'Nelze se připojit k serveru';
 
   @override

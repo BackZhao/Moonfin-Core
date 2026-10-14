@@ -9612,9 +9612,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get offlineBannerSubtitle => 'Näytetään lataamasi sisältö';
 
   @override
-  String get offlineBannerAction => 'Lataukset';
-
-  @override
   String get serverUnreachableBannerTitle => 'Palvelimeen ei saada yhteyttä';
 
   @override

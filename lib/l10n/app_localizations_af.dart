@@ -9576,9 +9576,6 @@ class AppLocalizationsAf extends AppLocalizations {
   String get offlineBannerSubtitle => 'Wys jou aflaaie';
 
   @override
-  String get offlineBannerAction => 'Aflaaie';
-
-  @override
   String get serverUnreachableBannerTitle => 'Kan nie jou bediener bereik nie';
 
   @override

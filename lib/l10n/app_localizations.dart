@@ -16948,12 +16948,6 @@ abstract class AppLocalizations {
   /// **'Showing your downloads'**
   String get offlineBannerSubtitle;
 
-  /// No description provided for @offlineBannerAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Downloads'**
-  String get offlineBannerAction;
-
   /// No description provided for @serverUnreachableBannerTitle.
   ///
   /// In en, this message translates to:

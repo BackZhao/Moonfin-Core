@@ -9615,9 +9615,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get offlineBannerSubtitle => 'Uw downloads worden getoond';
 
   @override
-  String get offlineBannerAction => 'Downloads';
-
-  @override
   String get serverUnreachableBannerTitle => 'Kan uw server niet bereiken';
 
   @override

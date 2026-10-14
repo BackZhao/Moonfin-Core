@@ -9780,9 +9780,6 @@ class AppLocalizationsHr extends AppLocalizations {
   String get offlineBannerSubtitle => 'Prikazuju se vaša preuzimanja';
 
   @override
-  String get offlineBannerAction => 'Preuzimanja';
-
-  @override
   String get serverUnreachableBannerTitle => 'Poslužitelj nije dostupan';
 
   @override

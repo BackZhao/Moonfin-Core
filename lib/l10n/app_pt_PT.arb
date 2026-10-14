@@ -8542,7 +8542,6 @@
     "adminGeneralDisplayLanguage": "Idioma de apresentação preferido",
     "offlineBannerTitle": "Estás offline",
     "offlineBannerSubtitle": "A mostrar as tuas transferências",
-    "offlineBannerAction": "Transferências",
     "serverUnreachableBannerTitle": "Não foi possível contactar o teu servidor",
     "serverUnreachableBannerSubtitle": "A reproduzir as transferências até o servidor ficar disponível",
     "contextMenuHideFromContinueWatching": "Ocultar de Continuar a ver",

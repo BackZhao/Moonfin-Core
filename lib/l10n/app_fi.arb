@@ -8500,7 +8500,6 @@
     "adminGeneralDisplayLanguage": "Ensisijainen näyttökieli",
     "offlineBannerTitle": "Olet offline-tilassa",
     "offlineBannerSubtitle": "Näytetään lataamasi sisältö",
-    "offlineBannerAction": "Lataukset",
     "serverUnreachableBannerTitle": "Palvelimeen ei saada yhteyttä",
     "serverUnreachableBannerSubtitle": "Toistetaan latauksista, kunnes yhteys palaa",
     "contextMenuHideFromContinueWatching": "Piilota Jatka katselua -osiosta",

@@ -9667,9 +9667,6 @@ class AppLocalizationsMl extends AppLocalizations {
   String get offlineBannerSubtitle => 'നിങ്ങളുടെ ഡൗൺലോഡുകൾ കാണിക്കുന്നു';
 
   @override
-  String get offlineBannerAction => 'ഡൗൺലോഡുകൾ';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'നിങ്ങളുടെ സെർവറിലേക്ക് എത്താൻ കഴിയുന്നില്ല';
 

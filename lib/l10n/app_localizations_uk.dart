@@ -9637,9 +9637,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get offlineBannerSubtitle => 'Показуємо ваші завантаження';
 
   @override
-  String get offlineBannerAction => 'Завантаження';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Не вдається зв\'язатися з вашим сервером';
 

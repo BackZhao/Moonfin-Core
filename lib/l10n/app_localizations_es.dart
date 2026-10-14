@@ -9661,9 +9661,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get offlineBannerSubtitle => 'Mostrando tus descargas';
 
   @override
-  String get offlineBannerAction => 'Descargas';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'No se puede conectar con tu servidor';
 

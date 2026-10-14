@@ -9563,9 +9563,6 @@ class AppLocalizationsSi extends AppLocalizations {
   String get offlineBannerSubtitle => 'ඔබේ බාගැනීම් පෙන්වමින්';
 
   @override
-  String get offlineBannerAction => 'බාගැනීම්';
-
-  @override
   String get serverUnreachableBannerTitle => 'ඔබේ සේවාදායකයට ළඟා විය නොහැක';
 
   @override

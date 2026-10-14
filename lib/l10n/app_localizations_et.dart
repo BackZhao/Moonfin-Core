@@ -9577,9 +9577,6 @@ class AppLocalizationsEt extends AppLocalizations {
   String get offlineBannerSubtitle => 'Näitame sinu allalaadimisi';
 
   @override
-  String get offlineBannerAction => 'Allalaadimised';
-
-  @override
   String get serverUnreachableBannerTitle => 'Serveriga ei saa ühendust';
 
   @override

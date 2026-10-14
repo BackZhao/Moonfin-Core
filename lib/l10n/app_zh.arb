@@ -8767,7 +8767,6 @@
     "adminGeneralDisplayLanguage": "界面首选语言",
     "offlineBannerTitle": "当前离线状态",
     "offlineBannerSubtitle": "仅展示本地离线下载内容",
-    "offlineBannerAction": "离线下载",
     "serverUnreachableBannerTitle": "无法连接媒体服务器",
     "serverUnreachableBannerSubtitle": "服务器恢复前仅播放本地缓存影片",
     "contextMenuHideFromContinueWatching": "从继续观看列表隐藏",

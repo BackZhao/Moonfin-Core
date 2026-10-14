@@ -9631,9 +9631,6 @@ class AppLocalizationsMk extends AppLocalizations {
   String get offlineBannerSubtitle => 'Се прикажуваат вашите преземања';
 
   @override
-  String get offlineBannerAction => 'Преземања';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Не може да се пристапи до вашиот сервер';
 

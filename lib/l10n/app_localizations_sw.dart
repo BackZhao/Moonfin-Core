@@ -9635,9 +9635,6 @@ class AppLocalizationsSw extends AppLocalizations {
   String get offlineBannerSubtitle => 'Inaonyesha vipakuliwa vyako';
 
   @override
-  String get offlineBannerAction => 'Vipakuliwa';
-
-  @override
   String get serverUnreachableBannerTitle => 'Haiwezi kufikia seva yako';
 
   @override

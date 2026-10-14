@@ -9648,9 +9648,6 @@ class AppLocalizationsHu extends AppLocalizations {
   String get offlineBannerSubtitle => 'A letöltéseid megjelenítése';
 
   @override
-  String get offlineBannerAction => 'Letöltések';
-
-  @override
   String get serverUnreachableBannerTitle => 'A szervered nem érhető el';
 
   @override

@@ -9633,9 +9633,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get offlineBannerSubtitle => 'உங்கள் பதிவிறக்கங்களைக் காட்டுகிறது';
 
   @override
-  String get offlineBannerAction => 'பதிவிறக்கங்கள்';
-
-  @override
   String get serverUnreachableBannerTitle => 'உங்கள் சர்வரை அணுக முடியவில்லை';
 
   @override

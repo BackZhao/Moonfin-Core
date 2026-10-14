@@ -8580,7 +8580,6 @@
     "adminGeneralDisplayLanguage": "Idioma de visualització preferit",
     "offlineBannerTitle": "No tens connexió",
     "offlineBannerSubtitle": "Es mostren les teves baixades",
-    "offlineBannerAction": "Baixades",
     "serverUnreachableBannerTitle": "No es pot connectar amb el teu servidor",
     "serverUnreachableBannerSubtitle": "Es reprodueix des de les baixades fins que torni",
     "contextMenuHideFromContinueWatching": "Amaga de Continuar mirant",

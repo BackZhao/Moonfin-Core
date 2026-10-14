@@ -9614,9 +9614,6 @@ class AppLocalizationsBe extends AppLocalizations {
   String get offlineBannerSubtitle => 'Паказваем вашы спампоўкі';
 
   @override
-  String get offlineBannerAction => 'Спампоўкі';
-
-  @override
   String get serverUnreachableBannerTitle => 'Не ўдаецца звязацца з серверам';
 
   @override

@@ -9583,9 +9583,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get offlineBannerSubtitle => 'Visar dina nedladdningar';
 
   @override
-  String get offlineBannerAction => 'Nedladdningar';
-
-  @override
   String get serverUnreachableBannerTitle => 'Kan inte nå din server';
 
   @override

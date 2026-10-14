@@ -9627,9 +9627,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get offlineBannerSubtitle => 'మీ డౌన్‌లోడ్‌లను చూపుతోంది';
 
   @override
-  String get offlineBannerAction => 'డౌన్‌లోడ్‌లు';
-
-  @override
   String get serverUnreachableBannerTitle => 'మీ సర్వర్‌ను చేరుకోలేకపోతోంది';
 
   @override

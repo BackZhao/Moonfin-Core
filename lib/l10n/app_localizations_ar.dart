@@ -9561,9 +9561,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offlineBannerSubtitle => 'عرض التحميلات الخاصة بك';
 
   @override
-  String get offlineBannerAction => 'التحميلات';
-
-  @override
   String get serverUnreachableBannerTitle => 'تعذّر الوصول إلى الخادم';
 
   @override

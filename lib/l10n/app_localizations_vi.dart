@@ -9572,9 +9572,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get offlineBannerSubtitle => 'Đang hiển thị các mục đã tải xuống';
 
   @override
-  String get offlineBannerAction => 'Tải xuống';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Không kết nối được máy chủ của bạn';
 

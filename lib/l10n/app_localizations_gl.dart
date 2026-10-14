@@ -9681,9 +9681,6 @@ class AppLocalizationsGl extends AppLocalizations {
   String get offlineBannerSubtitle => 'Móstranse as túas descargas';
 
   @override
-  String get offlineBannerAction => 'Descargas';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Non se pode conectar co teu servidor';
 

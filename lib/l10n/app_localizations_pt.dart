@@ -9633,9 +9633,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get offlineBannerSubtitle => 'Mostrando seus downloads';
 
   @override
-  String get offlineBannerAction => 'Downloads';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Não foi possível conectar ao seu servidor';
 
@@ -23190,9 +23187,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get offlineBannerSubtitle => 'Mostrando seus downloads';
-
-  @override
-  String get offlineBannerAction => 'Downloads';
 
   @override
   String get serverUnreachableBannerTitle =>
@@ -36805,9 +36799,6 @@ class AppLocalizationsPtPt extends AppLocalizationsPt {
 
   @override
   String get offlineBannerSubtitle => 'A mostrar as tuas transferências';
-
-  @override
-  String get offlineBannerAction => 'Transferências';
 
   @override
   String get serverUnreachableBannerTitle =>

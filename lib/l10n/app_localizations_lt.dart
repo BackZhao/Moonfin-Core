@@ -9618,9 +9618,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get offlineBannerSubtitle => 'Rodomi jūsų atsisiuntimai';
 
   @override
-  String get offlineBannerAction => 'Atsisiuntimai';
-
-  @override
   String get serverUnreachableBannerTitle => 'Nepavyksta pasiekti serverio';
 
   @override

@@ -9600,9 +9600,6 @@ class AppLocalizationsUg extends AppLocalizations {
   String get offlineBannerSubtitle => 'چۈشۈرۈلمىلىرىڭىز كۆرسىتىلىۋاتىدۇ';
 
   @override
-  String get offlineBannerAction => 'چۈشۈرۈلمىلەر';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'مۇلازىمېتىرىڭىزغا ئۇلانغىلى بولمىدى';
 

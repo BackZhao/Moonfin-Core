@@ -9621,9 +9621,6 @@ class AppLocalizationsCy extends AppLocalizations {
   String get offlineBannerSubtitle => 'Yn dangos eich lawrlwythiadau';
 
   @override
-  String get offlineBannerAction => 'Lawrlwythiadau';
-
-  @override
   String get serverUnreachableBannerTitle => 'Methu cyrraedd eich gweinydd';
 
   @override

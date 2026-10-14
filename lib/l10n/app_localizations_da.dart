@@ -9565,9 +9565,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get offlineBannerSubtitle => 'Viser dine downloads';
 
   @override
-  String get offlineBannerAction => 'Downloads';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Kan ikke få forbindelse til din server';
 

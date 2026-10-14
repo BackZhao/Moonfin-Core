@@ -9621,9 +9621,6 @@ class AppLocalizationsSl extends AppLocalizations {
   String get offlineBannerSubtitle => 'Prikazani so vaši prenosi';
 
   @override
-  String get offlineBannerAction => 'Prenosi';
-
-  @override
   String get serverUnreachableBannerTitle => 'Strežnik ni dosegljiv';
 
   @override

@@ -9505,9 +9505,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offlineBannerSubtitle => 'Showing your downloads';
 
   @override
-  String get offlineBannerAction => 'Downloads';
-
-  @override
   String get serverUnreachableBannerTitle => 'Can\'t reach your server';
 
   @override
@@ -22887,9 +22884,6 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get offlineBannerSubtitle => 'Showing your downloads';
-
-  @override
-  String get offlineBannerAction => 'Downloads';
 
   @override
   String get serverUnreachableBannerTitle => 'Can\'t reach your server';

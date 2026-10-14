@@ -8505,7 +8505,6 @@
     "adminGeneralDisplayLanguage": "Idioma de exibição preferido",
     "offlineBannerTitle": "Você está offline",
     "offlineBannerSubtitle": "Mostrando seus downloads",
-    "offlineBannerAction": "Downloads",
     "serverUnreachableBannerTitle": "Não foi possível acessar seu servidor",
     "serverUnreachableBannerSubtitle": "Reproduzindo dos downloads até ele voltar",
     "contextMenuHideFromContinueWatching": "Ocultar de Continuar assistindo",

@@ -9588,9 +9588,6 @@ class AppLocalizationsMn extends AppLocalizations {
   String get offlineBannerSubtitle => 'Таны татсан зүйлсийг харуулж байна';
 
   @override
-  String get offlineBannerAction => 'Татсан зүйлс';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Таны сервертэй холбогдож чадсангүй';
 

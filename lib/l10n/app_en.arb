@@ -9566,7 +9566,6 @@
   "offlineSavedMedia": "Downloads",
   "offlineBannerTitle": "You're offline",
   "offlineBannerSubtitle": "Showing your downloads",
-  "offlineBannerAction": "Downloads",
   "serverUnreachableBannerTitle": "Can't reach your server",
   "serverUnreachableBannerSubtitle": "Playing from downloads until it's back",
 

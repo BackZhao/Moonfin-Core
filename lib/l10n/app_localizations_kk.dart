@@ -9611,9 +9611,6 @@ class AppLocalizationsKk extends AppLocalizations {
   String get offlineBannerSubtitle => 'Жүктеулеріңіз көрсетілуде';
 
   @override
-  String get offlineBannerAction => 'Жүктеулер';
-
-  @override
   String get serverUnreachableBannerTitle => 'Серверге қосылу мүмкін емес';
 
   @override

@@ -9521,9 +9521,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get offlineBannerSubtitle => 'نمایش دانلودهای شما';
 
   @override
-  String get offlineBannerAction => 'دانلودها';
-
-  @override
   String get serverUnreachableBannerTitle => 'دسترسی به سرور شما ممکن نیست';
 
   @override

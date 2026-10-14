@@ -9575,9 +9575,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get offlineBannerSubtitle => 'Menampilkan unduhan Anda';
 
   @override
-  String get offlineBannerAction => 'Unduhan';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Tidak dapat menjangkau server Anda';
 

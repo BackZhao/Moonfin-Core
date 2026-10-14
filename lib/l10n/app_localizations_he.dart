@@ -9469,9 +9469,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get offlineBannerSubtitle => 'מוצגות ההורדות שלך';
 
   @override
-  String get offlineBannerAction => 'הורדות';
-
-  @override
   String get serverUnreachableBannerTitle => 'לא ניתן להגיע לשרת שלך';
 
   @override

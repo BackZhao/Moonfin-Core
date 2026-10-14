@@ -9579,9 +9579,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get offlineBannerSubtitle => 'İndirdikleriniz gösteriliyor';
 
   @override
-  String get offlineBannerAction => 'İndirilenler';
-
-  @override
   String get serverUnreachableBannerTitle => 'Sunucuya erişilemiyor';
 
   @override

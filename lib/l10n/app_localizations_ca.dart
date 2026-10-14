@@ -9713,9 +9713,6 @@ class AppLocalizationsCa extends AppLocalizations {
   String get offlineBannerSubtitle => 'Es mostren les teves baixades';
 
   @override
-  String get offlineBannerAction => 'Baixades';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'No es pot connectar amb el teu servidor';
 

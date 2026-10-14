@@ -9709,9 +9709,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get offlineBannerSubtitle => 'Deine Downloads werden angezeigt';
 
   @override
-  String get offlineBannerAction => 'Downloads';
-
-  @override
   String get serverUnreachableBannerTitle => 'Server nicht erreichbar';
 
   @override

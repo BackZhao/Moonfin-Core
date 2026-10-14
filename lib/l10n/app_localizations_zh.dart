@@ -9267,9 +9267,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get offlineBannerSubtitle => '仅展示本地离线下载内容';
 
   @override
-  String get offlineBannerAction => '离线下载';
-
-  @override
   String get serverUnreachableBannerTitle => '无法连接媒体服务器';
 
   @override
@@ -20836,9 +20833,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get offlineBannerSubtitle => '正在顯示您的下載內容';
-
-  @override
-  String get offlineBannerAction => '下載';
 
   @override
   String get serverUnreachableBannerTitle => '無法連線到您的伺服器';

@@ -9645,9 +9645,6 @@ class AppLocalizationsSq extends AppLocalizations {
   String get offlineBannerSubtitle => 'Po shfaqen shkarkimet tuaja';
 
   @override
-  String get offlineBannerAction => 'Shkarkimet';
-
-  @override
   String get serverUnreachableBannerTitle => 'Serveri juaj nuk arrihet';
 
   @override

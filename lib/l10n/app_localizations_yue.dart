@@ -9305,9 +9305,6 @@ class AppLocalizationsYue extends AppLocalizations {
   String get offlineBannerSubtitle => '顯示緊你嘅下載';
 
   @override
-  String get offlineBannerAction => '下載';
-
-  @override
   String get serverUnreachableBannerTitle => '連唔到你個伺服器';
 
   @override

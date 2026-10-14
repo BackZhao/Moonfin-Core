@@ -9690,9 +9690,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get offlineBannerSubtitle => 'Affichage de vos téléchargements';
 
   @override
-  String get offlineBannerAction => 'Téléchargements';
-
-  @override
   String get serverUnreachableBannerTitle =>
       'Impossible de joindre votre serveur';
 

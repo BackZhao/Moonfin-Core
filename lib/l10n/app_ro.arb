@@ -8505,7 +8505,6 @@
     "adminGeneralDisplayLanguage": "Limba de afișare preferată",
     "offlineBannerTitle": "Ești offline",
     "offlineBannerSubtitle": "Se afișează descărcările tale",
-    "offlineBannerAction": "Descărcări",
     "serverUnreachableBannerTitle": "Serverul nu poate fi contactat",
     "serverUnreachableBannerSubtitle": "Se redă din descărcări până revine serverul",
     "contextMenuHideFromContinueWatching": "Ascunde din Continuă vizionarea",

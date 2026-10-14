@@ -8501,7 +8501,6 @@
     "adminGeneralDisplayLanguage": "선호 표시 언어",
     "offlineBannerTitle": "오프라인 상태입니다",
     "offlineBannerSubtitle": "다운로드한 항목을 표시합니다",
-    "offlineBannerAction": "다운로드",
     "serverUnreachableBannerTitle": "서버에 연결할 수 없습니다",
     "serverUnreachableBannerSubtitle": "복구될 때까지 다운로드한 항목을 재생합니다",
     "contextMenuHideFromContinueWatching": "이어서 보기에서 숨기기",

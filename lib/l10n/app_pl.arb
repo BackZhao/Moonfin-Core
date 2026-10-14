@@ -8505,7 +8505,6 @@
     "adminGeneralDisplayLanguage": "Preferowany język wyświetlania",
     "offlineBannerTitle": "Jesteś offline",
     "offlineBannerSubtitle": "Wyświetlane są pobrane materiały",
-    "offlineBannerAction": "Pobrane",
     "serverUnreachableBannerTitle": "Nie można połączyć się z serwerem",
     "serverUnreachableBannerSubtitle": "Do czasu powrotu serwera odtwarzane będą pobrane materiały",
     "contextMenuHideFromContinueWatching": "Ukryj z „Oglądaj dalej”",
