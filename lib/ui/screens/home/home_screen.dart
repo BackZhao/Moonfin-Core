@@ -51,6 +51,7 @@ import '../../widgets/focus/context_menu_sheet.dart';
 import '../../widgets/focus/locked_focus_row.dart';
 import '../../../util/focus/dpad_keys.dart';
 import '../../../util/focus/input_mode_tracker.dart';
+import '../../../util/focus/scroll_utils.dart';
 import '../../../util/artwork_request_size.dart';
 import '../../../util/device_performance.dart';
 import '../../../util/platform_detection.dart';
@@ -863,8 +864,11 @@ class _ContentRowsState extends State<_ContentRows>
   bool _forceRevealOnNextRowFocusFromMediaBar = false;
   DateTime? _lastScrollTime;
   DateTime? _lastMouseWheelTime;
-  DateTime? _lastVerticalNavAt;
   bool _verticalNavInFlight = false;
+  // Each vertical step bumps this, and only the latest step clears
+  // _verticalNavInFlight or finishes a media bar handoff. That way a press
+  // during a scroll takes over instead of being dropped.
+  int _verticalNavGeneration = 0;
   bool _windowHasFocus = true;
   bool _holdMediaBarWhileSidebarFocused = false;
 
@@ -948,8 +952,9 @@ class _ContentRowsState extends State<_ContentRows>
   static const _previewOpenTimeout = Duration(seconds: 10);
   static const _pinTransitionDistance = 96.0;
   static const _previewStartDelay = Duration(milliseconds: 1200);
-  static const _focusHandoffDuration = Duration(milliseconds: 220);
-  static const _focusHandoffCurve = Curves.easeInOutCubic;
+  static Duration get _focusHandoffDuration => navigationAnimationDuration;
+  // Ease out so the scroll starts moving as soon as the key is pressed.
+  static const _focusHandoffCurve = Curves.easeOutCubic;
   static const _mediaBarFadeDuration = Duration(milliseconds: 220);
   static const double _activeRowRecalcDistance = 48.0;
 
@@ -2477,9 +2482,6 @@ class _ContentRowsState extends State<_ContentRows>
   }
 
   Future<void> _moveFocusFromMediaBarToRows() async {
-    if (_verticalNavInFlight || !_allowVerticalNavNow()) {
-      return;
-    }
     if (!_mediaBarFocusNode.hasFocus) {
       return;
     }
@@ -2490,34 +2492,15 @@ class _ContentRowsState extends State<_ContentRows>
     }
     _finishSharedPreview(releaseResources: true);
     _forceRevealOnNextRowFocusFromMediaBar = true;
-    final isBanner = _isBannerMode();
     if (mounted &&
         _mediaBarVisible &&
-        !isBanner &&
+        !_isBannerMode() &&
         !_isAyaMode() &&
         !_isBookshelfMode()) {
       _mediaBarVisible = false;
     }
-    if (!isBanner && _scrollController.hasClients) {
-      final offsetAdjustment = _desktopRowFocusTargetTop();
-      final target = (_mediaBarHeight() - offsetAdjustment).clamp(
-        0.0,
-        _scrollController.position.maxScrollExtent,
-      );
-      if (_scrollController.offset < target) {
-        _verticalNavInFlight = true;
-        try {
-          await _scrollController.animateTo(
-            target,
-            duration: _focusHandoffDuration,
-            curve: _focusHandoffCurve,
-          );
-        } finally {
-          _verticalNavInFlight = false;
-        }
-        if (!mounted) return;
-      }
-    }
+    // Focus moves right away and the row's own scroll clears the bar, so a
+    // second Down during the scroll isn't lost.
     await _focusAdjacentRowItem(widget.viewModel.rows, -1, 1);
   }
 
@@ -2530,12 +2513,10 @@ class _ContentRowsState extends State<_ContentRows>
   }
 
   Future<void> _moveFocusFromRowsToMediaBar() async {
-    if (_verticalNavInFlight) {
-      return;
-    }
     // This path scrolls to the top on its own, so drop the return anchor
     // rather than let the delayed realign pull back down.
     _returnScrollRowId = null;
+    final generation = ++_verticalNavGeneration;
     _verticalNavInFlight = true;
     try {
       _finishSharedPreview(releaseResources: true);
@@ -2556,6 +2537,12 @@ class _ContentRowsState extends State<_ContentRows>
         return;
       }
 
+      // Focus the bar before scrolling, so a quick Down comes back to the
+      // first row instead of skipping ahead from the row that still had focus.
+      if (_mediaBarFocusNode.context != null) {
+        _mediaBarFocusNode.requestFocus();
+      }
+
       if (_scrollController.hasClients && _scrollController.offset > 0) {
         await _scrollController.animateTo(
           0,
@@ -2564,7 +2551,11 @@ class _ContentRowsState extends State<_ContentRows>
         );
       }
 
-      if (!mounted) return;
+      if (!mounted ||
+          generation != _verticalNavGeneration ||
+          _mediaBarFocusNode.hasFocus) {
+        return;
+      }
 
       final navComplete = Completer<void>();
       late final VoidCallback focusListener;
@@ -2587,14 +2578,16 @@ class _ContentRowsState extends State<_ContentRows>
       );
       _mediaBarFocusNode.removeListener(focusListener);
 
-      if (mounted && !_mediaBarFocusNode.hasFocus) {
+      if (mounted &&
+          generation == _verticalNavGeneration &&
+          !_mediaBarFocusNode.hasFocus) {
         if (!_mediaBarVisible) {
           setState(() => _mediaBarVisible = true);
         }
         _requestMediaBarFocus(force: true);
       }
     } finally {
-      _verticalNavInFlight = false;
+      if (generation == _verticalNavGeneration) _verticalNavInFlight = false;
     }
   }
 
@@ -3218,10 +3211,10 @@ class _ContentRowsState extends State<_ContentRows>
     int fromRowIndex,
     int direction,
   ) async {
-    if (_verticalNavInFlight) return;
     // The user is moving rows, so the delayed realign on return must not
     // drag them back to the row they arrived on.
     _returnScrollRowId = null;
+    final generation = ++_verticalNavGeneration;
     _verticalNavInFlight = true;
     final maxRow = rows.length - 1;
     var target = fromRowIndex + direction;
@@ -3239,7 +3232,7 @@ class _ContentRowsState extends State<_ContentRows>
 
           final navComplete = Completer<void>();
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!mounted) {
+            if (!mounted || generation != _verticalNavGeneration) {
               if (!navComplete.isCompleted) navComplete.complete();
               return;
             }
@@ -3326,26 +3319,14 @@ class _ContentRowsState extends State<_ContentRows>
 
       if (direction < 0) {
         if (_isMediaBarIncluded()) {
-          _verticalNavInFlight = false;
           await _moveFocusFromRowsToMediaBar();
         } else {
           _navigateFromMediaBarToNavbar();
         }
       }
     } finally {
-      _verticalNavInFlight = false;
+      if (generation == _verticalNavGeneration) _verticalNavInFlight = false;
     }
-  }
-
-  bool _allowVerticalNavNow() {
-    final now = DateTime.now();
-    if (_lastVerticalNavAt != null &&
-        now.difference(_lastVerticalNavAt!) <
-            const Duration(milliseconds: 140)) {
-      return false;
-    }
-    _lastVerticalNavAt = now;
-    return true;
   }
 
   bool _onRowVerticalNavigation({
@@ -3354,7 +3335,6 @@ class _ContentRowsState extends State<_ContentRows>
     required bool isUp,
   }) {
     _markUserGesture();
-    if (!_allowVerticalNavNow()) return true;
     if (isUp) {
       if (rowIndex == 0) {
         if (_isMediaBarIncluded()) {
