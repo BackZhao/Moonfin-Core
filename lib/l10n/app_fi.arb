@@ -2828,7 +2828,7 @@
     "@fit": {
         "description": "Zoom mode: fit"
     },
-    "autoCrop": "Automaattinen rajaus",
+    "autoCrop": "Zoomaa täyttämällä",
     "@autoCrop": {
         "description": "Zoom mode: auto crop"
     },
@@ -6592,7 +6592,7 @@
     "settingsDoNothing": "Älä tee mitään",
     "settingsMaxBitrateDescription": "Rajoita suoratoiston bittinopeus. Tämän kynnyksen ylittävä sisältö muunnetaan sopivaksi.",
     "settingsMaxResolutionDescription": "Rajoita soittimen pyytämää enimmäisresoluutiota. Korkeamman resoluution sisältö transkoodataan alaspäin.",
-    "settingsPlayerZoomDescription": "Kuinka video tulee skaalata näytölle sopivaksi.",
+    "settingsPlayerZoomDescription": "Miten video skaalataan ruudulle. ”Zoom to Fill” -toiminto suurentaa kuvaa, kunnes se täyttää ruudun, ja leikkaa reunat pois. Se ei tunnista mustia palkkeja.",
     "settingsPlaybackEngineAndroidTv": "Toistomoottori (Android TV)",
     "settingsPlaybackEngineAndroidTvDescription": "Valitse oletustoistomoottori Android TV -laitteissa. Muutokset koskevat seuraavaa toistokertaa.",
     "settingsPlaybackEngineMedia3Recommended": "Media3 (suositus)",
