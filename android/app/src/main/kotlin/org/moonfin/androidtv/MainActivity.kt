@@ -410,6 +410,7 @@ class MainActivity : AudioServiceActivity(), GamepadsCompatibleActivity {
                 }
                 "buildFingerprint" -> result.success(Build.FINGERPRINT)
                 "uptimeMillis" -> result.success(SystemClock.uptimeMillis())
+                "renderer" -> result.success(MoonfinApplication.rendererSummary)
                 "dolbyVisionCodecCapabilities" -> {
                     result.success(MediaCodecCapabilities.queryDolbyVisionCapabilities())
                 }

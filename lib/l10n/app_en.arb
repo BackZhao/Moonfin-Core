@@ -579,6 +579,22 @@
   "@performanceModeReduced": {
     "description": "Performance option: always hold back"
   },
+  "rendererMode": "Renderer",
+  "@rendererMode": {
+    "description": "Label for the TV graphics renderer setting"
+  },
+  "rendererModeSubtitle": "Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.",
+  "@rendererModeSubtitle": {
+    "description": "Explanation under the TV graphics renderer setting"
+  },
+  "rendererModeAuto": "Auto",
+  "@rendererModeAuto": {
+    "description": "Renderer option: let the app choose per device"
+  },
+  "rendererModeSkia": "Skia",
+  "@rendererModeSkia": {
+    "description": "Renderer option: always use the Skia renderer"
+  },
   "trailerPreviewHeldBack": "Off because Performance is set to Reduced for this device",
   "@trailerPreviewHeldBack": {
     "description": "Shown under the trailer preview switch when the device tier suppresses trailers"

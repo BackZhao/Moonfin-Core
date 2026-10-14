@@ -88,6 +88,7 @@ class PlatformDetection {
   static final Map<String, dynamic> _deviceMemory = <String, dynamic>{};
   static int? _uptimeAtProbeMs;
   static final Stopwatch _sinceUptimeProbe = Stopwatch();
+  static String? _renderer;
   static final Map<String, dynamic> _audioCapabilities = <String, dynamic>{};
   static bool _hasDisplayHdrCapabilities = false;
   static bool _hasDolbyVisionCodecCapabilities = false;
@@ -285,6 +286,13 @@ class PlatformDetection {
       ..reset()
       ..start();
   }
+
+  /// Which renderer Android asked the engine for at launch and why, as the
+  /// platform side words it. Null until the probe answers, and on other
+  /// platforms.
+  static String? get renderer => _renderer;
+
+  static void setRenderer(String? value) => _renderer = value;
 
   static bool _capabilityBool(String key) {
     return _asBool(_mediaCodecCapabilities[key]);

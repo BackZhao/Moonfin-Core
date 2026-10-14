@@ -512,6 +512,20 @@ Future<void> _detectAndSetSystemUptime() async {
   } catch (_) {}
 }
 
+/// The renderer is fixed before Dart runs, so the diagnostic report asks the
+/// platform side what it chose.
+Future<void> _detectAndSetRenderer() async {
+  if (!PlatformDetection.isAndroid) return;
+  try {
+    const channel = MethodChannel('org.moonfin.androidtv/platform');
+    PlatformDetection.setRenderer(
+      await channel
+          .invokeMethod<String>('renderer')
+          .timeout(const Duration(seconds: 2)),
+    );
+  } catch (_) {}
+}
+
 Future<void> _detectAndSetCodecCapabilities() async {
   if (!PlatformDetection.isAndroid) return;
   const channel = MethodChannel('org.moonfin.androidtv/platform');
@@ -897,6 +911,7 @@ void main() async {
     _detectAndSetCodecCapabilities(),
     _detectAndSetDeviceMemory(),
     _detectAndSetSystemUptime(),
+    _detectAndSetRenderer(),
   ]);
 
   if (PlatformDetection.isAppleTV) {

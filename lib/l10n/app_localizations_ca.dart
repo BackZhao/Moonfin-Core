@@ -510,6 +510,19 @@ class AppLocalizationsCa extends AppLocalizations {
   String get performanceModeReduced => 'Reduït';
 
   @override
+  String get rendererMode => 'Renderer';
+
+  @override
+  String get rendererModeSubtitle =>
+      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+
+  @override
+  String get rendererModeAuto => 'Auto';
+
+  @override
+  String get rendererModeSkia => 'Skia';
+
+  @override
   String get trailerPreviewHeldBack =>
       'Desactivat perquè el Rendiment està configurat com a Reduït per a aquest dispositiu';
 

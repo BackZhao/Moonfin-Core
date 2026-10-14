@@ -510,6 +510,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get performanceModeReduced => 'Azaltılmış';
 
   @override
+  String get rendererMode => 'Renderer';
+
+  @override
+  String get rendererModeSubtitle =>
+      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+
+  @override
+  String get rendererModeAuto => 'Auto';
+
+  @override
+  String get rendererModeSkia => 'Skia';
+
+  @override
   String get trailerPreviewHeldBack =>
       'Bu cihaz için Performans \"Azaltılmış\" olarak ayarlandığından kapalı';
 

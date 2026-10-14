@@ -510,6 +510,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get performanceModeReduced => 'منخفض';
 
   @override
+  String get rendererMode => 'Renderer';
+
+  @override
+  String get rendererModeSubtitle =>
+      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+
+  @override
+  String get rendererModeAuto => 'Auto';
+
+  @override
+  String get rendererModeSkia => 'Skia';
+
+  @override
   String get trailerPreviewHeldBack =>
       'متوقف لأن وضع الأداء مضبوط على منخفض لهذا الجهاز.';
 

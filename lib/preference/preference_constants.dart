@@ -283,6 +283,10 @@ enum GlassQualityMode { auto, full, reduced }
 /// [DevicePerformanceMode.auto] measures the device, the other two pin it.
 enum DevicePerformanceMode { auto, standard, reduced }
 
+/// Which renderer an Android TV box draws with. [RendererMode.auto] lets the
+/// app pick Impeller where it runs on Vulkan, [RendererMode.skia] pins Skia.
+enum RendererMode { auto, skia }
+
 /// Persisted settled quality of the adaptive glass renderer, mirroring the
 /// package's GlassQuality tiers. `unset` means no benchmark has settled yet,
 /// so the adaptive scope runs its warm-up pass on next launch. Kept as a

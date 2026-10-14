@@ -513,6 +513,19 @@ class AppLocalizationsFi extends AppLocalizations {
   String get performanceModeReduced => 'Rajoitettu';
 
   @override
+  String get rendererMode => 'Renderer';
+
+  @override
+  String get rendererModeSubtitle =>
+      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+
+  @override
+  String get rendererModeAuto => 'Auto';
+
+  @override
+  String get rendererModeSkia => 'Skia';
+
+  @override
   String get trailerPreviewHeldBack =>
       'Pois päältä, koska tämän laitteen suorituskyky on asetettu tilaan Rajoitettu';
 

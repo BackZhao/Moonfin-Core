@@ -525,6 +525,19 @@ class AppLocalizationsSr extends AppLocalizations {
   String get performanceModeReduced => 'Смањено';
 
   @override
+  String get rendererMode => 'Renderer';
+
+  @override
+  String get rendererModeSubtitle =>
+      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+
+  @override
+  String get rendererModeAuto => 'Auto';
+
+  @override
+  String get rendererModeSkia => 'Skia';
+
+  @override
   String get trailerPreviewHeldBack =>
       'Искључено јер су перформансе за овај уређај подешене на „Смањено“';
 

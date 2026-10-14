@@ -510,6 +510,19 @@ class AppLocalizationsHu extends AppLocalizations {
   String get performanceModeReduced => 'Csökkentett';
 
   @override
+  String get rendererMode => 'Renderer';
+
+  @override
+  String get rendererModeSubtitle =>
+      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+
+  @override
+  String get rendererModeAuto => 'Auto';
+
+  @override
+  String get rendererModeSkia => 'Skia';
+
+  @override
   String get trailerPreviewHeldBack =>
       'Kikapcsolva, mert ezen az eszközön a Csökkentett teljesítmény van beállítva';
 

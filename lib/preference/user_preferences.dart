@@ -1512,6 +1512,14 @@ class UserPreferences extends ChangeNotifier {
     values: DevicePerformanceMode.values,
   );
 
+  /// Read natively by MoonfinApplication before Flutter starts, so the key and
+  /// the stored names must stay as they are, and it can't be scoped or synced.
+  static final rendererMode = EnumPreference(
+    key: 'pref_renderer',
+    defaultValue: RendererMode.auto,
+    values: RendererMode.values,
+  );
+
   /// Deepens chrome toward pure black and enriches artwork, on top of the
   /// selected theme. Off by default so no existing install changes look.
   static final oledMode = EnumPreference(

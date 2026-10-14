@@ -934,6 +934,30 @@ abstract class AppLocalizations {
   /// **'Reduced'**
   String get performanceModeReduced;
 
+  /// Label for the TV graphics renderer setting
+  ///
+  /// In en, this message translates to:
+  /// **'Renderer'**
+  String get rendererMode;
+
+  /// Explanation under the TV graphics renderer setting
+  ///
+  /// In en, this message translates to:
+  /// **'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.'**
+  String get rendererModeSubtitle;
+
+  /// Renderer option: let the app choose per device
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get rendererModeAuto;
+
+  /// Renderer option: always use the Skia renderer
+  ///
+  /// In en, this message translates to:
+  /// **'Skia'**
+  String get rendererModeSkia;
+
   /// Shown under the trailer preview switch when the device tier suppresses trailers
   ///
   /// In en, this message translates to:
