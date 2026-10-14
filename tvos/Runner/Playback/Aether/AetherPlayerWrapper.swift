@@ -85,6 +85,7 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
     private var isLiveSession = false
     private var forceSubtitlesDisabledOnStart = false
     private var didEmitLoadError = false
+    private var didEmitAudioDrop = false
     private var lastErrorMessage: String?
     private var lastPhase: PlaybackPhase = .idle
     private var sawPlaybackThisLoad = false
@@ -329,6 +330,21 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 self?.emitError(kind: "live_source_reset", recoverable: true, message: "Live source reset")
+            }
+            .store(in: &cancellables)
+
+        // When the engine can't deliver the audio it keeps playing without
+        // sound instead of failing, so the transcode has to be asked for here.
+        engine.$audioDelivery
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] delivery in
+                guard let self, delivery == .droppedNoPipeline,
+                    !self.didEmitLoadError, !self.didEmitAudioDrop
+                else { return }
+                self.didEmitAudioDrop = true
+                self.emitError(
+                    kind: "unsupported_audio", recoverable: true,
+                    message: "The audio track couldn't be played")
             }
             .store(in: &cancellables)
     }
@@ -751,6 +767,7 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
         #endif
         isLiveSession = sourceConfiguration.isLive
         didEmitLoadError = false
+        didEmitAudioDrop = false
         resetStallTracking()
         resetAssState()
         subtitleOverlay.clear()

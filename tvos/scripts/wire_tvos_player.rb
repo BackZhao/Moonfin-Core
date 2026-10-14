@@ -69,7 +69,7 @@ end
 # since an engine bump is a deliberate change rather than something a resolve
 # should pick up on its own.
 aether_remote_url = 'https://github.com/superuser404notfound/AetherEngine'
-aether_version = '6.89.1'
+aether_version = '7.35.1'
 aether_local_path = File.expand_path(File.join(project_dir, '..', '..', 'AetherEngine'))
 use_local_aether = ENV['AETHER_LOCAL'] == '1'
 
@@ -169,11 +169,11 @@ end
 
 target.build_configurations.each do |config|
   config.build_settings['SWIFT_OBJC_BRIDGING_HEADER'] ||= 'Runner/Runner-Bridging-Header.h'
-  config.build_settings['TVOS_DEPLOYMENT_TARGET'] = '17.0'
+  config.build_settings['TVOS_DEPLOYMENT_TARGET'] = '18.0'
 end
 
 project.build_configurations.each do |config|
-  config.build_settings['TVOS_DEPLOYMENT_TARGET'] = '17.0'
+  config.build_settings['TVOS_DEPLOYMENT_TARGET'] = '18.0'
 end
 
 project.save

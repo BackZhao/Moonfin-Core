@@ -62,7 +62,7 @@ end
 # Pinned exactly, since an engine bump is a deliberate change rather than
 # something a resolve should pick up on its own.
 aether_remote_url = 'https://github.com/superuser404notfound/AetherEngine'
-aether_version = '6.89.1'
+aether_version = '7.35.1'
 aether_local_path = File.expand_path(File.join(project_dir, '..', '..', 'AetherEngine'))
 use_local_aether = ENV['AETHER_LOCAL'] == '1'
 
@@ -157,13 +157,13 @@ unless target.package_product_dependencies.any? { |d| d.product_name == 'libass'
   puts 'linked libass product'
 end
 
-# AetherEngine declares macOS 14 as its floor and SPM enforces it.
+# AetherEngine declares macOS 15 as its floor and SPM enforces it.
 target.build_configurations.each do |config|
-  config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '14.0'
+  config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '15.0'
 end
 
 project.build_configurations.each do |config|
-  config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '14.0'
+  config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '15.0'
 end
 
 project.save
