@@ -24,6 +24,7 @@ import '../../../playback/subtitle_style.dart';
 import '../../../playback/subtitle_view_config.dart';
 import '../../../util/fullscreen_helper.dart';
 import '../../../util/scroll_sensitivity_binding.dart';
+import '../../widgets/image_source.dart';
 import '../../widgets/player_volume_control.dart';
 import '../../widgets/playback/playback_time_row.dart';
 import '../../widgets/playback/player_logo.dart';
@@ -4759,7 +4760,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       children: [
         if (logoUrl != null) ...[
           PlayerLogo(
-            image: NetworkImage(logoUrl, headers: serverImageHeaders),
+            image: offlineAwareImageProvider(
+              logoUrl,
+              headers: serverImageHeaders,
+            ),
             errorBuilder: (_, _, _) => Text(
               seriesName ?? titleText,
               style: const TextStyle(
