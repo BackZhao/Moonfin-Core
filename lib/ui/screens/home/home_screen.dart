@@ -3204,116 +3204,118 @@ class _ContentRowsState extends State<_ContentRows>
     // The user is moving rows, so the delayed realign on return must not
     // drag them back to the row they arrived on.
     _returnScrollRowId = null;
-    final generation = ++_verticalNavGeneration;
-    _verticalNavInFlight = true;
-    final maxRow = rows.length - 1;
     var target = fromRowIndex + direction;
-    try {
-      while (target >= 0 && target <= maxRow) {
-        final candidate = rows[target];
-        final hasItems = _rowHasFocusableItems(candidate);
-        if (hasItems) {
-          final targetState = _rowStateOf(target);
-          if (targetState != null) {
-            targetState.requestFocusAt(0);
-          } else {
-            _requestRowFocusFromMemory(target, preferredIndex: 0);
-          }
-
-          final navComplete = Completer<void>();
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!mounted || generation != _verticalNavGeneration) {
-              if (!navComplete.isCompleted) navComplete.complete();
-              return;
-            }
-            final rowCtx = _rowContextOf(target);
-            if (rowCtx == null) {
-              if (!navComplete.isCompleted) navComplete.complete();
-              return;
-            }
-
-            final fullScreenRows =
-                !PlatformDetection.useMobileUi &&
-                widget.prefs.get(UserPreferences.fullScreenRows);
-            if (fullScreenRows && _scrollController.hasClients) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (!mounted || !_scrollController.hasClients) {
-                  if (!navComplete.isCompleted) navComplete.complete();
-                  return;
-                }
-                final innerCtx = _rowContextOf(target);
-                if (innerCtx == null) {
-                  if (!navComplete.isCompleted) navComplete.complete();
-                  return;
-                }
-                final renderObj = innerCtx.findRenderObject();
-                if (renderObj is! RenderBox || !renderObj.hasSize) {
-                  if (!navComplete.isCompleted) navComplete.complete();
-                  return;
-                }
-                _scrollTvRowIntoOverlayBand(target).whenComplete(() {
-                  if (!navComplete.isCompleted) navComplete.complete();
-                });
-              });
-              return;
-            }
-
-
-            if (_scrollController.hasClients) {
-              final rowObj = _rowContainerKey(
-                target,
-              ).currentContext?.findRenderObject();
-              final viewportObj = context.findRenderObject();
-              if (rowObj is RenderBox &&
-                  rowObj.attached &&
-                  viewportObj is RenderBox &&
-                  viewportObj.attached) {
-                final rowTopInViewport = rowObj
-                    .localToGlobal(Offset.zero, ancestor: viewportObj)
-                    .dy;
-                final targetOffset =
-                    (_scrollController.offset +
-                            rowTopInViewport -
-                            _desktopRowFocusTargetTop())
-                        .clamp(0.0, _scrollController.position.maxScrollExtent);
-                _scrollController
-                    .animateTo(
-                      targetOffset,
-                      duration: _focusHandoffDuration,
-                      curve: _focusHandoffCurve,
-                    )
-                    .whenComplete(() {
-                      if (!navComplete.isCompleted) navComplete.complete();
-                    });
-                return;
-              }
-            }
-
-            Scrollable.ensureVisible(
-              rowCtx,
-              alignment: 0.12,
-              duration: _focusHandoffDuration,
-              curve: _focusHandoffCurve,
-            ).whenComplete(() {
-              if (!navComplete.isCompleted) navComplete.complete();
-            });
-          });
-          await navComplete.future.timeout(
-            const Duration(milliseconds: 450),
-            onTimeout: () {},
-          );
-          return;
-        }
-        target += direction;
-      }
-
+    while (target >= 0 &&
+        target < rows.length &&
+        !_rowHasFocusableItems(rows[target])) {
+      target += direction;
+    }
+    if (target < 0 || target >= rows.length) {
       if (direction < 0) {
         if (_isMediaBarIncluded()) {
           await _moveFocusFromRowsToMediaBar();
         } else {
+          // Focus leaves the rows, so a scroll the last step still has queued
+          // shouldn't pull the list back down.
+          _verticalNavGeneration++;
+          _verticalNavInFlight = false;
           _navigateFromMediaBarToNavbar();
         }
       }
+      return;
+    }
+    // A row the list hasn't built yet can't take focus. Returning before a new
+    // step starts leaves the last step's scroll running, and that scroll
+    // builds the row for the next press.
+    final targetState = _rowStateOf(target);
+    if (targetState == null) return;
+
+    final generation = ++_verticalNavGeneration;
+    _verticalNavInFlight = true;
+    try {
+      targetState.requestFocusAt(0);
+
+      final navComplete = Completer<void>();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || generation != _verticalNavGeneration) {
+          if (!navComplete.isCompleted) navComplete.complete();
+          return;
+        }
+        final rowCtx = _rowContextOf(target);
+        if (rowCtx == null) {
+          if (!navComplete.isCompleted) navComplete.complete();
+          return;
+        }
+
+        final fullScreenRows =
+            !PlatformDetection.useMobileUi &&
+            widget.prefs.get(UserPreferences.fullScreenRows);
+        if (fullScreenRows && _scrollController.hasClients) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted || !_scrollController.hasClients) {
+              if (!navComplete.isCompleted) navComplete.complete();
+              return;
+            }
+            final innerCtx = _rowContextOf(target);
+            if (innerCtx == null) {
+              if (!navComplete.isCompleted) navComplete.complete();
+              return;
+            }
+            final renderObj = innerCtx.findRenderObject();
+            if (renderObj is! RenderBox || !renderObj.hasSize) {
+              if (!navComplete.isCompleted) navComplete.complete();
+              return;
+            }
+            _scrollTvRowIntoOverlayBand(target).whenComplete(() {
+              if (!navComplete.isCompleted) navComplete.complete();
+            });
+          });
+          return;
+        }
+
+        if (_scrollController.hasClients) {
+          final rowObj = _rowContainerKey(
+            target,
+          ).currentContext?.findRenderObject();
+          final viewportObj = context.findRenderObject();
+          if (rowObj is RenderBox &&
+              rowObj.attached &&
+              viewportObj is RenderBox &&
+              viewportObj.attached) {
+            final rowTopInViewport = rowObj
+                .localToGlobal(Offset.zero, ancestor: viewportObj)
+                .dy;
+            final targetOffset =
+                (_scrollController.offset +
+                        rowTopInViewport -
+                        _desktopRowFocusTargetTop())
+                    .clamp(0.0, _scrollController.position.maxScrollExtent);
+            _scrollController
+                .animateTo(
+                  targetOffset,
+                  duration: _focusHandoffDuration,
+                  curve: _focusHandoffCurve,
+                )
+                .whenComplete(() {
+                  if (!navComplete.isCompleted) navComplete.complete();
+                });
+            return;
+          }
+        }
+
+        Scrollable.ensureVisible(
+          rowCtx,
+          alignment: 0.12,
+          duration: _focusHandoffDuration,
+          curve: _focusHandoffCurve,
+        ).whenComplete(() {
+          if (!navComplete.isCompleted) navComplete.complete();
+        });
+      });
+      await navComplete.future.timeout(
+        const Duration(milliseconds: 450),
+        onTimeout: () {},
+      );
     } finally {
       if (generation == _verticalNavGeneration) _verticalNavInFlight = false;
     }
