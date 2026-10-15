@@ -288,6 +288,7 @@ final appRouter = GoRouter(
           serverId: serverId,
           prefillUsername: username,
           hasPassword: hasPassword,
+          backToServerList: state.uri.queryParameters['noUsers'] == 'true',
         );
       },
     ),
