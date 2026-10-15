@@ -13810,5 +13810,25 @@
     "playlistNoMatchingTracks": "Cap pista coincideix amb els filtres actius",
     "@playlistNoMatchingTracks": {
         "description": "Empty state message shown when playlist filters match no items"
+    },
+    "rendererMode": "Renderitzador",
+    "@rendererMode": {
+        "description": "Label for the TV graphics renderer setting"
+    },
+    "rendererModeSubtitle": "L'opció Auto fa servir Impeller als dispositius on els gràfics hi funcionen amb fluïdesa, i Skia a la resta. Tria Skia si les animacions o el vídeo es veuen malament. S'aplica a partir del següent inici.",
+    "@rendererModeSubtitle": {
+        "description": "Explanation under the TV graphics renderer setting"
+    },
+    "rendererModeAuto": "Auto",
+    "@rendererModeAuto": {
+        "description": "Renderer option: let the app choose per device"
+    },
+    "rendererModeSkia": "Skia",
+    "@rendererModeSkia": {
+        "description": "Renderer option: always use the Skia renderer"
+    },
+    "additionalParts": "Parts addicionals",
+    "@additionalParts": {
+        "description": "Heading for the other files of a movie split across several files, like DVD1 and DVD2"
     }
 }
