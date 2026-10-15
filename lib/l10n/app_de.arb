@@ -99,7 +99,7 @@
     "@discoveredServers": {
         "description": "Section heading for auto-discovered local servers"
     },
-    "noneFound": "Es konnten keine Server automatisch gefunden werden",
+    "noneFound": "Es konnten keine Server gefunden werden",
     "@noneFound": {
         "description": "Shown when no servers are discovered on the network"
     },
@@ -7326,7 +7326,7 @@
     "@systemLanguageDefault": {
         "description": "Label for using the system default language in settings"
     },
-    "empty": "leer",
+    "empty": "Leer",
     "@empty": {
         "description": "Label indicating a section or category is empty"
     },
@@ -10697,7 +10697,7 @@
     "@animeMarkerRecap": {
         "description": "Badge on an anime episode that recaps earlier episodes"
     },
-    "detailScreenStyleSpotlight": "Rampenlicht",
+    "detailScreenStyleSpotlight": "Spotlight",
     "@detailScreenStyleSpotlight": {
         "description": "Detail screen style option: the hero-first layout with summary cards that open grid modals"
     },
