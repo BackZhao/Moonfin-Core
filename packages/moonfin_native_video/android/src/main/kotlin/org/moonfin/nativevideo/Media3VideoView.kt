@@ -146,7 +146,7 @@ private class MoonfinRenderersFactory(
                 .setCodecAdapterFactory(
                     VsyncPacingAdapterFactory(codecAdapterFactory, primaryDisplay(context)),
                 )
-                .setMediaCodecSelector(mediaCodecSelector)
+                .setMediaCodecSelector(Vc1AliasMediaCodecSelector(mediaCodecSelector))
                 .setAllowedJoiningTimeMs(allowedVideoJoiningTimeMs)
                 .setEnableDecoderFallback(enableDecoderFallback)
                 .setEventHandler(eventHandler)
@@ -1150,6 +1150,7 @@ class Media3VideoView(
                     player.playWhenReady = true
                 }
             }
+            if (playbackState == Player.STATE_READY) reportUnsupportedVideoIfNeeded()
             emitState()
             if (playbackState == Player.STATE_ENDED &&
                 Media3Bridge.isActive(this@Media3VideoView)
@@ -5228,16 +5229,20 @@ class Media3VideoView(
         emitAudioTrackMapping()
     }
 
-    // Media3 raises nothing when no renderer takes the video, it just leaves
-    // the track unselected and plays the audio over a black screen. Reporting
-    // it here lets the Dart side try the item again as a transcode.
+    // Media3 raises nothing when no renderer takes the video or the extractor
+    // drops it, it just plays the audio over a black screen. Reporting it here
+    // lets the Dart side try the item again as a transcode, or stop if it
+    // already is one.
     private fun reportUnsupportedVideoIfNeeded() {
         val tracks = player.currentTracks
+        val hasVideoTrack = tracks.containsType(C.TRACK_TYPE_VIDEO)
         val report = shouldReportUnsupportedVideo(
             mediaType = currentMediaType,
             isPreview = currentIsPreview,
             alreadyReported = unsupportedVideoReported,
-            hasVideoTrack = tracks.containsType(C.TRACK_TYPE_VIDEO),
+            sourceHasVideo = sourceVideoWidthHint > 0,
+            isReady = player.playbackState == Player.STATE_READY,
+            hasVideoTrack = hasVideoTrack,
             videoSelected = tracks.isTypeSelected(C.TRACK_TYPE_VIDEO),
         )
         if (!report) {
@@ -5250,7 +5255,11 @@ class Media3VideoView(
                 "event" to "playerError",
                 "recoverable" to true,
                 "kind" to "unsupported_video",
-                "message" to "No renderer took the video track",
+                "message" to if (hasVideoTrack) {
+                    "No renderer took the video track"
+                } else {
+                    "The stream has no video track the player can read"
+                },
             ),
         )
     }

@@ -2552,6 +2552,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get playbackStreamLost => 'Oynatma durdu ve kurtarılamadı.';
 
   @override
+  String get playbackVideoUnsupported =>
+      'This device can\'t play this video\'s format. Try an external player.';
+
+  @override
   String liveReconnecting(int attempt, int total) {
     return 'Yeniden bağlanılıyor… ($attempt/$total)';
   }

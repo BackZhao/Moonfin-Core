@@ -2701,6 +2701,10 @@ class AppLocalizationsPl extends AppLocalizations {
       'Odtwarzanie zostało zatrzymane i nie udało się go wznowić.';
 
   @override
+  String get playbackVideoUnsupported =>
+      'This device can\'t play this video\'s format. Try an external player.';
+
+  @override
   String liveReconnecting(int attempt, int total) {
     return 'Ponowne łączenie… ($attempt z $total)';
   }

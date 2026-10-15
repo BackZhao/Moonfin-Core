@@ -2585,6 +2585,10 @@ class AppLocalizationsSr extends AppLocalizations {
       'Репродукција је заустављена и није је било могуће наставити.';
 
   @override
+  String get playbackVideoUnsupported =>
+      'This device can\'t play this video\'s format. Try an external player.';
+
+  @override
   String liveReconnecting(int attempt, int total) {
     return 'Поновно повезивање… ($attempt од $total)';
   }

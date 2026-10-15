@@ -2577,6 +2577,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'La lecture s\'est interrompue et n\'a pas pu reprendre.';
 
   @override
+  String get playbackVideoUnsupported =>
+      'This device can\'t play this video\'s format. Try an external player.';
+
+  @override
   String liveReconnecting(int attempt, int total) {
     return 'Reconnexion… ($attempt sur $total)';
   }

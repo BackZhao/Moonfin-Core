@@ -2588,6 +2588,10 @@ class AppLocalizationsRo extends AppLocalizations {
       'Redarea s-a oprit și nu a putut fi recuperată.';
 
   @override
+  String get playbackVideoUnsupported =>
+      'This device can\'t play this video\'s format. Try an external player.';
+
+  @override
   String liveReconnecting(int attempt, int total) {
     return 'Se reconectează… ($attempt din $total)';
   }

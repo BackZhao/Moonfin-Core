@@ -2562,6 +2562,10 @@ class AppLocalizationsLt extends AppLocalizations {
       'Playback stopped and could not be recovered.';
 
   @override
+  String get playbackVideoUnsupported =>
+      'This device can\'t play this video\'s format. Try an external player.';
+
+  @override
   String liveReconnecting(int attempt, int total) {
     return 'Reconnecting… ($attempt of $total)';
   }

@@ -4444,6 +4444,12 @@ abstract class AppLocalizations {
   /// **'Playback stopped and could not be recovered.'**
   String get playbackStreamLost;
 
+  /// Shown when the player can't show an item's video and no transcode is left to try, instead of playing the audio over a black screen
+  ///
+  /// In en, this message translates to:
+  /// **'This device can\'t play this video\'s format. Try an external player.'**
+  String get playbackVideoUnsupported;
+
   /// Overlay shown while a live channel's bounded recovery is retrying
   ///
   /// In en, this message translates to:

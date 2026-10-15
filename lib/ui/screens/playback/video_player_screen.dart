@@ -1160,11 +1160,17 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     if (error == null || error.isEmpty) {
       return;
     }
-    // `liveStreamLostError`/`streamStarvedError` are internal sentinels the
-    // manager uses to tag why it gave up recovering, not viewer-facing text.
+    // These are internal sentinels the manager uses to tag why it gave up,
+    // not viewer-facing text.
     if (error == liveStreamLostError || error == streamStarvedError) {
       _showThrottledPlaybackError(
         AppLocalizations.of(context).playbackStreamLost,
+      );
+      return;
+    }
+    if (error == unsupportedVideoError) {
+      _showThrottledPlaybackError(
+        AppLocalizations.of(context).playbackVideoUnsupported,
       );
       return;
     }
@@ -2030,7 +2036,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
 
   Future<void> _pushMedia3UiMetadata() async {
     final backend = _activeMedia3Backend;
-    if (backend == null) return;
+    if (backend == null || !mounted) return;
 
     final l10n = AppLocalizations.of(context);
     final item = _queue.currentItem;

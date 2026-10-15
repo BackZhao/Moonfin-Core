@@ -2567,6 +2567,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get playbackStreamLost => 'Toisto keskeytyi, eikä sitä voitu jatkaa.';
 
   @override
+  String get playbackVideoUnsupported =>
+      'This device can\'t play this video\'s format. Try an external player.';
+
+  @override
   String liveReconnecting(int attempt, int total) {
     return 'Yhdistetään uudelleen… ($attempt of $total)';
   }

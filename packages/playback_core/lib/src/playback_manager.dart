@@ -41,6 +41,10 @@ const liveStreamLostError = 'live-stream-lost';
 /// the bounded recovery could not get it going again.
 const streamStarvedError = 'stream-starved';
 
+/// Reported as the bringup error when the player couldn't show the video and
+/// there was no transcode left to fall back to.
+const unsupportedVideoError = 'unsupported-video';
+
 /// Whether a seek actually landed. The player reports the seek target as its
 /// position while the seek is still in flight, and a seek issued early in a
 /// file's life can quietly fail and fall back to the start, so a single read
@@ -1737,6 +1741,33 @@ class PlaybackManager implements AudioOwnable {
     }
   }
 
+  /// The player plays the audio on its own once it gives up on the video, so
+  /// with no transcode left to fall back to, stop and say why instead of
+  /// leaving a black screen.
+  Future<void> _stopForUnsupportedVideo() async {
+    final item = queueService.currentItem ?? _lastPlaybackItem;
+    final resolution = _currentResolution ?? _lastPlaybackResolution;
+    _suppressNextGenericBackendError = true;
+    _isAutoNexting = true;
+    _mediaSourceId = null;
+    try {
+      await _stopAndReportCurrent(skipQueueChange: true);
+    } catch (_) {
+    } finally {
+      _isAutoNexting = false;
+    }
+    _setBringupState(
+      PlaybackBringupState(
+        phase: PlaybackBringupPhase.failed,
+        sessionToken: _playbackSessionToken,
+        itemId: item == null ? null : _traceItemId(item),
+        backend: _traceBackendName(_backend),
+        playMethod: resolution?.playMethod.name,
+        error: unsupportedVideoError,
+      ),
+    );
+  }
+
   void _clearPendingItemOverrides() {
     _pendingItemOverrideId = null;
     _pendingItemAudioStreamIndex = null;
@@ -2006,6 +2037,9 @@ class PlaybackManager implements AudioOwnable {
     // surface.
     if (kind == 'unsupported_container' || kind == 'unsupported_video') {
       if (!canReResolve()) {
+        if (kind == 'unsupported_video' && !_unsupportedAudioRecoveryInFlight) {
+          await _stopForUnsupportedVideo();
+        }
         return;
       }
       _suppressNextGenericBackendError = true;
