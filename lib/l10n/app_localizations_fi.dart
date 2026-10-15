@@ -513,11 +513,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get performanceModeReduced => 'Rajoitettu';
 
   @override
-  String get rendererMode => 'Renderer';
+  String get rendererMode => 'Renderöijä';
 
   @override
   String get rendererModeSubtitle =>
-      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+      'Auto-tila käyttää Impelleriä laitteissa, joiden grafiikka tukee sitä sujuvasti, ja Skiaa kaikissa muissa tapauksissa. Valitse Skia, jos animaatiot tai videot näyttävät virheellisiltä. Muutos astuu voimaan seuraavalla käynnistyksellä.';
 
   @override
   String get rendererModeAuto => 'Auto';
@@ -1352,7 +1352,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get extras => 'Lisämateriaali';
 
   @override
-  String get additionalParts => 'Additional Parts';
+  String get additionalParts => 'Oheisosat';
 
   @override
   String get behindTheScenes => 'Kulissien takana';

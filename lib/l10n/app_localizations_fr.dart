@@ -11344,18 +11344,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get openInBrowser => 'Ouvrir dans le navigateur';
 
   @override
-  String get achievementBadges => 'Badges de succès';
+  String get achievementBadges => 'Succès';
 
   @override
   String get achievementBadgesSubtitle =>
-      'Badges, rangs et quêtes obtenus grâce à ce que vous regardez';
+      'Succès, rangs et quêtes obtenus grâce à ce que vous regardez';
 
   @override
-  String get achievementsBadges => 'Badges';
+  String get achievementsBadges => 'Liste des succès';
 
   @override
   String achievementsBadgeCount(int unlocked, int total) {
-    return '$unlocked sur $total badges';
+    return '$unlocked succès sur $total';
   }
 
   @override
@@ -11363,18 +11363,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get achievementsUnlockToastsSubtitle =>
-      'Affiche une notification lorsque vous débloquez un badge';
+      'Affiche une notification lorsque vous débloquez un succès';
 
   @override
-  String get achievementsUnlockedNotification => 'Badge débloqué';
+  String get achievementsUnlockedNotification => 'Succès débloqué';
 
   @override
   String achievementsUnlockedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count badges débloqués',
-      one: '$count badge débloqué',
+      other: '$count succès débloqués',
+      one: '$count succès débloqué',
     );
     return '$_temp0';
   }
@@ -11506,7 +11506,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get achievementsSuggested => 'Titres suggérés à regarder';
 
   @override
-  String get achievementsNoSuggestions => 'Rien à suggérer pour ce badge.';
+  String get achievementsNoSuggestions => 'Rien à suggérer pour ce succès.';
 
   @override
   String get achievementsProgressLabel => 'Progression';
@@ -11645,13 +11645,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get achievementsStatUsers => 'Utilisateurs';
 
   @override
-  String get achievementsStatBadgesUnlocked => 'Badges débloqués';
+  String get achievementsStatBadgesUnlocked => 'Succès débloqués';
 
   @override
   String get achievementsStatScoreEarned => 'Score gagné';
 
   @override
-  String get achievementsStatCommonBadge => 'Badge le plus courant';
+  String get achievementsStatCommonBadge => 'Succès le plus courant';
 
   @override
   String get achievementsActivity => 'Activité';
@@ -11704,7 +11704,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get achievementsDoubleCreditBody =>
-      'Le prochain élément terminé compte double pour les badges.';
+      'Le prochain élément terminé compte double pour les succès.';
 
   @override
   String get achievementsStreakFreeze => 'Gel de série';
@@ -11759,7 +11759,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String achievementsBadgesEarned(int count) {
-    return 'Badges obtenus : $count';
+    return 'Succès obtenus : $count';
   }
 
   @override
