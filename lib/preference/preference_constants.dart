@@ -193,6 +193,14 @@ enum AutoHdrSwitchingBehavior {
   always,
 }
 
+/// How phones and tablets are held while a game plays. [auto] follows the
+/// device, so the system rotation lock applies.
+enum GamePlaybackOrientation {
+  landscape,
+  portrait,
+  auto,
+}
+
 /// Where mpv draws video on Windows: its own D3D11 window, or media_kit's
 /// texture inside the app.
 enum VideoRenderer {

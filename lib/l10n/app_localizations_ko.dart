@@ -652,6 +652,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gameFastForward => '빨리 감기';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => '에뮬레이터 설정';
 
   @override

@@ -760,6 +760,22 @@
   "@gameFastForward": {
     "description": "In-game menu action to toggle fast-forward"
   },
+  "gameOrientation": "Game orientation",
+  "@gameOrientation": {
+    "description": "Setting and in-game menu row for how the device is held while playing games"
+  },
+  "gameOrientationSubtitle": "Screen orientation while playing games",
+  "@gameOrientationSubtitle": {
+    "description": "Subtitle of the game orientation setting"
+  },
+  "landscape": "Landscape",
+  "@landscape": {
+    "description": "Orientation choice: the device held sideways"
+  },
+  "portrait": "Portrait",
+  "@portrait": {
+    "description": "Orientation choice: the device held upright"
+  },
   "gameEmulatorSettings": "Emulator settings",
   "@gameEmulatorSettings": {
     "description": "In-game menu action opening the emulator settings"

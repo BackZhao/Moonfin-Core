@@ -17,7 +17,11 @@ import '../../../data/services/core_download_service.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../data/services/retro_artwork/retro_artwork_activity_gate.dart';
 import '../../../playback/native_game_player.dart';
+import '../../../preference/preference_constants.dart';
+import '../../../preference/user_preferences.dart';
 import '../../../util/game_cores.dart';
+import '../../../util/touch_gamepad_layout.dart';
+import 'touch_gamepad.dart';
 import '../settings/emulator_core_settings_screen.dart';
 import '../../../util/game_storage.dart';
 import '../../../util/core_input_descriptors.dart';
@@ -213,6 +217,7 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
   int _settingsSelected = 0;
   int? _controllerMappingReturnSelection;
   int _fastForward = 1;
+  GamePlaybackOrientation _orientation = currentGamePlaybackOrientation();
   List<GameCoreOption> _options = const [];
 
   // When set, the overlay shows the value list for this option instead of the
@@ -717,13 +722,95 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
 
   void _onRemotePress(String? key) => _nav(key == 'select' ? 'confirm' : key);
 
-  // On-screen touch gamepad: each button toggles its RetroPad bit and the mask
-  // is sent to the core. The buttons have no pressed state to redraw, so this
-  // skips setState.
+  // On-screen touch gamepad. The pad widget owns the gesture state and hands
+  // over the merged bits and stick vectors, and the screen only forwards them.
   int _touchMask = 0;
-  void _touchPress(int bit, bool down) {
-    _touchMask = down ? _touchMask | bit : _touchMask & ~bit;
+  // Ports the core reads a stick on. A touch stick elsewhere snaps to the d-pad.
+  int _analogPorts = 0;
+  // The pad's own libretro controller type on port 0 (PlayStation DualShock).
+  int _touchPadType = retroDeviceJoypad;
+
+  void _onTouchMask(int mask) {
+    _touchMask = mask;
     _sendMask();
+  }
+
+  void _onTouchSticks(Offset left, Offset right) {
+    int ax(double v) => (v * 32767).round().clamp(-32767, 32767);
+    unawaited(
+      _player.setPadState(
+        0,
+        ax(left.dx),
+        ax(left.dy),
+        ax(right.dx),
+        ax(right.dy),
+      ),
+    );
+  }
+
+  void _onTouchPointer(bool pressed, double x, double y) => unawaited(
+    _player.setPointer(0, pressed, (x * 32767).round(), (y * 32767).round()),
+  );
+
+  Future<void> _refreshAnalogPorts() async {
+    final ports = await _player.analogStickPorts();
+    if (mounted && ports != _analogPorts) {
+      setState(() => _analogPorts = ports);
+    }
+  }
+
+  // The pad's own controller type applies only while no physical controller
+  // holds port 0, since a connected pad's saved type wins there.
+  Future<void> _applyTouchPadType(String coreId) async {
+    final type = GetIt.instance.isRegistered<UserPreferences>()
+        ? GetIt.instance<UserPreferences>().touchPadControllerType(coreId) ??
+              retroDeviceJoypad
+        : retroDeviceJoypad;
+    if (type == retroDeviceJoypad && _touchPadType == retroDeviceJoypad) {
+      return;
+    }
+    if (_controllerDevices.any((d) => d.port == 0)) return;
+    try {
+      await _player.setControllerType(0, type);
+      _touchPadType = type;
+    } catch (_) {
+      _touchPadType = retroDeviceJoypad;
+    }
+    unawaited(_refreshInputDescriptors());
+    await _refreshAnalogPorts();
+  }
+
+  bool get _hasTouchPadType =>
+      usesOnScreenControls && libretroCoreId(widget.core) == 'pcsx_rearmed';
+
+  Future<void> _cycleTouchPadType() async {
+    final coreId = libretroCoreId(widget.core);
+    if (coreId == null) return;
+    final next = _touchPadType == pcsxDualShockDeviceType
+        ? retroDeviceJoypad
+        : pcsxDualShockDeviceType;
+    if (GetIt.instance.isRegistered<UserPreferences>()) {
+      await GetIt.instance<UserPreferences>().setTouchPadControllerType(
+        coreId,
+        next,
+      );
+    }
+    if (_controllerDevices.any((d) => d.port == 0)) {
+      _showTransientMessage(
+        'Saved. A connected controller holds port 1, so its type stays.',
+      );
+      return;
+    }
+    try {
+      await _player.setControllerType(0, next);
+    } catch (_) {
+      _showTransientMessage('Controller type not supported by this core.');
+      return;
+    }
+    if (!mounted) return;
+    setState(() => _touchPadType = next);
+    unawaited(_refreshInputDescriptors());
+    unawaited(_refreshAnalogPorts());
   }
 
   // Desktop keyboard: Escape or Backspace opens the overlay, arrows and Enter
@@ -1012,6 +1099,15 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
       _controllers = await _player.controllerCount();
       _notifiedNavigationOnly = false;
       await _loadControllerTypes(coreId, games);
+      if (usesOnScreenControls) {
+        await _applyTouchPadType(coreId);
+        await _refreshAnalogPorts();
+        // The host only knows a port is analog once the core has read a
+        // stick, a couple of frames in, so ask again once the game is running.
+        Timer(const Duration(seconds: 1), () {
+          if (mounted) unawaited(_refreshAnalogPorts());
+        });
+      }
 
       await _player.start();
       if (!widget.startFresh) {
@@ -1326,6 +1422,19 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
       _OverlayAction('Controller mapping', _openControllerMapping),
     _OverlayAction('Emulator settings', _openSettings),
     _OverlayAction('Reset emulator settings', _resetEmulatorSettings),
+    // Phone-only rows go last so the rows above keep their index on every
+    // platform.
+    if (usesOnScreenControls)
+      _OverlayAction(
+        'Orientation: ${gamePlaybackOrientationLabel(_orientation, null)}',
+        _cycleOrientation,
+      ),
+    if (_hasTouchPadType)
+      _OverlayAction(
+        'Touch pad type: '
+        '${_touchPadType == pcsxDualShockDeviceType ? 'DualShock' : 'Standard'}',
+        _cycleTouchPadType,
+      ),
     _OverlayAction('Exit', _requestExit),
   ];
 
@@ -1385,6 +1494,12 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
       _overlayBack();
     } else {
       _player.pause();
+      if (usesOnScreenControls) {
+        // The pad leaves the tree while the menu is open, so its fingers never
+        // get an up event. Release whatever it was holding.
+        _onTouchMask(0);
+        _onTouchSticks(Offset.zero, Offset.zero);
+      }
       setState(() {
         _overlayOpen = true;
         _selected = 0;
@@ -2422,15 +2537,20 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
     if (mounted) context.pop();
   }
 
-  // Phones and tablets play full screen in landscape, the natural orientation
-  // for the on-screen pad and most games. TV and desktop are left alone.
+  // Phones and tablets play full screen in the orientation the user picked.
+  // TV and desktop are left alone.
   void _enterImmersive() {
     GamePlaybackSystemUi.enter(
       this,
       immersive: usesOnScreenControls,
-      lockLandscape: usesOnScreenControls,
+      orientations: usesOnScreenControls
+          ? deviceOrientationsFor(_orientation)
+          : null,
     );
   }
+
+  void _cycleOrientation() =>
+      setState(() => _orientation = cycleGamePlaybackOrientation(_orientation));
 
   Future<void> _restoreSystemUi() =>
       GamePlaybackSystemUi.restore(this, immersive: usesOnScreenControls);
@@ -2466,28 +2586,37 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
   }
 
   Widget _buildScaffold(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final safe = MediaQuery.paddingOf(context);
+    // Upright phones pin the picture to the top and put the pad under it, and
+    // everything else keeps the centred picture.
+    final padBelow = usesOnScreenControls && size.height > size.width;
+    final pictureRect = gamePictureRect(
+      size,
+      safe,
+      _aspect,
+      portrait: padBelow,
+    );
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         fit: StackFit.expand,
         children: [
           if (_textureId != null)
-            Center(
-              child: AspectRatio(
-                aspectRatio: _aspect,
-                // The core renders at its native resolution (a few hundred
-                // pixels per side) and this texture is stretched to the whole
-                // display. Texture defaults to FilterQuality.low, whose 2x2
-                // bilinear tap turns every source pixel into a gradient at the
-                // 4-8x magnification a TV asks for, which is why native cores
-                // looked soft next to EmulatorJS. Point sampling keeps the
-                // pixel art crisp. Scaling is still non-integer here, so
-                // pixels land on uneven widths; an integer prescale in the
-                // host removes that separately.
-                child: Texture(
-                  textureId: _textureId!,
-                  filterQuality: FilterQuality.none,
-                ),
+            Positioned.fromRect(
+              rect: pictureRect,
+              // The core renders at its native resolution (a few hundred
+              // pixels per side) and this texture is stretched to the whole
+              // display. Texture defaults to FilterQuality.low, whose 2x2
+              // bilinear tap turns every source pixel into a gradient at the
+              // 4-8x magnification a TV asks for, which is why native cores
+              // looked soft next to EmulatorJS. Point sampling keeps the
+              // pixel art crisp. Scaling is still non-integer here, so
+              // pixels land on uneven widths, and an integer prescale in the
+              // host removes that separately.
+              child: Texture(
+                textureId: _textureId!,
+                filterQuality: FilterQuality.none,
               ),
             ),
           if (_textureId == null && _error == null)
@@ -2615,7 +2744,8 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
             Positioned(
               left: 24,
               right: 24,
-              bottom: 88,
+              top: padBelow ? pictureRect.bottom + 60 : null,
+              bottom: padBelow ? null : 88,
               // Purely informational, so it never takes a press meant for the
               // on-screen pad underneath it.
               child: IgnorePointer(
@@ -2642,7 +2772,8 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
             Positioned(
               left: 24,
               right: 24,
-              bottom: 24,
+              top: padBelow ? pictureRect.bottom + 8 : null,
+              bottom: padBelow ? null : 24,
               // Purely informational, so it never takes a press meant for the
               // on-screen pad underneath it.
               child: IgnorePointer(
@@ -2666,7 +2797,20 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
               ),
             ),
           if (_textureId != null && !_overlayOpen && usesOnScreenControls)
-            _buildTouchControls(),
+            TouchGamepad(
+              core: widget.core,
+              size: size,
+              safe: safe,
+              pictureRect: pictureRect,
+              portrait: padBelow,
+              inputDescriptors: _inputDescriptors,
+              analogPorts: _analogPorts,
+              padType: _touchPadType,
+              onMask: _onTouchMask,
+              onSticks: _onTouchSticks,
+              onPointer: _onTouchPointer,
+              onMenu: _toggleOverlay,
+            ),
           if (_textureId != null &&
               !_overlayOpen &&
               !usesOnScreenControls &&
@@ -2681,164 +2825,20 @@ class _NativeGamePlayerScreenState extends State<NativeGamePlayerScreen>
                 ),
               ),
             ),
-          if (_startHeld && !_overlayOpen) _buildHoldIndicator(),
+          if (_startHeld && !_overlayOpen)
+            _buildHoldIndicator(top: padBelow ? pictureRect.bottom + 8 : null),
           if (_overlayOpen) _buildOverlay(),
         ],
       ),
     );
   }
 
-  Widget _touchButton(int bit, Widget label, {double size = 56}) {
-    return GestureDetector(
-      onTapDown: (_) => _touchPress(bit, true),
-      onTapUp: (_) => _touchPress(bit, false),
-      onTapCancel: () => _touchPress(bit, false),
-      child: Container(
-        width: size,
-        height: size,
-        margin: const EdgeInsets.all(6),
-        decoration: const BoxDecoration(
-          color: Colors.white24,
-          shape: BoxShape.circle,
-        ),
-        alignment: Alignment.center,
-        child: DefaultTextStyle(
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-          child: label,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTouchControls() {
-    const white = Colors.white;
-    return Positioned.fill(
-      child: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              left: 16,
-              bottom: 24,
-              child: SizedBox(
-                width: 168,
-                height: 168,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: _touchButton(
-                        1 << 4,
-                        const Icon(Icons.keyboard_arrow_up, color: white),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: _touchButton(
-                        1 << 5,
-                        const Icon(Icons.keyboard_arrow_down, color: white),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: _touchButton(
-                        1 << 6,
-                        const Icon(Icons.keyboard_arrow_left, color: white),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: _touchButton(
-                        1 << 7,
-                        const Icon(Icons.keyboard_arrow_right, color: white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              right: 16,
-              bottom: 24,
-              child: SizedBox(
-                width: 168,
-                height: 168,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: _touchButton(1 << 9, const Text('X')),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: _touchButton(1 << 0, const Text('B')),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: _touchButton(1 << 1, const Text('Y')),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: _touchButton(1 << 8, const Text('A')),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 16,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _touchButton(
-                      1 << 2,
-                      const Text('SEL', style: TextStyle(fontSize: 11)),
-                      size: 44,
-                    ),
-                    _touchButton(
-                      1 << 3,
-                      const Text('START', style: TextStyle(fontSize: 10)),
-                      size: 44,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Shoulder buttons, used by PlayStation, SNES, and Game Boy Advance.
-            Positioned(
-              left: 24,
-              bottom: 200,
-              child: _touchButton(1 << 10, const Text('L')),
-            ),
-            Positioned(
-              right: 24,
-              bottom: 200,
-              child: _touchButton(1 << 11, const Text('R')),
-            ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: IconButton(
-                icon: const Icon(Icons.menu, color: white, size: 30),
-                onPressed: _toggleOverlay,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHoldIndicator() {
+  Widget _buildHoldIndicator({double? top}) {
     return Positioned(
       left: 0,
       right: 0,
-      bottom: 40,
+      top: top,
+      bottom: top == null ? 40 : null,
       child: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

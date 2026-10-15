@@ -1198,6 +1198,30 @@ abstract class AppLocalizations {
   /// **'Fast-forward'**
   String get gameFastForward;
 
+  /// Setting and in-game menu row for how the device is held while playing games
+  ///
+  /// In en, this message translates to:
+  /// **'Game orientation'**
+  String get gameOrientation;
+
+  /// Subtitle of the game orientation setting
+  ///
+  /// In en, this message translates to:
+  /// **'Screen orientation while playing games'**
+  String get gameOrientationSubtitle;
+
+  /// Orientation choice: the device held sideways
+  ///
+  /// In en, this message translates to:
+  /// **'Landscape'**
+  String get landscape;
+
+  /// Orientation choice: the device held upright
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait'**
+  String get portrait;
+
   /// In-game menu action opening the emulator settings
   ///
   /// In en, this message translates to:

@@ -660,6 +660,19 @@ class AppLocalizationsTa extends AppLocalizations {
   String get gameFastForward => 'வேகமாக முன்னோக்கி';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'எமுலேட்டர் அமைப்புகள்';
 
   @override

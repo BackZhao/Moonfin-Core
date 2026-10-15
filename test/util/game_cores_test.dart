@@ -471,6 +471,19 @@ void _coreOptionDefaultsTests() {
       expect(withCoreOptionDefaults('snes9x', null), isNull);
     });
 
+    test('melonDS reads the touch pad unless the user chose otherwise', () {
+      expect(
+        withCoreOptionDefaults('melonds', null)!['melonds_touch_mode'],
+        'Touch',
+      );
+      expect(
+        withCoreOptionDefaults('melonds', {
+          'melonds_touch_mode': 'Mouse',
+        })!['melonds_touch_mode'],
+        'Mouse',
+      );
+    });
+
     test('Windows defaults N64 to the software renderer', () {
       debugDefaultTargetPlatformOverride = TargetPlatform.windows;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);

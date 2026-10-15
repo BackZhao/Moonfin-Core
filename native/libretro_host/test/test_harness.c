@@ -549,17 +549,21 @@ static void test_analog_via_core(const char *core_path, const char *rom_path,
   // from zero, so any swapped field shows up as a mismatch.
   lh_set_pad_state(host, 0, 1u << RETRO_DEVICE_ID_JOYPAD_B, 111, -222, 333,
                    -444, 0x1111, 0x2222);
+  // A touch on the lower-right quadrant. The sign and the two distinct values
+  // catch a swapped or truncated axis.
+  lh_set_pointer(host, 0, 1, 555, -666);
 
   lh_start(host);
   msleep(200);
 
-  int lx, ly, rx, ry, l2, r2, db, ds, mx, gx, px;
+  int lx, ly, rx, ry, l2, r2, db, ds, mx, gx, px, py, pp, pc, p2;
   int parsed = sscanf(g_last_message,
                       "stub analog lx=%d ly=%d rx=%d ry=%d l2=%d r2=%d "
-                      "db=%d ds=%d mx=%d gx=%d px=%d",
-                      &lx, &ly, &rx, &ry, &l2, &r2, &db, &ds, &mx, &gx, &px);
-  CHECK(parsed == 11, "stub core's analog probe message parses");
-  if (parsed == 11) {
+                      "db=%d ds=%d mx=%d gx=%d px=%d py=%d pp=%d pc=%d p2=%d",
+                      &lx, &ly, &rx, &ry, &l2, &r2, &db, &ds, &mx, &gx, &px,
+                      &py, &pp, &pc, &p2);
+  CHECK(parsed == 15, "stub core's analog probe message parses");
+  if (parsed == 15) {
     CHECK(lx == 111 && ly == -222,
           "left stick reaches the core through input_state_cb");
     CHECK(rx == 333 && ry == -444,
@@ -575,7 +579,12 @@ static void test_analog_via_core(const char *core_path, const char *rom_path,
           "returns 0");
     CHECK(mx == 0, "RETRO_DEVICE_MOUSE still returns 0");
     CHECK(gx == 0, "RETRO_DEVICE_LIGHTGUN still returns 0");
-    CHECK(px == 0, "RETRO_DEVICE_POINTER still returns 0");
+    CHECK(px == 555 && py == -666,
+          "RETRO_DEVICE_POINTER returns the touch position set by "
+          "lh_set_pointer");
+    CHECK(pp == 1 && pc == 1,
+          "a pressed pointer reports PRESSED and a COUNT of one");
+    CHECK(p2 == 0, "a second pointer index is never pressed");
   }
 
   lh_stop(host);

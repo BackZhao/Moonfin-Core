@@ -164,6 +164,23 @@ class _FakeNativeGamePlayer implements NativeGamePlayer {
   @override
   Stream<Map<String, dynamic>> get events => _eventsController.stream;
 
+  @override
+  Future<void> setPadState(
+    int port,
+    int lx,
+    int ly,
+    int rx,
+    int ry, {
+    int l2 = 0,
+    int r2 = 0,
+  }) async {}
+
+  @override
+  Future<int> analogStickPorts() async => 0;
+
+  @override
+  Future<void> setPointer(int port, bool pressed, int x, int y) async {}
+
   void emitError(String message) {
     _eventsController.add({'event': 'error', 'message': message});
   }

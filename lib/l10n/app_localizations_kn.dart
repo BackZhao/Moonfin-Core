@@ -661,6 +661,19 @@ class AppLocalizationsKn extends AppLocalizations {
   String get gameFastForward => 'ಫಾಸ್ಟ್-ಫಾರ್ವರ್ಡ್';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'ಎಮ್ಯುಲೇಟರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು';
 
   @override

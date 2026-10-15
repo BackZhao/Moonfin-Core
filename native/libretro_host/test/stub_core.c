@@ -467,13 +467,23 @@ static void probe_analog(void) {
                                  RETRO_DEVICE_ID_LIGHTGUN_SCREEN_X);
   int16_t pointer_x =
       input_state_cb(0, RETRO_DEVICE_POINTER, 0, RETRO_DEVICE_ID_POINTER_X);
+  int16_t pointer_y =
+      input_state_cb(0, RETRO_DEVICE_POINTER, 0, RETRO_DEVICE_ID_POINTER_Y);
+  int16_t pointer_pressed = input_state_cb(0, RETRO_DEVICE_POINTER, 0,
+                                           RETRO_DEVICE_ID_POINTER_PRESSED);
+  int16_t pointer_count = input_state_cb(0, RETRO_DEVICE_POINTER, 0,
+                                         RETRO_DEVICE_ID_POINTER_COUNT);
+  // A second touch is never reported: the host carries one pointer per port.
+  int16_t pointer2_pressed = input_state_cb(0, RETRO_DEVICE_POINTER, 1,
+                                            RETRO_DEVICE_ID_POINTER_PRESSED);
 
   char text[256];
   snprintf(text, sizeof(text),
           "stub analog lx=%d ly=%d rx=%d ry=%d l2=%d r2=%d db=%d ds=%d "
-          "mx=%d gx=%d px=%d",
+          "mx=%d gx=%d px=%d py=%d pp=%d pc=%d p2=%d",
           lx, ly, rx, ry, l2, r2, derived_b, derived_start, mouse_x, gun_x,
-          pointer_x);
+          pointer_x, pointer_y, pointer_pressed, pointer_count,
+          pointer2_pressed);
   struct retro_message msg = {text, 1};
   env_cb(RETRO_ENVIRONMENT_SET_MESSAGE, &msg);
 }

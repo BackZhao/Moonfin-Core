@@ -662,6 +662,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get gameFastForward => 'Tua nhanh';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'Cài đặt trình giả lập';
 
   @override

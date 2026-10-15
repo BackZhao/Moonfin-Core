@@ -510,6 +510,10 @@ struct lh_host {
   // l2 packed in the high 16 bits, r2 in the low, for the same reason.
   atomic_uint trigger_level[LH_MAX_PORTS];
   atomic_uint trigger_frame[LH_MAX_PORTS];     // published, read cross-thread
+  // Touchscreen pointer, a level like the sticks. [0] packs x,y so a touch
+  // position can't tear, [1] is pressed.
+  atomic_uint pointer_level[LH_MAX_PORTS][2];
+  atomic_uint pointer_frame[LH_MAX_PORTS][2];  // published, read cross-thread
 
   // Ports the core has actually READ an analog stick on, bit N = port N; half
   // of lh_analog_stick_ports' answer. Written from whatever thread the core
@@ -1181,6 +1185,10 @@ static void reset_analog_state(struct lh_host *h) {
     atomic_store(&h->analog_frame[p][0], 0u);
     atomic_store(&h->analog_frame[p][1], 0u);
     atomic_store(&h->trigger_frame[p], 0u);
+    atomic_store(&h->pointer_level[p][0], 0u);
+    atomic_store(&h->pointer_level[p][1], 0u);
+    atomic_store(&h->pointer_frame[p][0], 0u);
+    atomic_store(&h->pointer_frame[p][1], 0u);
   }
 }
 
@@ -2036,6 +2044,12 @@ static void latch_analog(struct lh_host *h) {
     atomic_store_explicit(&h->trigger_frame[p],
                           atomic_load(&h->trigger_level[p]),
                           memory_order_release);
+    atomic_store_explicit(&h->pointer_frame[p][0],
+                          atomic_load(&h->pointer_level[p][0]),
+                          memory_order_release);
+    atomic_store_explicit(&h->pointer_frame[p][1],
+                          atomic_load(&h->pointer_level[p][1]),
+                          memory_order_release);
   }
 }
 
@@ -2273,6 +2287,21 @@ static int16_t RETRO_CALLCONV input_state_cb(unsigned port, unsigned device,
                  : 0;
     }
     return 0;
+  }
+
+  if (device == RETRO_DEVICE_POINTER) {
+    if (index != 0) return 0;  // one touch per port
+    unsigned pressed = atomic_load_explicit(&h->pointer_frame[port][1],
+                                            memory_order_acquire);
+    uint32_t xy = atomic_load_explicit(&h->pointer_frame[port][0],
+                                       memory_order_acquire);
+    switch (id) {
+      case RETRO_DEVICE_ID_POINTER_X: return unpack_x(xy);
+      case RETRO_DEVICE_ID_POINTER_Y: return unpack_y(xy);
+      case RETRO_DEVICE_ID_POINTER_PRESSED:
+      case RETRO_DEVICE_ID_POINTER_COUNT: return pressed ? 1 : 0;
+      default: return 0;
+    }
   }
 
   if (device != RETRO_DEVICE_JOYPAD) return 0;
@@ -2676,6 +2705,15 @@ void lh_set_pad_state(lh_host *host, int port, uint16_t mask, int16_t lx,
   // Same digital transition recording as lh_set_input. That entry point stays
   // separate for platforms and tests that do not publish analog state.
   set_digital_input(host, port, mask);
+}
+
+void lh_set_pointer(lh_host *host, int port, int pressed, int16_t x,
+                    int16_t y) {
+  if (!host || port < 0 || port >= LH_MAX_PORTS) return;
+  // Position first, for the same reason as the analog-first order above: a
+  // poll that sees the press already sees where it landed.
+  atomic_store(&host->pointer_level[port][0], pack_axes(x, y));
+  atomic_store(&host->pointer_level[port][1], pressed ? 1u : 0u);
 }
 
 void lh_test_poll_input(lh_host *host) {

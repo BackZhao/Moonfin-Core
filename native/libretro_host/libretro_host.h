@@ -238,6 +238,11 @@ void lh_set_pad_state(lh_host *host, int port, uint16_t mask,
                       int16_t lx, int16_t ly, int16_t rx, int16_t ry,
                       uint16_t l2, uint16_t r2);
 
+// Touchscreen for cores that read RETRO_DEVICE_POINTER (melonDS). A level, not
+// an edge: [x]/[y] are -32767..32767 across the whole video frame and the
+// platform sends pressed=0 on finger-up. One pointer per port.
+void lh_set_pointer(lh_host *host, int port, int pressed, int16_t x, int16_t y);
+
 // Loads [core_path] and [rom_path]. [system_dir] and [save_dir] back the core's
 // directory requests. [game_id] names the SRAM file. [opt_keys]/[opt_vals] seed
 // core options (may be NULL when [opt_count] is 0). Fills [out_info] and returns

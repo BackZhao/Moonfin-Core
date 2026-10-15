@@ -661,6 +661,19 @@ class AppLocalizationsHi extends AppLocalizations {
   String get gameFastForward => 'फ़ास्ट-फ़ॉरवर्ड';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'एमुलेटर सेटिंग्स';
 
   @override

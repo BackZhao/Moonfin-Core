@@ -662,6 +662,19 @@ class AppLocalizationsTe extends AppLocalizations {
   String get gameFastForward => 'ఫాస్ట్-ఫార్వర్డ్';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'ఎమ్యులేటర్ సెట్టింగ్‌లు';
 
   @override

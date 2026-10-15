@@ -14,6 +14,7 @@ import '../../navigation/destinations.dart';
 import '../../widgets/adaptive/adaptive_glass.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../data/services/retro_artwork/retro_artwork_activity_gate.dart';
+import '../../../preference/preference_constants.dart';
 import '../../../util/game_cores.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/focus/gamepad/gamepad_suppressor.dart';
@@ -106,6 +107,7 @@ class _GameEmulatorScreenState extends State<GameEmulatorScreen>
   // Cached in build() so the gamepad-driven action list (built outside a build context) can
   // read localized labels.
   AppLocalizations? _l10n;
+  GamePlaybackOrientation _orientation = currentGamePlaybackOrientation();
 
   bool _overlayOpen = false;
   int _selected = 0;
@@ -364,9 +366,17 @@ class _GameEmulatorScreenState extends State<GameEmulatorScreen>
     GamePlaybackSystemUi.enter(
       this,
       immersive: true,
-      lockLandscape: !PlatformDetection.isTV,
+      orientations: PlatformDetection.isTV
+          ? null
+          : deviceOrientationsFor(_orientation),
     );
   }
+
+  void _cycleOrientation() =>
+      setState(() => _orientation = cycleGamePlaybackOrientation(_orientation));
+
+  bool get _portrait =>
+      MediaQuery.orientationOf(context) == Orientation.portrait;
 
   Future<void> _restoreSystemUi() =>
       GamePlaybackSystemUi.restore(this, immersive: true);
@@ -716,6 +726,13 @@ class _GameEmulatorScreenState extends State<GameEmulatorScreen>
         _fastForward ? 'On' : 'Off',
         _toggleFastForward,
       ),
+      if (usesOnScreenControls)
+        _OverlayItem(
+          Icons.screen_rotation_outlined,
+          l?.gameOrientation ?? 'Orientation',
+          gamePlaybackOrientationLabel(_orientation, l),
+          _cycleOrientation,
+        ),
       _OverlayItem(
         Icons.gamepad_outlined,
         'Controller settings',
@@ -1346,13 +1363,14 @@ class _GameEmulatorScreenState extends State<GameEmulatorScreen>
               const Center(child: CircularProgressIndicator())
             else
               // Inset the game surface from the side notches so EmulatorJS's
-              // on-screen controls are not eaten by the cutout in landscape.
+              // on-screen controls aren't eaten by the cutout in landscape,
+              // and from the top and bottom bars when held upright.
               Positioned.fill(
                 child: SafeArea(
                   left: true,
                   right: true,
-                  top: false,
-                  bottom: false,
+                  top: _portrait,
+                  bottom: _portrait,
                   child: InAppWebView(
                     key: const ValueKey('game-emulator-webview'),
                     webViewEnvironment: gWebViewEnvironment,

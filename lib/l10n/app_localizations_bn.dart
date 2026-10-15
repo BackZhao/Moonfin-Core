@@ -660,6 +660,19 @@ class AppLocalizationsBn extends AppLocalizations {
   String get gameFastForward => 'ফাস্ট-ফরওয়ার্ড';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'এমুলেটর সেটিংস';
 
   @override

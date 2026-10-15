@@ -789,6 +789,16 @@ class UserPreferences extends ChangeNotifier {
   Future<void> setGameGridCellAspect(String scope, double aspectRatio) =>
       _store.setDouble('$_gameGridCellAspectPrefix$scope', aspectRatio);
 
+  static const String _touchPadTypePrefix = 'touch_pad_type:';
+
+  /// The on-screen pad's libretro controller type for a core, null for the
+  /// core's default pad. Per device, like the pad itself.
+  int? touchPadControllerType(String coreId) =>
+      _store.getInt('$_touchPadTypePrefix$coreId');
+
+  Future<void> setTouchPadControllerType(String coreId, int deviceType) =>
+      _store.setInt('$_touchPadTypePrefix$coreId', deviceType);
+
   bool containsPreferenceKey(String key) => _store.containsKey(key);
 
   bool containsPreference<T>(Preference<T> pref, {bool scopedOnly = false}) {
@@ -1177,6 +1187,14 @@ class UserPreferences extends ChangeNotifier {
   static final useNativeEmulator = Preference(
     key: 'pref_use_native_emulator',
     defaultValue: true,
+  );
+
+  /// How the device is held while a game plays, for both game backends.
+  /// Deliberately not synced: it belongs to the device in hand.
+  static final gamePlaybackOrientation = EnumPreference(
+    key: 'pref_game_playback_orientation',
+    defaultValue: GamePlaybackOrientation.landscape,
+    values: GamePlaybackOrientation.values,
   );
 
   /// Enables Android's experimental libretro hardware-rendering path.

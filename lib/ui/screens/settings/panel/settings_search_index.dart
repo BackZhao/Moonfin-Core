@@ -1750,6 +1750,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         subtitle: l10n.useNativeEmulatorSubtitle,
         keywords: ['games', 'retroarch'],
       ),
+    if (usesOnScreenControls)
+      playback.leaf(
+        'pref_game_playback_orientation',
+        l10n.gameOrientation,
+        subtitle: l10n.gameOrientationSubtitle,
+        keywords: ['rotate', 'landscape', 'portrait', 'games'],
+      ),
     if (supportsCoreDownloads && usesNativeGameBackend)
       emulatorCores.screen(keywords: ['retroarch', 'games', 'systems']),
     if (usesNativeGameBackend)

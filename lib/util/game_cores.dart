@@ -406,6 +406,9 @@ const Map<String, Map<String, String>> coreOptionDefaults = {
     // 1500 reached a stable plateau in the measured N64 runs.
     'mupen64plus-MaxTxCacheSize': '1500',
   },
+  // The core's default is a relative mouse, which the touch pad can't drive.
+  // Touch reads the pointer the pad sends for the lower screen.
+  'melonds': {'melonds_touch_mode': 'Touch'},
 };
 
 /// Windows-only additions to [coreOptionDefaults].

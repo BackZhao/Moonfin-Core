@@ -660,6 +660,19 @@ class AppLocalizationsSv extends AppLocalizations {
   String get gameFastForward => 'Snabbspolning framåt';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'Emulatorinställningar';
 
   @override

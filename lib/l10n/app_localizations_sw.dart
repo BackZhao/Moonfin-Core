@@ -662,6 +662,19 @@ class AppLocalizationsSw extends AppLocalizations {
   String get gameFastForward => 'Sogeza mbele haraka';
 
   @override
+  String get gameOrientation => 'Game orientation';
+
+  @override
+  String get gameOrientationSubtitle =>
+      'Screen orientation while playing games';
+
+  @override
+  String get landscape => 'Landscape';
+
+  @override
+  String get portrait => 'Portrait';
+
+  @override
   String get gameEmulatorSettings => 'Mipangilio ya emulator';
 
   @override
