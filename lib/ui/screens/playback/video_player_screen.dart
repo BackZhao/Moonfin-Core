@@ -7316,16 +7316,20 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
   }
 
   /// Nothing cropped: the user's zoom mode. A fullscreen display covers an
-  /// mpv crop that is wider than its source, since fit would show bars again
-  /// on a 16:9 screen. A window and a narrower crop keep the whole picture.
-  /// Media3 zooms into its crop.
+  /// mpv crop that is wider than the screen, since fit would show bars again.
+  /// A window and a narrower crop keep the whole picture. Media3 zooms into
+  /// its crop.
   ZoomMode get _effectiveZoomMode {
     if (!_letterboxCropApplied) return _zoomMode;
     final fullscreen =
         !PlatformDetection.useDesktopUi || _isDesktopFullscreen;
     final cropper = _activeMediaKitBackend?.letterboxCropper;
     if (cropper is MpvLetterboxCropper) {
-      return fullscreen && cropper.fillsFrame ? ZoomMode.autoCrop : ZoomMode.fit;
+      final screen = MediaQuery.sizeOf(context);
+      return fullscreen &&
+              cropper.fillsWindow(width: screen.width, height: screen.height)
+          ? ZoomMode.autoCrop
+          : ZoomMode.fit;
     }
     return fullscreen ? ZoomMode.autoCrop : _zoomMode;
   }
