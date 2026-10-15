@@ -12133,19 +12133,19 @@
     },
     "locallyDecodedCodecs": "Codecs décodés localement",
     "transcodeTargetCodecs": "Codecs cibles du transcodage",
-    "achievementBadges": "Badges de succès",
+    "achievementBadges": "Succès",
     "@achievementBadges": {
         "description": "Title of the Achievement Badges plugin panel"
     },
-    "achievementBadgesSubtitle": "Badges, rangs et quêtes obtenus grâce à ce que vous regardez",
+    "achievementBadgesSubtitle": "Succès, rangs et quêtes obtenus grâce à ce que vous regardez",
     "@achievementBadgesSubtitle": {
         "description": "Subtitle of the Achievement Badges entry in Integrations"
     },
-    "achievementsBadges": "Badges",
+    "achievementsBadges": "Liste des succès",
     "@achievementsBadges": {
         "description": "Badges section title"
     },
-    "achievementsBadgeCount": "{unlocked} sur {total} badges",
+    "achievementsBadgeCount": "{unlocked} succès sur {total}",
     "@achievementsBadgeCount": {
         "description": "How many badges are unlocked out of the total",
         "placeholders": {
@@ -12161,15 +12161,15 @@
     "@achievementsUnlockToasts": {
         "description": "Switch that shows a notification when the user unlocks a badge"
     },
-    "achievementsUnlockToastsSubtitle": "Affiche une notification lorsque vous débloquez un badge",
+    "achievementsUnlockToastsSubtitle": "Affiche une notification lorsque vous débloquez un succès",
     "@achievementsUnlockToastsSubtitle": {
         "description": "Subtitle of the unlock notifications switch"
     },
-    "achievementsUnlockedNotification": "Badge débloqué",
+    "achievementsUnlockedNotification": "Succès débloqué",
     "@achievementsUnlockedNotification": {
         "description": "Title of the notification for one newly unlocked badge"
     },
-    "achievementsUnlockedCount": "{count, plural, one{{count} badge débloqué} other{{count} badges débloqués}}",
+    "achievementsUnlockedCount": "{count, plural, one{{count} succès débloqué} other{{count} succès débloqués}}",
     "@achievementsUnlockedCount": {
         "description": "Title of the notification for several badges unlocked at once",
         "placeholders": {
@@ -12367,7 +12367,7 @@
     "@achievementsSuggested": {
         "description": "Header above the items the plugin suggests for a badge"
     },
-    "achievementsNoSuggestions": "Rien à suggérer pour ce badge.",
+    "achievementsNoSuggestions": "Rien à suggérer pour ce succès.",
     "@achievementsNoSuggestions": {
         "description": "Shown when the plugin has no items to recommend for a badge"
     },
@@ -12548,7 +12548,7 @@
     "@achievementsStatUsers": {
         "description": "Counter label for how many people use the server"
     },
-    "achievementsStatBadgesUnlocked": "Badges débloqués",
+    "achievementsStatBadgesUnlocked": "Succès débloqués",
     "@achievementsStatBadgesUnlocked": {
         "description": "Counter label"
     },
@@ -12556,7 +12556,7 @@
     "@achievementsStatScoreEarned": {
         "description": "Counter label"
     },
-    "achievementsStatCommonBadge": "Badge le plus courant",
+    "achievementsStatCommonBadge": "Succès le plus courant",
     "@achievementsStatCommonBadge": {
         "description": "Label for the badge the most users hold"
     },
@@ -12632,7 +12632,7 @@
     "@achievementsDoubleCredit": {
         "description": "Power-up that makes the next item count twice"
     },
-    "achievementsDoubleCreditBody": "Le prochain élément terminé compte double pour les badges.",
+    "achievementsDoubleCreditBody": "Le prochain élément terminé compte double pour les succès.",
     "@achievementsDoubleCreditBody": {
         "description": "What the Double Credit power-up does"
     },
@@ -12698,7 +12698,7 @@
             }
         }
     },
-    "achievementsBadgesEarned": "Badges obtenus : {count}",
+    "achievementsBadgesEarned": "Succès obtenus : {count}",
     "@achievementsBadgesEarned": {
         "description": "How many badges were earned in the recap period",
         "placeholders": {
