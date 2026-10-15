@@ -296,6 +296,7 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
             .sink { [weak self] id in
                 guard let self else { return }
                 self.currentSubtitleTrackIndex = self.ordinal(for: id, in: self.subtitleTable)
+                self.subtitleOverlay.keepsVideoComposited = id != nil
                 self.resetAssState()
             }
             .store(in: &cancellables)
