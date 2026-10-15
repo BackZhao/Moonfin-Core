@@ -13830,5 +13830,9 @@
     "rendererModeSkia": "Skia",
     "@rendererModeSkia": {
         "description": "Renderer option: always use the Skia renderer"
+    },
+    "additionalParts": "Oheisosat",
+    "@additionalParts": {
+        "description": "Heading for the other files of a movie split across several files, like DVD1 and DVD2"
     }
 }
