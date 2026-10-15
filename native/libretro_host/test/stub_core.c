@@ -67,6 +67,9 @@ static struct retro_hw_render_callback hw_cb;
 #define STUB_PREF_SENTINEL 999u
 static unsigned hw_pref_value;
 static int hw_pref_rc;
+// stub_hw=gles3_lategeo reports 0x0 geometry until retro_load_game ends, as
+// PPSSPP does. gles3_nogeo never reports a size. 0 normal, 1 late, 2 never.
+static int32_t geo_zero_mode;
 
 static void stub_context_reset(void) {
   hw_reset_count++;
@@ -279,7 +282,7 @@ void retro_set_environment(retro_environment_t cb) {
       {"stub_bad_pitch", "Bad pitch; off|on"},
       {"stub_vfs_dir_check", "VFS dir check; off|on"},
       {"stub_analog_check", "Analog check; off|on"},
-      {"stub_hw", "Hardware render; off|gles3|gles2|vulkan"},
+      {"stub_hw", "Hardware render; off|gles3|gles2|vulkan|gles3_lategeo|gles3_nogeo"},
       {"stub_analog_query", "Analog query ports; off|p0|p1|p0p1|p1btn|p2"},
       {"stub_repeat_geometry", "Repeat geometry; off|on"},
       {"stub_unserved", "Probe unserved env commands; off|on"},
@@ -573,13 +576,14 @@ void retro_get_system_info(struct retro_system_info *info) {
 
 void retro_get_system_av_info(struct retro_system_av_info *info) {
   memset(info, 0, sizeof(*info));
+  info->timing.fps = 60.0;
+  info->timing.sample_rate = 44100.0;
+  if (geo_zero_mode) return;
   info->geometry.base_width = STUB_WIDTH;
   info->geometry.base_height = STUB_HEIGHT;
   info->geometry.max_width = STUB_WIDTH;
   info->geometry.max_height = STUB_HEIGHT;
   info->geometry.aspect_ratio = (float)STUB_WIDTH / (float)STUB_HEIGHT;
-  info->timing.fps = 60.0;
-  info->timing.sample_rate = 44100.0;
 }
 
 // Packs 8-bit r/g/b into [dst] using [fmt], mirroring the host's unpack_pixel
@@ -609,6 +613,7 @@ bool retro_load_game(const struct retro_game_info *game) {
   hw_reset_count = 0;
   hw_destroy_count = 0;
   hw_fb_queries = 0;
+  geo_zero_mode = 0;
   hw_pref_value = STUB_PREF_SENTINEL;
   hw_pref_rc = env_cb(RETRO_ENVIRONMENT_GET_PREFERRED_HW_RENDER, &hw_pref_value)
                    ? 1
@@ -652,6 +657,8 @@ bool retro_load_game(const struct retro_game_info *game) {
     } else {
       hw_cb.context_type = RETRO_HW_CONTEXT_OPENGLES3;
       hw_cb.version_major = 3;
+      if (strcmp(hw_var.value, "gles3_lategeo") == 0) geo_zero_mode = 1;
+      if (strcmp(hw_var.value, "gles3_nogeo") == 0) geo_zero_mode = 2;
     }
     hw_cb.context_reset = stub_context_reset;
     hw_cb.context_destroy = stub_context_destroy;
@@ -771,6 +778,7 @@ bool retro_load_game(const struct retro_game_info *game) {
     env_cb(RETRO_ENVIRONMENT_SET_MESSAGE, &umsg);
   }
 
+  if (geo_zero_mode == 1) geo_zero_mode = 0;
   return true;
 }
 

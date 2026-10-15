@@ -1844,9 +1844,12 @@ static int hw_supports(void *user, const lh_hw_request *req) {
   g_hw_supports_calls++;
   return 1;
 }
+static int g_hw_created_w;
+static int g_hw_created_h;
 static int hw_context_create(void *user, const lh_hw_request *req) {
   (void)user;
-  (void)req;
+  g_hw_created_w = req->max_width;
+  g_hw_created_h = req->max_height;
   g_hw_calls++;
   g_hw_creates++;
   return 0;
@@ -2044,6 +2047,46 @@ int main(int argc, char **argv) {
           "no software frames on the GLES2 hardware path");
     lh_stop(g2);
     lh_destroy(g2);
+  }
+
+  // PPSSPP asks for GLES while its geometry still reads 0x0.
+  {
+    printf("a hardware request made before the geometry is known:\n");
+    lh_hw_backend good = make_hw_backend();
+    lh_host *lg = lh_create(LH_FORMAT_RGBA8888, make_callbacks());
+    lh_set_hw_backend(lg, &good, NULL);
+    g_hw_creates = 0;
+    g_hw_presents = 0;
+    g_hw_created_w = g_hw_created_h = 0;
+    const char *keys[] = {"stub_hw"};
+    const char *vals[] = {"gles3_lategeo"};
+    lh_av_info av;
+    CHECK(lh_load(lg, core_path, rom_path, work_dir, work_dir, "lategeo", keys,
+                  vals, 1, &av) == 0,
+          "a GLES request with 0x0 geometry is accepted");
+    int rw = 0, rh = 0;
+    CHECK(lh_hw_render_size(lg, &rw, &rh) == 1 && rw == SRC_W && rh == SRC_H,
+          "the render size comes from the geometry after the load");
+    lh_start(lg);
+    msleep(200);
+    CHECK(atomic_load(&g_hw_creates) == 1 && g_hw_created_w == SRC_W &&
+              g_hw_created_h == SRC_H,
+          "the context is created at the final size");
+    CHECK(lh_hw_active(lg) == 1 && atomic_load(&g_hw_presents) > 0,
+          "frames are presented on the hardware path");
+    lh_stop(lg);
+    lh_destroy(lg);
+
+    lh_host *ng = lh_create(LH_FORMAT_RGBA8888, make_callbacks());
+    lh_set_hw_backend(ng, &good, NULL);
+    g_hw_creates = 0;
+    const char *ng_vals[] = {"gles3_nogeo"};
+    CHECK(lh_load(ng, core_path, rom_path, work_dir, work_dir, "nogeo", keys,
+                  ng_vals, 1, &av) == LH_ERR_CONTENT_REJECTED,
+          "a core that never declares a size fails the load");
+    CHECK(atomic_load(&g_hw_creates) == 0 && lh_hw_render_size(ng, &rw, &rh) == 0,
+          "and no context or render size is left behind");
+    lh_destroy(ng);
   }
 
   {

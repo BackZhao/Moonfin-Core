@@ -120,6 +120,8 @@ typedef struct {
   int bottom_left_origin;
   int debug_context;
   // Maximum render-target dimensions. The target is fixed for the session.
+  // supports() can see 0 here: some cores declare their size only after
+  // SET_HW_RENDER, and context_create always gets the final size.
   int max_width;
   int max_height;
 } lh_hw_request;

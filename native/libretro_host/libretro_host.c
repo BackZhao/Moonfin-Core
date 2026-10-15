@@ -1796,6 +1796,19 @@ static int hw_api_from_context_type(unsigned type, lh_hw_api *out) {
   }
 }
 
+// Sizes the render target from the core's declared maximum, or its base size
+// where the maximum is 0. Returns 1 when usable, 0 while the size is still 0,
+// and -1 when it is too large.
+static int hw_size_target(lh_hw_request *req,
+                          const struct retro_game_geometry *g) {
+  unsigned w = g->max_width ? g->max_width : g->base_width;
+  unsigned h = g->max_height ? g->max_height : g->base_height;
+  if (w > LH_MAX_FRAME_DIMENSION || h > LH_MAX_FRAME_DIMENSION) return -1;
+  req->max_width = (int)w;
+  req->max_height = (int)h;
+  return w > 0 && h > 0;
+}
+
 // Record a SET_HW_RENDER request; context creation is deferred to the loop.
 static bool hw_note_request(struct lh_host *h,
                             struct retro_hw_render_callback *cb) {
@@ -1819,19 +1832,15 @@ static bool hw_note_request(struct lh_host *h,
   req.bottom_left_origin = cb->bottom_left_origin ? 1 : 0;
   req.debug_context = cb->debug_context ? 1 : 0;
 
-  // Size the target once from the core's declared maximum; cores may cache it.
+  // Only an oversized target is refused here. PPSSPP reads its resolution
+  // option after this call and reports 0x0 until then, so load_content sizes
+  // the target again from the final geometry.
   struct retro_system_av_info av;
   memset(&av, 0, sizeof(av));
   h->core.get_system_av_info(&av);
-  req.max_width = (int)av.geometry.max_width;
-  req.max_height = (int)av.geometry.max_height;
-  if (req.max_width <= 0) req.max_width = (int)av.geometry.base_width;
-  if (req.max_height <= 0) req.max_height = (int)av.geometry.base_height;
-  if (req.max_width <= 0 || req.max_height <= 0 ||
-      req.max_width > LH_MAX_FRAME_DIMENSION ||
-      req.max_height > LH_MAX_FRAME_DIMENSION) {
-    host_log(h, "Core declared an unusable hardware framebuffer size %dx%d",
-             req.max_width, req.max_height);
+  if (hw_size_target(&req, &av.geometry) < 0) {
+    host_log(h, "Core declared an unusable hardware framebuffer size %ux%u",
+             av.geometry.max_width, av.geometry.max_height);
     return false;
   }
 
@@ -2934,6 +2943,14 @@ static int load_content(struct lh_host *h) {
   struct retro_system_av_info av;
   memset(&av, 0, sizeof(av));
   h->core.get_system_av_info(&av);
+  // The core's hardware request was already accepted and it has no software
+  // path left, so a target that can't be sized fails the load.
+  if (h->hw_requested && hw_size_target(&h->hw_request, &av.geometry) != 1) {
+    host_log(h, "Core declared an unusable hardware framebuffer size %ux%u",
+             av.geometry.max_width, av.geometry.max_height);
+    if (h->core.unload_game) h->core.unload_game();
+    return LH_ERR_CONTENT_REJECTED;
+  }
   h->av.width = (int)av.geometry.base_width;
   h->av.height = (int)av.geometry.base_height;
   if (av.geometry.aspect_ratio > 0) {
