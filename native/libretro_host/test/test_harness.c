@@ -1090,8 +1090,8 @@ static void test_format(const char *core_path, const char *rom_path,
     // stub_speed, stub_pattern, stub_rotation, stub_format, stub_huge_frame,
     // stub_bad_pitch, stub_vfs_dir_check, stub_analog_check, stub_hw,
     // stub_analog_query, stub_repeat_geometry, stub_unserved,
-    // stub_input_thread, stub_no_poll, stub_waits_report.
-    CHECK(lh_option_count(host) == 15, "fifteen core options");
+    // stub_input_thread, stub_no_poll, stub_waits_report, stub_thread_report.
+    CHECK(lh_option_count(host) == 16, "sixteen core options");
     lh_option opt;
     int opt_rc = lh_get_option(host, 0, &opt);
     CHECK(opt_rc == 0 && strcmp(opt.id, "stub_speed") == 0, "option id");
@@ -1119,7 +1119,7 @@ static void test_format(const char *core_path, const char *rom_path,
     uint8_t blob_a[64], blob_b[64], blob_c[64];
     CHECK(size > 0, "serialize size");
     CHECK(lh_serialize(host, blob_a, size) == 0, "serialize after restart");
-    CHECK(lh_option_count(host) == 15, "restart replaces option definitions");
+    CHECK(lh_option_count(host) == 16, "restart replaces option definitions");
     lh_get_option(host, 0, &opt);
     CHECK(strcmp(opt.current, "fast") == 0, "restart retains option value");
     int32_t restart_marker;
@@ -1541,6 +1541,87 @@ static void test_probe_bad_path_leaves_host_usable(const char *core_path,
   lh_destroy(host);
 }
 
+// The stub's retro_deinit report: the thread each kind of call last ran on,
+// 0 for a call that never happened.
+typedef struct {
+  unsigned long long init, load, run, job, deinit;
+} thread_report;
+
+static int parse_thread_report(thread_report *r) {
+  return sscanf(g_last_message,
+                "stub threads init=%llu load=%llu run=%llu job=%llu "
+                "deinit=%llu",
+                &r->init, &r->load, &r->run, &r->job, &r->deinit) == 5;
+}
+
+static unsigned long long harness_thread_id(void) {
+#ifdef _WIN32
+  return (unsigned long long)GetCurrentThreadId();
+#else
+  return (unsigned long long)(uintptr_t)pthread_self();
+#endif
+}
+
+// mupen64plus-next's Windows build saves the calling thread's libco fiber in
+// retro_init and faults if retro_run comes from another thread, so every call
+// into a core has to come from one host thread.
+static void test_core_calls_share_one_thread(const char *core_path,
+                                             const char *rom_path,
+                                             const char *work_dir) {
+  printf("every core call runs on one host thread:\n");
+  const unsigned long long caller = harness_thread_id();
+  const char *keys[] = {"stub_thread_report"};
+  const char *vals[] = {"on"};
+  thread_report r;
+  lh_av_info av;
+
+  lh_host *host = lh_create(LH_FORMAT_RGBA8888, make_callbacks());
+  int rc = lh_load(host, core_path, rom_path, work_dir, work_dir,
+                   "samethread-run", keys, vals, 1, &av);
+  CHECK(rc == 0, "core loads with the thread report on");
+  if (rc == 0) {
+    CHECK(lh_serialize_size(host) > 0, "a job before lh_start still runs");
+    g_frames_ready = 0;
+    lh_start(host);
+    for (int waited = 0; waited < 2000 && g_frames_ready == 0; waited += 10) {
+      msleep(10);
+    }
+    g_last_message[0] = '\0';
+    lh_stop(host);
+    CHECK(parse_thread_report(&r), "the stub reports its threads");
+    CHECK(r.init == r.load && r.load == r.run,
+          "retro_init, retro_load_game and retro_run share one thread");
+    CHECK(r.job == r.init, "a job queued before lh_start runs on that thread");
+    CHECK(r.deinit == r.init, "the teardown runs on that thread");
+    CHECK(r.init != caller, "and it isn't the thread that called lh_load");
+  }
+  lh_destroy(host);
+
+  host = lh_create(LH_FORMAT_RGBA8888, make_callbacks());
+  rc = lh_load(host, core_path, rom_path, work_dir, work_dir,
+               "samethread-idle", keys, vals, 1, &av);
+  CHECK(rc == 0, "core loads for a session that never starts");
+  if (rc == 0) {
+    g_last_message[0] = '\0';
+    lh_stop(host);
+    CHECK(parse_thread_report(&r) && r.run == 0 && r.load == r.init &&
+              r.deinit == r.init && r.init != caller,
+          "a session stopped before lh_start loads and unloads on one host "
+          "thread");
+  }
+  lh_destroy(host);
+
+  host = lh_create(LH_FORMAT_RGBA8888, make_callbacks());
+  lh_set_option(host, "stub_thread_report", "on");
+  g_last_message[0] = '\0';
+  CHECK(lh_probe_options(host, core_path, work_dir) == 0,
+        "probe succeeds with the thread report on");
+  CHECK(parse_thread_report(&r) && r.load == 0 && r.deinit == r.init &&
+            r.init != caller,
+        "a probe runs retro_init and retro_deinit off the caller's thread");
+  lh_destroy(host);
+}
+
 static void test_option_snapshot_survives_invalidation(const char *core_path,
                                                        const char *rom_path,
                                                        const char *work_dir) {
@@ -1897,7 +1978,7 @@ int main(int argc, char **argv) {
           "a core requesting a GLES3 context loads");
 
     CHECK(atomic_load(&g_hw_creates) == 0,
-          "no context is created on the loading thread");
+          "no context is created before lh_start");
     CHECK(lh_hw_active(hw) == 0, "lh_hw_active is 0 before the loop starts");
 
     lh_start(hw);
@@ -2523,6 +2604,7 @@ int main(int argc, char **argv) {
   test_probe_options_without_content(core_path, work_dir);
   test_probe_refused_during_session(core_path, rom_path, work_dir);
   test_probe_bad_path_leaves_host_usable(core_path, rom_path, work_dir);
+  test_core_calls_share_one_thread(core_path, rom_path, work_dir);
   test_input_latch();
   test_input_transition_latch();
   test_analog_passthrough();

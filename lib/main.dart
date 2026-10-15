@@ -862,7 +862,14 @@ void main() async {
       final appDataDir = await getApplicationSupportDirectory();
       final customPath = '${appDataDir.path}\\WebView2Data';
       gWebViewEnvironment = await WebViewEnvironment.create(
-        settings: WebViewEnvironmentSettings(userDataFolder: customPath),
+        settings: WebViewEnvironmentSettings(
+          userDataFolder: customPath,
+          // mediaPlaybackRequiresUserGesture doesn't lift WebView2's audio
+          // block, so N64 in EmulatorJS sits on a black screen until a click,
+          // which a controller never sends.
+          additionalBrowserArguments:
+              '--autoplay-policy=no-user-gesture-required',
+        ),
       );
     } catch (_) {}
   }

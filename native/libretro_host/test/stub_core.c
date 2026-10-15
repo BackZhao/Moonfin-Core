@@ -126,6 +126,22 @@ static int thread_waits_rc;
 static int thread_waits_called;
 static int thread_waits_result;
 
+// The thread each kind of call last arrived on, reported from retro_deinit
+// under stub_thread_report.
+static int32_t thread_report_mode;
+static unsigned long long tid_init;
+static unsigned long long tid_load;
+static unsigned long long tid_run;
+static unsigned long long tid_job;
+
+static unsigned long long stub_thread_id(void) {
+#ifdef _WIN32
+  return (unsigned long long)GetCurrentThreadId();
+#else
+  return (unsigned long long)(uintptr_t)pthread_self();
+#endif
+}
+
 // Holds onto a GET_VARIABLE pointer across frames the way a real core does,
 // so the host's promise that the pointer stays readable for the life of the
 // load can be checked. The first retro_run stashes the pointer for
@@ -270,6 +286,7 @@ void retro_set_environment(retro_environment_t cb) {
       {"stub_input_thread", "Read input off-thread; off|on"},
       {"stub_no_poll", "Never call input_poll; off|on"},
       {"stub_waits_report", "Report thread-waits state; off|on"},
+      {"stub_thread_report", "Report the thread of each call; off|on"},
       {NULL, NULL},
   };
   env_cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void *)vars);
@@ -505,6 +522,11 @@ void retro_set_input_state(retro_input_state_t cb) { input_state_cb = cb; }
 // Real cores log from retro_init and call the pointer without checking it, so
 // the stub does the same to keep the host honest about GET_LOG_INTERFACE.
 void retro_init(void) {
+  tid_init = stub_thread_id();
+  tid_load = tid_run = tid_job = 0;
+  struct retro_variable report = {"stub_thread_report", NULL};
+  env_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &report);
+  thread_report_mode = report.value && strcmp(report.value, "on") == 0;
   frame_counter = 0;
   memset(controller_devices, 0, sizeof(controller_devices));
   // A restart reloads the core into the same process, and the host drains its
@@ -520,7 +542,15 @@ void retro_init(void) {
   log_cb = logging.log;
   logging.log(RETRO_LOG_DEBUG, "stub core init %d\n", 0);
 }
-void retro_deinit(void) {}
+void retro_deinit(void) {
+  if (!thread_report_mode) return;
+  char buf[192];
+  snprintf(buf, sizeof(buf),
+           "stub threads init=%llu load=%llu run=%llu job=%llu deinit=%llu",
+           tid_init, tid_load, tid_run, tid_job, stub_thread_id());
+  struct retro_message msg = {buf, 180};
+  env_cb(RETRO_ENVIRONMENT_SET_MESSAGE, &msg);
+}
 unsigned retro_api_version(void) { return RETRO_API_VERSION; }
 
 void retro_get_system_info(struct retro_system_info *info) {
@@ -559,6 +589,7 @@ static void write_pixel(uint8_t *dst, enum retro_pixel_format fmt, unsigned r,
 }
 
 bool retro_load_game(const struct retro_game_info *game) {
+  tid_load = stub_thread_id();
   shutdown_frame = 0;
   did_shutdown = 0;
   // Before any early return: the stub stays mapped between loads, so these
@@ -776,6 +807,7 @@ static void read_input_off_thread(void) {
 #endif
 
 void retro_run(void) {
+  tid_run = stub_thread_id();
   stash_step();
   // Joined before returning, so the read is strictly inside this retro_run
   // and the harness can assert on it right after a frame.
@@ -882,7 +914,10 @@ void retro_run(void) {
 
 void retro_reset(void) { frame_counter = 0; }
 
-size_t retro_serialize_size(void) { return sizeof(frame_counter) * 4; }
+size_t retro_serialize_size(void) {
+  tid_job = stub_thread_id();
+  return sizeof(frame_counter) * 4;
+}
 
 bool retro_serialize(void *data, size_t size) {
   if (size < sizeof(frame_counter) * 4) return false;

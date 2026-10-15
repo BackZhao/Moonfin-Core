@@ -34,7 +34,7 @@ typedef enum {
   // The same value under its other meaning. The overload predates the names
   // and the value is part of the contract, so both spellings stay.
   LH_ERR_SHUTDOWN_DURING_LOAD = -6,
-  LH_ERR_ALLOC = -7,             // a host allocation failed
+  LH_ERR_ALLOC = -7,             // a host allocation or thread failed
   LH_ERR_BAD_GAME_ID = -8,       // game_id would escape save_dir
 } lh_result;
 
@@ -75,8 +75,9 @@ typedef struct {
   // The core changed its output geometry or aspect ratio.
   void (*geometry_changed)(void *user, int width, int height, double aspect);
   // A message the core wants shown, such as a missing-system-files warning.
-  // Arrives on the run-loop thread, or on the caller's thread during lh_load.
-  // Optional, may be NULL.
+  // Arrives on the run-loop thread, also while lh_load waits for the core, so
+  // never block on the thread that called lh_load from here. Optional, may be
+  // NULL.
   void (*message)(void *user, const char *text);
   // The core asked to quit, which cores do when a boot or a reset fails. The
   // loop has stopped and the core is already unloaded, so the platform should
@@ -134,7 +135,7 @@ typedef struct {
   } u;
 } lh_hw_target;
 
-// Backend callbacks. All callbacks except supports run on the emulation thread.
+// Backend callbacks. All callbacks run on the emulation thread.
 typedef struct {
   uint32_t struct_version;
 
@@ -241,6 +242,11 @@ void lh_set_pad_state(lh_host *host, int port, uint16_t mask,
 // directory requests. [game_id] names the SRAM file. [opt_keys]/[opt_vals] seed
 // core options (may be NULL when [opt_count] is 0). Fills [out_info] and returns
 // 0 on success, non-zero on failure.
+//
+// Creates the emulation thread and waits while it runs retro_init and
+// retro_load_game, so every call into the core comes from that one thread. The
+// loaded core then idles there until lh_start. Jobs such as lh_serialize_size or
+// lh_set_controller_type still work in between.
 int lh_load(lh_host *host, const char *core_path, const char *rom_path,
             const char *system_dir, const char *save_dir, const char *game_id,
             const char *const *opt_keys, const char *const *opt_vals,
@@ -248,8 +254,8 @@ int lh_load(lh_host *host, const char *core_path, const char *rom_path,
 
 // Runs, pauses, or tears down the emulation. lh_stop flushes SRAM and unloads
 // the core, so the host can then be destroyed or loaded again.
-// lh_start returns 0 when the emulation thread is running (including when it
-// already was), non-zero when it could not be created.
+// lh_start returns 0 when the emulation loop is running (including when it
+// already was), non-zero when no loaded core is waiting to start.
 int lh_start(lh_host *host);
 void lh_pause(lh_host *host);
 // Resumes asynchronously with respect to input lifecycle state: the native
@@ -325,6 +331,7 @@ void lh_set_option(lh_host *host, const char *id, const char *value);
 // game will not start is still configurable. Definitions are host-owned copies
 // readable through lh_option_count/lh_get_option afterwards; a core may publish
 // more from retro_load_game, so this can be a subset. Returns 0 on success.
+// retro_init runs on a short-lived thread of the host's, never the caller's.
 //
 // Refused while any session is loaded: libretro's callbacks carry no user data,
 // so a second module would be handed the running core's environment callback.

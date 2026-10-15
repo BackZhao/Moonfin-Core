@@ -408,13 +408,26 @@ const Map<String, Map<String, String>> coreOptionDefaults = {
   },
 };
 
+/// Windows-only additions to [coreOptionDefaults].
+const Map<String, Map<String, String>> windowsCoreOptionDefaults = {
+  'mupen64plus_next': {
+    // The Windows host has no OpenGL backend, so the GLideN64 default can't
+    // render.
+    'mupen64plus-rdp-plugin': 'angrylion',
+    'mupen64plus-rsp-plugin': 'parallel',
+  },
+};
+
 /// Apply app defaults without overriding stored user settings.
 Map<String, String>? withCoreOptionDefaults(
   String coreId,
   Map<String, String>? settings,
 ) {
-  final defaults = coreOptionDefaults[coreId];
-  if (defaults == null || defaults.isEmpty) return settings;
+  final defaults = {
+    ...?coreOptionDefaults[coreId],
+    if (PlatformDetection.isWindows) ...?windowsCoreOptionDefaults[coreId],
+  };
+  if (defaults.isEmpty) return settings;
   return {...defaults, ...?settings};
 }
 
