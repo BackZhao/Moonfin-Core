@@ -643,6 +643,12 @@ class Media3VideoView(
         // How long a television gets to blank, renegotiate the link and come
         // back before a failure stops counting as part of the mode switch.
         private const val DISPLAY_MODE_SWITCH_RECOVERY_MS = 10_000L
+        // How long the display and audio devices have to be still before a
+        // start held for a mode switch runs.
+        private const val DISPLAY_MODE_SETTLE_QUIET_MS = 1_500L
+        // The most a held start waits, which leaves the startup ready check
+        // on the Dart side time for the stream itself to come up.
+        private const val DISPLAY_MODE_SETTLE_MAX_MS = 7_000L
         // A television that steps through an intermediate mode drops the
         // surface more than once, so one retry is not always enough. The
         // recovery window is what stops this running on.
@@ -744,6 +750,10 @@ class Media3VideoView(
     private var lastPlaybackPositionMs: Long = 0L
     private var displayModeSwitchAtMs = 0L
     private var wasPlayingBeforeDisplayModeSwitch = false
+    private var heldStart: (() -> Unit)? = null
+    private var heldStartSettle: DisplayModeSettle? = null
+    private var heldStartDisplayListener: DisplayManager.DisplayListener? = null
+    private val heldStartRunnable = Runnable { runHeldStart() }
     private var displayModeSwitchRetriesForCurrentSource = 0
     private var decoderReclaimRetriesForCurrentSource = 0
 
@@ -883,10 +893,12 @@ class Media3VideoView(
                 override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>) {
                     onAudioOutputDevicesChanged()
                     maybeResumeAfterRouteFlap(addedDevices)
+                    noteHeldStartActivity()
                 }
 
                 override fun onAudioDevicesRemoved(removedDevices: Array<out AudioDeviceInfo>) {
                     onAudioOutputDevicesChanged()
+                    noteHeldStartActivity()
                 }
             }
         } else {
@@ -2696,7 +2708,17 @@ class Media3VideoView(
         player.skipSilenceEnabled = skipSilenceEnabled
         emitSyncDelayState()
         emitVolumeBoostState()
-        prepareCurrentSource(startPositionMs, playWhenReady = autoPlay)
+        if (!isAudio) sourceFrameRateHint?.let(::maybeApplyFrameRateSwitching)
+        if (displayModeSwitchPending()) {
+            wasPlayingBeforeDisplayModeSwitch = autoPlay
+            val startDelayMs = ((args["videoStartDelayMs"] as? Number)?.toLong() ?: 0L)
+                .coerceAtLeast(0L)
+            holdStartForDisplayModeSwitch(startDelayMs) {
+                prepareCurrentSource(startPositionMs, playWhenReady = autoPlay)
+            }
+        } else {
+            prepareCurrentSource(startPositionMs, playWhenReady = autoPlay)
+        }
         playerHasLoadedSource = true
         secondarySubtitleOverlay.setDelayMs(
             (args["secondarySubtitleDelayMs"] as? Number)?.toLong() ?: 0L,
@@ -2894,6 +2916,7 @@ class Media3VideoView(
     }
 
     private fun restorePreferredDisplayMode() {
+        cancelHeldStart()
         clearSurfaceFrameRateHint()
         endDisplayModeSwitchRecovery()
         // A preview never applied a mode, so its idea of the original id is 0
@@ -4565,6 +4588,69 @@ class Media3VideoView(
         wasPlayingBeforeDisplayModeSwitch = false
     }
 
+    private fun displayModeSwitchPending(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return false
+        val target = activePreferredDisplayModeId ?: return false
+        val display = findHostActivity()?.windowManager?.defaultDisplay ?: return false
+        return display.mode.modeId != target
+    }
+
+    // The television renegotiates HDMI a second or so after a mode switch,
+    // which drops the audio route under any track already open, and a
+    // bitstreamed track that comes back from that can leave the player stuck
+    // buffering. So the start waits for the switch to settle instead of
+    // racing it, with the user's start delay added on top.
+    private fun holdStartForDisplayModeSwitch(startDelayMs: Long, start: () -> Unit) {
+        cancelHeldStart()
+        heldStart = start
+        heldStartSettle = DisplayModeSettle(
+            quietMs = DISPLAY_MODE_SETTLE_QUIET_MS + startDelayMs,
+            maxWaitMs = DISPLAY_MODE_SETTLE_MAX_MS,
+            startedAtMs = SystemClock.elapsedRealtime(),
+        )
+        val listener = object : DisplayManager.DisplayListener {
+            override fun onDisplayAdded(displayId: Int) {}
+            override fun onDisplayRemoved(displayId: Int) {}
+            override fun onDisplayChanged(displayId: Int) = noteHeldStartActivity()
+        }
+        context.getSystemService<DisplayManager>()?.registerDisplayListener(listener, mainHandler)
+        heldStartDisplayListener = listener
+        noteHeldStartActivity()
+        emitState()
+    }
+
+    private fun noteHeldStartActivity() {
+        val settle = heldStartSettle ?: return
+        mainHandler.removeCallbacks(heldStartRunnable)
+        mainHandler.postDelayed(
+            heldStartRunnable,
+            settle.delayAfterChange(SystemClock.elapsedRealtime()),
+        )
+    }
+
+    private fun runHeldStart() {
+        val start = heldStart ?: return
+        val settle = heldStartSettle ?: return
+        cancelHeldStart()
+        Media3Bridge.emitEvent(
+            mapOf(
+                "event" to "startHeldForDisplayMode",
+                "heldMs" to SystemClock.elapsedRealtime() - settle.startedAtMs,
+            ),
+        )
+        start()
+    }
+
+    private fun cancelHeldStart() {
+        heldStart = null
+        heldStartSettle = null
+        mainHandler.removeCallbacks(heldStartRunnable)
+        heldStartDisplayListener?.let {
+            context.getSystemService<DisplayManager>()?.unregisterDisplayListener(it)
+        }
+        heldStartDisplayListener = null
+    }
+
     private fun retryPlaybackOnDisplayModeSwitchErrorIfNeeded(error: PlaybackException): Boolean {
         if (!displayModeSwitchInFlight() ||
             displayModeSwitchRetriesForCurrentSource >= DISPLAY_MODE_SWITCH_MAX_RETRIES
@@ -5239,7 +5325,7 @@ class Media3VideoView(
             "durationMs" to if (duration > 0) duration else 0L,
             "bufferedMs" to if (bufferedPosition > 0) bufferedPosition else 0L,
             "isPlaying" to player.isPlaying,
-            "isBuffering" to (player.playbackState == Player.STATE_BUFFERING),
+            "isBuffering" to (player.playbackState == Player.STATE_BUFFERING || heldStart != null),
             "isSubtitleLoading" to (subtitleTrackEnabled &&
                 player.playbackState != Player.STATE_IDLE &&
                 player.playbackState != Player.STATE_ENDED &&

@@ -431,6 +431,11 @@ class Media3PlayerBackend extends PlayerBackend
         // A track the route killed is a route event, not a tunneling fault,
         // so it must not count toward disabling tunneling for the session.
         if (!deadObject) _onAudioSinkError();
+      case 'startHeldForDisplayMode':
+        _diag(
+          'Media3: held the start ${_toInt(map['heldMs'])}ms '
+          'for the display mode switch to settle',
+        );
       case 'routeFlapResume':
         _diag(
           'Media3: resumed after the audio route came back '
@@ -1114,6 +1119,7 @@ class Media3PlayerBackend extends PlayerBackend
       'videoRangeType': videoRangeType,
       'mediaType': mediaType,
       'videoFrameRate': (payload['videoFrameRate'] as num?)?.toDouble(),
+      'videoStartDelayMs': _prefs.get(UserPreferences.videoStartDelay),
       'videoWidth': (payload['videoWidth'] as num?)?.toInt(),
       'videoHeight': (payload['videoHeight'] as num?)?.toInt(),
       'isLive': _sourceIsLive,
