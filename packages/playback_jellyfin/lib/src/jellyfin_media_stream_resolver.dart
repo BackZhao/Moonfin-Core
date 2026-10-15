@@ -111,22 +111,19 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
     }
 
     // An id the item does not list passes through so the server can resolve
-    // drifted ids without discarding an explicit version pick. If the server
-    // cant resolve it either the id is just stale, so retry without it and
-    // play the server's default version instead of failing outright.
-    final staticIds = MediaStreamResolver.staticMediaSourceIds(mediaItem);
-    final isUnverifiedSourceId = resolvedMediaSourceId != null &&
-        resolvedMediaSourceId.isNotEmpty &&
-        staticIds.isNotEmpty &&
-        !staticIds.contains(resolvedMediaSourceId);
-
+    // drifted ids without discarding an explicit version pick.
     final PlaybackInfoResult info;
     try {
       PlaybackInfoResult? result;
       try {
         result = await fetchPlaybackInfo(resolvedMediaSourceId);
       } catch (_) {
-        if (!isUnverifiedSourceId) rethrow;
+        if (!MediaStreamResolver.canRetryWithoutMediaSourceId(
+          mediaItem,
+          resolvedMediaSourceId,
+        )) {
+          rethrow;
+        }
       }
       info = result ?? await fetchPlaybackInfo(null);
     } catch (e) {

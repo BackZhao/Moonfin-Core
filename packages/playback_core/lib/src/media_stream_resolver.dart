@@ -123,6 +123,22 @@ abstract class MediaStreamResolver {
     return sources.map(_mediaSourceId).toSet();
   }
 
+  /// Whether a PlaybackInfo pinned to [mediaSourceId] that failed may retry
+  /// with no id and take the server's own pick. An id the item does not list
+  /// is stale. A single version item gets the same title back either way,
+  /// which matters when the server swaps the source, like the live stream of
+  /// a recording that is still being written. Several versions keep the
+  /// caller's explicit pick.
+  static bool canRetryWithoutMediaSourceId(
+    dynamic mediaItem,
+    String? mediaSourceId,
+  ) {
+    if (mediaSourceId == null || mediaSourceId.isEmpty) return false;
+    final staticIds = staticMediaSourceIds(mediaItem);
+    return staticIds.isNotEmpty &&
+        (staticIds.length == 1 || !staticIds.contains(mediaSourceId));
+  }
+
   static List<dynamic>? _staticMediaSources(dynamic mediaItem) {
     if (mediaItem is Map) return mediaItem['MediaSources'] as List<dynamic>?;
     try {
