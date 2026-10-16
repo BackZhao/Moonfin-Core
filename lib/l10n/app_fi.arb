@@ -2653,7 +2653,7 @@
     "@videoAndSubtitles": {
         "description": "Playback section description variant"
     },
-    "integrations": "Integraatiot",
+    "integrations": "Tietojen yhdistäminen",
     "@integrations": {
         "description": "Integrations section title"
     },
@@ -5231,7 +5231,7 @@
     },
     "adminNoPackagesMatchSearch": "Ei hakuasi vastaavia paketteja",
     "adminNoPackagesAvailable": "Paketteja ei ole saatavilla",
-    "adminExperimentalIntegration": "Kokeellinen integraatio",
+    "adminExperimentalIntegration": "Kokeellinen tietojen yhdistäminen",
     "adminExperimentalWarning": "Plugin-asetusten integrointi on vielä kokeellista. Jotkin asetussivut eivät välttämättä näy oikein.",
     "continueAction": "Jatkaa",
     "adminPluginRemoveAfterRestart": "\"{name}\" poistetaan palvelimen uudelleenkäynnistyksen jälkeen",
@@ -5856,7 +5856,7 @@
             }
         }
     },
-    "adminPluginDetailExperimental": "Kokeellinen integraatio",
+    "adminPluginDetailExperimental": "Kokeellinen tietojen yhdistäminen",
     "adminPluginDetailExperimentalContent": "Plugin-asetusten integrointi on vielä kokeellista. Jotkin kentät tai asettelut eivät ehkä vielä näy oikein.",
     "adminPluginDetailToggle404": "Plugin vaihto epäonnistui. Palvelin ei löytänyt tätä laajennusversiota. Yritä päivittää laajennukset ja yritä sitten uudelleen.",
     "adminPluginDetailToggleDioError": "Plugin vaihto epäonnistui. Tarkista lisätietoja palvelimen lokeista.",
@@ -13834,5 +13834,156 @@
     "additionalParts": "Oheisosat",
     "@additionalParts": {
         "description": "Heading for the other files of a movie split across several files, like DVD1 and DVD2"
+    },
+    "gameOrientation": "Pelien näytön suuntaus",
+    "@gameOrientation": {
+        "description": "Setting and in-game menu row for how the device is held while playing games"
+    },
+    "gameOrientationSubtitle": "Näytön suunta pelatessa",
+    "@gameOrientationSubtitle": {
+        "description": "Subtitle of the game orientation setting"
+    },
+    "landscape": "Vaakasuuntainen",
+    "@landscape": {
+        "description": "Orientation choice: the device held sideways"
+    },
+    "portrait": "Pystykuva",
+    "@portrait": {
+        "description": "Orientation choice: the device held upright"
+    },
+    "gameKeepPlaying": "Jatka pelaamista",
+    "@gameKeepPlaying": {
+        "description": "Exit confirmation choice that returns to the game"
+    },
+    "gameSaveAndExit": "Tallenna & Poistu",
+    "@gameSaveAndExit": {
+        "description": "Exit confirmation choice that saves the game state and then leaves, staying in the game if the save fails"
+    },
+    "gameExitGame": "Poistu pelistä",
+    "@gameExitGame": {
+        "description": "Exit confirmation choice that leaves the game"
+    },
+    "gameSavingBeforeExit": "Tallennetaan…",
+    "@gameSavingBeforeExit": {
+        "description": "Shown over the paused game while it saves on the way out"
+    },
+    "gameSaveFailedStillPlaying": "Tilaa ei voitu tallentaa. Peli jatkuu.",
+    "@gameSaveFailedStillPlaying": {
+        "description": "Message shown when Save & exit could not save, so the game keeps running"
+    },
+    "liveTvJumpToLive": "Siirry Live-tilaan",
+    "@liveTvJumpToLive": {
+        "description": "Live TV player button that leaves a rewound or paused stream and returns to what is airing now"
+    },
+    "playbackVideoUnsupported": "Tämä laite ei tue tämän videon tiedostomuotoa. Kokeile ulkoista toistinta.",
+    "@playbackVideoUnsupported": {
+        "description": "Shown when the player can't show an item's video and no transcode is left to try, instead of playing the audio over a black screen"
+    },
+    "clientCertTitle": "Asiakas varmenne",
+    "@clientCertTitle": {
+        "description": "Title of the dialog that imports a TLS client certificate for a server"
+    },
+    "clientCertHost": "Varmenne {host}:lle",
+    "@clientCertHost": {
+        "description": "Names the server host the client certificate will be presented to",
+        "placeholders": {
+            "host": {
+                "type": "String"
+            }
+        }
+    },
+    "clientCertChooseFile": "Valitse tiedosto",
+    "@clientCertChooseFile": {
+        "description": "Button that picks a .p12 or .pfx file"
+    },
+    "clientCertPassword": "Varmenteen salasana",
+    "@clientCertPassword": {
+        "description": "Label for the password that unlocks the .p12 or .pfx file"
+    },
+    "clientCertStartUpload": "Lähetä puhelimesta",
+    "@clientCertStartUpload": {
+        "description": "Button on a TV that opens a one-time page a phone on the same network can send the certificate to"
+    },
+    "clientCertUploadHint": "Skannaa tämä koodi puhelimellasi tai avaa osoite puhelimesi selaimessa, valitse sitten tiedosto ja syötä sen salasana.",
+    "@clientCertUploadHint": {
+        "description": "Shown under the QR code while the TV waits for the phone to send the certificate"
+    },
+    "clientCertStopUpload": "Älä odota",
+    "@clientCertStopUpload": {
+        "description": "Button that closes the phone upload page before a certificate arrives"
+    },
+    "clientCertNoFileData": "Tiedostoa ei voitu lukea. Yritä uudelleen.",
+    "@clientCertNoFileData": {
+        "description": "Shown when the picked file has no contents"
+    },
+    "clientCertPickFailed": "Tiedostonvalintaikkunaa ei voitu avata.",
+    "@clientCertPickFailed": {
+        "description": "Shown when the file picker fails to open"
+    },
+    "clientCertUploadFailed": "Lataussivua ei voitu avata. Yritä uudelleen.",
+    "@clientCertUploadFailed": {
+        "description": "Shown when the TV can't open the page the phone sends the certificate to"
+    },
+    "clientCertNoSecureStorage": "Tässä laitteessa ei ole suojattua tallennustilaa, joten varmennetta ei voi tallentaa. Asenna Linuxissa libsecret ja yritä uudelleen.",
+    "@clientCertNoSecureStorage": {
+        "description": "Shown when there is no keychain or secret store to keep the certificate in"
+    },
+    "clientCertDecodeFailed": "Tiedostoa ei voitu lukea varmenteena. Varmista, että tiedostomuoto on .p12 tai .pfx.",
+    "@clientCertDecodeFailed": {
+        "description": "Shown when the file isn't a usable .p12 or .pfx"
+    },
+    "clientCertWrongPassword": "Tuo salasana ei avaa tätä varmennetta.",
+    "@clientCertWrongPassword": {
+        "description": "Shown when the password for the .p12 or .pfx file is wrong"
+    },
+    "clientCertRequired": "Tämä palvelin vaatii sertifikaatin (mTLS). Lisää sellainen jotta voit jatkaa.",
+    "@clientCertRequired": {
+        "description": "Shown on the sign-in screens when the server turned the connection away for lack of a client certificate"
+    },
+    "clientCertExpired": "Tämän palvelimen varmenne vanhentui {date}. Vaihda se, jotta voit jatkaa.",
+    "@clientCertExpired": {
+        "description": "Shown on the sign-in screen when the server turned the connection away and the stored certificate has expired",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "clientCertAddButton": "Lisää sertifikaatti",
+    "@clientCertAddButton": {
+        "description": "Button that opens the certificate import from the add-server and sign-in screens"
+    },
+    "settingsClientCertificates": "Asiakasvarmenteet",
+    "@settingsClientCertificates": {
+        "description": "Settings entry that lists the imported client certificates"
+    },
+    "settingsClientCertificatesSubtitle": "Sertifikaatit, jotka tämä sovellus esittää niille palvelimille, jotka niitä vaativat (mTLS)",
+    "@settingsClientCertificatesSubtitle": {
+        "description": "Subtitle for the client certificates settings entry"
+    },
+    "clientCertSubject": "Aihe",
+    "@clientCertSubject": {
+        "description": "Label for the name on a client certificate"
+    },
+    "clientCertExpires": "Voimassaolo päättyy {date}",
+    "@clientCertExpires": {
+        "description": "When a client certificate stops being valid",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "clientCertReplace": "Korvaa",
+    "@clientCertReplace": {
+        "description": "Button that imports a new certificate in place of the stored one for a host"
+    },
+    "clientCertAdd": "Lisää varmenne",
+    "@clientCertAdd": {
+        "description": "Button that starts importing a certificate for a new host"
+    },
+    "clientCertAddHostPrompt": "Mille palvelinpalvelimelle tarvitaan varmenne?",
+    "@clientCertAddHostPrompt": {
+        "description": "Title of the prompt that asks which host a new certificate is for"
     }
 }
