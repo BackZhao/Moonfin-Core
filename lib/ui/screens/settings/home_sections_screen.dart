@@ -10,6 +10,7 @@ import 'package:jellyfin_preference/jellyfin_preference.dart';
 import 'package:server_core/server_core.dart';
 
 import '../../../data/models/aggregated_item.dart';
+import '../../../data/repositories/multi_server_repository.dart';
 import '../../../data/repositories/seerr_repository.dart';
 import '../../../data/services/seerr/seerr_discover_sliders.dart';
 import '../../../data/utils/playlist_utils.dart';
@@ -22,6 +23,7 @@ import '../../../preference/seerr_row_config.dart';
 import '../../../util/extensions.dart';
 import '../../../util/focus/scroll_utils.dart';
 import '../../../util/platform_detection.dart';
+import '../../../util/server_url.dart';
 import '../../navigation/route_lifecycle_observer.dart';
 import '../../widgets/skeleton/skeleton_shimmer.dart';
 import '../../widgets/settings/clean_settings_typography.dart';
@@ -104,6 +106,13 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
   /// Seerr slider rows whose slider Seerr still has but this client can't
   /// show, so they stay in the layout without being offered.
   Set<String> _unshownSeerrSliderIds = const {};
+
+  /// The names of the other servers signed in on this device, by address, so
+  /// a collection picked from one of them says where it's from.
+  Map<String, String> _otherServerNames = const {};
+
+  String? _otherServerName(HomeSectionConfig section) =>
+      _otherServerNames[normalizeServerBaseUrl(section.serverId ?? '')];
 
   static FavoriteTypeFilter _favoriteFilterForSection(HomeSectionType type) {
     return switch (type) {
@@ -612,6 +621,10 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
         ((section.isBuiltin && _isCollectionsSectionType(section.type)) ||
             (section.isPluginDynamic &&
                 section.pluginSource == HomeSectionPluginSource.collections));
+    final hiddenByServer =
+        section.pluginSource == HomeSectionPluginSource.collections &&
+        _otherServerName(section) != null &&
+        !_prefs.get(UserPreferences.enableMultiServerLibraries);
     final hiddenByGenres =
         !showGenresRows &&
         ((section.isBuiltin && _isGenresSectionType(section.type)) ||
@@ -666,6 +679,7 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
 
     return hiddenByFavorites ||
         hiddenByCollections ||
+        hiddenByServer ||
         hiddenByGenres ||
         hiddenByPlaylists ||
         hiddenBySeerr ||
@@ -817,7 +831,7 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
       _showOverlay = true;
     });
     try {
-      final collectionsFuture = _fetchCollectionsForHomeSections();
+      final collectionsFuture = _fetchCollectionsPerServer();
       final genresFuture = _fetchGenresForHomeSections();
       final playlistsFuture = _fetchPlaylistsForHomeSections();
       final seerrSlidersFuture = _fetchSeerrSlidersForHomeSections();
@@ -829,9 +843,11 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
       var changed = false;
       setState(() {
         final mergedPluginSections = _mergeDiscoveredPluginSections();
-        final mergedCollectionSections = _mergeCollectionSections(
-          discoveredCollections,
-        );
+        final mergedCollectionSections = [
+          for (final MapEntry(key: serverId, value: collections)
+              in discoveredCollections.entries)
+            _mergeCollectionSections(serverId, collections),
+        ].contains(true);
         final mergedGenreSections = _mergeGenreSections(discoveredGenres);
         final mergedPlaylistSections = _mergePlaylistSections(
           discoveredPlaylists,
@@ -885,15 +901,49 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
     return false;
   }
 
-  Future<List<_DiscoveredCollectionRow>>
-  _fetchCollectionsForHomeSections() async {
+  /// This server's collections and, with multi-server libraries on, every
+  /// other signed-in server's, by the address their rows are stamped with. A
+  /// server that couldn't be reached is left out, so its rows are kept.
+  Future<Map<String, List<_DiscoveredCollectionRow>>>
+  _fetchCollectionsPerServer() async {
+    final active = GetIt.instance<MediaServerClient>();
+    var others = const <ServerUserSession>[];
+    try {
+      others = [
+        for (final session in await GetIt.instance<MultiServerRepository>()
+            .getLoggedInServers())
+          if (normalizeServerBaseUrl(session.client.baseUrl) !=
+              normalizeServerBaseUrl(active.baseUrl))
+            session,
+      ];
+    } catch (_) {}
+    _otherServerNames = {
+      for (final session in others)
+        normalizeServerBaseUrl(session.client.baseUrl): session.server.name,
+    };
+
+    final clients = [
+      active,
+      if (_prefs.get(UserPreferences.enableMultiServerLibraries))
+        for (final session in others) session.client,
+    ];
+    final found = await Future.wait(
+      clients.map(_fetchCollectionsForHomeSections),
+    );
+    return {
+      for (var i = 0; i < clients.length; i++) clients[i].baseUrl: ?found[i],
+    };
+  }
+
+  Future<List<_DiscoveredCollectionRow>?> _fetchCollectionsForHomeSections(
+    MediaServerClient client,
+  ) async {
     final showCollectionsRows = _prefs.get(
       UserPreferences.displayCollectionsRows,
     );
     if (!showCollectionsRows) return const <_DiscoveredCollectionRow>[];
 
     try {
-      final client = GetIt.instance<MediaServerClient>();
       const pageSize = 250;
       var startIndex = 0;
       int? total;
@@ -936,13 +986,14 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
 
       return all;
     } catch (_) {
-      return const <_DiscoveredCollectionRow>[];
+      return null;
     }
   }
 
-  bool _mergeCollectionSections(List<_DiscoveredCollectionRow> discovered) {
-    final client = GetIt.instance<MediaServerClient>();
-    final serverId = client.baseUrl;
+  bool _mergeCollectionSections(
+    String serverId,
+    List<_DiscoveredCollectionRow> discovered,
+  ) {
     var changed = false;
 
     final existing = <String, HomeSectionConfig>{
@@ -2737,7 +2788,12 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
 
   String _pluginSubtitle(HomeSectionConfig section) {
     return switch (section.pluginSource) {
-      HomeSectionPluginSource.collections => 'Collections row',
+      HomeSectionPluginSource.collections => switch (_otherServerName(
+        section,
+      )) {
+        final server? => 'Collections row from $server',
+        null => 'Collections row',
+      },
       HomeSectionPluginSource.genres => 'Genres row',
       HomeSectionPluginSource.playlists => 'Playlists row',
       HomeSectionPluginSource.seerr =>

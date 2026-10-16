@@ -122,22 +122,42 @@ class HomeViewModel extends ChangeNotifier {
   /// was opened at, which is often not how users reach the server, so a LAN
   /// address against a public domain never matches however it is spelled. With
   /// one server there is nowhere else the row could belong, so keep it anyway.
+  /// A collection picked from another signed-in server shows only while
+  /// multi-server libraries are on.
   bool _belongsToThisServer(HomeSectionConfig cfg) {
     if (cfg.isBuiltin || cfg.pluginSource == HomeSectionPluginSource.custom) {
       return true;
     }
+    if (_otherServerRows.containsKey(cfg.stableId)) return _multiServerEnabled;
     if (!_multiServerEnabled) return true;
     return _isThisServer(cfg.serverId);
   }
 
-  /// The address a dynamic row loads from. A row carrying an address this
-  /// client can't match falls back to the active server rather than reaching
-  /// for one it may not be able to see.
-  String _sectionServerId(HomeSectionConfig cfg) {
-    final stored = cfg.serverId;
-    if (stored == null || stored.isEmpty) return _serverId;
-    if (!_multiServerEnabled || _isThisServer(stored)) return _serverId;
-    return stored;
+  /// The signed-in server each collection row picked from another server
+  /// loads and pages from, by row id.
+  Map<String, ServerUserSession> _otherServerRows = const {};
+
+  Future<Map<String, ServerUserSession>> _findOtherServerRows(
+    List<HomeSectionConfig> configs,
+  ) async {
+    final foreign = configs.where(
+      (c) =>
+          c.pluginSource == HomeSectionPluginSource.collections &&
+          !_isThisServer(c.serverId),
+    );
+    if (foreign.isEmpty) return const {};
+    try {
+      final sessions = {
+        for (final s in await _multiServerRepo.getLoggedInServers())
+          normalizeServerBaseUrl(s.client.baseUrl): s,
+      };
+      return {
+        for (final c in foreign)
+          c.stableId: ?sessions[normalizeServerBaseUrl(c.serverId ?? '')],
+      };
+    } catch (_) {
+      return const {};
+    }
   }
 
   String _homeCacheKey() {
@@ -381,6 +401,7 @@ class HomeViewModel extends ChangeNotifier {
               ),
             ]
           : activeConfigs;
+      _otherServerRows = await _findOtherServerRows(configs);
       final showFavoritesRows = _prefs.get(
         UserPreferences.displayFavoritesRows,
       );
@@ -1012,9 +1033,10 @@ class HomeViewModel extends ChangeNotifier {
       if (_multiServerEnabled && !row.id.startsWith('pluginDynamic:')) {
         result = await _multiServerRepo.loadMore(row: row);
       } else {
-        result = await _dataSource.loadMore(
+        final other = _otherServerRows[row.id];
+        result = await _dataSourceFor(other).loadMore(
           row: row,
-          serverId: _serverId,
+          serverId: other?.server.id ?? _serverId,
           offset: currentOffset,
         );
       }
@@ -1047,11 +1069,12 @@ class HomeViewModel extends ChangeNotifier {
     if (cfg.isPluginDynamic) {
       final section = cfg.pluginSection;
       if (section == null || section.isEmpty) return const [];
-      final row = await _dataSource.loadDynamicSection(
+      final other = _otherServerRows[cfg.stableId];
+      final row = await _dataSourceFor(other).loadDynamicSection(
         rowId: cfg.stableId,
         section: section,
         title: cfg.pluginDisplayText ?? section,
-        serverId: _sectionServerId(cfg),
+        serverId: other?.server.id ?? _serverId,
         additionalData: cfg.pluginAdditionalData,
         pluginSource: cfg.pluginSource,
         forceRefresh: forceRefresh,
@@ -1060,6 +1083,17 @@ class HomeViewModel extends ChangeNotifier {
     }
     return _loadSection(cfg.type, forceRefresh: forceRefresh);
   }
+
+  /// Kept per server so a collection the user can't open isn't asked for
+  /// again on every load.
+  final Map<String, RowDataSource> _otherServerSources = {};
+
+  RowDataSource _dataSourceFor(ServerUserSession? other) => other == null
+      ? _dataSource
+      : _otherServerSources.putIfAbsent(
+          other.server.id,
+          () => RowDataSource(other.client),
+        );
 
   HomeRow? _placeholderForConfig(HomeSectionConfig cfg) {
     if (cfg.isPluginDynamic) {
