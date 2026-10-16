@@ -25,8 +25,12 @@ enum ClientIdentityStore {
         credentials = imported
         lock.unlock()
         let snapshot = imported
-        EngineTLS.clientCredentialProvider =
-            snapshot.isEmpty ? nil : { snapshot[$0.host.lowercased()] }
+        // Swift 6.2 can't infer a type when nil and this closure share a ternary.
+        if snapshot.isEmpty {
+            EngineTLS.clientCredentialProvider = nil
+        } else {
+            EngineTLS.clientCredentialProvider = { space in snapshot[space.host.lowercased()] }
+        }
     }
 
     static func credential(forHost host: String) -> URLCredential? {

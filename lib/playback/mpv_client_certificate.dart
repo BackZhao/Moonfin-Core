@@ -21,8 +21,10 @@ Future<void> applyMpvClientCertificate(Player player, String url) async {
       certPath = certFile.path;
       keyPath = keyFile.path;
     }
-    await platform.setProperty('tls-cert-file', certPath);
-    await platform.setProperty('tls-key-file', keyPath);
+    // NativePlayer's web stub has no setProperty, so the web build needs dynamic here.
+    final dynamic native = platform;
+    await native.setProperty('tls-cert-file', certPath);
+    await native.setProperty('tls-key-file', keyPath);
   } catch (_) {
     // Playback still goes ahead, and a server that needs the certificate
     // refuses it.
