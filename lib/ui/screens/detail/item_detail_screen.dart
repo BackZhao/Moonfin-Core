@@ -6470,6 +6470,22 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     );
   }
 
+  /// Whether a Series or Season row puts its everyday buttons inline and only
+  /// the management ones behind More. The Modern mobile layout, the
+  /// menu-overflow (Spotlight) mode and a button count the user picked all
+  /// use the count split instead, the same as every other type.
+  @visibleForTesting
+  static bool usesTwoColumnLayout({
+    required String? itemType,
+    required bool isModernMobile,
+    required bool overflowAsMenu,
+    required int buttonLimit,
+  }) =>
+      (itemType == 'Series' || itemType == 'Season') &&
+      !isModernMobile &&
+      !overflowAsMenu &&
+      buttonLimit == 0;
+
   int _calculateMaxVisibleButtons(BuildContext context) {
     final override = widget.maxVisibleButtonsOverride;
     if (override != null) return override > 2 ? override : 2;
@@ -7403,17 +7419,16 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     final List<Widget> extraButtons;
     final bool needsOverflow;
 
-    final bool isTvShow = item.type == 'Series' || item.type == 'Season';
     final bool isTvSeries = item.type == 'Series';
     final bool isTvSeason = item.type == 'Season';
-    // Series uses the two-column (inline-Play) layout on TV/desktop, but on the
-    // modern mobile layout it should match movies: full-width primary + overflow.
     final bool isModernMobile = widget.modernStyle && _isCompact(context);
-    // Series/Season keep the two-column inline-Play layout on TV/desktop; on the
-    // compact (mobile) layout every type uses the full-width primary + overflow.
-    // The menu-overflow (Spotlight) mode uses the count split for every type.
-    final bool isTwoColumnLayout =
-        !widget.overflowAsMenu && !isModernMobile && isTvShow;
+    final prefLimit = prefs.get(UserPreferences.detailButtonsMaxVisible);
+    final bool isTwoColumnLayout = usesTwoColumnLayout(
+      itemType: item.type,
+      isModernMobile: isModernMobile,
+      overflowAsMenu: widget.overflowAsMenu,
+      buttonLimit: prefLimit,
+    );
 
     // The buttons only fold into More once they stop fitting on one line.
     // Measuring the worst case, where whichever button is focused has grown
@@ -7426,7 +7441,6 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
         .where((button) => button.isPrimary)
         .map((button) => button.label)
         .firstOrNull;
-    final prefLimit = prefs.get(UserPreferences.detailButtonsMaxVisible);
     final fitsOneLine = prefLimit == -1
         ? true
         : (widget.modernStyle && rowBudget != null
