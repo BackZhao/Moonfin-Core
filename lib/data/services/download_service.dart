@@ -3378,21 +3378,27 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     final authOptions = Options(headers: _buildAuthHeaders());
     for (final stream in streams) {
       if (stream['Type'] != 'Subtitle') continue;
-      // External files download as-is. Embedded text subs that the server can
-      // extract also get saved as sidecars, which is the only subtitle path a
-      // transcoded download has since the transcoded file carries none.
+      // External files download as-is. Embedded text and PGS subs the server
+      // can extract also get saved as sidecars, which is the only subtitle
+      // path a transcoded download has since the transcoded file carries none.
       final isExternal = stream['IsExternal'] == true;
       final supportsExternal = stream['SupportsExternalStream'] == true;
-      if (!isExternal && !supportsExternal) continue;
-      final index = stream['Index'] as int? ?? 0;
       final ext = canonicalSubtitleCodec(stream['Codec'] as String?);
+      final isPgs = ext == 'pgssub';
+      // Emby flags embedded PGS as not extractable but serves it as .sup, and
+      // answers .pgssub with an empty file. Jellyfin only takes .pgssub.
+      if (!isExternal && !supportsExternal && !isPgs) continue;
+      final index = stream['Index'] as int? ?? 0;
+      final format = isPgs && _client.serverType == ServerType.emby
+          ? 'sup'
+          : ext;
       // DeliveryUrl is computed by the server during PlaybackInfo and is often
       // absent from the plain item metadata. Fall back to the stable subtitle
       // stream endpoint so offline downloads match the streaming path.
       var deliveryUrl = stream['DeliveryUrl'] as String?;
       if (deliveryUrl == null || deliveryUrl.isEmpty) {
         deliveryUrl =
-            '/Videos/${item.id}/$mediaSourceId/Subtitles/$index/0/Stream.$ext';
+            '/Videos/${item.id}/$mediaSourceId/Subtitles/$index/0/Stream.$format';
       }
       final subUrl = deliveryUrl.startsWith('http')
           ? deliveryUrl

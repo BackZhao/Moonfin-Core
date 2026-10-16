@@ -25,10 +25,13 @@ class _RowRepository extends OfflineRepository {
 }
 
 class _FakeClient implements MediaServerClient {
-  _FakeClient(this.baseUrl);
+  _FakeClient(this.baseUrl, [this.serverType = ServerType.jellyfin]);
 
   @override
   final String baseUrl;
+
+  @override
+  final ServerType serverType;
 
   @override
   String? get accessToken => 'test-token';
@@ -63,8 +66,9 @@ void main() {
 
     final moviePath = '${tempDir.path}/Movie.mkv';
     await File(moviePath).writeAsString('video');
-    // Index 3 is an image subtitle and index 4 already has its file, so only
-    // index 2 should be fetched.
+    // Index 3 is an image subtitle the server can't extract and index 4
+    // already has its file, so only indexes 2 and 5 should be fetched. Index 5
+    // is PGS flagged the way Emby flags it.
     await File('${tempDir.path}/Movie_sub_4.srt').writeAsString('kept');
 
     final row = DownloadedItem(
@@ -90,7 +94,7 @@ void main() {
           {
             'Type': 'Subtitle',
             'Index': 3,
-            'Codec': 'PGSSUB',
+            'Codec': 'dvdsub',
             'SupportsExternalStream': false,
           },
           {
@@ -98,6 +102,12 @@ void main() {
             'Index': 4,
             'Codec': 'subrip',
             'SupportsExternalStream': true,
+          },
+          {
+            'Type': 'Subtitle',
+            'Index': 5,
+            'Codec': 'PGSSUB',
+            'SupportsExternalStream': false,
           },
         ],
       }),
@@ -130,14 +140,18 @@ void main() {
     } catch (_) {}
   });
 
-  test('fetches only the missing text subtitle, once per run', () async {
+  test('fetches only the missing subtitles, once per run', () async {
     await service.restoreMissingSubtitles('movie-1');
 
-    expect(requests, ['/Videos/movie-1/source-1/Subtitles/2/0/Stream.srt']);
+    expect(requests, [
+      '/Videos/movie-1/source-1/Subtitles/2/0/Stream.srt',
+      '/Videos/movie-1/source-1/Subtitles/5/0/Stream.pgssub',
+    ]);
     expect(
       await File('${tempDir.path}/Movie_sub_2.srt').readAsString(),
       contains('Hi'),
     );
+    expect(File('${tempDir.path}/Movie_sub_5.pgssub').existsSync(), isTrue);
     expect(
       await File('${tempDir.path}/Movie_sub_4.srt').readAsString(),
       'kept',
@@ -145,7 +159,23 @@ void main() {
 
     await File('${tempDir.path}/Movie_sub_2.srt').delete();
     await service.restoreMissingSubtitles('movie-1');
-    expect(requests, hasLength(1));
+    expect(requests, hasLength(2));
+  });
+
+  test('asks Emby for PGS as .sup', () async {
+    final emby = DownloadService(
+      _FakeClient('http://127.0.0.1:${server.port}', ServerType.emby),
+      DownloadNotificationService(),
+    );
+    addTearDown(emby.dispose);
+
+    await emby.restoreMissingSubtitles('movie-1');
+
+    expect(
+      requests,
+      contains('/Videos/movie-1/source-1/Subtitles/5/0/Stream.sup'),
+    );
+    expect(File('${tempDir.path}/Movie_sub_5.pgssub').existsSync(), isTrue);
   });
 
   test('ignores items that are not downloaded', () async {
