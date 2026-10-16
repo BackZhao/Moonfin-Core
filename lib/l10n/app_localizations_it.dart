@@ -2487,6 +2487,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get liveBadge => 'IN ONDA';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Prossimo: $time  $title';
   }

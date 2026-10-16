@@ -2492,6 +2492,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get liveBadge => 'நேரலை';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'அடுத்து: $time  $title';
   }

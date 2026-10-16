@@ -2493,6 +2493,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get liveBadge => 'ŽÍT';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Následuje: $time  $title';
   }

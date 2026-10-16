@@ -2445,6 +2445,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get liveBadge => '살다';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return '다음: $time  $title';
   }

@@ -2486,6 +2486,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get liveBadge => 'SỐNG';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Tiếp theo: $time  $title';
   }

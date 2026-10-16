@@ -2488,6 +2488,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get liveBadge => 'GYVAI';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Toliau: $time  $title';
   }

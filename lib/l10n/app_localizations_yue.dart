@@ -2435,6 +2435,9 @@ class AppLocalizationsYue extends AppLocalizations {
   String get liveBadge => '居住';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return '下一個：$time  $title';
   }

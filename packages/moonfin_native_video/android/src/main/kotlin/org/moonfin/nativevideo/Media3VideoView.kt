@@ -5354,7 +5354,19 @@ class Media3VideoView(
             "volumeBoostLevel" to userVolumeBoostLevel,
             "subtitleRendererMode" to activeSubtitleRendererMode.wireValue,
             "subtitleRendererModeRequested" to requestedSubtitleRendererMode.wireValue,
+            "liveEdgeMs" to liveEdgeMs(),
         )
+    }
+
+    /**
+     * Where playing live sits on the window's own clock, which is the one
+     * positions are reported on. Null unless the stream keeps a window that
+     * can be sought back into, like a live HLS playlist does.
+     */
+    private fun liveEdgeMs(): Long? {
+        val window = currentWindow() ?: return null
+        if (!window.isLive() || !window.isSeekable || !window.isDynamic) return null
+        return window.defaultPositionMs.takeIf { it > 0 }
     }
 
     private fun emitState() {

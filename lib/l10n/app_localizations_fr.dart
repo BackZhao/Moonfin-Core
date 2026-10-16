@@ -2503,6 +2503,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get liveBadge => 'EN DIRECT';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'A suivre : $time   $title';
   }

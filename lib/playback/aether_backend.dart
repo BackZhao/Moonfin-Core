@@ -47,6 +47,7 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
   Duration _position = Duration.zero;
   Duration _duration = Duration.zero;
   Duration _buffer = Duration.zero;
+  LiveSeekWindow? _liveSeekWindow;
   bool _isPlaying = false;
   bool _isBuffering = false;
   bool _isSubtitleLoading = false;
@@ -142,6 +143,12 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
         _position = Duration(milliseconds: _toInt(map['positionMs']));
         _duration = Duration(milliseconds: _toInt(map['durationMs']));
         _buffer = Duration(milliseconds: _toInt(map['bufferedMs']));
+        _liveSeekWindow = map['liveEdgeMs'] == null
+            ? null
+            : LiveSeekWindow(
+                start: Duration(milliseconds: _toInt(map['liveWindowStartMs'])),
+                edge: Duration(milliseconds: _toInt(map['liveEdgeMs'])),
+              );
         _isPlaying = _toBool(map['isPlaying']);
         _isBuffering = _toBool(map['isBuffering']);
         _setSubtitleLoading(_toBool(map['isSubtitleLoading']));
@@ -281,6 +288,7 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
       'certificates': nativeClientCertificates(pkcs12: true),
     });
 
+    _liveSeekWindow = null;
     await _invoke<void>('setSource', {
       'url': url,
       'headers': headers,
@@ -317,6 +325,9 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
   // No way to re-open a live source in place, so the manager escalates.
   @override
   Future<bool> resumeLiveEdge() async => false;
+
+  @override
+  LiveSeekWindow? get liveSeekWindow => _liveSeekWindow;
 
   @override
   Future<void> stop() async {

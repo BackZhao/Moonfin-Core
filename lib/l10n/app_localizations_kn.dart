@@ -2487,6 +2487,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get liveBadge => 'ಲೈವ್';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'ಮುಂದೆ: $time  $title';
   }

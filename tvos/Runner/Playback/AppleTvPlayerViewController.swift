@@ -221,7 +221,7 @@ final class AppleTvPlayerViewController: UIViewController {
     private enum ControlId {
         case prev, skipBack, playPause, skipForward, next
         case speed, chapters, episodes, subtitles, audio, cast, quality, zoom, info
-        case channels, favorite, guide, syncplay
+        case channels, favorite, guide, syncplay, goLive
     }
     private var focusedZone: Zone = .buttons
     private var focusedControlIndex = 0
@@ -1137,6 +1137,7 @@ final class AppleTvPlayerViewController: UIViewController {
         case .guide: return "list.bullet.rectangle"
         case .favorite: return isFavorite ? "heart.fill" : "heart"
         case .syncplay: return "person.2.wave.2"
+        case .goLive: return "dot.radiowaves.left.and.right"
         }
     }
 
@@ -1180,7 +1181,7 @@ final class AppleTvPlayerViewController: UIViewController {
         case .info: return "info"
         case .favorite: return "favorite"
         case .syncplay: return "syncPlay"
-        case .prev, .skipBack, .playPause, .skipForward, .next, .channels, .guide:
+        case .prev, .skipBack, .playPause, .skipForward, .next, .channels, .guide, .goLive:
             return nil
         }
     }
@@ -1211,8 +1212,13 @@ final class AppleTvPlayerViewController: UIViewController {
         controlIcons.removeAll()
 
         var ids: [ControlId] = []
+        controlsBuiltWithRewind = rewindRange != nil
         if isLive {
-            ids.append(.playPause)
+            if controlsBuiltWithRewind {
+                ids += [.skipBack, .playPause, .skipForward, .goLive]
+            } else {
+                ids.append(.playPause)
+            }
             if !channelList.isEmpty { ids.append(.channels) }
             ids.append(.guide)
             if !streamInfoSections.isEmpty, osdShows(.info) { ids.append(.info) }
@@ -1999,9 +2005,10 @@ final class AppleTvPlayerViewController: UIViewController {
     /// one to fire it. The zone follows the seek, so the OSD arrives on the
     /// scrubber and the press after it keeps seeking.
     ///
-    /// A live stream has nothing to seek, so it keeps the button behaviour.
+    /// A live stream seeks only when it keeps a window to rewind through,
+    /// and otherwise keeps the button behaviour.
     private func seekOrMoveFocus(forward: Bool) {
-        if !isOsdOnScreen, !isLive {
+        if !isOsdOnScreen, !isLive || rewindRange != nil {
             focusedZone = .scrubber
             updateFocusHighlight()
         }
@@ -2013,7 +2020,11 @@ final class AppleTvPlayerViewController: UIViewController {
     private func handleHorizontal(forward: Bool) {
         switch focusedZone {
         case .scrubber:
-            adjustScrub(byMs: forward ? skipForwardMs : -skipBackMs)
+            if isLive {
+                seekLive(byMs: forward ? skipForwardMs : -skipBackMs)
+            } else {
+                adjustScrub(byMs: forward ? skipForwardMs : -skipBackMs)
+            }
         case .buttons:
             let next = focusedControlIndex + (forward ? 1 : -1)
             focusedControlIndex = min(controls.count - 1, max(0, next))
@@ -2026,11 +2037,19 @@ final class AppleTvPlayerViewController: UIViewController {
         case .prev:
             onPrevious?()
         case .skipBack:
-            seekDirect(toMs: Int(player.currentTime * 1000) - skipBackMs)
+            if isLive {
+                seekLive(byMs: -skipBackMs)
+            } else {
+                seekDirect(toMs: Int(player.currentTime * 1000) - skipBackMs)
+            }
         case .playPause:
             togglePlayPause()
         case .skipForward:
-            seekDirect(toMs: Int(player.currentTime * 1000) + skipForwardMs)
+            if isLive {
+                seekLive(byMs: skipForwardMs)
+            } else {
+                seekDirect(toMs: Int(player.currentTime * 1000) + skipForwardMs)
+            }
         case .next:
             onNext?()
         case .speed:
@@ -2062,6 +2081,9 @@ final class AppleTvPlayerViewController: UIViewController {
             onToggleFavorite?()
         case .syncplay:
             presentSyncPlay()
+        case .goLive:
+            player.seekToLiveEdge()
+            if isPaused() { togglePlayPause() }
         }
     }
 
@@ -2186,6 +2208,7 @@ final class AppleTvPlayerViewController: UIViewController {
         case .guide: return "Guide"
         case .favorite: return isFavorite ? "Remove from Favorites" : "Add to Favorites"
         case .syncplay: return "SyncPlay"
+        case .goLive: return "Jump to Live"
         }
     }
 
@@ -2335,6 +2358,29 @@ final class AppleTvPlayerViewController: UIViewController {
             player.resume()
         }
         renderProgress()
+    }
+
+    /// A window shorter than this is the engine's own buffer rather than
+    /// anything worth rewinding through.
+    private static let minRewindSeconds: Double = 60
+    /// How far behind the edge still counts as live.
+    private static let liveEdgeSlackSeconds: Double = 10
+    private var controlsBuiltWithRewind = false
+
+    private var rewindRange: ClosedRange<Double>? {
+        guard isLive, let range = player.seekableLiveRange,
+            range.upperBound - range.lowerBound >= Self.minRewindSeconds
+        else { return nil }
+        return range
+    }
+
+    private func seekLive(byMs deltaMs: Int) {
+        guard let range = rewindRange else { return }
+        let target = min(
+            range.upperBound,
+            max(range.lowerBound, player.currentTime + Double(deltaMs) / 1000.0))
+        player.seek(to: target)
+        onUserSeek?(Int((target * 1000).rounded()))
     }
 
     private func seekDirect(toMs ms: Int) {
@@ -3137,7 +3183,21 @@ final class AppleTvPlayerViewController: UIViewController {
         for label in [aboveLeftLabel, aboveCenterLabel, aboveRightLabel, belowCenterLabel] {
             label.text = ""
         }
-        if let program = liveProgram, program.endMs > program.startMs {
+        if let range = rewindRange {
+            let span = range.upperBound - range.lowerBound
+            let behind = max(0, range.upperBound - player.currentTime)
+            scrubber.progress = Float(min(1, max(0, (player.currentTime - range.lowerBound) / span)))
+            belowLeftLabel.text = clockFormatter.string(from: Date().addingTimeInterval(-behind))
+            belowRightLabel.text =
+                behind > Self.liveEdgeSlackSeconds ? "-\(formatTime(behind))" : "LIVE"
+            let goLiveFocused =
+                focusedZone == .buttons && controls.indices.contains(focusedControlIndex)
+                && controls[focusedControlIndex] == .goLive
+            if !goLiveFocused {
+                controlIcons[.goLive]?.tintColor =
+                    behind > Self.liveEdgeSlackSeconds ? UIColor(white: 1, alpha: 0.85) : .systemRed
+            }
+        } else if let program = liveProgram, program.endMs > program.startMs {
             let nowMs = Date().timeIntervalSince1970 * 1000
             let span = Double(program.endMs - program.startMs)
             let progress = (nowMs - Double(program.startMs)) / span
@@ -3157,6 +3217,15 @@ final class AppleTvPlayerViewController: UIViewController {
     }
 
     private func updateOsd() {
+        if isLive, (rewindRange != nil) != controlsBuiltWithRewind {
+            let focused = controls.indices.contains(focusedControlIndex)
+                ? controls[focusedControlIndex] : nil
+            rebuildControls()
+            if let focused, let index = controls.firstIndex(of: focused) {
+                focusedControlIndex = index
+                updateFocusHighlight()
+            }
+        }
         renderProgress()
         if scrubTargetMs == nil && scrubFrozenMs == nil {
             prefetchTrickplay(aroundMs: Int(player.currentTime * 1000), forward: true, sheetsAhead: 1)

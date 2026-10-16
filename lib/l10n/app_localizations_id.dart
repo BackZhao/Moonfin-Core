@@ -2483,6 +2483,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get liveBadge => 'LANGSUNG';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Berikutnya: $time  $title';
   }

@@ -2492,6 +2492,9 @@ class AppLocalizationsBe extends AppLocalizations {
   String get liveBadge => 'ЖЫВАЯ';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Далей: $time  $title';
   }

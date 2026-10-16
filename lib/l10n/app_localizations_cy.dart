@@ -2501,6 +2501,9 @@ class AppLocalizationsCy extends AppLocalizations {
   String get liveBadge => 'BYW';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Nesaf: $time  $title';
   }

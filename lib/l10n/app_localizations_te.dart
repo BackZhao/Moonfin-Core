@@ -2487,6 +2487,9 @@ class AppLocalizationsTe extends AppLocalizations {
   String get liveBadge => 'ప్రత్యక్ష ప్రసారం';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'తదుపరి: $time  $title';
   }

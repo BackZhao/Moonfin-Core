@@ -2474,6 +2474,9 @@ class AppLocalizationsSi extends AppLocalizations {
   String get liveBadge => 'සජීවී';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'ඊළඟට: $time  $title';
   }

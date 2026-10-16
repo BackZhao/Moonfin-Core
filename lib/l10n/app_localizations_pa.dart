@@ -2480,6 +2480,9 @@ class AppLocalizationsPa extends AppLocalizations {
   String get liveBadge => 'ਲਾਈਵ';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'ਅਗਲਾ: $time  $title';
   }

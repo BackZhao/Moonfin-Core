@@ -237,7 +237,7 @@ final class AetherVideoChannel: NSObject, FlutterStreamHandler {
             break
         }
 
-        send([
+        var state: [String: Any] = [
             "event": "state",
             "positionMs": Int((p.currentTime * 1000).rounded()),
             "durationMs": Int((p.duration * 1000).rounded()),
@@ -245,7 +245,12 @@ final class AetherVideoChannel: NSObject, FlutterStreamHandler {
             "isPlaying": isPlaying,
             "isBuffering": isBuffering,
             "isSubtitleLoading": p.isSubtitleLoading,
-        ])
+        ]
+        if let range = p.seekableLiveRange {
+            state["liveWindowStartMs"] = Int((range.lowerBound * 1000).rounded())
+            state["liveEdgeMs"] = Int((range.upperBound * 1000).rounded())
+        }
+        send(state)
 
         // Captions can turn up part way through a live stream, so a change in
         // either list re-emits tracksChanged.

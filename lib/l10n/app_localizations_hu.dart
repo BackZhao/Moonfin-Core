@@ -2493,6 +2493,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get liveBadge => 'ÉLŐ';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Következő: $time  $title';
   }

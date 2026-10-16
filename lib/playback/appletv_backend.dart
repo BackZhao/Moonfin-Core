@@ -386,6 +386,9 @@ class AppleTvBackend implements PlayerBackend {
   Future<bool> resumeLiveEdge() async => false;
 
   @override
+  LiveSeekWindow? get liveSeekWindow => null;
+
+  @override
   Future<void> stop() async {
     _pendingEmbeddedSubtitle = null;
     await _invoke<void>('stop');

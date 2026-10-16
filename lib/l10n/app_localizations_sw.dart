@@ -2493,6 +2493,9 @@ class AppLocalizationsSw extends AppLocalizations {
   String get liveBadge => 'MUBASHARA';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Inayofuata: $time  $title';
   }

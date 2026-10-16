@@ -2427,6 +2427,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveBadge => '直播';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return '下一集 ：$time $title';
   }

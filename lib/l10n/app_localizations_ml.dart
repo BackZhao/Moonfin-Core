@@ -2490,6 +2490,9 @@ class AppLocalizationsMl extends AppLocalizations {
   String get liveBadge => 'തത്സമയം';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'അടുത്തത്: $time  $title';
   }

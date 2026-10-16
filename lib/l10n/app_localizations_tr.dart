@@ -2481,6 +2481,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get liveBadge => 'CANLI';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Sıradaki: $time  $title';
   }

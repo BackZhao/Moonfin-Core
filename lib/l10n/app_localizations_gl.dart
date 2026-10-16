@@ -2499,6 +2499,9 @@ class AppLocalizationsGl extends AppLocalizations {
   String get liveBadge => 'EN VIVO';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'A continuación: $time  $title';
   }

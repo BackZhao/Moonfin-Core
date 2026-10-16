@@ -2480,6 +2480,9 @@ class AppLocalizationsEo extends AppLocalizations {
   String get liveBadge => 'VIVU';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Sekva: $time  $title';
   }

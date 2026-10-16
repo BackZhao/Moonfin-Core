@@ -2496,6 +2496,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get liveBadge => 'НАЖИВО';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Далі: $time  $title';
   }

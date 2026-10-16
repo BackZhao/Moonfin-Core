@@ -2479,6 +2479,9 @@ class AppLocalizationsUg extends AppLocalizations {
   String get liveBadge => 'بىۋاسىتە';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'كېيىنكىسى: $time  $title';
   }

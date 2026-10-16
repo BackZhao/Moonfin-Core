@@ -4324,6 +4324,12 @@ abstract class AppLocalizations {
   /// **'LIVE'**
   String get liveBadge;
 
+  /// Live TV player button that leaves a rewound or paused stream and returns to what is airing now
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to Live'**
+  String get liveTvJumpToLive;
+
   /// Guide card line for the upcoming program, e.g. 'Next: 9:00 PM  The News'
   ///
   /// In en, this message translates to:

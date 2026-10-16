@@ -38,6 +38,9 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
     @Published var currentAudioTrackIndex: Int32 = -1
     @Published var currentSubtitleTrackIndex: Int32 = -1
     @Published var rate: Float = 1.0
+    /// Where a live stream can be rewound within, on the same clock as
+    /// `currentTime`. Nil when it keeps nothing to go back to.
+    @Published var seekableLiveRange: ClosedRange<Double>?
     @Published internal(set) var zoomMode: ZoomMode = .fit
 
     private(set) var videoView: PlatformView?
@@ -253,6 +256,11 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
                 self.position =
                     self.duration > 0 ? Float(value / self.duration) : 0
             }
+            .store(in: &cancellables)
+
+        engine.clock.$seekableLiveRange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] range in self?.seekableLiveRange = range }
             .store(in: &cancellables)
 
         engine.clock.$bufferedPosition
@@ -956,6 +964,10 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
 
     func seek(to seconds: TimeInterval) {
         Task { await Self.sharedEngine()?.seek(to: seconds) }
+    }
+
+    func seekToLiveEdge() {
+        Task { await Self.sharedEngine()?.seekToLiveEdge() }
     }
 
     func seekBy(_ delta: TimeInterval) {

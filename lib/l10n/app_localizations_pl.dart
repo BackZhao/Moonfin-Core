@@ -2627,6 +2627,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get liveBadge => 'NA ŻYWO';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'Następnie: $time   $title';
   }

@@ -2470,6 +2470,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get liveBadge => 'สด';
 
   @override
+  String get liveTvJumpToLive => 'Jump to Live';
+
+  @override
   String guideNextProgram(String time, String title) {
     return 'ถัดไป: $time  $title';
   }

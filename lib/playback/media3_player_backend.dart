@@ -110,6 +110,7 @@ class Media3PlayerBackend extends PlayerBackend
   bool _isPlaying = false;
   bool _isBuffering = false;
   double _playbackSpeed = 1.0;
+  Duration? _liveEdge;
   double _volume = 100.0;
   double _audioDelaySeconds = 0.0;
   double _subtitleDelaySeconds = 0.0;
@@ -253,6 +254,10 @@ class Media3PlayerBackend extends PlayerBackend
         if (reportedSpeed != null && reportedSpeed > 0) {
           _playbackSpeed = reportedSpeed;
         }
+        final liveEdgeMs = (map['liveEdgeMs'] as num?)?.toInt();
+        _liveEdge = liveEdgeMs == null
+            ? null
+            : Duration(milliseconds: liveEdgeMs);
         if (_isPlaying != wasPlaying || _isBuffering != wasBuffering) {
           _diag(
             'Media3 state: playing=$_isPlaying buffering=$_isBuffering '
@@ -1105,6 +1110,7 @@ class Media3PlayerBackend extends PlayerBackend
       ...audioDecoderPreferencesPayload(_prefs),
     });
     _lastFrameRateLine = null;
+    _liveEdge = null;
     _sourceIsLive = payload['isLive'] == true;
     // Reset for a new viewing session, but keep the adjustment when the
     // same session changes quality or restores playback after backgrounding.
@@ -1198,6 +1204,14 @@ class Media3PlayerBackend extends PlayerBackend
     _diag('Media3: resuming the live edge after the source ran out');
     await _invoke<void>('resumeLive');
     return true;
+  }
+
+  @override
+  LiveSeekWindow? get liveSeekWindow {
+    final edge = _liveEdge;
+    return edge == null
+        ? null
+        : LiveSeekWindow(start: Duration.zero, edge: edge);
   }
 
   @override
