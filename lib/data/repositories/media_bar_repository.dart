@@ -37,11 +37,9 @@ class MediaBarRepository {
     }
 
     final contentType = _prefs.get(UserPreferences.mediaBarContentType);
-    final pluginSyncEnabled = _prefs.get(UserPreferences.pluginSyncEnabled);
 
-    final maxItems = pluginSyncEnabled
-        ? (int.tryParse(_prefs.get(UserPreferences.mediaBarItemCount)) ?? 10)
-        : 5;
+    final maxItems =
+        int.tryParse(_prefs.get(UserPreferences.mediaBarItemCount)) ?? 10;
     // The pickers in settings are open to everyone and the filtering below is
     // plain item queries, so a plugin is not needed to honour the choice.
     final libraryIds = _splitCsv(UserPreferences.mediaBarLibraryIds);
