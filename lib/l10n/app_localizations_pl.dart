@@ -540,14 +540,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get performanceModeReduced => 'Ograniczona';
 
   @override
-  String get rendererMode => 'Renderer';
+  String get rendererMode => 'Silnik renderowania';
 
   @override
   String get rendererModeSubtitle =>
-      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+      'Tryb automatyczny używa silnika Impeller na urządzeniach, na których działa on płynnie, a na pozostałych korzysta ze Skia. Wybierz Skia, jeśli animacje lub wideo nie wyświetlają się prawidłowo. Zmiana zostanie zastosowana przy następnym uruchomieniu aplikacji.';
 
   @override
-  String get rendererModeAuto => 'Auto';
+  String get rendererModeAuto => 'Automatycznie';
 
   @override
   String get rendererModeSkia => 'Skia';
@@ -1481,7 +1481,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get extras => 'Dodatki';
 
   @override
-  String get additionalParts => 'Additional Parts';
+  String get additionalParts => 'Dodatkowe części';
 
   @override
   String get behindTheScenes => 'Kulisy produkcji';
@@ -2385,20 +2385,20 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nieaktywne — nie udało się uruchomić, używana jest standardowa ścieżka';
 
   @override
-  String get videoRenderer => 'Video Renderer';
+  String get videoRenderer => 'Renderowanie wideo';
 
   @override
   String get videoRendererDescription =>
-      'Native window gives the smoothest motion and sends HDR to the display untouched. Try another option if video misbehaves.';
+      'Osobne okno zapewnia najpłynniejsze odtwarzanie i przesyła obraz HDR bezpośrednio do wyświetlacza, bez modyfikacji. Jeśli występują problemy z odtwarzaniem wideo, wypróbuj inną opcję.';
 
   @override
-  String get videoRendererNativeWindow => 'Native window (recommended)';
+  String get videoRendererNativeWindow => 'Osobne okno (zalecane)';
 
   @override
-  String get videoRendererNativeHdrOnly => 'Native window for HDR only';
+  String get videoRendererNativeHdrOnly => 'Osobne okno tylko dla HDR';
 
   @override
-  String get videoRendererInApp => 'In-app (legacy)';
+  String get videoRendererInApp => 'W aplikacji (tryb starszego typu)';
 
   @override
   String get codec => 'Kodek';
@@ -3530,7 +3530,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get fit => 'Dopasuj';
 
   @override
-  String get autoCrop => 'Automatyczne przycinanie';
+  String get autoCrop => 'Wypełnij ekran';
 
   @override
   String get cropBlackBars => 'Przytnij czarne pasy';
@@ -4338,7 +4338,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get preferredSecondarySubtitleLanguage =>
-      'Preferred Secondary Subtitle Language';
+      'Preferowany język dodatkowych napisów';
 
   @override
   String get defaultToNoSubtitles => 'Domyślnie brak napisów';
@@ -4350,22 +4350,22 @@ class AppLocalizationsPl extends AppLocalizations {
   String get subtitleSize => 'Rozmiar napisów';
 
   @override
-  String get primarySubtitleSlot => 'Primary';
+  String get primarySubtitleSlot => 'Główne';
 
   @override
-  String get secondarySubtitleSlot => 'Secondary';
+  String get secondarySubtitleSlot => 'Dodatkowe';
 
   @override
-  String get secondarySubtitleTrack => 'Secondary Subtitle Track';
+  String get secondarySubtitleTrack => 'Ścieżka dodatkowych napisów';
 
   @override
   String decreaseValue(String setting) {
-    return 'Decrease $setting';
+    return 'Zmniejsz: $setting';
   }
 
   @override
   String increaseValue(String setting) {
-    return 'Increase $setting';
+    return 'Zwiększ: $setting';
   }
 
   @override
@@ -10289,10 +10289,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get playerTooltipSeekForward => 'Przewiń do przodu';
 
   @override
-  String get playerTooltipMinimize => 'Minimize player';
+  String get playerTooltipMinimize => 'Zminimalizuj odtwarzacz';
 
   @override
-  String get miniPlayerOpenPlayer => 'Open player';
+  String get miniPlayerOpenPlayer => 'Otwórz odtwarzacz';
 
   @override
   String get contextMenuMarkWatched => 'Oznacz jako obejrzane';
@@ -10724,7 +10724,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get settingsPlayerZoomDescription =>
-      'Jak skalować wideo, aby dopasować je do ekranu.';
+      'Określa sposób skalowania wideo do rozmiaru ekranu. Opcja „Wypełnij ekran” powiększa obraz tak, aby wypełnił cały ekran, przycinając jego krawędzie. Nie wykrywa czarnych pasów.';
 
   @override
   String get settingsPlaybackEngineAndroidTv =>
@@ -14333,34 +14333,37 @@ class AppLocalizationsPl extends AppLocalizations {
       'Sterowanie, przewijanie, przyciski odtwarzacza i podgląd podczas przewijania';
 
   @override
-  String get playlistSortReleaseDate => 'Release Date';
+  String get playlistSortReleaseDate => 'Data premiery';
 
   @override
-  String get playlistSortCriticRating => 'Critic Rating';
+  String get playlistSortCriticRating => 'Ocena krytyków';
 
   @override
-  String get playlistSortRuntime => 'Runtime';
+  String get playlistSortRuntime => 'Czas trwania';
 
   @override
-  String get playlistSortLastPlayed => 'Last Played';
+  String get playlistSortLastPlayed => 'Ostatnio odtwarzane';
 
   @override
-  String get playlistSortPlayCount => 'Play Count';
+  String get playlistSortPlayCount => 'Liczba odtworzeń';
 
   @override
-  String get playlistSortRandom => 'Random';
+  String get playlistSortRandom => 'Losowo';
 
   @override
   String playlistFilterActiveCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count active',
-      one: '1 active',
+      other: '# aktywnego',
+      many: '# aktywnych',
+      few: '# aktywne',
+      one: '# aktywny',
     );
     return '$_temp0';
   }
 
   @override
-  String get playlistNoMatchingTracks => 'No tracks match the active filters';
+  String get playlistNoMatchingTracks =>
+      'Żaden utwór nie pasuje do aktywnych filtrów';
 }

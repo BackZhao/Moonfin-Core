@@ -49,7 +49,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get signIn => 'Anmelden';
 
   @override
-  String get empty => 'leer';
+  String get empty => 'Leer';
 
   @override
   String connectingToServer(String serverName) {
@@ -115,7 +115,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get discoveredServers => 'Gefundene Server';
 
   @override
-  String get noneFound => 'Es konnten keine Server automatisch gefunden werden';
+  String get noneFound => 'Es konnten keine Server gefunden werden';
 
   @override
   String get unableToConnectToServer => 'Verbindung zum Server fehlgeschlagen';
@@ -179,7 +179,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get detailScreenStyleModern => 'Modern';
 
   @override
-  String get detailScreenStyleSpotlight => 'Rampenlicht';
+  String get detailScreenStyleSpotlight => 'Spotlight';
 
   @override
   String get spotlightMoreActions => 'Mehr Aktionen';

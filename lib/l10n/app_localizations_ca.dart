@@ -510,11 +510,11 @@ class AppLocalizationsCa extends AppLocalizations {
   String get performanceModeReduced => 'Reduït';
 
   @override
-  String get rendererMode => 'Renderer';
+  String get rendererMode => 'Renderitzador';
 
   @override
   String get rendererModeSubtitle =>
-      'Auto uses Impeller on boxes whose graphics run it smoothly and Skia everywhere else. Pick Skia if animations or video look wrong. Takes effect on the next launch.';
+      'L\'opció Auto fa servir Impeller als dispositius on els gràfics hi funcionen amb fluïdesa, i Skia a la resta. Tria Skia si les animacions o el vídeo es veuen malament. S\'aplica a partir del següent inici.';
 
   @override
   String get rendererModeAuto => 'Auto';
@@ -1383,7 +1383,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get extras => 'Extres';
 
   @override
-  String get additionalParts => 'Additional Parts';
+  String get additionalParts => 'Parts addicionals';
 
   @override
   String get behindTheScenes => 'Darrere les càmeres';
