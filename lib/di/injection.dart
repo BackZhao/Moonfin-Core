@@ -19,7 +19,6 @@ import '../data/services/log_service.dart';
 import '../data/services/media_server_client_factory.dart';
 import '../data/services/recent_searches_store.dart';
 import '../data/services/pending_rating_store.dart';
-import '../data/services/pending_playbackposition_store.dart';
 import '../data/services/storage_path_service.dart';
 import '../platform/web_runtime_config.dart';
 import '../preference/preference_constants.dart';
@@ -405,9 +404,6 @@ void registerOfflineStorage() {
   getIt.registerSingleton<OfflineCatalog>(OfflineCatalog(offlineRepo));
   getIt.registerLazySingleton<PendingRatingStore>(
     () => PendingRatingStore(prefs),
-  );
-  getIt.registerLazySingleton<PendingPlaybackPositionStore>(
-    () => PendingPlaybackPositionStore(prefs),
   );
 }
 
