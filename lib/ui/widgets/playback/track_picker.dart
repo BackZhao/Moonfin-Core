@@ -344,15 +344,14 @@ abstract final class TrackPicker {
   }) async {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context);
-    final language = remoteSubtitleLanguage(subtitleStreams, audioStreams);
+    final languages = remoteSubtitleLanguages(subtitleStreams, audioStreams);
 
     List<Map<String, dynamic>> results;
     try {
       results = await withProgressSnackBar(
         messenger,
         l10n.searchingSubtitles,
-        () =>
-            client.itemsApi.searchRemoteSubtitles(item.id, language: language),
+        () => searchRemoteSubtitlesIn(client.itemsApi, item.id, languages),
       );
     } catch (error) {
       if (!context.mounted) return;
@@ -369,7 +368,9 @@ abstract final class TrackPicker {
     if (!context.mounted) return;
     if (results.isEmpty) {
       messenger.showSnackBar(
-        SnackBar(content: Text(l10n.noRemoteSubtitlesFound(language))),
+        SnackBar(
+          content: Text(l10n.noRemoteSubtitlesFound(languages.join(', '))),
+        ),
       );
       return;
     }

@@ -10090,15 +10090,14 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
   ) async {
     final messenger = ScaffoldMessenger.of(context);
     final client = GetIt.instance<MediaServerClient>();
-    final language = remoteSubtitleLanguage(subtitleStreams, audioStreams);
+    final languages = remoteSubtitleLanguages(subtitleStreams, audioStreams);
 
     List<Map<String, dynamic>> results;
     try {
       results = await withProgressSnackBar(
         messenger,
         AppLocalizations.of(context).searchingSubtitles,
-        () =>
-            client.itemsApi.searchRemoteSubtitles(item.id, language: language),
+        () => searchRemoteSubtitlesIn(client.itemsApi, item.id, languages),
       );
     } catch (error) {
       if (!context.mounted) {
@@ -10127,7 +10126,9 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
         messenger,
         SnackBar(
           content: Text(
-            AppLocalizations.of(context).noRemoteSubtitlesFound(language),
+            AppLocalizations.of(
+              context,
+            ).noRemoteSubtitlesFound(languages.join(', ')),
           ),
         ),
       );

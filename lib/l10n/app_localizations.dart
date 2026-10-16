@@ -7318,6 +7318,18 @@ abstract class AppLocalizations {
   /// **'Default Subtitle Language'**
   String get defaultSubtitleLanguage;
 
+  /// Setting that picks which languages a subtitle download searches
+  ///
+  /// In en, this message translates to:
+  /// **'Subtitle Download Languages'**
+  String get subtitleDownloadLanguages;
+
+  /// Description for the subtitle download languages setting
+  ///
+  /// In en, this message translates to:
+  /// **'Languages to search when downloading subtitles, up to 5. Auto searches one language picked from your default subtitle language or the video.'**
+  String get subtitleDownloadLanguagesDescription;
+
   /// Preferred language used to sort secondary subtitle tracks in the picker. It doesn't turn subtitles on.
   ///
   /// In en, this message translates to:

@@ -1552,6 +1552,11 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'none',
     ]),
     subtitles.leaf('pref_subtitle_language', l10n.defaultSubtitleLanguage),
+    subtitles.leaf(
+      'pref_subtitle_download_languages',
+      l10n.subtitleDownloadLanguages,
+      keywords: ['download', 'opensubtitles'],
+    ),
     if (PlatformDetection.isAndroid)
       subtitles.leaf(
         'pref_secondary_subtitle_language',

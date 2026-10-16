@@ -4159,6 +4159,13 @@ class AppLocalizationsLv extends AppLocalizations {
   String get defaultSubtitleLanguage => 'Noklusējuma subtitru valoda';
 
   @override
+  String get subtitleDownloadLanguages => 'Subtitle Download Languages';
+
+  @override
+  String get subtitleDownloadLanguagesDescription =>
+      'Languages to search when downloading subtitles, up to 5. Auto searches one language picked from your default subtitle language or the video.';
+
+  @override
   String get preferredSecondarySubtitleLanguage =>
       'Preferred Secondary Subtitle Language';
 

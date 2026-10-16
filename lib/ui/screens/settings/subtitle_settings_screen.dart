@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:moonfin_design/moonfin_design.dart';
 
 import '../../../util/language_codes.dart';
+import '../../../util/remote_subtitle_labels.dart';
 import '../../../preference/preference_constants.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../l10n/app_localizations.dart';
@@ -69,6 +70,17 @@ class SubtitleSettingsScreen extends StatelessWidget {
                           l10n.subtitleModeForcedDescription,
                         SubtitleMode.none => l10n.subtitleModeNoneDescription,
                       },
+                    ),
+                    MultiSelectPreferenceTile(
+                      preference: UserPreferences.subtitleDownloadLanguages,
+                      title: l10n.subtitleDownloadLanguages,
+                      description: l10n.subtitleDownloadLanguagesDescription,
+                      icon: Icons.download,
+                      // Every language, since the providers cover far more
+                      // than the app is translated into.
+                      options: kIso6392Languages,
+                      emptyLabel: l10n.auto,
+                      maxSelected: maxSubtitleDownloadLanguages,
                     ),
                   ],
                 ),

@@ -4140,6 +4140,13 @@ class AppLocalizationsSi extends AppLocalizations {
   String get defaultSubtitleLanguage => 'පෙරනිමි උපසිරැසි භාෂාව';
 
   @override
+  String get subtitleDownloadLanguages => 'Subtitle Download Languages';
+
+  @override
+  String get subtitleDownloadLanguagesDescription =>
+      'Languages to search when downloading subtitles, up to 5. Auto searches one language picked from your default subtitle language or the video.';
+
+  @override
   String get preferredSecondarySubtitleLanguage =>
       'Preferred Secondary Subtitle Language';
 

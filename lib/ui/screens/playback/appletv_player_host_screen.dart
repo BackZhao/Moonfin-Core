@@ -857,7 +857,7 @@ class _AppleTvPlayerHostScreenState extends State<AppleTvPlayerHostScreen> {
         .where((s) => s['Type'] == 'Subtitle')
         .toList();
     final audioStreams = allStreams.where((s) => s['Type'] == 'Audio').toList();
-    final language = remoteSubtitleLanguage(subtitleStreams, audioStreams);
+    final languages = remoteSubtitleLanguages(subtitleStreams, audioStreams);
     final l10n = AppLocalizations.of(context);
     () async {
       // The search alert is raised from here rather than from Swift so that a
@@ -868,9 +868,10 @@ class _AppleTvPlayerHostScreenState extends State<AppleTvPlayerHostScreen> {
 
       List<Map<String, dynamic>> results;
       try {
-        results = await client.itemsApi.searchRemoteSubtitles(
+        results = await searchRemoteSubtitlesIn(
+          client.itemsApi,
           item.id,
-          language: language,
+          languages,
         );
       } catch (error) {
         await backend.hideSubtitleProgress(

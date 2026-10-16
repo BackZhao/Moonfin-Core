@@ -2464,6 +2464,13 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: '',
   );
 
+  /// Languages a subtitle download searches, comma separated. Empty searches
+  /// one language guessed from the video. Kept on the device, not synced.
+  static final subtitleDownloadLanguages = Preference(
+    key: 'pref_subtitle_download_languages',
+    defaultValue: '',
+  );
+
   /// Whether embedded subtitle styles (colours, positioning, fonts) should be
   /// applied when rendering text tracks. Disable to force the user's caption
   /// style preferences instead. Media3 (Android) only.

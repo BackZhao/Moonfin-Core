@@ -5486,6 +5486,14 @@
   "@defaultSubtitleLanguage": {
     "description": "Setting for default subtitle language"
   },
+  "subtitleDownloadLanguages": "Subtitle Download Languages",
+  "@subtitleDownloadLanguages": {
+    "description": "Setting that picks which languages a subtitle download searches"
+  },
+  "subtitleDownloadLanguagesDescription": "Languages to search when downloading subtitles, up to 5. Auto searches one language picked from your default subtitle language or the video.",
+  "@subtitleDownloadLanguagesDescription": {
+    "description": "Description for the subtitle download languages setting"
+  },
   "preferredSecondarySubtitleLanguage": "Preferred Secondary Subtitle Language",
   "@preferredSecondarySubtitleLanguage": {
     "description": "Preferred language used to sort secondary subtitle tracks in the picker. It doesn't turn subtitles on."
