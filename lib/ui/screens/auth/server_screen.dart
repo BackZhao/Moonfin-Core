@@ -122,13 +122,18 @@ class _ServerScreenState extends State<ServerScreen> {
     }
   }
 
-  String _buildUserLoginRoute(Server server, _MergedUser user) {
+  String _buildUserLoginRoute(
+    Server server,
+    _MergedUser user, {
+    bool resetPin = false,
+  }) {
     return Uri(
       path: Destinations.login,
       queryParameters: {
         'serverId': server.id,
         'username': user.name,
         if (!user.hasPassword) 'hasPassword': 'false',
+        if (resetPin) 'resetPin': '1',
       },
     ).toString();
   }
@@ -147,7 +152,7 @@ class _ServerScreenState extends State<ServerScreen> {
         onVerify: pinUtil.verifyPin,
         onForgotPin: () {
           if (mounted) {
-            context.go(_buildUserLoginRoute(server, user));
+            context.go(_buildUserLoginRoute(server, user, resetPin: true));
           }
         },
       );

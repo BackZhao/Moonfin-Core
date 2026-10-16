@@ -130,7 +130,7 @@ class _AccountDialogState extends State<_AccountDialog> {
           if (mounted) {
             Navigator.of(context).pop();
             GoRouter.of(context).go(
-              '${Destinations.login}?serverId=${account.server.id}&username=${Uri.encodeComponent(account.user.name)}',
+              '${Destinations.login}?serverId=${account.server.id}&username=${Uri.encodeComponent(account.user.name)}&resetPin=1',
             );
           }
         },

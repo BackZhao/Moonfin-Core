@@ -31,6 +31,26 @@ import '../../widgets/pin_entry_dialog.dart';
 
 final _kAccent = AppColorScheme.accent;
 
+/// Asks for the PIN after a sign in when the user set one. A sign in that
+/// proved who this is clears a forgotten PIN instead of asking for it again,
+/// otherwise Forgot PIN would lead right back to the same prompt.
+@visibleForTesting
+Future<bool> passesPinCheckAfterSignIn({
+  required PinCodeUtil pinUtil,
+  required bool forgotPin,
+  required bool canResetPin,
+  required Future<bool> Function(VoidCallback onForgotPin) askForPin,
+}) async {
+  if (!pinUtil.isPinEnabled) return true;
+  var forgot = forgotPin;
+  if (!forgot || !canResetPin) {
+    if (await askForPin(() => forgot = true)) return true;
+    if (!forgot || !canResetPin) return false;
+  }
+  await pinUtil.removePin();
+  return true;
+}
+
 class LoginScreen extends StatefulWidget {
   final String serverId;
   final String? prefillUsername;
@@ -40,12 +60,17 @@ class LoginScreen extends StatefulWidget {
   /// going back to it would only bounce back to this screen.
   final bool backToServerList;
 
+  /// Set when Forgot PIN sent us here, so signing in clears the PIN instead of
+  /// asking for it again.
+  final bool resetPin;
+
   const LoginScreen({
     super.key,
     required this.serverId,
     this.prefillUsername,
     this.hasPassword = true,
     this.backToServerList = false,
+    this.resetPin = false,
   });
 
   @override
@@ -400,25 +425,11 @@ class _LoginScreenState extends State<LoginScreen> {
             userId: authResult.userId,
           );
           if (mounted) {
-            final store = GetIt.instance<PreferenceStore>();
-            final pinUtil = PinCodeUtil(store, authResult.userId);
-
-            if (pinUtil.isPinEnabled) {
-              final verified = await PinEntryDialog.show(
-                context,
-                mode: PinEntryMode.verify,
-                onVerify: pinUtil.verifyPin,
-                onForgotPin: () {
-                  if (mounted) context.go(Destinations.serverSelect);
-                },
-              );
-
-              if (!verified) {
-                // For quick connect, if PIN verification fails, go back to login screen
-                // to allow user to try with different credentials or method
-                if (mounted) context.go('${Destinations.login}?serverId=${_server!.id}');
-                return;
-              }
+            if (!await _passesPinCheck(authResult.userId, canResetPin: true)) {
+              // A failed PIN goes back to sign in, where another account or
+              // method can be tried.
+              if (mounted) context.go('${Destinations.login}?serverId=${_server!.id}');
+              return;
             }
 
             if (mounted) context.go(Destinations.home);
@@ -517,6 +528,21 @@ class _LoginScreenState extends State<LoginScreen> {
     return true;
   }
 
+  Future<bool> _passesPinCheck(String userId, {required bool canResetPin}) {
+    final pinUtil = PinCodeUtil(GetIt.instance<PreferenceStore>(), userId);
+    return passesPinCheckAfterSignIn(
+      pinUtil: pinUtil,
+      forgotPin: widget.resetPin,
+      canResetPin: canResetPin,
+      askForPin: (onForgotPin) => PinEntryDialog.show(
+        context,
+        mode: PinEntryMode.verify,
+        onVerify: pinUtil.verifyPin,
+        onForgotPin: onForgotPin,
+      ),
+    );
+  }
+
   Future<void> _login() async {
     // The sign in button goes dead once this is running, but the flag only
     // reaches it on the next build, and the password field submits straight
@@ -552,27 +578,17 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           if (!mounted) return;
           if (switched) {
-            final store = GetIt.instance<PreferenceStore>();
-            final pinUtil = PinCodeUtil(store, result.userId);
-
-            if (pinUtil.isPinEnabled) {
-              final verified = await PinEntryDialog.show(
-                context,
-                mode: PinEntryMode.verify,
-                onVerify: pinUtil.verifyPin,
-                onForgotPin: () {
-                  if (mounted) context.go(Destinations.serverSelect);
-                },
-              );
-
-              if (!verified) {
-                // Lands back on a screen that has to take another attempt.
-                if (mounted) {
-                  setState(() => _isLoading = false);
-                  context.go('${Destinations.login}?serverId=${_server!.id}');
-                }
-                return;
+            final passed = await _passesPinCheck(
+              result.userId,
+              canResetPin: _passwordController.text.isNotEmpty,
+            );
+            if (!passed) {
+              // Lands back on a screen that has to take another attempt.
+              if (mounted) {
+                setState(() => _isLoading = false);
+                context.go('${Destinations.login}?serverId=${_server!.id}');
               }
+              return;
             }
 
             if (mounted) context.go(Destinations.home);
