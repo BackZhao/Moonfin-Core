@@ -1,0 +1,120 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:moonfin/data/models/aggregated_item.dart';
+import 'package:moonfin/data/viewmodels/book_browse_view_model.dart';
+
+AggregatedItem folder(String id, String parent, {String? imageTag}) =>
+    AggregatedItem(
+      id: id,
+      serverId: 's',
+      rawData: {
+        'Id': id,
+        'Name': id,
+        'Type': 'Folder',
+        'ParentId': parent,
+        if (imageTag != null) 'ImageTags': {'Primary': imageTag},
+      },
+    );
+
+AggregatedItem book(
+  String id,
+  String parent, {
+  String type = 'Book',
+  String? series,
+  String? imageTag,
+}) => AggregatedItem(
+  id: id,
+  serverId: 's',
+  rawData: {
+    'Id': id,
+    'Name': id,
+    'Type': type,
+    'ParentId': parent,
+    'SeriesName': ?series,
+    if (imageTag != null) 'ImageTags': {'Primary': imageTag},
+  },
+);
+
+void main() {
+  // One library path, as Jellyfin lists it: the path's own folder sits under
+  // a parent the library query never returns.
+  final folders = [
+    folder('root', 'hidden'),
+    folder('One Piece', 'root'),
+    folder('Berserk', 'root', imageTag: 'berserk-cover'),
+  ];
+
+  test('a folder of volumes is one series that opens the folder', () {
+    final entries = bookSeriesEntries(
+      books: [
+        book('op1', 'One Piece', imageTag: 'op1-cover'),
+        book('op2', 'One Piece'),
+        book('op3', 'One Piece'),
+        book('b1', 'Berserk'),
+        book('b2', 'Berserk'),
+        book('Standalone', 'root'),
+      ],
+      folders: folders,
+    );
+
+    expect(entries.map((e) => e.name), ['Berserk', 'One Piece']);
+    final onePiece = entries.last;
+    expect(onePiece.id, 'One Piece');
+    expect(onePiece.type, 'BookSeries');
+    expect(onePiece.rawData['IsFolder'], isTrue);
+    expect(onePiece.childCount, 3);
+    expect(onePiece.primaryImageItemId, 'op1');
+    expect(entries.first.primaryImageTag, 'berserk-cover');
+  });
+
+  test('books loose in a library root are never a series', () {
+    final entries = bookSeriesEntries(
+      books: [
+        book('a', 'Books'),
+        book('b', 'Books'),
+        book('c', 'Books'),
+      ],
+      folders: [folder('Books', 'hidden'), folder('Audiobooks', 'hidden')],
+    );
+
+    expect(entries, isEmpty);
+  });
+
+  test('an audiobook split into chapter files is not a series', () {
+    final entries = bookSeriesEntries(
+      books: [
+        book('ch1', 'One Piece', type: 'AudioBook'),
+        book('ch2', 'One Piece', type: 'AudioBook'),
+      ],
+      folders: folders,
+    );
+
+    expect(entries, isEmpty);
+  });
+
+  test('a named series outside one folder still groups by name', () {
+    final entries = bookSeriesEntries(
+      books: [
+        book('Foundation', 'root', series: 'Foundation'),
+        book('Foundation and Empire', 'root', series: 'Foundation'),
+      ],
+      folders: folders,
+    );
+
+    expect(entries.single.id, 'bookSeries:Foundation');
+    expect(entries.single.rawData['IsFolder'], isNull);
+    expect(entries.single.childCount, 2);
+  });
+
+  test('a named series inside its own folder shows once, as the folder', () {
+    final entries = bookSeriesEntries(
+      books: [
+        book('op1', 'One Piece', series: 'One Piece'),
+        book('op2', 'One Piece', series: 'One Piece'),
+      ],
+      folders: folders,
+    );
+
+    expect(entries.single.id, 'One Piece');
+    expect(entries.single.rawData['IsFolder'], isTrue);
+  });
+}

@@ -152,15 +152,18 @@ class _BookBrowseScreenState extends State<BookBrowseScreen> {
 
   void _openItem(AggregatedItem item) {
     final type = item.type;
-    if (type == 'BookSeries') {
-      context.push(Destinations.searchWith(item.name));
+    final isFolder = item.rawData['IsFolder'] as bool? ?? false;
+    // A series named only by metadata has no folder to open.
+    if (type == 'BookSeries' && !isFolder) {
+      context.push(
+        Destinations.searchInLibrary(widget.libraryId, query: item.name),
+      );
       return;
     }
     if (type == 'BoxSet') {
       context.push(Destinations.collection(item.id));
       return;
     }
-    final isFolder = item.rawData['IsFolder'] as bool? ?? false;
     if (isFolder || type == 'Folder' || type == 'CollectionFolder') {
       context.push(Destinations.folder(item.id, serverId: item.serverId));
       return;
@@ -180,6 +183,10 @@ class _BookBrowseScreenState extends State<BookBrowseScreen> {
   void _onSeeAll(HomeRow row) {
     if (row.rowType == HomeRowType.genres) {
       context.push(Destinations.libraryGenresOf(widget.libraryId));
+      return;
+    }
+    if (_vm.isSeriesRow(row)) {
+      context.push(Destinations.folder(widget.libraryId));
       return;
     }
     context.push(

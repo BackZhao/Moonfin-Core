@@ -18,7 +18,9 @@ class BookBrowseViewModel extends ChangeNotifier {
   final MediaServerClient _client;
   final String libraryId;
 
-  static const _seriesSourceLimit = 200;
+  // shortcut: series past the first 5000 titles go ungrouped, page the query
+  // if a library that large shows up.
+  static const _seriesSourceLimit = 5000;
 
   List<HomeRow> _rows = [];
   List<HomeRow> get rows => _rows;
@@ -100,6 +102,7 @@ class BookBrowseViewModel extends ChangeNotifier {
   Set<String> _audioAuthorNames = const {};
   Set<String> _audioAuthorIds = const {};
   List<AggregatedItem> _seriesSource = const [];
+  List<AggregatedItem> _folders = const [];
 
   String get _serverId => _client.baseUrl;
   ImageApi get imageApi => _dataSource.imageApi;
@@ -118,6 +121,7 @@ class BookBrowseViewModel extends ChangeNotifier {
   String get _latestComicsRowId => 'latestComics_$libraryId';
   String get _allComicsRowId => 'allComics_$libraryId';
   String get _lastPlayedRowId => 'lastPlayed_$libraryId';
+  String get _seriesRowId => 'bookSeries_$libraryId';
   String get _favoritesRowId => 'favorites_$libraryId';
   String get _allRowId => 'allTitles_$libraryId';
 
@@ -156,6 +160,10 @@ class BookBrowseViewModel extends ChangeNotifier {
   bool isComicItem(AggregatedItem item) => item.isComic;
 
   bool isBookItem(AggregatedItem item) => !isAudiobookItem(item) && !item.isComic;
+
+  /// See all on the series row opens the library's folders, where each series
+  /// folder is one entry, rather than a grid of every volume.
+  bool isSeriesRow(HomeRow row) => row.id == _seriesRowId;
 
   /// Item types the See-all grid should show for [row]. Lives here so the
   /// mapping sits next to where the row ids are minted.
@@ -293,6 +301,7 @@ class BookBrowseViewModel extends ChangeNotifier {
         sortBy: 'SortName',
       );
       final seriesSourceF = _loadSeriesSource();
+      final foldersF = _loadFolders();
       final bookCountF = isAudiobookLibrary
           ? Future.value(0)
           : _countOf(const ['Book']);
@@ -311,6 +320,7 @@ class BookBrowseViewModel extends ChangeNotifier {
         allAudiobooksF,
         allF,
         seriesSourceF,
+        foldersF,
         bookCountF,
         audiobookCountF,
       ]);
@@ -513,6 +523,7 @@ class BookBrowseViewModel extends ChangeNotifier {
       _genresRow = await genresF;
       _collectionsRow = await collectionsF;
       _seriesSource = await seriesSourceF;
+      _folders = await foldersF;
 
       // The server counts comics as books, so a library holding nothing but
       // comics would otherwise offer a Books tab with nothing behind it.
@@ -679,9 +690,10 @@ class BookBrowseViewModel extends ChangeNotifier {
         limit: _seriesSourceLimit,
         sortBy: 'SortName',
         sortOrder: 'Ascending',
-        fields: 'SeriesName,ImageTags,UserData,RunTimeTicks,DateCreated',
+        fields: 'SeriesName,ParentId',
         enableImageTypes: 'Primary',
         imageTypeLimit: 1,
+        enableTotalRecordCount: false,
       );
       var rawItems = resp['Items'] as List? ?? const [];
       if (rawItems.isEmpty) {
@@ -692,9 +704,10 @@ class BookBrowseViewModel extends ChangeNotifier {
           limit: _seriesSourceLimit,
           sortBy: 'SortName',
           sortOrder: 'Ascending',
-          fields: 'SeriesName,ImageTags,UserData,RunTimeTicks,DateCreated',
+          fields: 'SeriesName,ParentId',
           enableImageTypes: 'Primary',
           imageTypeLimit: 1,
+          enableTotalRecordCount: false,
         );
         rawItems = resp['Items'] as List? ?? const [];
       }
@@ -715,46 +728,44 @@ class BookBrowseViewModel extends ChangeNotifier {
     }
   }
 
-  /// Groups the sampled library items on SeriesName into one synthetic entry
-  /// per series (2+ members). Synthetic ids use the `bookSeries:` prefix and
-  /// carry the series name so taps can run a search.
-  HomeRow? _buildSeriesRow() {
-    if (_seriesSource.isEmpty) return null;
-    final l10n = currentAppLocalizations();
-    final groups = <String, List<AggregatedItem>>{};
-    for (final item in _seriesSource) {
-      if (!_matchesScope(item)) continue;
-      final series = item.seriesName?.trim();
-      if (series == null || series.isEmpty) continue;
-      groups.putIfAbsent(series, () => []).add(item);
+  Future<List<AggregatedItem>> _loadFolders() async {
+    try {
+      final resp = await _client.itemsApi.getItems(
+        parentId: libraryId,
+        includeItemTypes: const ['Folder'],
+        recursive: true,
+        fields: 'ParentId',
+        enableImageTypes: 'Primary',
+        imageTypeLimit: 1,
+        enableTotalRecordCount: false,
+      );
+      return [
+        for (final raw in (resp['Items'] as List? ?? const []).whereType<Map>())
+          if (raw['Id'] != null)
+            AggregatedItem(
+              id: raw['Id'].toString(),
+              serverId: _serverId,
+              rawData: raw.cast<String, dynamic>(),
+            ),
+      ];
+    } catch (_) {
+      return const [];
     }
-    groups.removeWhere((_, members) => members.length < 2);
-    if (groups.isEmpty) return null;
+  }
 
-    final entries = groups.entries.map((entry) {
-      final members = entry.value;
-      final cover = members.firstWhere(
-        (m) => m.primaryImageTag != null,
-        orElse: () => members.first,
-      );
-      return AggregatedItem(
-        id: 'bookSeries:${entry.key}',
-        serverId: members.first.serverId,
-        rawData: {
-          'Name': entry.key,
-          'Type': 'BookSeries',
-          'ChildCount': members.length,
-          if (cover.primaryImageTag != null) ...{
-            'PrimaryImageItemId': cover.id,
-            'PrimaryImageTag': cover.primaryImageTag,
-          },
-        },
-      );
-    }).toList();
-    entries.sort((a, b) => a.name.compareTo(b.name));
+  HomeRow? _buildSeriesRow() {
+    final l10n = currentAppLocalizations();
+    final entries = bookSeriesEntries(
+      books: [
+        for (final item in _seriesSource)
+          if (_matchesScope(item)) item,
+      ],
+      folders: _folders,
+    );
+    if (entries.isEmpty) return null;
 
     return HomeRow(
-      id: 'bookSeries_$libraryId',
+      id: _seriesRowId,
       title: l10n.series,
       items: entries,
       rowType: HomeRowType.latestMedia,
@@ -858,4 +869,79 @@ class BookBrowseViewModel extends ChangeNotifier {
     }
     return null;
   }
+}
+
+/// The series in a book library, one `BookSeries` entry each.
+///
+/// A folder two or more books sit in directly is a series, unless it's one of
+/// the library's roots, the only folders whose parent isn't another folder of
+/// the library. Audiobooks don't count toward it, so a book split into
+/// chapter files isn't taken for one. Books sharing a SeriesName are a series
+/// too, unless they all sit in one series folder already.
+@visibleForTesting
+List<AggregatedItem> bookSeriesEntries({
+  required List<AggregatedItem> books,
+  required List<AggregatedItem> folders,
+}) {
+  final folderIds = {for (final folder in folders) folder.id};
+  final seriesFolders = {
+    for (final folder in folders)
+      if (folderIds.contains(folder.parentId)) folder.id: folder,
+  };
+  final byFolder = <String, List<AggregatedItem>>{};
+  final byName = <String, List<AggregatedItem>>{};
+  for (final book in books) {
+    final parent = book.parentId;
+    if (book.type == 'Book' && seriesFolders.containsKey(parent)) {
+      byFolder.putIfAbsent(parent!, () => []).add(book);
+    }
+    final name = book.seriesName?.trim();
+    if (name != null && name.isNotEmpty) {
+      byName.putIfAbsent(name, () => []).add(book);
+    }
+  }
+  byFolder.removeWhere((_, members) => members.length < 2);
+
+  bool inOneSeriesFolder(List<AggregatedItem> members) {
+    final parent = members.first.parentId;
+    return byFolder.containsKey(parent) &&
+        members.every((m) => m.parentId == parent);
+  }
+
+  return [
+    for (final MapEntry(key: id, value: members) in byFolder.entries)
+      _seriesEntry(id, seriesFolders[id]!.name, members, seriesFolders[id]),
+    for (final MapEntry(key: name, value: members) in byName.entries)
+      if (members.length >= 2 && !inOneSeriesFolder(members))
+        _seriesEntry('bookSeries:$name', name, members, null),
+  ]..sort((a, b) => a.name.compareTo(b.name));
+}
+
+AggregatedItem _seriesEntry(
+  String id,
+  String name,
+  List<AggregatedItem> members,
+  AggregatedItem? folder,
+) {
+  final folderTag = folder?.primaryImageTag;
+  final cover = members.firstWhere(
+    (m) => m.primaryImageTag != null,
+    orElse: () => members.first,
+  );
+  return AggregatedItem(
+    id: id,
+    serverId: members.first.serverId,
+    rawData: {
+      'Name': name,
+      'Type': 'BookSeries',
+      'ChildCount': members.length,
+      if (folder != null) 'IsFolder': true,
+      if (folderTag != null)
+        'ImageTags': {'Primary': folderTag}
+      else if (cover.primaryImageTag != null) ...{
+        'PrimaryImageItemId': cover.id,
+        'PrimaryImageTag': cover.primaryImageTag,
+      },
+    },
+  );
 }
