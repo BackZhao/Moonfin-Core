@@ -443,6 +443,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
   bool _verticalDragIgnored = false;
   Offset? _doubleTapDownPosition;
   DateTime? _lastDesktopClickAt;
+  bool _wasPlayingBeforeDesktopClick = false;
   DateTime? _lastSeekTime;
   bool _showSkipForward = false;
   bool _showSkipBackward = false;
@@ -6403,17 +6404,26 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
 
   // Desktop double-click is timed here because onDoubleTap delays every click.
   void _onSurfaceTap() {
-    if (PlatformDetection.useDesktopUi) {
-      final now = clock.now();
-      final last = _lastDesktopClickAt;
-      _lastDesktopClickAt = now;
-      if (last != null && now.difference(last) < kDoubleTapTimeout) {
-        _lastDesktopClickAt = null;
-        unawaited(_toggleDesktopFullscreen());
-        return;
-      }
+    if (!PlatformDetection.useDesktopUi) {
+      _toggleControls();
+      return;
     }
-    _toggleControls();
+    final now = clock.now();
+    final last = _lastDesktopClickAt;
+    _lastDesktopClickAt = now;
+    if (last != null && now.difference(last) < kDoubleTapTimeout) {
+      _lastDesktopClickAt = null;
+      // The first click already played or paused, so the second puts playback
+      // back the way it was.
+      unawaited(
+        _wasPlayingBeforeDesktopClick ? _manager.resume() : _manager.pause(),
+      );
+      unawaited(_toggleDesktopFullscreen());
+      return;
+    }
+    _wasPlayingBeforeDesktopClick = _state.isPlaying;
+    _togglePlayPause();
+    _showControls();
   }
 
   void _onDoubleTapDown(TapDownDetails details) {

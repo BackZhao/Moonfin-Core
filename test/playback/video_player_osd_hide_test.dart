@@ -50,15 +50,25 @@ class _Screensaver extends Fake implements ScreensaverController {
 
 class _Lifecycle extends Fake implements PlaybackLifecycleHandler {}
 
+class _Manager extends PlaybackManager {
+  final transport = <String>[];
+
+  @override
+  Future<void> pause() async => transport.add('pause');
+
+  @override
+  Future<void> resume() async => transport.add('resume');
+}
+
 void main() {
-  late PlaybackManager manager;
+  late _Manager manager;
   late PipService pip;
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
     final store = PreferenceStore();
     await store.init();
-    manager = PlaybackManager();
+    manager = _Manager();
     GetIt.instance.registerSingleton<PlaybackManager>(manager);
     GetIt.instance.registerSingleton<UserPreferences>(UserPreferences(store));
     GetIt.instance.registerSingleton<MediaServerClient>(_Client());
@@ -150,9 +160,11 @@ void main() {
     });
   }
 
-  // Issue #985: a double-click toggles fullscreen without delaying a single
-  // click, which still hides the controls at once.
-  testWidgets('desktop double-click toggles fullscreen', (tester) async {
+  // Issue #985: a click plays or pauses at once and a double-click toggles
+  // fullscreen, putting back what its first click did to playback.
+  testWidgets('desktop click pauses and double-click toggles fullscreen', (
+    tester,
+  ) async {
     final calls = <MethodCall>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
       const MethodChannel('window_manager'),
@@ -176,19 +188,24 @@ void main() {
         home: const VideoPlayerScreen(),
       ),
     );
+    manager.state.setPlaying(true);
     await tester.pump();
-    expect(find.byType(Slider), findsOneWidget);
+    await tester.pump(const Duration(seconds: 10));
+    expect(find.byType(Slider), findsNothing);
 
     await tester.tapAt(const Offset(100, 300));
     await tester.pump();
-    expect(find.byType(Slider), findsNothing);
+    expect(manager.transport, ['pause']);
+    expect(find.byType(Slider), findsOneWidget);
     await tester.pump(const Duration(seconds: 1));
     expect(calls.where((c) => c.method == 'setFullScreen'), isEmpty);
 
+    manager.transport.clear();
     await tester.tapAt(const Offset(100, 300));
     await tester.pump(const Duration(milliseconds: 100));
     await tester.tapAt(const Offset(100, 300));
     await tester.pumpAndSettle();
+    expect(manager.transport, ['pause', 'resume']);
     expect(
       calls.where((c) => c.method == 'setFullScreen').map((c) => c.arguments),
       [
