@@ -890,9 +890,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     _playingSub = _state.playingStream.listen((playing) {
       _updateDisplayPlaying(playing);
       // The hide timer passes over a player that hasn't started yet, so a
-      // start or resume slower than its delay needs it armed again here.
-      if (playing && _controlsVisible && !_isSeeking) {
-        _scheduleHide();
+      // start or resume slower than its delay needs it armed again here. A
+      // pause with a description card clears the controls sooner so the card
+      // shows quickly.
+      if (_controlsVisible && !_isSeeking) {
+        if (playing) {
+          _scheduleHide();
+        } else if (_hasPausedDescriptionCard) {
+          _scheduleHide(delay: const Duration(seconds: 2));
+        }
       }
       if (isMobilePlayback) {
         _pipService.updatePiPActions(isPlaying: playing);
@@ -2950,23 +2956,36 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     });
   }
 
-  void _scheduleHide() {
+  void _scheduleHide({Duration? delay}) {
     _hideTimer?.cancel();
-    final hideDelay = PlatformDetection.useMobileUi
-        ? const Duration(seconds: 8)
-        : const Duration(seconds: 5);
+    final hideDelay =
+        delay ??
+        (PlatformDetection.useMobileUi
+            ? const Duration(seconds: 8)
+            : const Duration(seconds: 5));
     _hideTimer = Timer(hideDelay, () {
-      if (mounted && _state.isPlaying) {
-        setState(() {
-          _controlsVisible = false;
-          if (PlatformDetection.isMobile &&
-              _prefs.get(UserPreferences.osdLockEnabled)) {
-            _isOsdLocked = true;
-          }
-        });
-      }
+      if (!mounted) return;
+      final playing = _state.isPlaying;
+      if (!playing && !_hasPausedDescriptionCard) return;
+      setState(() {
+        _controlsVisible = false;
+        if (playing &&
+            PlatformDetection.isMobile &&
+            _prefs.get(UserPreferences.osdLockEnabled)) {
+          _isOsdLocked = true;
+        }
+      });
     });
   }
+
+  // Off TV the transport sits in the middle of the picture, right where the
+  // paused description card goes, so with a card to show the controls still
+  // hide while paused and the card shows once they do.
+  bool get _hasPausedDescriptionCard =>
+      !PlatformDetection.useLeanbackUi &&
+      _bringupState.phase == PlaybackBringupPhase.ready &&
+      _prefs.get(UserPreferences.showDescriptionOnPause) &&
+      _currentItemDescription() != null;
 
   void _onSeekbarFocusChange() {
     if (mounted) setState(() => _seekbarFocused = _tvSeekbarFocus.hasFocus);
@@ -3849,7 +3868,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
         _showControls(focusSeekbar: PlatformDetection.isTV);
         return KeyEventResult.handled;
       case PlayerAction.seekBack:
-        _seekRelative(
+        _keyboardSeek(
           -_accelerateSeekStep(
             _prefs.get(UserPreferences.skipBackLength),
             event,
@@ -3857,7 +3876,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
         );
         return KeyEventResult.handled;
       case PlayerAction.seekForward:
-        _seekRelative(
+        _keyboardSeek(
           _accelerateSeekStep(
             _prefs.get(UserPreferences.skipForwardLength),
             event,
@@ -4094,8 +4113,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
                       _buildVolumeOverlay(),
                       if (PlatformDetection.useMobileUi)
                         _buildBrightnessOverlay(),
-                      if (PlatformDetection.useMobileUi)
-                        _buildDoubleTapSkipOverlay(),
+                      _buildSkipIndicatorOverlay(),
                       if (_isOsdLocked && !hideOsdForPreroll)
                         _buildLockedOverlay(),
                       if (_isSkipSegmentButtonVisible)
@@ -4509,11 +4527,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       initialData: _state.isPlaying,
       builder: (context, snap) {
         final isPlaying = _displayPlaying;
+        final centerControlsShowing =
+            !PlatformDetection.useLeanbackUi &&
+            _controlsVisible &&
+            !_isOsdLocked;
         return Positioned.fill(
           child: IgnorePointer(
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 220),
-              opacity: isPlaying ? 0.0 : 1.0,
+              opacity: isPlaying || centerControlsShowing ? 0.0 : 1.0,
               child: Container(
                 color: Colors.black.withValues(alpha: 0.58),
                 child: SafeArea(
@@ -6461,8 +6483,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
           ? UserPreferences.skipForwardLength
           : UserPreferences.skipBackLength,
     );
-    _seekRelative(forward ? ms : -ms, showControls: false);
-    if (forward) {
+    _skipWithIndicator(forward ? ms : -ms);
+  }
+
+  // A seek with the controls hidden keeps them hidden and only shows how far
+  // it went, so the picture stays in view.
+  void _keyboardSeek(int ms) {
+    if (_controlsVisible) {
+      _seekRelative(ms);
+    } else {
+      _skipWithIndicator(ms);
+    }
+  }
+
+  void _skipWithIndicator(int ms) {
+    _seekRelative(ms, showControls: false);
+    if (ms > 0) {
       _skipForwardAccum += ms;
       setState(() => _showSkipForward = true);
       _skipForwardTimer?.cancel();
@@ -6475,7 +6511,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
         }
       });
     } else {
-      _skipBackwardAccum += ms;
+      _skipBackwardAccum -= ms;
       setState(() => _showSkipBackward = true);
       _skipBackwardTimer?.cancel();
       _skipBackwardTimer = Timer(const Duration(milliseconds: 600), () {
@@ -6691,7 +6727,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     );
   }
 
-  Widget _buildDoubleTapSkipOverlay() {
+  Widget _buildSkipIndicatorOverlay() {
     if (!_showSkipForward && !_showSkipBackward) return const SizedBox.shrink();
     final isForward = _showSkipForward;
     final accum = isForward ? _skipForwardAccum : _skipBackwardAccum;

@@ -52,6 +52,10 @@ class _Lifecycle extends Fake implements PlaybackLifecycleHandler {}
 
 class _Manager extends PlaybackManager {
   final transport = <String>[];
+  PlaybackBringupState bringup = const PlaybackBringupState.idle();
+
+  @override
+  PlaybackBringupState get bringupState => bringup;
 
   @override
   Future<void> pause() async => transport.add('pause');
@@ -212,6 +216,99 @@ void main() {
         {'isFullScreen': true},
       ],
     );
+
+    await tester.pumpWidget(const SizedBox());
+  }, variant: TargetPlatformVariant.only(TargetPlatform.windows));
+
+  // Issue #1305: off TV the transport sits where the paused description card
+  // goes, so the card waits for the controls, which still hide while paused.
+  group('paused description card', () {
+    Future<void> pumpPlayer(WidgetTester tester) async {
+      await GetIt.instance<UserPreferences>().set(
+        UserPreferences.showDescriptionOnPause,
+        true,
+      );
+      manager.queueService.setQueue([
+        {'Name': 'Movie', 'Overview': 'A quiet story.'},
+      ]);
+      manager.bringup = const PlaybackBringupState(
+        phase: PlaybackBringupPhase.ready,
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: const [Locale('en')],
+          home: const VideoPlayerScreen(),
+        ),
+      );
+      await tester.pump();
+    }
+
+    double cardOpacity(WidgetTester tester) => tester
+        .widget<AnimatedOpacity>(
+          find
+              .ancestor(
+                of: find.text('A quiet story.'),
+                matching: find.byType(AnimatedOpacity),
+              )
+              .first,
+        )
+        .opacity;
+
+    testWidgets('waits for the controls to hide', (tester) async {
+      await pumpPlayer(tester);
+      expect(find.byType(Slider), findsOneWidget);
+      expect(cardOpacity(tester), 0);
+
+      await tester.pump(const Duration(seconds: 10));
+      expect(find.byType(Slider), findsNothing);
+      expect(cardOpacity(tester), 1);
+
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('shows a couple of seconds after a pause', (tester) async {
+      await pumpPlayer(tester);
+      manager.state.setPlaying(true);
+      await tester.pump();
+      await tester.pump();
+      manager.state.setPlaying(false);
+      await tester.pump();
+      await tester.pump();
+      expect(find.byType(Slider), findsOneWidget);
+
+      await tester.pump(const Duration(milliseconds: 2100));
+      expect(find.byType(Slider), findsNothing);
+      expect(cardOpacity(tester), 1);
+
+      await tester.pumpWidget(const SizedBox());
+    });
+  });
+
+  // Issue #1305: with the controls hidden, a keyboard seek only shows how far
+  // it went.
+  testWidgets('arrow keys seek without bringing the controls up', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: const [Locale('en')],
+        home: const VideoPlayerScreen(),
+      ),
+    );
+    manager.state.setPlaying(true);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 10));
+    expect(find.byType(Slider), findsNothing);
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowRight);
+    await tester.pump();
+    expect(find.byType(Slider), findsNothing);
+    expect(find.text('30 seconds'), findsOneWidget);
+
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('30 seconds'), findsNothing);
 
     await tester.pumpWidget(const SizedBox());
   }, variant: TargetPlatformVariant.only(TargetPlatform.windows));
