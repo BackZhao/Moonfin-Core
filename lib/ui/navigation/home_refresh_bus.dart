@@ -6,9 +6,19 @@ class HomeRefreshBus extends ValueNotifier<int> {
   HomeRefreshBus() : super(0);
 
   bool _pendingRefresh = false;
+  bool _newMediaBar = false;
 
-  void request() {
+  /// [newMediaBar] also loads a new set into the media bar, for a refresh the
+  /// viewer asked for.
+  void request({bool newMediaBar = false}) {
+    _newMediaBar = _newMediaBar || newMediaBar;
     value = value + 1;
+  }
+
+  bool consumeNewMediaBar() {
+    final newMediaBar = _newMediaBar;
+    _newMediaBar = false;
+    return newMediaBar;
   }
 
   void requestAfterNavigation() {

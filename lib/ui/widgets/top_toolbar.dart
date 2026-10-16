@@ -1046,7 +1046,7 @@ class _TopToolbarState extends State<TopToolbar> with RouteAware {
                   focusNode: _homeFocus,
                   onPressed: () {
                     if (_isActive(Destinations.home)) {
-                      homeRefreshBus.request();
+                      homeRefreshBus.request(newMediaBar: true);
                       return;
                     }
                     homeRefreshBus.requestAfterNavigation();

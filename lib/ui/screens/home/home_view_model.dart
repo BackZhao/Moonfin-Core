@@ -912,7 +912,11 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> refresh({bool preserveExisting = true}) async {
+  Future<void> refresh({
+    bool preserveExisting = true,
+    bool newMediaBar = false,
+  }) async {
+    if (newMediaBar) unawaited(_mediaBarViewModel.load(force: true));
     await load(preserveExisting: preserveExisting);
   }
 

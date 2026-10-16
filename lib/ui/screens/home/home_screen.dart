@@ -318,7 +318,7 @@ class _HomeShellState extends State<_HomeShell>
 
   void _onHomeRefreshRequested() {
     if (!mounted) return;
-    _viewModel.refresh(preserveExisting: true);
+    _viewModel.refresh(newMediaBar: homeRefreshBus.consumeNewMediaBar());
   }
 
   void _onServerReachabilityChanged() {
@@ -4160,6 +4160,16 @@ class _ContentRowsState extends State<_ContentRows>
     );
   }
 
+  // Phones pull Home down to refresh it, the same as tapping Home.
+  Widget _pullToRefresh(Widget list) {
+    if (!PlatformDetection.useMobileUi) return list;
+    return RefreshIndicator(
+      edgeOffset: MediaQuery.paddingOf(context).top,
+      onRefresh: () => widget.viewModel.refresh(newMediaBar: true),
+      child: list,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final rows = widget.viewModel.rows;
@@ -4313,8 +4323,12 @@ class _ContentRowsState extends State<_ContentRows>
             canRequestFocus: false,
             skipTraversal: true,
             onKeyEvent: (_, event) => _handleRowsKeyEvent(event),
-            child: ListView.builder(
+            child: _pullToRefresh(ListView.builder(
               controller: _scrollController,
+              // A Home too short to scroll still has to take the pull.
+              physics: PlatformDetection.useMobileUi
+                  ? const AlwaysScrollableScrollPhysics()
+                  : null,
                   padding: EdgeInsets.only(
                     top: listTopPadding,
                     bottom: neededBottomPadding,
@@ -4542,7 +4556,7 @@ class _ContentRowsState extends State<_ContentRows>
                     }
                     return itemWidget;
                   },
-                ),
+                )),
               ),
             ),
         ValueListenableBuilder<bool>(

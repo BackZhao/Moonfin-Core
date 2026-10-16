@@ -985,7 +985,7 @@ class _LeftSidebarState extends State<LeftSidebar> with RouteAware {
                   onPressed: () {
                     _onNavigate();
                     if (_isActive(Destinations.home)) {
-                      homeRefreshBus.request();
+                      homeRefreshBus.request(newMediaBar: true);
                       _exitSidebarToContent();
                       return;
                     }
