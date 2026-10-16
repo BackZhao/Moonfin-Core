@@ -17,6 +17,7 @@ import 'device_profile_builder.dart';
 import 'hdr_output_controller.dart';
 import 'known_defects.dart';
 import 'letterbox_croppers.dart';
+import 'mpv_client_certificate.dart';
 import 'mpv_letterbox_crop.dart';
 import 'mpv_frame_sample.dart';
 import 'mpv_frame_sampler.dart';
@@ -826,6 +827,7 @@ class MediaKitPlayerBackend extends PlayerBackend
     _handBackChecked = false;
     await _prepareNativeWindowForOpen(payload);
     if (!_ownsPlayback(generation)) return;
+    await applyMpvClientCertificate(_player, media.uri);
     try {
       await _player.open(media, play: !openPaused);
     } catch (_) {

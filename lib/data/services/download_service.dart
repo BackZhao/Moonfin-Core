@@ -521,7 +521,14 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
   String? _legacyTlsRawCache;
   bool _legacyTlsResult = false;
 
+  late final String _serverHost = Uri.tryParse(_client.baseUrl)?.host ?? '';
+
+  ClientCertificateMaterial? get _clientCertificate =>
+      clientCertificateFor(_serverHost);
+
   bool get _serverNeedsLegacyTls {
+    // A background URLSession can't answer a client certificate challenge.
+    if (PlatformDetection.isIOS && _clientCertificate != null) return true;
     final raw = _prefs.get(UserPreferences.legacyDownloadEngineServers);
     if (raw != _legacyTlsRawCache) {
       _legacyTlsRawCache = raw;
@@ -2589,6 +2596,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
           cancelToken: cancelToken,
           estimatedSize: estimatedSize,
           onReceiveProgress: onReceiveProgress,
+          clientCertificate: _clientCertificate,
         );
       }
 

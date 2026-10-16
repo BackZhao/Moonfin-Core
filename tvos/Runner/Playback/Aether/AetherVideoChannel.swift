@@ -132,6 +132,9 @@ final class AetherVideoChannel: NSObject, FlutterStreamHandler {
                 verticalOffset: (args["verticalOffset"] as? NSNumber)?.doubleValue)
         case "setAllowUntrustedTls":
             EngineTLS.serverTrustEvaluator = EngineTrustPolicy.evaluator(from: args)
+        case "setClientCertificates":
+            ClientIdentityStore.setClientCertificates(
+                (args["certificates"] as? [[String: Any]]) ?? [])
         case "setSubtitleRendererMode":
             // The host overlay is the only subtitle renderer on this path.
             break

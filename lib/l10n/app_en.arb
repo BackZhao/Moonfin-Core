@@ -9926,6 +9926,113 @@
   "@untrustedServerCertificate": {
     "description": "Shown on the sign-in screens when a server's TLS certificate is rejected, above a button that turns on Allow self-signed certificates"
   },
+  "clientCertTitle": "Client certificate",
+  "@clientCertTitle": {
+    "description": "Title of the dialog that imports a TLS client certificate for a server"
+  },
+  "clientCertHost": "Certificate for {host}",
+  "@clientCertHost": {
+    "description": "Names the server host the client certificate will be presented to",
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "clientCertChooseFile": "Choose file",
+  "@clientCertChooseFile": {
+    "description": "Button that picks a .p12 or .pfx file"
+  },
+  "clientCertPassword": "Certificate password",
+  "@clientCertPassword": {
+    "description": "Label for the password that unlocks the .p12 or .pfx file"
+  },
+  "clientCertStartUpload": "Send from phone",
+  "@clientCertStartUpload": {
+    "description": "Button on a TV that opens a one-time page a phone on the same network can send the certificate to"
+  },
+  "clientCertUploadHint": "Scan this code with your phone, or open the address in its browser, then pick the file and enter its password.",
+  "@clientCertUploadHint": {
+    "description": "Shown under the QR code while the TV waits for the phone to send the certificate"
+  },
+  "clientCertStopUpload": "Stop waiting",
+  "@clientCertStopUpload": {
+    "description": "Button that closes the phone upload page before a certificate arrives"
+  },
+  "clientCertNoFileData": "Couldn't read the file. Try again.",
+  "@clientCertNoFileData": {
+    "description": "Shown when the picked file has no contents"
+  },
+  "clientCertPickFailed": "Couldn't open the file picker.",
+  "@clientCertPickFailed": {
+    "description": "Shown when the file picker fails to open"
+  },
+  "clientCertUploadFailed": "Couldn't start the upload page. Try again.",
+  "@clientCertUploadFailed": {
+    "description": "Shown when the TV can't open the page the phone sends the certificate to"
+  },
+  "clientCertNoSecureStorage": "This device has no secure storage, so the certificate can't be saved. On Linux, install libsecret and try again.",
+  "@clientCertNoSecureStorage": {
+    "description": "Shown when there is no keychain or secret store to keep the certificate in"
+  },
+  "clientCertDecodeFailed": "Couldn't read that file as a certificate. Make sure it's a .p12 or .pfx.",
+  "@clientCertDecodeFailed": {
+    "description": "Shown when the file isn't a usable .p12 or .pfx"
+  },
+  "clientCertWrongPassword": "That password doesn't unlock this certificate.",
+  "@clientCertWrongPassword": {
+    "description": "Shown when the password for the .p12 or .pfx file is wrong"
+  },
+  "clientCertRequired": "This server needs a client certificate (mTLS). Add one for this host to continue.",
+  "@clientCertRequired": {
+    "description": "Shown on the sign-in screens when the server turned the connection away for lack of a client certificate"
+  },
+  "clientCertExpired": "The certificate for this server expired on {date}. Replace it to continue.",
+  "@clientCertExpired": {
+    "description": "Shown on the sign-in screen when the server turned the connection away and the stored certificate has expired",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "clientCertAddButton": "Add client certificate",
+  "@clientCertAddButton": {
+    "description": "Button that opens the certificate import from the add-server and sign-in screens"
+  },
+  "settingsClientCertificates": "Client certificates",
+  "@settingsClientCertificates": {
+    "description": "Settings entry that lists the imported client certificates"
+  },
+  "settingsClientCertificatesSubtitle": "Certificates this app presents to servers that require one (mTLS)",
+  "@settingsClientCertificatesSubtitle": {
+    "description": "Subtitle for the client certificates settings entry"
+  },
+  "clientCertSubject": "Subject",
+  "@clientCertSubject": {
+    "description": "Label for the name on a client certificate"
+  },
+  "clientCertExpires": "Expires {date}",
+  "@clientCertExpires": {
+    "description": "When a client certificate stops being valid",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "clientCertReplace": "Replace",
+  "@clientCertReplace": {
+    "description": "Button that imports a new certificate in place of the stored one for a host"
+  },
+  "clientCertAdd": "Add certificate",
+  "@clientCertAdd": {
+    "description": "Button that starts importing a certificate for a new host"
+  },
+  "clientCertAddHostPrompt": "Which server host needs a certificate?",
+  "@clientCertAddHostPrompt": {
+    "description": "Title of the prompt that asks which host a new certificate is for"
+  },
   "itemBlockedByParentalControls": "This isn't available",
   "@itemBlockedByParentalControls": {
     "description": "Shown instead of a title whose rating the viewer has blocked. Deliberately says nothing about what the title is."

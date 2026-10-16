@@ -17812,6 +17812,144 @@ abstract class AppLocalizations {
   /// **'This server\'s certificate isn\'t trusted. If it\'s your own server and uses a self-signed or private certificate, you can allow it here.'**
   String get untrustedServerCertificate;
 
+  /// Title of the dialog that imports a TLS client certificate for a server
+  ///
+  /// In en, this message translates to:
+  /// **'Client certificate'**
+  String get clientCertTitle;
+
+  /// Names the server host the client certificate will be presented to
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate for {host}'**
+  String clientCertHost(String host);
+
+  /// Button that picks a .p12 or .pfx file
+  ///
+  /// In en, this message translates to:
+  /// **'Choose file'**
+  String get clientCertChooseFile;
+
+  /// Label for the password that unlocks the .p12 or .pfx file
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate password'**
+  String get clientCertPassword;
+
+  /// Button on a TV that opens a one-time page a phone on the same network can send the certificate to
+  ///
+  /// In en, this message translates to:
+  /// **'Send from phone'**
+  String get clientCertStartUpload;
+
+  /// Shown under the QR code while the TV waits for the phone to send the certificate
+  ///
+  /// In en, this message translates to:
+  /// **'Scan this code with your phone, or open the address in its browser, then pick the file and enter its password.'**
+  String get clientCertUploadHint;
+
+  /// Button that closes the phone upload page before a certificate arrives
+  ///
+  /// In en, this message translates to:
+  /// **'Stop waiting'**
+  String get clientCertStopUpload;
+
+  /// Shown when the picked file has no contents
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read the file. Try again.'**
+  String get clientCertNoFileData;
+
+  /// Shown when the file picker fails to open
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the file picker.'**
+  String get clientCertPickFailed;
+
+  /// Shown when the TV can't open the page the phone sends the certificate to
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t start the upload page. Try again.'**
+  String get clientCertUploadFailed;
+
+  /// Shown when there is no keychain or secret store to keep the certificate in
+  ///
+  /// In en, this message translates to:
+  /// **'This device has no secure storage, so the certificate can\'t be saved. On Linux, install libsecret and try again.'**
+  String get clientCertNoSecureStorage;
+
+  /// Shown when the file isn't a usable .p12 or .pfx
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read that file as a certificate. Make sure it\'s a .p12 or .pfx.'**
+  String get clientCertDecodeFailed;
+
+  /// Shown when the password for the .p12 or .pfx file is wrong
+  ///
+  /// In en, this message translates to:
+  /// **'That password doesn\'t unlock this certificate.'**
+  String get clientCertWrongPassword;
+
+  /// Shown on the sign-in screens when the server turned the connection away for lack of a client certificate
+  ///
+  /// In en, this message translates to:
+  /// **'This server needs a client certificate (mTLS). Add one for this host to continue.'**
+  String get clientCertRequired;
+
+  /// Shown on the sign-in screen when the server turned the connection away and the stored certificate has expired
+  ///
+  /// In en, this message translates to:
+  /// **'The certificate for this server expired on {date}. Replace it to continue.'**
+  String clientCertExpired(String date);
+
+  /// Button that opens the certificate import from the add-server and sign-in screens
+  ///
+  /// In en, this message translates to:
+  /// **'Add client certificate'**
+  String get clientCertAddButton;
+
+  /// Settings entry that lists the imported client certificates
+  ///
+  /// In en, this message translates to:
+  /// **'Client certificates'**
+  String get settingsClientCertificates;
+
+  /// Subtitle for the client certificates settings entry
+  ///
+  /// In en, this message translates to:
+  /// **'Certificates this app presents to servers that require one (mTLS)'**
+  String get settingsClientCertificatesSubtitle;
+
+  /// Label for the name on a client certificate
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get clientCertSubject;
+
+  /// When a client certificate stops being valid
+  ///
+  /// In en, this message translates to:
+  /// **'Expires {date}'**
+  String clientCertExpires(String date);
+
+  /// Button that imports a new certificate in place of the stored one for a host
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get clientCertReplace;
+
+  /// Button that starts importing a certificate for a new host
+  ///
+  /// In en, this message translates to:
+  /// **'Add certificate'**
+  String get clientCertAdd;
+
+  /// Title of the prompt that asks which host a new certificate is for
+  ///
+  /// In en, this message translates to:
+  /// **'Which server host needs a certificate?'**
+  String get clientCertAddHostPrompt;
+
   /// Shown instead of a title whose rating the viewer has blocked. Deliberately says nothing about what the title is.
   ///
   /// In en, this message translates to:

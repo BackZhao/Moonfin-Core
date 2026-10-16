@@ -342,7 +342,7 @@ final class NowPlayingController {
         }
         artworkURLString = urlString
         Task { @MainActor [weak self] in
-            guard let (data, _) = try? await URLSession.shared.data(from: url) else { return }
+            guard let (data, _) = try? await MoonfinURLSession.shared.data(from: url) else { return }
             self?.applyArtworkData(data, for: urlString)
         }
     }

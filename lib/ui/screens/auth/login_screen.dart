@@ -18,6 +18,7 @@ import '../../../auth/repositories/auth_repository.dart';
 import '../../../auth/repositories/server_repository.dart';
 import '../../../auth/repositories/session_repository.dart';
 import '../../../auth/store/authentication_store.dart';
+import '../../../auth/store/client_certificate_store.dart';
 import '../../../data/services/media_server_client_factory.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../util/focus/dpad_keys.dart';
@@ -26,6 +27,7 @@ import '../../../util/platform_detection.dart';
 import '../../../util/web_diagnostics_failure.dart';
 import '../../navigation/destinations.dart';
 import '../../widgets/allow_self_signed_dialog.dart';
+import '../../widgets/client_certificate_dialog.dart';
 import '../../widgets/login_scaffold.dart';
 import '../../widgets/pin_entry_dialog.dart';
 
@@ -95,12 +97,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final _qcBtnFocus = FocusNode();
   final _pwBtnFocus = FocusNode();
   final _allowCertFocus = FocusNode();
+  final _clientCertFocus = FocusNode();
 
   Server? _server;
   MediaServerClient? _client;
   bool _isLoading = false;
   String? _errorMessage;
   bool _untrustedCertificate = false;
+  bool _clientCertificateRequired = false;
   List<String> _recentUsernames = const [];
 
   bool _supportsQuickConnect = false;
@@ -162,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _qcBtnFocus.dispose();
     _pwBtnFocus.dispose();
     _allowCertFocus.dispose();
+    _clientCertFocus.dispose();
     _quickConnectTimer?.cancel();
     super.dispose();
   }
@@ -314,6 +319,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _showQuickConnect = true;
       _errorMessage = null;
       _untrustedCertificate = false;
+      _clientCertificateRequired = false;
     });
     if (_quickConnectTimer == null) _startQuickConnect();
   }
@@ -325,6 +331,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _showQuickConnect = false;
       _errorMessage = null;
       _untrustedCertificate = false;
+      _clientCertificateRequired = false;
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -356,6 +363,10 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } on DioException catch (e) {
       if (!mounted) return;
+      if (isClientCertificateRejected(e)) {
+        unawaited(_showClientCertificateRequired());
+        return;
+      }
       if (isUntrustedCertificate(e)) {
         _showUntrustedCertificate();
         return;
@@ -472,15 +483,53 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _allowSelfSignedAndRetry() async {
     if (!await confirmAllowSelfSignedCertificates(context) || !mounted) return;
+    await _retrySignIn();
+  }
+
+  Future<void> _retrySignIn() async {
     setState(() {
       _errorMessage = null;
       _untrustedCertificate = false;
+      _clientCertificateRequired = false;
     });
     if (_showQuickConnect) {
       await _startQuickConnect();
     } else {
       await _login();
     }
+  }
+
+  Future<void> _showClientCertificateRequired() async {
+    final l10n = AppLocalizations.of(context);
+    final host = Uri.tryParse(_server?.address ?? '')?.host ?? '';
+    final stored = await GetIt.instance<ClientCertificateStore>().get(host);
+    if (!mounted) return;
+    final expired = stored != null && stored.notAfter.isBefore(DateTime.now());
+    setState(() {
+      _isLoading = false;
+      _clientCertificateRequired = true;
+      _errorMessage = expired
+          ? l10n.clientCertExpired(
+              MaterialLocalizations.of(
+                context,
+              ).formatMediumDate(stored.notAfter.toLocal()),
+            )
+          : l10n.clientCertRequired;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _clientCertFocus.requestFocus();
+    });
+  }
+
+  Future<void> _importClientCertAndLogin() async {
+    final server = _server;
+    if (server == null) return;
+    final saved = await showClientCertificateDialog(
+      context: context,
+      host: Uri.tryParse(server.address)?.host ?? server.address,
+    );
+    if (saved == null || !mounted) return;
+    await _retrySignIn();
   }
 
   void _finishLoginWithError(String message) {
@@ -555,6 +604,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
       _errorMessage = null;
       _untrustedCertificate = false;
+      _clientCertificateRequired = false;
     });
 
     try {
@@ -611,6 +661,8 @@ class _LoginScreenState extends State<LoginScreen> {
           _finishLoginWithError(l10n.serverUnavailable);
         case UntrustedCertificate():
           _showUntrustedCertificate();
+        case ClientCertificateRequired():
+          unawaited(_showClientCertificateRequired());
         default:
           _finishLoginWithError(l10n.loginFailed);
       }
@@ -819,6 +871,14 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: _allowSelfSignedAndRetry,
           ),
         ],
+        if (_clientCertificateRequired) ...[
+          const SizedBox(height: 12),
+          _buildActionButton(
+            label: l10n.clientCertAddButton,
+            focusNode: _clientCertFocus,
+            onPressed: _importClientCertAndLogin,
+          ),
+        ],
         const SizedBox(height: 24),
         _buildActionButton(
           label: l10n.back,
@@ -869,6 +929,14 @@ class _LoginScreenState extends State<LoginScreen> {
             label: l10n.settingsAllowSelfSignedCerts,
             focusNode: _allowCertFocus,
             onPressed: _allowSelfSignedAndRetry,
+          ),
+        ],
+        if (_clientCertificateRequired) ...[
+          const SizedBox(height: 12),
+          _buildActionButton(
+            label: l10n.clientCertAddButton,
+            focusNode: _clientCertFocus,
+            onPressed: _importClientCertAndLogin,
           ),
         ],
         const SizedBox(height: 24),

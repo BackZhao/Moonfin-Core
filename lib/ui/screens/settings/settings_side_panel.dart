@@ -44,6 +44,10 @@ import '../../widgets/pin_entry_dialog.dart';
 import '../../widgets/app_update_dialog.dart';
 
 import '../../../auth/store/authentication_preferences.dart';
+import '../../../auth/store/client_certificate_store.dart';
+import '../../../auth/repositories/server_repository.dart';
+import '../../../data/services/client_certificate_service.dart';
+import '../../../util/server_url.dart';
 import '../../../auth/repositories/session_repository.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../util/error_message.dart';
@@ -64,6 +68,7 @@ import '../../widgets/adaptive/adaptive_dialog.dart';
 import '../../widgets/adaptive/adaptive_list_section.dart';
 import '../../widgets/keyboard_shortcuts/keyboard_shortcut_reference.dart';
 import '../../widgets/overlay_sheet.dart';
+import '../../widgets/client_certificate_dialog.dart';
 import '../../widgets/playback/playback_time_row.dart';
 import '../../widgets/playback/player_loading_overlay.dart';
 import '../../widgets/playback/loading_animation_widget.dart';

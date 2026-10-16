@@ -4,20 +4,23 @@ import 'package:dio/dio.dart';
 import 'package:server_core/server_core.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../data/services/client_certificate_service.dart';
 import '../../data/services/media_server_client_factory.dart';
 import '../../util/server_url.dart';
 import '../models/server.dart';
 import '../models/server_addition_state.dart';
 import '../store/authentication_store.dart';
+import '../store/client_certificate_store.dart';
 
 class ServerRepository {
   final AuthenticationStore _authStore;
   final MediaServerClientFactory _clientFactory;
+  final ClientCertificateStore? _certStore;
 
   final List<Server> _servers = [];
   final _stateController = StreamController<ServerAdditionState>.broadcast();
 
-  ServerRepository(this._authStore, this._clientFactory);
+  ServerRepository(this._authStore, this._clientFactory, [this._certStore]);
 
   List<Server> get servers => List.unmodifiable(_servers);
   Stream<ServerAdditionState> get additionState => _stateController.stream;
@@ -78,6 +81,7 @@ class ServerRepository {
     int? lastStatusCode;
     String? lastErrorMessage;
     String? untrustedCandidate;
+    String? clientCertCandidate;
 
     for (final candidate in candidates) {
       try {
@@ -140,6 +144,7 @@ class ServerRepository {
         lastStatusCode = status;
         lastErrorMessage = detail;
         if (isUntrustedCertificate(e)) untrustedCandidate ??= candidate;
+        if (isClientCertificateRejected(e)) clientCertCandidate ??= candidate;
       } catch (e) {
         lastCandidate = candidate;
         lastErrorType = 'exception';
@@ -155,6 +160,7 @@ class ServerRepository {
       lastStatusCode: lastStatusCode,
       lastErrorMessage: lastErrorMessage,
       untrustedCandidate: untrustedCandidate,
+      clientCertCandidate: clientCertCandidate,
     );
     _lastFailure = failure;
     _stateController.add(failure);
@@ -170,9 +176,18 @@ class ServerRepository {
   }
 
   Future<void> deleteServer(String serverId) async {
+    final removed = getServer(serverId);
     _servers.removeWhere((s) => s.id == serverId);
     _clientFactory.removeClient(serverId);
     await _authStore.removeServer(serverId);
+    final certStore = _certStore;
+    if (removed == null || certStore == null) return;
+    final host = Uri.tryParse(removed.address)?.host ?? '';
+    if (clientCertificateFor(host) == null ||
+        _servers.any((s) => Uri.tryParse(s.address)?.host == host)) {
+      return;
+    }
+    await removeClientCertificate(certStore, host);
   }
 
   Future<(Map<String, dynamic>, ServerType, String)> _probeServer(

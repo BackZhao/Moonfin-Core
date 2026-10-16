@@ -10,6 +10,7 @@ import '../../../data/services/sponsorblock_service.dart';
 import '../../../data/services/youtube_stream_resolver.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../playback/appletv_preview_player.dart';
+import '../../../playback/mpv_client_certificate.dart';
 import '../../../util/platform_detection.dart';
 import '../../screensaver/screensaver_controller.dart';
 import '../../widgets/adaptive/sf_symbol.dart';
@@ -280,6 +281,7 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
         _player!,
         resolved.audioLanguage,
       );
+      await applyMpvClientCertificate(_player!, streamUrl);
       await _player!.open(media).timeout(_openTimeout);
       if (!mounted) return;
       setState(() {

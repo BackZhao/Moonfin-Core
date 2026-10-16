@@ -20,6 +20,10 @@ class UntrustedCertificate extends LoginState {
   const UntrustedCertificate();
 }
 
+class ClientCertificateRequired extends LoginState {
+  const ClientCertificateRequired();
+}
+
 class VersionNotSupported extends LoginState {
   final Server server;
   const VersionNotSupported({required this.server});

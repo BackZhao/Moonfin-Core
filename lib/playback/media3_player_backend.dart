@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:playback_core/playback_core.dart';
 
+import '../data/services/client_certificate_service.dart';
 import '../data/services/log_service.dart';
 import '../preference/preference_constants.dart';
 import '../preference/user_preferences.dart';
@@ -1084,9 +1085,12 @@ class Media3PlayerBackend extends PlayerBackend
     );
 
     // media3 opens the stream itself rather than through the Dart client, so
-    // the trust setting has to reach it separately.
+    // the trust settings have to reach it separately.
     await _invoke<void>('setAllowUntrustedTls', {
       'enabled': _prefs.get(UserPreferences.allowSelfSignedCerts),
+    });
+    await _invoke<void>('setClientCertificates', {
+      'certificates': nativeClientCertificates(pkcs12: false),
     });
     await _invoke<void>('setDecoderPreferences', {
       'preferFfmpeg': _prefs.get(UserPreferences.preferExoPlayerFfmpeg),

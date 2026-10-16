@@ -135,6 +135,11 @@ class AuthRepository {
   }
 
   LoginState _handleDioError(DioException e) {
+    if (isClientCertificateRejected(e)) {
+      const state = ClientCertificateRequired();
+      _stateController.add(state);
+      return state;
+    }
     if (isUntrustedCertificate(e)) {
       const state = UntrustedCertificate();
       _stateController.add(state);

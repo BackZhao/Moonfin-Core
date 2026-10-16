@@ -101,6 +101,9 @@ final class AppleTvVideoChannel: NSObject, FlutterStreamHandler {
             setEngineLogForwarding((args["enabled"] as? Bool) == true)
         case "setAllowUntrustedTls":
             EngineTLS.serverTrustEvaluator = EngineTrustPolicy.evaluator(from: args)
+        case "setClientCertificates":
+            ClientIdentityStore.setClientCertificates(
+                (args["certificates"] as? [[String: Any]]) ?? [])
         case "setUiMetadata":
             lastMetadata = args
             playerVC?.applyUiMetadata(args)

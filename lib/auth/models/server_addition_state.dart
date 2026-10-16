@@ -18,6 +18,10 @@ class ServerUnableToConnect extends ServerAdditionState {
   /// address failing some other way would otherwise hide it.
   final String? untrustedCandidate;
 
+  /// An address that asked for a client certificate (mTLS). The connection can
+  /// be retried once one is imported for that host.
+  final String? clientCertCandidate;
+
   const ServerUnableToConnect({
     required this.candidatesTried,
     this.lastCandidate,
@@ -25,6 +29,7 @@ class ServerUnableToConnect extends ServerAdditionState {
     this.lastStatusCode,
     this.lastErrorMessage,
     this.untrustedCandidate,
+    this.clientCertCandidate,
   });
 }
 

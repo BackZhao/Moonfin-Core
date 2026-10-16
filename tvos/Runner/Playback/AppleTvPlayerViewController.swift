@@ -1507,7 +1507,7 @@ final class AppleTvPlayerViewController: UIViewController {
         for (key, value) in headers {
             request.setValue(value, forHTTPHeaderField: key)
         }
-        URLSession.shared.dataTask(with: request) { data, _, _ in
+        MoonfinURLSession.shared.dataTask(with: request) { data, _, _ in
             let image = data.flatMap { UIImage(data: $0) }
             DispatchQueue.main.async { completion(image) }
         }.resume()
@@ -3631,7 +3631,7 @@ private final class CastCell: UICollectionViewCell {
         imageView.image = nil
         guard !imageUrl.isEmpty, let url = URL(string: imageUrl) else { return }
         let expected = imageUrl
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
+        MoonfinURLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             let image = data.flatMap { UIImage(data: $0) }
             DispatchQueue.main.async {
                 guard let self, self.imageUrl == expected else { return }

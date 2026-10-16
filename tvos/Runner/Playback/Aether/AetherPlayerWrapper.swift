@@ -546,7 +546,7 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
             audioArtwork = nil
             guard let urlString = wanted, let url = URL(string: urlString) else { return }
             Task { [weak self] in
-                guard let (data, _) = try? await URLSession.shared.data(from: url),
+                guard let (data, _) = try? await MoonfinURLSession.shared.data(from: url),
                     let artwork = Self.audioArtwork(from: data),
                     let self, self.audioArtworkURL == urlString
                 else { return }

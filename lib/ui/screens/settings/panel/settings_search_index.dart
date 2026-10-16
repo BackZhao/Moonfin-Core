@@ -483,6 +483,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         subtitle: l10n.settingsAllowSelfSignedCertsSubtitle,
         keywords: ['certificate', 'ssl', 'https', 'insecure'],
       ),
+      account.leaf(
+        'client_certificates',
+        l10n.settingsClientCertificates,
+        subtitle: l10n.settingsClientCertificatesSubtitle,
+        keywords: ['certificate', 'mtls', 'client certificate', 'p12', 'pfx'],
+      ),
     ],
     pin.screen(keywords: ['lock', 'passcode']),
     pin.leaf(

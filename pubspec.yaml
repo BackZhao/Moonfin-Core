@@ -34,6 +34,8 @@ dependencies:
   background_downloader: ^9.6.0
   ffi: ^2.1.0
   web_socket_channel: ^3.0.3
+  # Decodes imported .p12/.pfx client certificates
+  pointycastle: ^4.0.0
 
   # Local Storage
   shared_preferences: ^2.5.5

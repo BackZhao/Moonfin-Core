@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:playback_core/playback_core.dart';
 
+import '../data/services/client_certificate_service.dart';
 import '../data/services/log_service.dart';
 import '../preference/preference_constants.dart';
 import '../preference/user_preferences.dart';
@@ -275,6 +276,10 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
     _tracksReadyCompleter = null;
     _embeddedCaptionTracks = const [];
     _startStallWatchdog();
+
+    await _invoke<void>('setClientCertificates', {
+      'certificates': nativeClientCertificates(pkcs12: true),
+    });
 
     await _invoke<void>('setSource', {
       'url': url,

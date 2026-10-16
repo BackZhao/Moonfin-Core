@@ -32,6 +32,7 @@ import '../../../data/services/media_server_client_factory.dart';
 import '../../../data/services/reader_settings_store.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/insecure_certificates.dart';
+import '../../../util/webview_client_cert.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../util/error_message.dart';
 import '../../../l10n/current_app_localizations.dart';
@@ -3063,6 +3064,7 @@ class _BookReaderScreenState extends State<BookReaderScreen>
               action: ServerTrustAuthResponseAction.PROCEED,
             )
           : null,
+      onReceivedClientCertRequest: clientCertificateResponse,
       onProgressChanged: (controller, progress) {
         if (!mounted) return;
         setState(() => _webLoadProgress = progress);
