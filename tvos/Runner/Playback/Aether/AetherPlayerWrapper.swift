@@ -141,11 +141,11 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
     private var lastKnownSourceTime: Double = 0
     private var lastKnownSourceTimeHostTime: CFTimeInterval = 0
 
-    /// On iOS, `audio_service` (Flutter) owns MPRemoteCommandCenter and the
-    /// Now Playing card, and the wrapper driving them too would
-    /// double-register handlers. Only tvOS drives Now Playing natively.
+    /// Video gets a Now Playing session bound to its AVPlayer. On iOS the
+    /// shared centers stay with `audio_service`, but they can't win Now Playing
+    /// back once Picture in Picture or another app has taken it.
     private static var drivesNowPlaying: Bool {
-        #if os(tvOS)
+        #if os(iOS) || os(tvOS)
             return true
         #else
             return false
@@ -155,8 +155,8 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
     override init() {
         super.init()
         #if os(iOS) || os(tvOS)
-            // On iOS the handlers only ever land on the engine's music
-            // session, which audio_service has no way to reach.
+            // On iOS the handlers only ever land on a session, the video
+            // player's or the engine's music one, never the shared center.
             wireNowPlaying()
         #endif
         subscribeToEngine()
@@ -500,8 +500,7 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
         let title = (args["topTitle"] as? String) ?? ""
         let subtitle = (args["topSubtitle"] as? String) ?? ""
         let logo = args["logoUrl"] as? String
-        // The engine's music session only exists on iOS and tvOS, and only tvOS
-        // drives Now Playing for video.
+        // The engine's music session only exists on iOS and tvOS.
         #if os(iOS) || os(tvOS)
             nowPlaying.setQueueCapabilities(
                 hasNext: (args["hasNext"] as? Bool) ?? false,
@@ -848,6 +847,12 @@ final class AetherPlayerWrapper: NSObject, ObservableObject {
                 // can only be adopted once the load returns.
                 if audioOnly {
                     nowPlaying.adopt(session: engine.audioNowPlayingSession)
+                } else {
+                    #if os(iOS)
+                        // A load into the same AVPlayer keeps its session, which
+                        // another app may have taken in the meantime.
+                        nowPlaying.reclaim()
+                    #endif
                 }
                 nowPlaying.setIntervalSkipsEnabled(!audioOnly)
             #endif
