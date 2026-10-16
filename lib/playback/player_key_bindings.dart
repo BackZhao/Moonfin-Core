@@ -13,6 +13,9 @@ enum PlayerAction {
   next,
   previous,
 
+  /// Press the skip button while the player is offering one.
+  skipSegment,
+
   /// Seek that grows while the key is held.
   seekBack,
   seekForward,
@@ -68,8 +71,15 @@ class PlayerKeyBindings {
       KeyBinding(LogicalKeyboardKey.keyH),
       KeyBinding(LogicalKeyboardKey.mediaStop),
     ],
-    PlayerAction.next: [KeyBinding(LogicalKeyboardKey.mediaTrackNext)],
-    PlayerAction.previous: [KeyBinding(LogicalKeyboardKey.mediaTrackPrevious)],
+    PlayerAction.next: [
+      KeyBinding(LogicalKeyboardKey.mediaTrackNext),
+      KeyBinding(LogicalKeyboardKey.keyN, shift: true),
+    ],
+    PlayerAction.previous: [
+      KeyBinding(LogicalKeyboardKey.mediaTrackPrevious),
+      KeyBinding(LogicalKeyboardKey.keyP, shift: true),
+    ],
+    PlayerAction.skipSegment: [KeyBinding(LogicalKeyboardKey.keyS)],
     PlayerAction.seekBack: [
       KeyBinding(LogicalKeyboardKey.arrowLeft),
       KeyBinding(LogicalKeyboardKey.keyJ),

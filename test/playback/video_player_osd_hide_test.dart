@@ -7,6 +7,9 @@ import 'package:playback_core/playback_core.dart';
 import 'package:server_core/server_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:moonfin/auth/models/user.dart';
+import 'package:moonfin/auth/repositories/user_repository.dart';
+import 'package:moonfin/data/models/aggregated_item.dart';
 import 'package:moonfin/data/services/cast/cast_service.dart';
 import 'package:moonfin/data/services/cast/cast_target.dart';
 import 'package:moonfin/data/services/cast/native_airplay_channel.dart';
@@ -21,9 +24,19 @@ import 'package:moonfin/preference/user_preferences.dart';
 import 'package:moonfin/ui/screens/playback/video_player_screen.dart';
 import 'package:moonfin/ui/screensaver/screensaver_controller.dart';
 
+import '../util/media_segment_fakes.dart';
+
 class _Client extends Fake implements MediaServerClient {
+  final items = FakeItemsApi();
+
   @override
   ServerType get serverType => ServerType.jellyfin;
+
+  @override
+  ItemsApi get itemsApi => items;
+
+  @override
+  TrickplayApi? get trickplayApi => null;
 }
 
 class _Factory extends Fake implements MediaServerClientFactory {
@@ -50,8 +63,14 @@ class _Screensaver extends Fake implements ScreensaverController {
 
 class _Lifecycle extends Fake implements PlaybackLifecycleHandler {}
 
+class _Users extends Fake implements UserRepository {
+  @override
+  User? get currentUser => null;
+}
+
 class _Manager extends PlaybackManager {
   final transport = <String>[];
+  final seeks = <Duration>[];
   PlaybackBringupState bringup = const PlaybackBringupState.idle();
 
   @override
@@ -62,10 +81,14 @@ class _Manager extends PlaybackManager {
 
   @override
   Future<void> resume() async => transport.add('resume');
+
+  @override
+  Future<void> seekTo(Duration position) async => seeks.add(position);
 }
 
 void main() {
   late _Manager manager;
+  late _Client client;
   late PipService pip;
 
   setUp(() async {
@@ -75,7 +98,8 @@ void main() {
     manager = _Manager();
     GetIt.instance.registerSingleton<PlaybackManager>(manager);
     GetIt.instance.registerSingleton<UserPreferences>(UserPreferences(store));
-    GetIt.instance.registerSingleton<MediaServerClient>(_Client());
+    client = _Client();
+    GetIt.instance.registerSingleton<MediaServerClient>(client);
     GetIt.instance.registerSingleton<MediaServerClientFactory>(_Factory());
     GetIt.instance.registerSingleton<CastService>(_Cast());
     GetIt.instance.registerSingleton<NativeCastChannel>(NativeCastChannel());
@@ -88,6 +112,7 @@ void main() {
     GetIt.instance.registerSingleton<PlaybackLifecycleHandler>(_Lifecycle());
     GetIt.instance.registerSingleton<ThemeMusicService>(_ThemeMusic());
     GetIt.instance.registerSingleton<ScreensaverController>(_Screensaver());
+    GetIt.instance.registerSingleton<UserRepository>(_Users());
   });
 
   tearDown(() async {
@@ -312,4 +337,43 @@ void main() {
 
     await tester.pumpWidget(const SizedBox());
   }, variant: TargetPlatformVariant.only(TargetPlatform.windows));
+
+  // Issue #1335: S, or Enter while the skip button shows, skips the intro.
+  for (final key in [LogicalKeyboardKey.keyS, LogicalKeyboardKey.enter]) {
+    testWidgets('${key.keyLabel} skips the intro on offer', (tester) async {
+      client.items.segments = [
+        segmentJson(id: 'intro', type: 'Intro', startMs: 0, endMs: 90000),
+      ];
+      manager.queueService.setQueue([
+        AggregatedItem(
+          id: 'ep1',
+          serverId: 'server',
+          rawData: const {'Id': 'ep1', 'Type': 'Episode'},
+        ),
+      ]);
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: const [Locale('en')],
+          home: const VideoPlayerScreen(),
+        ),
+      );
+      manager.state.setPlaying(true);
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 10));
+      expect(find.byType(Slider), findsNothing);
+
+      manager.state.setPosition(const Duration(seconds: 5));
+      await tester.pump();
+      await tester.pump();
+      expect(find.textContaining('Skip'), findsOneWidget);
+
+      await tester.sendKeyEvent(key);
+      await tester.pump();
+      expect(manager.seeks, [const Duration(seconds: 90)]);
+      expect(manager.transport, isEmpty);
+
+      await tester.pumpWidget(const SizedBox());
+    }, variant: TargetPlatformVariant.only(TargetPlatform.windows));
+  }
 }

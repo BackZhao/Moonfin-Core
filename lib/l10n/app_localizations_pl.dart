@@ -2303,6 +2303,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get shortcutPreviousItem => 'Poprzednia pozycja';
 
   @override
+  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+
+  @override
   String get shortcutShowShortcuts => 'Pokaż tę listę';
 
   @override

@@ -3854,10 +3854,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
         }
         return KeyEventResult.handled;
       case PlayerAction.next:
-        unawaited(_manager.next());
+        if (event is! KeyRepeatEvent) unawaited(_manager.next());
         return KeyEventResult.handled;
       case PlayerAction.previous:
-        unawaited(_manager.previous());
+        if (event is! KeyRepeatEvent) unawaited(_manager.previous());
+        return KeyEventResult.handled;
+      case PlayerAction.skipSegment:
+        if (!_isSkipSegmentButtonVisible) return KeyEventResult.ignored;
+        if (event is! KeyRepeatEvent) _skipCurrentSegment();
         return KeyEventResult.handled;
       case PlayerAction.skipForward:
         _seekRelative(_prefs.get(UserPreferences.skipForwardLength));
@@ -3932,7 +3936,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
         _exitPlayback();
         return KeyEventResult.handled;
       case PlayerAction.showControlsOrPlayPause:
-        if (_controlsVisible) {
+        if (_isSkipSegmentButtonVisible) {
+          if (event is! KeyRepeatEvent) _skipCurrentSegment();
+        } else if (_controlsVisible) {
           _togglePlayPause();
         } else {
           _showControls();

@@ -2178,6 +2178,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get shortcutPreviousItem => 'Element anterior';
 
   @override
+  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+
+  @override
   String get shortcutShowShortcuts => 'Mostra aquesta llista';
 
   @override

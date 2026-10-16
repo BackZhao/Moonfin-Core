@@ -2868,6 +2868,10 @@
   "@shortcutPreviousItem": {
     "description": "Player shortcut action for the previous-track media key"
   },
+  "shortcutSkipSegment": "Skip intro or credits when offered",
+  "@shortcutSkipSegment": {
+    "description": "Player shortcut action that presses the skip intro or credits button while it is showing"
+  },
   "shortcutShowShortcuts": "Show this list",
   "@shortcutShowShortcuts": {
     "description": "What ? and F1 do in the player"

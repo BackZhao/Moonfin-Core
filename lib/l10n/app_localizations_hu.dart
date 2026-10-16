@@ -2165,6 +2165,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get shortcutPreviousItem => 'Előző elem';
 
   @override
+  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+
+  @override
   String get shortcutShowShortcuts => 'Mutasd ezt a listát';
 
   @override

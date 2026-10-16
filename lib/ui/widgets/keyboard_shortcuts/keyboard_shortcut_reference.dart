@@ -133,6 +133,11 @@ List<KeyboardShortcutSection> keyboardShortcutSections(
             ),
             player([PlayerAction.next], l10n.shortcutNextItem),
             player([PlayerAction.previous], l10n.shortcutPreviousItem),
+            // Enter presses the skip button too while one is showing.
+            player([
+              PlayerAction.skipSegment,
+              PlayerAction.showControlsOrPlayPause,
+            ], l10n.shortcutSkipSegment),
           ],
           // Seeking and speed.
           [

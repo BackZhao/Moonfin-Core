@@ -2176,6 +2176,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shortcutPreviousItem => 'Élément précédent';
 
   @override
+  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+
+  @override
   String get shortcutShowShortcuts => 'Afficher cette liste';
 
   @override

@@ -3748,6 +3748,12 @@ abstract class AppLocalizations {
   /// **'Previous item'**
   String get shortcutPreviousItem;
 
+  /// Player shortcut action that presses the skip intro or credits button while it is showing
+  ///
+  /// In en, this message translates to:
+  /// **'Skip intro or credits when offered'**
+  String get shortcutSkipSegment;
+
   /// What ? and F1 do in the player
   ///
   /// In en, this message translates to:

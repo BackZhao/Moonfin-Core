@@ -31,7 +31,13 @@ void main() {
     final player = keyboardShortcutSections(l10n)
         .firstWhere((s) => s.title == l10n.keyboardShortcutsSectionPlayer);
     final keys = player.shortcuts.expand((s) => s.keys).toSet();
-    expect(keys, containsAll(['K', 'J', 'L', 'M', 'C', 'H', 'I', ',', '.']));
+    expect(
+      keys,
+      containsAll([
+        'K', 'J', 'L', 'M', 'C', 'H', 'I', ',', '.',
+        'S', 'Shift+N', 'Shift+P',
+      ]),
+    );
     if (letterboxCropAvailable()) {
       expect(keys, contains('B'));
     }

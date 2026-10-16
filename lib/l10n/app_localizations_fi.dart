@@ -2167,6 +2167,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get shortcutPreviousItem => 'Edellinen kappale';
 
   @override
+  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+
+  @override
   String get shortcutShowShortcuts => 'Näytä tämä lista';
 
   @override

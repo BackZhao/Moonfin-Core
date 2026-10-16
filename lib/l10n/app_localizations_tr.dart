@@ -2158,6 +2158,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get shortcutPreviousItem => 'Önceki öğe';
 
   @override
+  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+
+  @override
   String get shortcutShowShortcuts => 'Bu listeyi göster';
 
   @override
