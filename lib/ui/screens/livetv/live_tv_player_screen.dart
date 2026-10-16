@@ -2010,6 +2010,18 @@ class _LiveTvPlayerScreenState extends State<LiveTvPlayerScreen>
 
         _togglePlayback();
         return KeyEventResult.handled;
+      case LogicalKeyboardKey.mediaPlayPause:
+      case LogicalKeyboardKey.mediaPlay:
+      case LogicalKeyboardKey.mediaPause:
+        if (event is KeyDownEvent) {
+          final key = event.logicalKey;
+          final pause =
+              key == LogicalKeyboardKey.mediaPause ||
+              (key == LogicalKeyboardKey.mediaPlayPause && _state.isPlaying);
+          pause ? _manager.pause() : _manager.resume();
+          _showInfo();
+        }
+        return KeyEventResult.handled;
       case LogicalKeyboardKey.mediaRewind:
       case LogicalKeyboardKey.mediaFastForward:
         if (_rewindWindow == null) return KeyEventResult.ignored;

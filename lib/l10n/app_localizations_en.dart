@@ -10478,7 +10478,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsLiveTvDirect => 'Live TV Direct';
+  String get settingsLiveTvDirect => 'Live TV Direct Play';
 
   @override
   String get settingsLiveTvDirectSubtitle => 'Enable direct play for Live TV';
@@ -23846,7 +23846,7 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   }
 
   @override
-  String get settingsLiveTvDirect => 'Live TV Direct';
+  String get settingsLiveTvDirect => 'Live TV Direct Play';
 
   @override
   String get settingsLiveTvDirectSubtitle => 'Enable direct play for Live TV';

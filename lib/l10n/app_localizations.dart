@@ -18667,7 +18667,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsLiveTvDirect.
   ///
   /// In en, this message translates to:
-  /// **'Live TV Direct'**
+  /// **'Live TV Direct Play'**
   String get settingsLiveTvDirect;
 
   /// No description provided for @settingsLiveTvDirectSubtitle.

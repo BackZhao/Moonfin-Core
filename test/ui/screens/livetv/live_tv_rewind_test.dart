@@ -332,6 +332,24 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
+  // Issue #1880: the remote's play and pause buttons work on live channels.
+  testWidgets('the remote play and pause buttons pause and resume', (
+    tester,
+  ) async {
+    await pumpPlayer(tester);
+
+    await press(tester, LogicalKeyboardKey.mediaPlayPause);
+    expect(manager.state.isPlaying, isFalse);
+    await press(tester, LogicalKeyboardKey.mediaPlayPause);
+    expect(manager.state.isPlaying, isTrue);
+    await press(tester, LogicalKeyboardKey.mediaPause);
+    expect(manager.state.isPlaying, isFalse);
+    await press(tester, LogicalKeyboardKey.mediaPlay);
+    expect(manager.state.isPlaying, isTrue);
+
+    await tester.pumpWidget(const SizedBox());
+  });
+
   for (final window in [
     null,
     const LiveSeekWindow(start: Duration.zero, edge: Duration(seconds: 30)),

@@ -10270,7 +10270,7 @@
       }
     }
   },
-  "settingsLiveTvDirect": "Live TV Direct",
+  "settingsLiveTvDirect": "Live TV Direct Play",
   "settingsLiveTvDirectSubtitle": "Enable direct play for Live TV",
   "settingsOpenGroups": "Open Groups",
   "settingsOpenGroupsSubtitle": "Create, join, or manage SyncPlay groups",
