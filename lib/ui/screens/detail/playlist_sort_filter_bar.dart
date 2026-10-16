@@ -25,20 +25,28 @@ const List<LibrarySortBy> playlistTrackSortOptions = [
   LibrarySortBy.random,
 ];
 
-/// Returns a localized display label for a playlist track sort option.
-String playlistSortLabel(LibrarySortBy sortBy, AppLocalizations l10n) {
+/// Returns a localized display label for a library or playlist sort option.
+String librarySortLabel(LibrarySortBy sortBy, AppLocalizations l10n) {
   return switch (sortBy) {
-    LibrarySortBy.playlistOrder => l10n.spotlightPlaylistOrder,
+    LibrarySortBy.playlistOrder => l10n.librarySortPlaylistOrder,
     LibrarySortBy.name => l10n.sortByName,
-    LibrarySortBy.dateAdded => l10n.sortByDateAdded,
+    LibrarySortBy.dateAdded => l10n.librarySortDateAdded,
+    LibrarySortBy.dateEpisodeAdded => l10n.librarySortDateEpisodeAdded,
     LibrarySortBy.premiereDate => l10n.playlistSortReleaseDate,
-    LibrarySortBy.communityRating => l10n.communityRating,
-    LibrarySortBy.criticRating => l10n.playlistSortCriticRating,
+    LibrarySortBy.rating => l10n.librarySortParentalRating,
     LibrarySortBy.runtime => l10n.playlistSortRuntime,
+    LibrarySortBy.random => l10n.playlistSortRandom,
+    LibrarySortBy.criticRating => l10n.playlistSortCriticRating,
+    LibrarySortBy.communityRating => l10n.communityRating,
+    LibrarySortBy.myRating => l10n.librarySortMyRating,
     LibrarySortBy.datePlayed => l10n.playlistSortLastPlayed,
     LibrarySortBy.playCount => l10n.playlistSortPlayCount,
-    LibrarySortBy.random => l10n.playlistSortRandom,
-    _ => sortBy.displayName,
+    LibrarySortBy.albumArtist => l10n.librarySortAlbumArtist,
+    LibrarySortBy.album => l10n.librarySortAlbum,
+    LibrarySortBy.artist => l10n.librarySortArtist,
+    LibrarySortBy.trackNumber => l10n.librarySortTrackNumber,
+    LibrarySortBy.genre => l10n.librarySortGenre,
+    LibrarySortBy.foldersFirst => l10n.librarySortFoldersFirst,
   };
 }
 
@@ -313,7 +321,7 @@ class PlaylistSortFilterBar extends StatelessWidget {
           _PlaylistPillButton(
             focusNode: sortFocusNode,
             icon: Icons.sort_rounded,
-            label: 'Sort: ${playlistSortLabel(sortBy, l10n)}',
+            label: 'Sort: ${librarySortLabel(sortBy, l10n)}',
             trailing: sortBy != LibrarySortBy.random &&
                     (sortBy != LibrarySortBy.playlistOrder ||
                         sortDirection == SortDirection.descending)
@@ -569,7 +577,7 @@ class _PlaylistSortDialogState extends State<PlaylistSortDialog> {
           children: [
             for (final option in playlistTrackSortOptions)
               _DialogRadioRow(
-                label: playlistSortLabel(option, l10n),
+                label: librarySortLabel(option, l10n),
                 selected: _selectedSort == option,
                 autofocus: _selectedSort == option,
                 accent: accent,

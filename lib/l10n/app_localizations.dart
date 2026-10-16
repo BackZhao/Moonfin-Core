@@ -24490,6 +24490,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tracks match the active filters'**
   String get playlistNoMatchingTracks;
+
+  /// Sort option: the playlist's own track order
+  ///
+  /// In en, this message translates to:
+  /// **'Playlist Order'**
+  String get librarySortPlaylistOrder;
+
+  /// Sort option: when an item was added to the server library
+  ///
+  /// In en, this message translates to:
+  /// **'Date Added'**
+  String get librarySortDateAdded;
+
+  /// Sort option for series: when the newest episode was added
+  ///
+  /// In en, this message translates to:
+  /// **'Date Episode Added'**
+  String get librarySortDateEpisodeAdded;
+
+  /// Sort option: by parental (age) rating such as PG-13
+  ///
+  /// In en, this message translates to:
+  /// **'Parental Rating'**
+  String get librarySortParentalRating;
+
+  /// Sort option: by the viewer's own like or dislike
+  ///
+  /// In en, this message translates to:
+  /// **'My Rating'**
+  String get librarySortMyRating;
+
+  /// Sort option for music: by album artist
+  ///
+  /// In en, this message translates to:
+  /// **'Album Artist'**
+  String get librarySortAlbumArtist;
+
+  /// Sort option for music: by album name
+  ///
+  /// In en, this message translates to:
+  /// **'Album'**
+  String get librarySortAlbum;
+
+  /// Sort option for music: by track artist
+  ///
+  /// In en, this message translates to:
+  /// **'Artist'**
+  String get librarySortArtist;
+
+  /// Sort option for music: by track number
+  ///
+  /// In en, this message translates to:
+  /// **'Track Number'**
+  String get librarySortTrackNumber;
+
+  /// Sort option: by genre
+  ///
+  /// In en, this message translates to:
+  /// **'Genre'**
+  String get librarySortGenre;
+
+  /// Sort option for folder libraries: folders before files, then by name
+  ///
+  /// In en, this message translates to:
+  /// **'Folders First'**
+  String get librarySortFoldersFirst;
+
+  /// Sort option for music: by track or album length
+  ///
+  /// In en, this message translates to:
+  /// **'Length'**
+  String get librarySortLength;
 }
 
 class _AppLocalizationsDelegate

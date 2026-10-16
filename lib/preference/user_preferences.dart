@@ -516,6 +516,9 @@ class UserPreferences extends ChangeNotifier {
     'pref_desktop_ui_scale',
     'poster_size_library',
     'poster_size_playlist',
+    'poster_size_favorites',
+    'poster_size_all_genres',
+    'poster_size_seerr',
     'pref_home_rows_fullscreen',
     'pref_show_seerr_button',
     'pref_show_seerr_availability_badges',
@@ -849,6 +852,15 @@ class UserPreferences extends ChangeNotifier {
     return get(posterSize).upToExtraLarge;
   }
 
+  /// Favorites, All Genres and Seerr browse keep their own size, following
+  /// the library size until one is picked on that screen.
+  PosterSize resolveScreenPosterSize(EnumPreference<PosterSize> preference) {
+    if (containsPreference(preference, scopedOnly: true)) {
+      return get(preference);
+    }
+    return resolveLibraryPosterSize();
+  }
+
   PosterSize resolvePlaylistPosterSize() {
     if (containsPreference(playlistPosterSize, scopedOnly: true)) {
       return get(playlistPosterSize);
@@ -1126,6 +1138,24 @@ class UserPreferences extends ChangeNotifier {
 
   static final playlistPosterSize = EnumPreference(
     key: 'poster_size_playlist',
+    defaultValue: PosterSize.medium,
+    values: PosterSize.gridValues,
+  );
+
+  static final favoritesPosterSize = EnumPreference(
+    key: 'poster_size_favorites',
+    defaultValue: PosterSize.medium,
+    values: PosterSize.gridValues,
+  );
+
+  static final allGenresPosterSize = EnumPreference(
+    key: 'poster_size_all_genres',
+    defaultValue: PosterSize.medium,
+    values: PosterSize.gridValues,
+  );
+
+  static final seerrPosterSize = EnumPreference(
+    key: 'poster_size_seerr',
     defaultValue: PosterSize.medium,
     values: PosterSize.gridValues,
   );

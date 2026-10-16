@@ -13453,5 +13453,53 @@
   "playlistNoMatchingTracks": "No tracks match the active filters",
   "@playlistNoMatchingTracks": {
     "description": "Empty state message shown when playlist filters match no items"
+  },
+  "librarySortPlaylistOrder": "Playlist Order",
+  "@librarySortPlaylistOrder": {
+    "description": "Sort option: the playlist's own track order"
+  },
+  "librarySortDateAdded": "Date Added",
+  "@librarySortDateAdded": {
+    "description": "Sort option: when an item was added to the server library"
+  },
+  "librarySortDateEpisodeAdded": "Date Episode Added",
+  "@librarySortDateEpisodeAdded": {
+    "description": "Sort option for series: when the newest episode was added"
+  },
+  "librarySortParentalRating": "Parental Rating",
+  "@librarySortParentalRating": {
+    "description": "Sort option: by parental (age) rating such as PG-13"
+  },
+  "librarySortMyRating": "My Rating",
+  "@librarySortMyRating": {
+    "description": "Sort option: by the viewer's own like or dislike"
+  },
+  "librarySortAlbumArtist": "Album Artist",
+  "@librarySortAlbumArtist": {
+    "description": "Sort option for music: by album artist"
+  },
+  "librarySortAlbum": "Album",
+  "@librarySortAlbum": {
+    "description": "Sort option for music: by album name"
+  },
+  "librarySortArtist": "Artist",
+  "@librarySortArtist": {
+    "description": "Sort option for music: by track artist"
+  },
+  "librarySortTrackNumber": "Track Number",
+  "@librarySortTrackNumber": {
+    "description": "Sort option for music: by track number"
+  },
+  "librarySortGenre": "Genre",
+  "@librarySortGenre": {
+    "description": "Sort option: by genre"
+  },
+  "librarySortFoldersFirst": "Folders First",
+  "@librarySortFoldersFirst": {
+    "description": "Sort option for folder libraries: folders before files, then by name"
+  },
+  "librarySortLength": "Length",
+  "@librarySortLength": {
+    "description": "Sort option for music: by track or album length"
   }
 }

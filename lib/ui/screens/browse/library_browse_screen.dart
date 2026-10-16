@@ -38,6 +38,7 @@ import '../../widgets/overlay_sheet.dart';
 import '../../widgets/quick_return_wrapper.dart';
 import '../../widgets/rating_display.dart';
 import '../detail/item_detail_screen.dart';
+import '../detail/playlist_sort_filter_bar.dart';
 import '../../widgets/local_search_field.dart';
 import '../../widgets/skeleton/skeleton_library_grid.dart';
 import '../../../l10n/app_localizations.dart';
@@ -162,11 +163,30 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
     });
     _backdropUrl = _backgroundService.currentUrl;
     _prefs.addListener(_onChanged);
+    InlineBackInterceptor.push(_backToAlphabet);
   }
 
   ModalRoute<dynamic>? _observedRoute;
 
   final _allLetterFocusNode = FocusNode(debugLabel: 'alpha_all_letter');
+  final _gridAreaFocusNode = FocusNode(
+    debugLabel: 'library_grid_area',
+    canRequestFocus: false,
+    skipTraversal: true,
+  );
+
+  /// On TV, Back from the grid moves up to the alphabet bar when it's shown,
+  /// and the next Back leaves the library. It has to run before the route
+  /// pops, which a card's key handler can't do.
+  bool _backToAlphabet() {
+    if (!PlatformDetection.isTV ||
+        _allLetterFocusNode.context == null ||
+        !_gridAreaFocusNode.hasFocus) {
+      return false;
+    }
+    _allLetterFocusNode.requestFocus();
+    return true;
+  }
 
   @override
   void didPopNext() {
@@ -183,7 +203,9 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
     _searchController.dispose();
     _searchFocusNode.dispose();
     _homeButtonFocusNode.dispose();
+    InlineBackInterceptor.remove(_backToAlphabet);
     _allLetterFocusNode.dispose();
+    _gridAreaFocusNode.dispose();
     _backdropDebounce?.cancel();
     _backgroundSub?.cancel();
     _scrollController.dispose();
@@ -901,7 +923,6 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
                 homeFocusNode: _homeButtonFocusNode,
                 onTvSearchKey: _onTvSearchKey,
                 isMusicBrowse: _vm.isMusicBrowse,
-                playedFilter: _vm.playedFilter,
                 searchController: _searchController,
                 searchFocusNode: _searchFocusNode,
                 onSearchChanged: (query) => _vm.setSearchQuery(query),
@@ -915,9 +936,13 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
                 onShuffle: _isSongsBrowse ? () => _shuffleSongsLibrary() : null,
                 isSongsBrowse: _isSongsBrowse,
                 onLetterChanged: (l) => _jumpToLetter(l),
-                onPlayedFilterChanged: (status) => _vm.setPlayedFilter(status),
               ),
-              Expanded(child: _buildBody()),
+              Expanded(
+                child: Focus(
+                  focusNode: _gridAreaFocusNode,
+                  child: _buildBody(),
+                ),
+              ),
             ],
           ),
         ],
@@ -1010,7 +1035,19 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
   bool get _horizontalGridIsScrollable =>
       _vm.scrollDirection == LibraryScrollDirection.horizontal &&
       !_isSongsBrowse &&
-      !_vm.isGrouping;
+      !_vm.isGrouping &&
+      !(_vm.isPlaylistBrowse && _vm.groupByType);
+
+  static String _playlistSectionTitle(AppLocalizations l10n, String key) =>
+      switch (key) {
+        'Video' => l10n.videoPlaylistsSection,
+        'MusicVideo' => l10n.musicVideoPlaylistsSection,
+        'Audio' => l10n.audioPlaylistsSection,
+        'AudioBook' => l10n.audiobookPlaylistsSection,
+        'Book' => l10n.bookPlaylistsSection,
+        'Photo' => l10n.photoPlaylistsSection,
+        _ => l10n.mixedPlaylistsSection,
+      };
 
   void _nudgeHorizontalGrid(double delta) {
     if (!_scrollController.hasClients) return;
@@ -1245,15 +1282,7 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
             final categoryKey = groupEntries[s].key;
             final categoryItems = groupEntries[s].value;
 
-            final categoryTitle = switch (categoryKey) {
-              'Video' => l10n.videoPlaylistsSection,
-              'MusicVideo' => l10n.musicVideoPlaylistsSection,
-              'Audio' => l10n.audioPlaylistsSection,
-              'AudioBook' => l10n.audiobookPlaylistsSection,
-              'Book' => l10n.bookPlaylistsSection,
-              'Photo' => l10n.photoPlaylistsSection,
-              _ => l10n.mixedPlaylistsSection,
-            };
+            final categoryTitle = _playlistSectionTitle(l10n, categoryKey);
 
             slivers.add(
               SliverPadding(
@@ -1518,7 +1547,7 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
               onTvUp();
               return KeyEventResult.handled;
             } else if (positionInSection < crossAxisCount) {
-              _homeButtonFocusNode.requestFocus();
+              _focusAboveGrid();
               return KeyEventResult.handled;
             }
           }
@@ -1527,13 +1556,6 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
               event.logicalKey.isDownKey &&
               onTvDown != null) {
             onTvDown();
-            return KeyEventResult.handled;
-          }
-          if (PlatformDetection.isTV &&
-              event.isActionable &&
-              event.logicalKey.isBackKey &&
-              _allLetterFocusNode.context != null) {
-            _allLetterFocusNode.requestFocus();
             return KeyEventResult.handled;
           }
           if (event.isActionable && event.logicalKey.isRightKey) {
@@ -1573,8 +1595,9 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
     return isGrouped ? Builder(builder: card) : card(null);
   }
 
-  Widget _buildGroupedHorizontalRows() {
-    final categories = _vm.groupedCategories;
+  Widget _buildGroupedHorizontalRows(
+    Map<String, List<AggregatedItem>> categories,
+  ) {
     if (categories.isEmpty) {
       return Center(
         child: Text(
@@ -1642,8 +1665,16 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
 
   Widget _buildHorizontalGrid() {
     if (_vm.isGrouping) {
-      return _buildGroupedHorizontalRows();
+      return _buildGroupedHorizontalRows(_vm.groupedCategories);
     }
+    if (_vm.isPlaylistBrowse && _vm.groupByType) {
+      final l10n = AppLocalizations.of(context);
+      return _buildGroupedHorizontalRows({
+        for (final entry in _vm.groupedPlaylists.entries)
+          _playlistSectionTitle(l10n, entry.key): entry.value,
+      });
+    }
+    final items = _vm.visiblePlaylists;
     final cardFocusExpansion = _prefs.get(UserPreferences.cardFocusExpansion);
     final watchedBehavior = _prefs.get(UserPreferences.watchedIndicatorBehavior);
     final focusColor = Color(_prefs.get(UserPreferences.focusColor).colorValue);
@@ -1725,8 +1756,8 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
                     (context, index) {
                       // No childCount on this delegate, so returning null is
                       // what tells the sliver where the list ends.
-                      if (index >= _vm.items.length) return null;
-                      final item = _vm.items[index];
+                      if (index >= items.length) return null;
+                      final item = items[index];
                       return MediaCard(
                         title: item.name,
                         subtitle: _cardSubtitle(item),
@@ -1756,7 +1787,7 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
                           }
                           final col = index ~/ rowCount;
                           final isLastCol =
-                              (col + 1) * rowCount >= _vm.items.length;
+                              (col + 1) * rowCount >= items.length;
                           if (!isLastCol) return KeyEventResult.ignored;
                           _vm.loadMore();
                           return KeyEventResult.handled;
@@ -1769,7 +1800,7 @@ class _LibraryBrowseScreenState extends State<LibraryBrowseScreen>
                         onTap: () => _onItemTap(item),
                       );
                     },
-                    childCount: _vm.items.length,
+                    childCount: items.length,
                   ),
                 ),
               ),
@@ -1899,7 +1930,6 @@ class _LibraryHeader extends StatelessWidget {
   final String letterFilter;
   final FocusNode? allLetterFocusNode;
   final bool isMusicBrowse;
-  final PlayedStatusFilter playedFilter;
   final VoidCallback? onGroupBy;
   final bool isMovieOrSeriesLibrary;
   final VoidCallback onBack;
@@ -1907,7 +1937,6 @@ class _LibraryHeader extends StatelessWidget {
   final VoidCallback onSettings;
   final VoidCallback? onShuffle;
   final ValueChanged<String> onLetterChanged;
-  final ValueChanged<PlayedStatusFilter> onPlayedFilterChanged;
   final FocusNode? homeFocusNode;
   final KeyEventResult Function(FocusNode, KeyEvent)? onTvSearchKey;
   final TextEditingController? searchController;
@@ -1934,7 +1963,6 @@ class _LibraryHeader extends StatelessWidget {
     this.homeFocusNode,
     this.onTvSearchKey,
     this.isMusicBrowse = false,
-    this.playedFilter = PlayedStatusFilter.all,
     this.onGroupBy,
     this.isMovieOrSeriesLibrary = false,
     required this.onBack,
@@ -1942,7 +1970,6 @@ class _LibraryHeader extends StatelessWidget {
     required this.onSettings,
     this.onShuffle,
     required this.onLetterChanged,
-    required this.onPlayedFilterChanged,
     this.searchController,
     this.searchFocusNode,
     this.onSearchChanged,
@@ -2362,9 +2389,11 @@ class _AlphaPickerBar extends StatelessWidget {
       child: Row(
         children: _letters.map((letter) {
           return _AlphaLetterButton(
-            label: letter.isEmpty ? AppLocalizations.of(context).all : letter,
+            label: letter,
             onTap: () => onChanged(letter),
-            focusNode: letter.isEmpty ? allFocusNode : null,
+            // Letters jump rather than filter, so there is no All entry and
+            // the first letter is where the grid hands focus back to the bar.
+            focusNode: letter == _letters.first ? allFocusNode : null,
             onUpKey: onUpKey,
           );
         }).toList(),
@@ -2518,13 +2547,9 @@ class _FilterSortDialogState extends State<_FilterSortDialog> {
     String sortLabel(LibrarySortBy option) {
       if (option == LibrarySortBy.runtime &&
           (vm.isMusicBrowse || vm.isSongsBrowse)) {
-        return 'Length';
+        return l10n.librarySortLength;
       }
-      if (option == LibrarySortBy.premiereDate &&
-          (vm.isMusicBrowse || vm.isSongsBrowse)) {
-        return 'Release Date';
-      }
-      return option.displayName;
+      return librarySortLabel(option, l10n);
     }
 
     String playedLabel(PlayedStatusFilter status) => switch (status) {
