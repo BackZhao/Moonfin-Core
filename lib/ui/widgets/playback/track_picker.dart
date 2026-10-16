@@ -15,6 +15,7 @@ import '../../../playback/subtitle_style.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../util/remote_subtitle_labels.dart';
 import '../../../util/subtitle_appearance_schedule.dart';
+import '../overlay_sheet.dart';
 import '../progress_snack_bar.dart';
 import '../track_selector_dialog.dart';
 import 'delay_footer.dart';
@@ -27,9 +28,9 @@ typedef PlayerMutation = Future<bool> Function(
   FutureOr<void> Function() action,
 );
 
-/// The audio and subtitle pickers: the track list, the delay slider under it,
-/// and downloading subtitles from the server's providers. The full player and
-/// the mini player both open it, so both offer the same thing.
+/// The audio and subtitle pickers: the track list, a row that opens the delay
+/// in its own bar, and downloading subtitles from the server's providers. The
+/// full player and the mini player both open it, so both offer the same thing.
 abstract final class TrackPicker {
   /// The delays applied to this playback. Held here rather than by a screen,
   /// so the full player and the mini player show the same values while the
@@ -105,11 +106,33 @@ abstract final class TrackPicker {
     if (!context.mounted) return;
 
     final backend = manager.backend;
-    final delayLimits = delayLimitsFor(backend, audio: audio);
+    final delayLimits = secondary
+        ? (
+            -PlaybackManager.secondarySubtitleMaxDelaySeconds,
+            PlaybackManager.secondarySubtitleMaxDelaySeconds,
+          )
+        : delayLimitsFor(backend, audio: audio);
+    final delay = secondary
+        ? manager.secondarySubtitleDelaySeconds
+        : audio
+        ? audioDelay
+        : backend is Media3PlayerBackend
+        ? backend.subtitleDelaySeconds
+        : subtitleDelay;
+    final delayLabel = audio ? l10n.audioDelay : l10n.subtitleDelay;
     String formatDelay(double seconds) => seconds == 0
         ? l10n.none
         : '${seconds >= 0 ? '+' : ''}${(seconds * 1000).round()} ms';
-    final Widget? footer;
+    if (delayLimits != null) {
+      options.add(
+        TrackOption(
+          label: delayLabel,
+          subtitle: formatDelay(delay),
+          icon: Icons.av_timer,
+        ),
+      );
+    }
+    Widget? footer;
     if (secondary) {
       final style = SubtitleStyle.forResolution(
         prefs,
@@ -118,13 +141,12 @@ abstract final class TrackPicker {
       footer = Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DelayFooter(
-            initialDelay: manager.secondarySubtitleDelaySeconds,
-            label: l10n.subtitleDelay,
-            minDelay: -PlaybackManager.secondarySubtitleMaxDelaySeconds,
-            maxDelay: PlaybackManager.secondarySubtitleMaxDelaySeconds,
-            onDelayChanged: (d) => manager.setSecondarySubtitleDelay(d),
-            formatDelay: formatDelay,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Container(
+              height: 1,
+              color: Colors.white.withValues(alpha: 0.08),
+            ),
           ),
           SecondarySubtitleAppearanceFooter(
             initialFontSize:
@@ -159,21 +181,6 @@ abstract final class TrackPicker {
           ),
         ],
       );
-    } else if (delayLimits == null) {
-      footer = null;
-    } else {
-      footer = DelayFooter(
-        initialDelay: audio
-            ? audioDelay
-            : backend is Media3PlayerBackend
-            ? backend.subtitleDelaySeconds
-            : subtitleDelay,
-        label: audio ? l10n.audioDelay : l10n.subtitleDelay,
-        minDelay: delayLimits.$1,
-        maxDelay: delayLimits.$2,
-        onDelayChanged: (d) => _applyDelay(manager, audio: audio, delay: d),
-        formatDelay: formatDelay,
-      );
     }
     final result = await _whileOpen(
       onDialogOpenChanged,
@@ -191,6 +198,26 @@ abstract final class TrackPicker {
       ),
     );
     if (result == null || !context.mounted) return;
+    if (delayLimits != null && result == options.length - 1) {
+      await _whileOpen(
+        onDialogOpenChanged,
+        () => _showDelayBar(
+          context,
+          useRootNavigator: useRootNavigator,
+          bar: DelayFooter(
+            initialDelay: delay,
+            label: delayLabel,
+            minDelay: delayLimits.$1,
+            maxDelay: delayLimits.$2,
+            onDelayChanged: (d) => secondary
+                ? unawaited(manager.setSecondarySubtitleDelay(d))
+                : _applyDelay(manager, audio: audio, delay: d),
+            formatDelay: formatDelay,
+          ),
+        ),
+      );
+      return;
+    }
     final streamIndex = choices.streamIndexFor(result);
     if (secondary) {
       if (streamIndex == null) return;
@@ -256,9 +283,9 @@ abstract final class TrackPicker {
     return true;
   }
 
-  static Future<int?> _whileOpen(
+  static Future<T?> _whileOpen<T>(
     ValueChanged<bool>? onOpenChanged,
-    Future<int?> Function() open,
+    Future<T?> Function() open,
   ) async {
     onOpenChanged?.call(true);
     try {
@@ -267,6 +294,28 @@ abstract final class TrackPicker {
       onOpenChanged?.call(false);
     }
   }
+
+  /// The delay on its own, in a slim bar at the bottom with nothing dimming
+  /// the picture, so the effect of each step can be seen while it's made.
+  static Future<void> _showDelayBar(
+    BuildContext context, {
+    required Widget bar,
+    required bool useRootNavigator,
+  }) => showFocusRestoringDialog<void>(
+    context: context,
+    useRootNavigator: useRootNavigator,
+    barrierColor: Colors.transparent,
+    builder: (_) => Dialog(
+      alignment: Alignment.bottomCenter,
+      insetPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+      backgroundColor: Colors.transparent,
+      child: playerDialogPanel(
+        constraints: const BoxConstraints(maxWidth: 480),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: bar,
+      ),
+    ),
+  );
 
   static void _applyDelay(
     PlaybackManager manager, {
