@@ -18,6 +18,7 @@ AggregatedItem folder(String id, String parent, {String? imageTag}) =>
 AggregatedItem book(
   String id,
   String parent, {
+  String extension = 'cbz',
   String type = 'Book',
   String? series,
   String? imageTag,
@@ -29,6 +30,7 @@ AggregatedItem book(
     'Name': id,
     'Type': type,
     'ParentId': parent,
+    'Path': '/media/$parent/$id.$extension',
     'SeriesName': ?series,
     if (imageTag != null) 'ImageTags': {'Primary': imageTag},
   },
@@ -41,9 +43,13 @@ void main() {
     folder('root', 'hidden'),
     folder('One Piece', 'root'),
     folder('Berserk', 'root', imageTag: 'berserk-cover'),
+    folder('Agatha Christie', 'root'),
+    folder('Isaac Asimov', 'root'),
+    folder('Green Lantern (1990)', 'root'),
+    folder('Green Lantern (2005)', 'root'),
   ];
 
-  test('a folder of volumes is one series that opens the folder', () {
+  test('a folder of comic volumes is one series that opens the folder', () {
     final entries = bookSeriesEntries(
       books: [
         book('op1', 'One Piece', imageTag: 'op1-cover'),
@@ -66,14 +72,22 @@ void main() {
     expect(entries.first.primaryImageTag, 'berserk-cover');
   });
 
-  test('books loose in a library root are never a series', () {
+  test('an author folder of ebooks is not a series', () {
     final entries = bookSeriesEntries(
       books: [
-        book('a', 'Books'),
-        book('b', 'Books'),
-        book('c', 'Books'),
+        book('Crooked House', 'Agatha Christie', extension: 'epub'),
+        book('Endless Night', 'Agatha Christie', extension: 'epub'),
       ],
-      folders: [folder('Books', 'hidden'), folder('Audiobooks', 'hidden')],
+      folders: folders,
+    );
+
+    expect(entries, isEmpty);
+  });
+
+  test('books loose in a library root are never a series', () {
+    final entries = bookSeriesEntries(
+      books: [book('a', 'Comics'), book('b', 'Comics'), book('c', 'Comics')],
+      folders: [folder('Comics', 'hidden'), folder('Books', 'hidden')],
     );
 
     expect(entries, isEmpty);
@@ -82,8 +96,8 @@ void main() {
   test('an audiobook split into chapter files is not a series', () {
     final entries = bookSeriesEntries(
       books: [
-        book('ch1', 'One Piece', type: 'AudioBook'),
-        book('ch2', 'One Piece', type: 'AudioBook'),
+        book('ch1', 'One Piece', extension: 'mp3', type: 'AudioBook'),
+        book('ch2', 'One Piece', extension: 'mp3', type: 'AudioBook'),
       ],
       folders: folders,
     );
@@ -91,11 +105,21 @@ void main() {
     expect(entries, isEmpty);
   });
 
-  test('a named series outside one folder still groups by name', () {
+  test('a named ebook series in an author folder groups by name', () {
     final entries = bookSeriesEntries(
       books: [
-        book('Foundation', 'root', series: 'Foundation'),
-        book('Foundation and Empire', 'root', series: 'Foundation'),
+        book(
+          'Foundation',
+          'Isaac Asimov',
+          extension: 'epub',
+          series: 'Foundation',
+        ),
+        book(
+          'Foundation and Empire',
+          'Isaac Asimov',
+          extension: 'epub',
+          series: 'Foundation',
+        ),
       ],
       folders: folders,
     );
@@ -116,5 +140,22 @@ void main() {
 
     expect(entries.single.id, 'One Piece');
     expect(entries.single.rawData['IsFolder'], isTrue);
+  });
+
+  test('a named series split over volume folders shows only the folders', () {
+    final entries = bookSeriesEntries(
+      books: [
+        book('gl1', 'Green Lantern (1990)', series: 'Green Lantern'),
+        book('gl2', 'Green Lantern (1990)', series: 'Green Lantern'),
+        book('gl3', 'Green Lantern (2005)', series: 'Green Lantern'),
+        book('gl4', 'Green Lantern (2005)', series: 'Green Lantern'),
+      ],
+      folders: folders,
+    );
+
+    expect(entries.map((e) => e.id), [
+      'Green Lantern (1990)',
+      'Green Lantern (2005)',
+    ]);
   });
 }

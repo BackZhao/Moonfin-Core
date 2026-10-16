@@ -690,7 +690,7 @@ class BookBrowseViewModel extends ChangeNotifier {
         limit: _seriesSourceLimit,
         sortBy: 'SortName',
         sortOrder: 'Ascending',
-        fields: 'SeriesName,ParentId',
+        fields: 'SeriesName,ParentId,Path',
         enableImageTypes: 'Primary',
         imageTypeLimit: 1,
         enableTotalRecordCount: false,
@@ -704,7 +704,7 @@ class BookBrowseViewModel extends ChangeNotifier {
           limit: _seriesSourceLimit,
           sortBy: 'SortName',
           sortOrder: 'Ascending',
-          fields: 'SeriesName,ParentId',
+          fields: 'SeriesName,ParentId,Path',
           enableImageTypes: 'Primary',
           imageTypeLimit: 1,
           enableTotalRecordCount: false,
@@ -873,11 +873,12 @@ class BookBrowseViewModel extends ChangeNotifier {
 
 /// The series in a book library, one `BookSeries` entry each.
 ///
-/// A folder two or more books sit in directly is a series, unless it's one of
+/// A folder two or more comics sit in directly is a series, unless it's one of
 /// the library's roots, the only folders whose parent isn't another folder of
-/// the library. Audiobooks don't count toward it, so a book split into
-/// chapter files isn't taken for one. Books sharing a SeriesName are a series
-/// too, unless they all sit in one series folder already.
+/// the library. Ebooks don't count toward it, since they're filed in author
+/// folders, and neither do audiobooks split into chapter files. Books sharing
+/// a SeriesName are a series too, unless every one of them already sits in a
+/// series folder.
 @visibleForTesting
 List<AggregatedItem> bookSeriesEntries({
   required List<AggregatedItem> books,
@@ -892,7 +893,7 @@ List<AggregatedItem> bookSeriesEntries({
   final byName = <String, List<AggregatedItem>>{};
   for (final book in books) {
     final parent = book.parentId;
-    if (book.type == 'Book' && seriesFolders.containsKey(parent)) {
+    if (book.isComic && seriesFolders.containsKey(parent)) {
       byFolder.putIfAbsent(parent!, () => []).add(book);
     }
     final name = book.seriesName?.trim();
@@ -902,17 +903,12 @@ List<AggregatedItem> bookSeriesEntries({
   }
   byFolder.removeWhere((_, members) => members.length < 2);
 
-  bool inOneSeriesFolder(List<AggregatedItem> members) {
-    final parent = members.first.parentId;
-    return byFolder.containsKey(parent) &&
-        members.every((m) => m.parentId == parent);
-  }
-
   return [
     for (final MapEntry(key: id, value: members) in byFolder.entries)
       _seriesEntry(id, seriesFolders[id]!.name, members, seriesFolders[id]),
     for (final MapEntry(key: name, value: members) in byName.entries)
-      if (members.length >= 2 && !inOneSeriesFolder(members))
+      if (members.length >= 2 &&
+          !members.every((m) => byFolder.containsKey(m.parentId)))
         _seriesEntry('bookSeries:$name', name, members, null),
   ]..sort((a, b) => a.name.compareTo(b.name));
 }
