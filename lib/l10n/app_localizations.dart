@@ -8680,6 +8680,18 @@ abstract class AppLocalizations {
   /// **'Customize padding between home rows'**
   String get homeRowsPaddingDescription;
 
+  /// Home Rows editor: heading of the group of disabled genre and studio rows
+  ///
+  /// In en, this message translates to:
+  /// **'Genres and Studios'**
+  String get homeRowsGenresAndStudios;
+
+  /// Home Rows editor: heading of the group of disabled rows from IMDb, TMDB, Letterboxd and MDBList lists
+  ///
+  /// In en, this message translates to:
+  /// **'External Lists'**
+  String get homeRowsExternalLists;
+
   /// Section title for per-row settings
   ///
   /// In en, this message translates to:

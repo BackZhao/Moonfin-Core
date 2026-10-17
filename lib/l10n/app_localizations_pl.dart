@@ -5087,6 +5087,12 @@ class AppLocalizationsPl extends AppLocalizations {
       'Dostosuj odstępy między sekcjami ekranu głównego';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Ustawienia sekcji';
 
   @override

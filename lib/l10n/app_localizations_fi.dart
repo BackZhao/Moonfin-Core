@@ -4919,6 +4919,12 @@ class AppLocalizationsFi extends AppLocalizations {
       'Mukauta etusivu rivien täytön välistä etäisyyttä';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Rivikohtaiset asetukset';
 
   @override

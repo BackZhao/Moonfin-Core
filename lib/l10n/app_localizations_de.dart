@@ -4991,6 +4991,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Passen Sie den Abstand zwischen den Zeilen auf der Startseite an.';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Einstellungen pro Reihe';
 
   @override

@@ -4902,6 +4902,12 @@ class AppLocalizationsTr extends AppLocalizations {
       'Ana sayfa satırları arasındaki boşluğu özelleştir';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Satır Başına Ayarlar';
 
   @override

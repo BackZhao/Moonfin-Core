@@ -4917,6 +4917,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Personalizar el espaciado entre filas de inicio';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Ajustes por fila';
 
   @override

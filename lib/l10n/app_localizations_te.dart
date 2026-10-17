@@ -4911,6 +4911,12 @@ class AppLocalizationsTe extends AppLocalizations {
       'Customize padding between home rows';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'ప్రతి-వరుస సెట్టింగ్‌లు';
 
   @override

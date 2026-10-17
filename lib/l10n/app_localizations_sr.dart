@@ -4951,6 +4951,12 @@ class AppLocalizationsSr extends AppLocalizations {
       'Прилагодите размак између редова на почетној страници';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Подешавања за сваки ред';
 
   @override

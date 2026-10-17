@@ -4950,6 +4950,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Personalizează spațierea dintre rândurile din ecranul principal';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Setări pe rând';
 
   @override

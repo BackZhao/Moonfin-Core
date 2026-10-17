@@ -4911,6 +4911,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vulling tussen thuisrijen aanpassen';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Instellingen per rij';
 
   @override

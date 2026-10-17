@@ -4947,6 +4947,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Personnaliser l\'espacement entre les rangées d\'accueil';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Paramètres par rangée';
 
   @override

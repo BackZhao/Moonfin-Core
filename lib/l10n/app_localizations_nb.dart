@@ -4890,6 +4890,12 @@ class AppLocalizationsNb extends AppLocalizations {
       'Tilpass den vertikale avstanden mellom radene på startsiden';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Innstillinger per rad';
 
   @override

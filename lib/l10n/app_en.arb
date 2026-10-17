@@ -6441,6 +6441,14 @@
   "@homeRowsPaddingDescription": {
     "description": "Description for home rows padding setting"
   },
+  "homeRowsGenresAndStudios": "Genres and Studios",
+  "@homeRowsGenresAndStudios": {
+    "description": "Home Rows editor: heading of the group of disabled genre and studio rows"
+  },
+  "homeRowsExternalLists": "External Lists",
+  "@homeRowsExternalLists": {
+    "description": "Home Rows editor: heading of the group of disabled rows from IMDb, TMDB, Letterboxd and MDBList lists"
+  },
   "perRowSettings": "Per-Row Settings",
   "@perRowSettings": {
     "description": "Section title for per-row settings"

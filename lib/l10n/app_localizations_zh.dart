@@ -4759,6 +4759,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeRowsPaddingDescription => '自定义首页各行之间的内边距';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => '每行设置';
 
   @override

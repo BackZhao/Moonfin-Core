@@ -4916,6 +4916,12 @@ class AppLocalizationsIt extends AppLocalizations {
       'Personalizza il margine interno tra le righe della Home';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Impostazioni per Riga';
 
   @override

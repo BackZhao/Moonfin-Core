@@ -4950,6 +4950,12 @@ class AppLocalizationsCa extends AppLocalizations {
       'Personalitza la separació entre les fileres d\'inici';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'Configuració per fila';
 
   @override

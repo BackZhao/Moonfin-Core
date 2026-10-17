@@ -4903,6 +4903,12 @@ class AppLocalizationsAr extends AppLocalizations {
       'Customize padding between home rows';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => 'إعدادات كل صف';
 
   @override

@@ -4804,6 +4804,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homeRowsPaddingDescription => '홈 행 사이의 여백을 사용자 지정합니다';
 
   @override
+  String get homeRowsGenresAndStudios => 'Genres and Studios';
+
+  @override
+  String get homeRowsExternalLists => 'External Lists';
+
+  @override
   String get perRowSettings => '행별 설정';
 
   @override
