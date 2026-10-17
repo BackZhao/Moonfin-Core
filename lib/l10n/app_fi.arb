@@ -3217,15 +3217,15 @@
     "@semiTransparentBlack": {
         "description": "Color: semi-transparent black"
     },
-    "global": "Maailmanlaajuinen",
+    "global": "Globaali",
     "@global": {
         "description": "Profile: global"
     },
-    "desktop": "Työpöytä",
+    "desktop": "Työpöytäversio",
     "@desktop": {
         "description": "Profile: desktop"
     },
-    "mobile": "mobiili",
+    "mobile": "Mobiiliversio",
     "@mobile": {
         "description": "Profile: mobile"
     },
@@ -14092,5 +14092,338 @@
     "adminMetadataFieldAspectRatio": "Alkuperäinen kuvasuhde",
     "adminMetadataFieldAirsBeforeSeason": "Esitetään ennen kauden alkua",
     "adminMetadataFieldAirsAfterSeason": "Esitetään kauden jälkeen",
-    "adminMetadataFieldAirsBeforeEpisode": "Esitetään ennen jaksoa"
+    "adminMetadataFieldAirsBeforeEpisode": "Esitetään ennen jaksoa",
+    "adminMetadataNamesHelp": "Erota useat nimet toisistaan puolipisteellä.",
+    "adminMetadataSectionRatings": "Arvostelut",
+    "adminMetadataItemLocked": "Tämän kohteen metatiedot on lukittu. Avaa lukitus ennen kuin tunnistat kohteen.",
+    "adminMetadataNameOrIdRequired": "Kirjoita nimi tai ulkoinen tunniste.",
+    "adminLibMetadataReaders": "Metatietojen lukijat",
+    "adminLibSimilarProvidersFor": "Vastaavien kohteiden tarjoajat: {type}",
+    "@adminLibSimilarProvidersFor": {
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLibMediaSegmentProviders": "Mediasegmentin palveluntarjoajat",
+    "adminLibEnableLibrary": "Ota kirjasto käyttöön",
+    "adminLibEnableLibraryHelp": "Kirjaston käytöstä poistaminen piilottaa sen kaikista käyttäjän näkymistä.",
+    "adminLibSaveLyricsWithMedia": "Tallenna sanoitukset mediakansioihin",
+    "adminLibUseCustomTagDelimiters": "Käytä mukautettua tunnisteen erottinta",
+    "adminLibCustomTagDelimiters": "Mukautettu tunnisteen erotinmerkki",
+    "adminLibCustomTagDelimitersHelp": "Merkit, joita käsitellään tunnisteita erottavina erottimina.",
+    "adminLibDelimiterWhitelist": "Erotusmerkkien sallittujen luettelo",
+    "adminLibDelimiterWhitelistHelp": "Kohteet, joita ei oteta huomioon tunnisteiden jakamisessa; yksi kohde riviä kohden.",
+    "adminLibDownloadLanguages": "Lataa kieliversiot",
+    "adminLibraryFolderRequired": "Lisää tähän kirjastoon vähintään yksi kansio.",
+    "adminRenameLibraryWarning": "Kirjaston nimen muuttaminen johtaa sen kaikkien metatietojen menettämiseen. Toimi varovasti.",
+    "adminDeleteLibraryConfirm": "Poistetaanko kirjasto ”{name}”? Levyllä olevia tiedostoja ei poisteta.",
+    "@adminDeleteLibraryConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminDeleteLibraryLocations": "Nämä mediatiedostot poistetaan kirjastosta:",
+    "adminRefreshMode": "Päivitä-tila",
+    "adminRefreshModeScan": "Etsi uusia ja päivitettyjä tiedostoja",
+    "adminRefreshModeMissing": "Etsi puuttuvia metatietoja",
+    "adminReplaceTrickplayImages": "Korvaa nykyiset trickplay-kuvat",
+    "adminRefreshDialogHelp": "Metatiedot päivitetään hallintapaneelissa määritettyjen asetusten ja käytössä olevien verkkopalvelujen perusteella.",
+    "adminActivityCount": "{shown} ... {total}",
+    "@adminActivityCount": {
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLiveTvTabSources": "Viritimet ja opas",
+    "adminLiveTvTabRecordings": "Tallennukset",
+    "adminLiveTvAddTuner": "Lisää viritinlaite",
+    "adminLiveTvEditTuner": "Muokkaa virityslaitetta",
+    "adminLiveTvTunerType": "Viritintyyppi",
+    "adminLiveTvDetectDevices": "Tunnista laitteeni",
+    "adminLiveTvNoNewDevices": "Uusia laitteita ei löytynyt",
+    "adminLiveTvDrmNote": "DRM-suojattuja kanavia ei tuoda.",
+    "adminLiveTvTunerSaved": "Viritin tallennettu",
+    "adminLiveTvDeleteTuner": "Poista viritinlaite",
+    "adminLiveTvDeleteTunerConfirm": "Haluatko varmasti poistaa tämän virittimen?",
+    "adminLiveTvDeleteProvider": "Poista opaspalveluntarjoaja",
+    "adminLiveTvDeleteProviderConfirm": "Haluatko varmasti poistaa tämän opaspalveluntarjoajan?",
+    "adminLiveTvProviderSaved": "Opaspalvelun tarjoaja tallennettu",
+    "adminLiveTvAddProvider": "Lisää palveluntarjoaja",
+    "adminLiveTvRefreshGuide": "Päivitä oppaan tiedot",
+    "adminLiveTvMapChannels": "Karttakanavat",
+    "adminLiveTvNoTunerChannels": "Ei löytyneitä kanavia",
+    "adminLiveTvXmltvPathHelp": "XMLTV-tiedoston polku tai URL-osoite. Palvelin lukee tiedoston ja tarkistaa, onko siihen tullut päivityksiä. Tiedoston luominen ja päivittäminen on käyttäjän vastuulla.",
+    "adminLiveTvSdCreateAccount": "Luo tili osoitteessa {url}",
+    "@adminLiveTvSdCreateAccount": {
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLiveTvSdSignIn": "Kirjaudu sisään",
+    "adminLiveTvSdLineup": "Kokoonpano",
+    "adminLiveTvSdSelectLineup": "Valitse ohjelmatarjonta. Jos luettelossa ei ole yhtään vaihtoehtoa, tarkista käyttäjätunnuksesi, salasanasi ja postinumerosi.",
+    "adminLiveTvGuideDays": "Ladattavien opastietojen päivien lukumäärä",
+    "adminLiveTvGuideDaysHelp": "Mitä enemmän päiviä valitset, sitä pidemmälle eteenpäin voit suunnitella aikataulusi ja nähdä enemmän ohjelmaluetteloita, mutta lataaminen kestää kauemmin. Automaattinen valinta määrittää arvon kanavien lukumäärän perusteella.",
+    "adminLiveTvRecordingPath": "Oletus tallennuspolku",
+    "adminLiveTvRecordingPathHelp": "Tallenteiden tallennuspaikka. Jos kenttä on tyhjä, käytetään palvelimen ohjelmatietokansiota.",
+    "adminLiveTvStartWhenPossible": "Aloita heti, kun se on mahdollista",
+    "adminLiveTvStopWhenPossible": "Pysähdy, kun se on mahdollista",
+    "adminLiveTvMinutesBefore": "muutama minuutti ennen",
+    "adminLiveTvMinutesAfter": "muutaman minuutin kuluttua",
+    "adminLiveTvSectionGuide": "Opas tiedot",
+    "adminLiveTvSectionDefaultRecording": "Oletustallennusasetukset",
+    "adminLiveTvSectionMetadata": "Metatietojen tallentaminen",
+    "adminUserLastActivity": "Viimeisin toiminta {time}",
+    "@adminUserLastActivity": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "adminCurrentPassword": "Nykyinen salasana",
+    "adminChannelAccess": "Kanavan käyttöoikeus",
+    "adminDeviceAccess": "Laitteiden käyttöoikeudet",
+    "adminDeleteFromAllLibraries": "Kaikki kirjastot",
+    "adminUserDisabledBanner": "Tämä käyttäjä on poistettu käytöstä. Poista ”Poistettu käytöstä” -valinta Oikeudet-kohdasta, jotta käyttäjä voi kirjautua sisään uudelleen.",
+    "adminNewPasswordEmpty": "Uusi salasana ei saa olla tyhjä",
+    "adminScheduleStartBeforeEnd": "Aloitusaika on oltava ennen päättymisaikaa",
+    "adminDashboardAlerts": "Hälytykset",
+    "adminSessionGoHome": "Siirry aloitusnäyttöön",
+    "adminPlayMethodRemux": "Uudelleenpakkaus",
+    "adminPlayMethodDirectStream": "Suora streamaus",
+    "adminPlayMethodDirectPlay": "Suora toisto",
+    "adminLogLevelTrace": "Jälki",
+    "adminLogLevelDebug": "Virheenkorjaus",
+    "adminLogLevelInformation": "Tiedot",
+    "adminLogLevelWarning": "Varoitus",
+    "adminLogLevelError": "Virhe",
+    "adminLogLevelCritical": "Kriittinen",
+    "adminLogLevelNone": "Ei mitään",
+    "adminActivityAllUsers": "Kaikki käyttäjät",
+    "adminTaskLastRan": "Viimeisin ajo {time}, kesto {duration}.",
+    "@adminTaskLastRan": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            },
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskResultFailed": "Epäonnistui",
+    "adminTaskResultCancelled": "Peruutettu",
+    "adminTaskResultAborted": "Keskeytetty palvelimen sammutuksen vuoksi",
+    "adminDurationSecondsShort": "{seconds}s",
+    "@adminDurationSecondsShort": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "adminDeleteTaskTrigger": "Poista tehtävän laukaisija",
+    "adminDeleteTaskTriggerConfirm": "Haluatko varmasti poistaa tämän tehtävän laukaisijan?",
+    "adminTaskTriggerEveryMinutes": "Joka {minutes} minuuttia",
+    "@adminTaskTriggerEveryMinutes": {
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskTriggerEveryHours": "Joka {hours} tunti",
+    "@adminTaskTriggerEveryHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskMinutesValue": "{minutes} minuuttia",
+    "@adminTaskMinutesValue": {
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskHoursValue": "{hours} tuntia",
+    "@adminTaskHoursValue": {
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTimeLimitHours": "Aikaraja (tuntia)",
+    "adminTranscodingDecodingFor": "Ota laitteistopohjainen dekoodaus käyttöön seuraaville",
+    "adminTranscodingThreadCountHelp": "Transkoodauksen enimmäissäikeiden määrä. Pienempi säikeiden määrä vähentää prosessorin kuormitusta, mutta voi hidastaa toistoa niin, ettei se suju jouhevasti.",
+    "adminTranscodingThreadMax": "Max",
+    "adminTranscodingFfmpegPath": "FFmpeg-polku",
+    "adminTranscodingFfmpegPathHelp": "FFmpeg, jota palvelin käyttää. Se määritetään palvelimella, ei täällä.",
+    "adminTranscodingAudioSeek": "Äänen hakustrategia",
+    "adminTranscodingAudioSeekHelp": "Miten palvelin käsittelee ääntä, kun siirryt HLS-virrassa eteenpäin tai taaksepäin.",
+    "adminTranscodingTrimCopiedAudio": "Leikkaa kopioitu äänitiedosto",
+    "adminTranscodingTranscodeAudio": "Äänen transkoodaus",
+    "adminResumeMinAudiobookMinutes": "Äänikirjan jatkamisen vähimmäiskesto (minuuttia)",
+    "adminResumeMinAudiobookHelp": "Ennen tätä ajankohtaa keskeytetyt äänikirjat lasketaan kuuntelemattomiksi.",
+    "adminResumeAudiobookRemaining": "Äänikirjan jäljellä olevat minuutit jatkamista varten",
+    "adminResumeAudiobookRemainingHelp": "Äänikirjat, joiden kuuntelu keskeytetään, kun jäljellä on vähemmän kuin tämä määrä minuutteja, lasketaan kuunnelluiksi.",
+    "adminBrandingSplashSection": "Alkukuva",
+    "adminBrandingSectionWebClient": "Verkkosovellus",
+    "adminBrandingSplashSizeHint": "Mukautettujen kuvien kuvasuhteen tulee olla 16x9 ja vähimmäiskoko 1920x1080.",
+    "adminNetworkingSectionServerAddress": "Palvelimen osoiteasetukset",
+    "adminNetworkingSectionHttps": "HTTPS-asetukset",
+    "adminNetworkingSectionRemoteAccess": "Etäkäyttöasetukset",
+    "adminNetworkingSectionIpProtocols": "IP-protokollat",
+    "adminNetworkingSectionDiscovery": "Verkon tunnistus",
+    "adminNetworkingSectionFirewall": "Palomuurin ja välityspalvelimen asetukset",
+    "adminNetworkingLocalHttpPort": "Paikallinen HTTP-portin numero",
+    "adminNetworkingLocalHttpPortHelp": "HTTP-palvelimen TCP-portin numero.",
+    "adminNetworkingEnableHttpsHelp": "Kuuntele HTTPS-porttia. Jotta tämä tulisi voimaan, on myös määritettävä kelvollinen varmenne.",
+    "adminNetworkingLocalHttpsPort": "Paikallinen HTTPS-portin numero",
+    "adminNetworkingLocalHttpsPortHelp": "HTTPS-palvelimen TCP-portin numero.",
+    "adminNetworkingBaseUrlHelp": "Lisää alihakemiston palvelimen URL-osoitteeseen, esimerkiksi https://example.com/jellyfin.",
+    "adminNetworkingBindAddress": "Liitä paikalliseen verkko-osoitteeseen",
+    "adminNetworkingBindAddressHelp": "Korvaa HTTP-palvelimen paikallisen IP-osoitteen. Jätä kenttä tyhjäksi, jos haluat, että palvelin sitoutuu kaikkiin osoitteisiin. Muutoksen voimaantulo edellyttää uudelleenkäynnistystä.",
+    "adminNetworkingLanNetworksHelp": "IP-osoitteet tai IP- ja verkkonaamio-merkinnät verkoista, joita käsitellään paikallisina kaistanleveyden ja etäkäytön rajoitusten osalta. Jätä kenttä tyhjäksi, jos haluat, että kaikkia RFC1918-osoitteita käsitellään paikallisina.",
+    "adminNetworkingKnownProxiesHelp": "Tämän palvelimen edessä olevien välityspalvelimien IP-osoitteet tai isäntänimet. Tarvitaan X-Forwarded-For-otsikoiden lukemiseen. Muutoksen jälkeen palvelin on käynnistettävä uudelleen.",
+    "adminNetworkingCustomCertPath": "Mukautetun SSL-varmenteen polku",
+    "adminNetworkingCertPathHelp": "Polku PKCS #12 -tiedostoon, joka sisältää varmenteen ja yksityisen avaimen, TLS:ää varten mukautetulla verkkotunnuksella.",
+    "adminNetworkingCertPasswordHelp": "Syötä salasana, jos varmenteesi sitä vaatii.",
+    "adminNetworkingAllowRemote": "Salli etäyhteydet tähän palvelimeen",
+    "adminNetworkingAllowRemoteHelp": "Kun toiminto on pois päältä, kaikki etäyhteydet estetään.",
+    "adminNetworkingRemoteIpFilterHelp": "Etäverkkojen IP-osoitteet tai IP-osoite/verkon peite -merkinnät. Jätä kenttä tyhjäksi, jos haluat sallia kaikki etäosoitteet.",
+    "adminNetworkingRemoteIpFilterMode": "Etä-IP-osoitteen suodatustila",
+    "adminNetworkingPublicHttpPortHelp": "Julkinen portti on liitetty paikalliseen HTTP-porttiin.",
+    "adminNetworkingPublicHttpsPortHelp": "Julkinen portti on liitetty paikalliseen HTTPS-porttiin.",
+    "adminNetworkingAutoDiscoveryLabel": "Ota automaattinen tunnistus käyttöön",
+    "adminNetworkingAutoDiscoveryHelp": "Sovellukset löytävät tämän palvelimen UDP-portista 7359.",
+    "adminNetworkingSamePublishedUri": "Käytä samaa julkaistua palvelimen URI-osoitetta sekä sisäisessä että ulkoisessa käytössä",
+    "adminNetworkingPublishedUri": "Julkaistu palvelimen URI",
+    "adminNetworkingPublishedUriHelp": "Korvaa palvelimen antaman URI-osoitteen käyttöliittymän tai asiakkaan IP-osoitteen perusteella.",
+    "adminNetworkingInternalUri": "Sisäinen URI",
+    "adminNetworkingInternalUriHelp": "Julkaistu palvelimen URI sisäistä käyttöä varten.",
+    "adminNetworkingExternalUri": "Ulkoinen URI",
+    "adminNetworkingExternalUriHelp": "Julkaistu palvelimen URI ulkoista käyttöä varten.",
+    "adminNetworkingOtherPublishedUris": "Muut julkaistut URI:t",
+    "adminNetworkingOtherPublishedUrisHelp": "Yhden aliverkon tai rajapinnan URI-tunnisteet, jotka kirjoitetaan muodossa subnet=URI.",
+    "adminBackupsHelp": "Luo ja palauta palvelimesi tilannekuvia. Niihin voi sisältyä tietokanta, metatiedot, tekstitykset ja trickplay-kuvat.",
+    "adminBackupDisclaimer": "Kirjastosi koosta riippuen varmuuskopiointi voi kestää jonkin aikaa.",
+    "adminBackupTasksWarningTitle": "Aikataulun mukaiset tehtävät ovat käynnissä",
+    "adminBackupTasksWarning": "Keskeytä nämä tehtävät tai odota, että ne päättyvät, ennen kuin luot varmuuskopion.",
+    "adminBackupArchiveNotFound": "Palvelin ei löytänyt tätä varmuuskopioarkistoa",
+    "adminRestoreInProgress": "Palautus on käynnissä",
+    "adminRestoreWaitingForServer": "Odotetaan, että palvelin palaa käyttöön.",
+    "adminRestoreSucceeded": "Palautus on valmis",
+    "adminLogWatch": "Katso",
+    "adminLogStopWatching": "Lopeta katsominen",
+    "adminPluginInstallConfirmTitle": "Vahvista laajennuksen asennus",
+    "adminPluginInstallDisclaimer": "Kolmannen osapuolen laajennuksen asentamiseen liittyy riskejä. Se voi sisältää epävakaata tai haitallista koodia, ja se voi muuttua milloin tahansa. Asenna vain sellaisten tekijöiden laajennuksia, joihin luotat, ja selvitä etukäteen, mitä ne voivat tehdä – esimerkiksi tehdä kyselyjä ulkoisiin palveluihin, hidastaa kirjastojen tarkistuksia tai lisätä taustatoimintoja.",
+    "adminGroupOverview": "Yleiskatsaus",
+    "adminGroupLibrary": "Kirjasto",
+    "adminGroupPlayback": "Toisto",
+    "adminGroupPeople": "Ihmiset",
+    "adminGroupSystem": "Järjestelmä",
+    "adminAreasLabel": "Hallinta-alueet",
+    "adminPagesLabel": "Sivut",
+    "adminPageDescDashboard": "Palvelimen tila, istunnot ja viimeaikainen toiminta",
+    "adminPageDescAnalytics": "Kirjastojen koot, koodekit ja tiedostomuodot",
+    "adminPageDescActivity": "Kaikki, mitä palvelimella tapahtui",
+    "adminPageDescTasks": "Skannaukset, puhdistukset ja niiden laukaisijat",
+    "adminPageDescLibraries": "Kansiot, skannerit ja metatietojen hakutyökalut",
+    "adminPageDescDisplay": "Miten kirjastot esittäytyvät käyttäjille",
+    "adminPageDescMetadata": "Oletuskieli, maa ja kuvat",
+    "adminPageDescNfo": "Kodi NFO-tiedostojen lukeminen ja tallentaminen",
+    "adminPageDescLiveTv": "Viritimet, ohjelmatiedot ja tallenteet",
+    "adminPageDescTranscoding": "Laitteistokiihdytys, kooderit, sävykartoitus",
+    "adminPageDescResume": "Milloin kohteet katsotaan aloitetuiksi tai pelatuiksi",
+    "adminPageDescStreaming": "Etäyhteyden bittinopeuden rajoitus",
+    "adminPageDescTrickplay": "Hae esikatselupikkukuvia",
+    "adminPageDescUsers": "Tilit, käyttöoikeudet ja vanhempien valvonta",
+    "adminPageDescDevices": "Kirjautuneet laitteet ja niiden nimet",
+    "adminPageDescApiKeys": "Sovellusten ja skriptien avaimet",
+    "adminPageDescSettings": "Palvelimen nimi, kieli, polut, suorituskyky",
+    "adminPageDescBranding": "Kirjautumisviesti, mukautettu CSS, aloitusnäyttö",
+    "adminPageDescNetworking": "Portit, HTTPS, lähiverkko ja etäkäyttö",
+    "adminPageDescPlugins": "Asennetut laajennukset ja luettelo",
+    "adminPageDescRepositories": "Mistä laajennukset ovat peräisin",
+    "adminPageDescBackups": "Palvelimen varmuuskopioiden luominen ja palauttaminen",
+    "adminPageDescLogs": "Palvelimen lokitiedostot",
+    "adminSearchSettingsHint": "Hae {count} asetusta",
+    "@adminSearchSettingsHint": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminSearchNoResults": "Asetuksia ei löytynyt",
+    "adminSearchClear": "Tyhjennä haku",
+    "adminUnsavedChanges": "Tallentamattomat muutokset",
+    "adminDiscard": "Hylkää",
+    "adminLeaveTitle": "Hylätäänkö tallentamattomat muutokset?",
+    "adminLeaveMessage": "Tämän sivun muutoksia ei ole vielä tallennettu.",
+    "adminKeepEditing": "Jatka muokkaamista",
+    "librarySortPlaylistOrder": "Soittolistan järjestys",
+    "@librarySortPlaylistOrder": {
+        "description": "Sort option: the playlist's own track order"
+    },
+    "librarySortDateAdded": "Lisäyspäivä",
+    "@librarySortDateAdded": {
+        "description": "Sort option: when an item was added to the server library"
+    },
+    "librarySortDateEpisodeAdded": "Jakson lisäyspäivämäärä",
+    "@librarySortDateEpisodeAdded": {
+        "description": "Sort option for series: when the newest episode was added"
+    },
+    "librarySortParentalRating": "Ikäraja luokitus",
+    "@librarySortParentalRating": {
+        "description": "Sort option: by parental (age) rating such as PG-13"
+    },
+    "librarySortMyRating": "Arvosteluni",
+    "@librarySortMyRating": {
+        "description": "Sort option: by the viewer's own like or dislike"
+    },
+    "librarySortAlbumArtist": "Albumin Artisti",
+    "@librarySortAlbumArtist": {
+        "description": "Sort option for music: by album artist"
+    },
+    "librarySortAlbum": "Albumi",
+    "@librarySortAlbum": {
+        "description": "Sort option for music: by album name"
+    },
+    "librarySortArtist": "Artisti",
+    "@librarySortArtist": {
+        "description": "Sort option for music: by track artist"
+    },
+    "librarySortTrackNumber": "Kappaleen numero",
+    "@librarySortTrackNumber": {
+        "description": "Sort option for music: by track number"
+    },
+    "librarySortGenre": "Genre",
+    "@librarySortGenre": {
+        "description": "Sort option: by genre"
+    },
+    "librarySortFoldersFirst": "Kansiot ensin",
+    "@librarySortFoldersFirst": {
+        "description": "Sort option for folder libraries: folders before files, then by name"
+    },
+    "librarySortLength": "Pituus",
+    "@librarySortLength": {
+        "description": "Sort option for music: by track or album length"
+    }
 }
