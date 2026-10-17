@@ -300,7 +300,7 @@ class _HomeShellState extends State<_HomeShell>
     final seerrAvailable = _pluginSyncService.seerrAvailable;
     if (seerrAvailable == _lastSeerrAvailable) return;
     _lastSeerrAvailable = seerrAvailable;
-    _viewModel.refresh(preserveExisting: true);
+    _viewModel.refresh(newSectionsOnly: true);
   }
 
   @override
@@ -318,7 +318,10 @@ class _HomeShellState extends State<_HomeShell>
 
   void _onHomeRefreshRequested() {
     if (!mounted) return;
-    _viewModel.refresh(newMediaBar: homeRefreshBus.consumeNewMediaBar());
+    _viewModel.refresh(
+      newMediaBar: homeRefreshBus.consumeNewMediaBar(),
+      newSectionsOnly: homeRefreshBus.consumeNewSectionsOnly(),
+    );
   }
 
   void _onServerReachabilityChanged() {
@@ -5924,8 +5927,29 @@ class _ContentRowsState extends State<_ContentRows>
 
   void _scheduleRowPrefetch() {
     if (!mounted || _isBackgrounded) return;
+    _loadSectionsNearViewport();
     _rowPrefetchDebounce?.cancel();
     _rowPrefetchDebounce = Timer(_rowPrefetchDelay, _runRowPrefetch);
+  }
+
+  /// Loads the deferred sections of the rows from a screen above the viewport
+  /// to two screens below it. Not debounced, so a held key or a fling keeps
+  /// loading ahead instead of waiting for the list to stop.
+  void _loadSectionsNearViewport() {
+    final viewModel = widget.viewModel;
+    if (!viewModel.hasDeferredSections || !_scrollController.hasClients) {
+      return;
+    }
+    final position = _scrollController.position;
+    final from = position.pixels - position.viewportDimension;
+    final to = position.pixels + 2 * position.viewportDimension;
+    final rows = viewModel.rows;
+    final tops = _rowTopOffsets;
+    final extents = _rowExtents;
+    viewModel.loadSectionsNear([
+      for (var i = 0; i < rows.length && i < tops.length; i++)
+        if (tops[i] < to && tops[i] + extents[i] > from) rows[i],
+    ]);
   }
 
   void _runRowPrefetch() {

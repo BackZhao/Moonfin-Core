@@ -3081,9 +3081,20 @@ class UserPreferences extends ChangeNotifier {
     values: RecentlyReleasedSeriesType.values,
   );
 
+  String? _parsedHomeSectionsJson;
+  List<HomeSectionConfig> _parsedHomeSections = const [];
+
   List<HomeSectionConfig> get homeSectionsConfig {
     final json = get(homeSectionsJson);
-    return HomeSectionConfig.fromJsonString(json);
+    // Home reads this for every row it lays out, so only parse it again when
+    // the saved layout changes.
+    if (json != _parsedHomeSectionsJson) {
+      _parsedHomeSections = List.unmodifiable(
+        HomeSectionConfig.fromJsonString(json),
+      );
+      _parsedHomeSectionsJson = json;
+    }
+    return _parsedHomeSections;
   }
 
   Future<void> setHomeSectionsConfig(List<HomeSectionConfig> configs) =>

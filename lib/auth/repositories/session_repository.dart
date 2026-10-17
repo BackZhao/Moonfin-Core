@@ -448,7 +448,7 @@ class SessionRepository {
       password: password,
     );
     if (seerrCameUp) {
-      homeRefreshBus.requestNowOrAfterNavigation();
+      homeRefreshBus.requestNowOrAfterNavigation(newSectionsOnly: true);
     }
   }
 
