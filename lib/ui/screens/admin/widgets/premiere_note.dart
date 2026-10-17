@@ -49,7 +49,7 @@ class PremiereNote extends ConsumerWidget {
             ),
           ),
           TextButton(
-            onPressed: () => context.go(Destinations.adminPremiere),
+            onPressed: () => context.push(Destinations.adminPremiere),
             child: Text(l10n.embyPremiereEnterKey),
           ),
         ],

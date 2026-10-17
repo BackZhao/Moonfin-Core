@@ -42,7 +42,7 @@ Future<bool> showPremiereRequiredDialog(
           adaptiveDialogAction(
             onPressed: () {
               Navigator.of(ctx).pop(false);
-              router.go(Destinations.adminPremiere);
+              router.push(Destinations.adminPremiere);
             },
             child: Text(l10n.embyPremiereEnterKey),
           ),

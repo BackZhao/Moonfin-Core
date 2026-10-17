@@ -71,21 +71,26 @@ class AdminShellScreen extends StatelessWidget {
       ),
     );
 
-    return AdminWebSocketHandler(
-      child: isWide
-          ? _WideShell(
-              backdrop: backdrop,
-              group: group,
-              page: page,
-              canGoBack: canGoBack,
-              child: pages,
-            )
-          : _NarrowShell(
-              backdrop: backdrop,
-              group: group,
-              canGoBack: canGoBack,
-              child: pages,
-            ),
+    // With nothing under the area, Android only hands Back to the app while a
+    // route claims it. Otherwise it closes the app.
+    return PopScope(
+      canPop: Navigator.of(context).canPop(),
+      child: AdminWebSocketHandler(
+        child: isWide
+            ? _WideShell(
+                backdrop: backdrop,
+                group: group,
+                page: page,
+                canGoBack: canGoBack,
+                child: pages,
+              )
+            : _NarrowShell(
+                backdrop: backdrop,
+                group: group,
+                canGoBack: canGoBack,
+                child: pages,
+              ),
+      ),
     );
   }
 
@@ -472,7 +477,13 @@ class AdminPageTile extends StatelessWidget {
           borderRadius: AppRadius.circular(9),
           child: InkWell(
             borderRadius: AppRadius.circular(9),
-            onTap: selected ? null : () => context.go(page.route),
+            // The phone's page list opens a page over itself, so the page
+            // gets a back arrow to it.
+            onTap: selected
+                ? null
+                : () => showChevron
+                    ? context.push(page.route)
+                    : context.go(page.route),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
               child: Row(

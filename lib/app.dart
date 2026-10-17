@@ -556,6 +556,8 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
       return true;
     }
 
+    if (_leaveAdminArea()) return true;
+
     if (!_exitDialogShowing) {
       _exitDialogShowing = true;
       unawaited(_showExitConfirmation());
@@ -563,6 +565,16 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
     }
 
     return false;
+  }
+
+  /// The admin area's group tabs replace the router's stack, so its top level
+  /// pages have nothing under them. Back there leaves the area for home
+  /// instead of offering to close the app.
+  bool _leaveAdminArea() {
+    final path = appRouter.routerDelegate.currentConfiguration.uri.path;
+    if (!path.startsWith(Destinations.admin)) return false;
+    appRouter.go(Destinations.home);
+    return true;
   }
 
   bool _handleMouseForwardNavigation() {
@@ -637,7 +649,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
       return true;
     }
     if (!appRouter.canPop()) {
-      if (!_exitDialogShowing) {
+      if (!_leaveAdminArea() && !_exitDialogShowing) {
         _exitDialogShowing = true;
         unawaited(_showExitConfirmation());
       }
@@ -791,6 +803,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
         if (PlatformDetection.isAndroid && key == LogicalKeyboardKey.goBack) {
           return true;
         }
+        if (_leaveAdminArea()) return true;
         _exitDialogShowing = true;
         unawaited(_showExitConfirmation());
       }

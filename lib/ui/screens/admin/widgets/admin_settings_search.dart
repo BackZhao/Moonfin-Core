@@ -114,7 +114,7 @@ class _AdminSettingsSearchState extends State<AdminSettingsSearch> {
     _focus.unfocus();
     AdminSettingAnchor.pending.value = entry.anchor;
     final here = GoRouterState.of(context).uri.path;
-    if (here != page.route) context.go(page.route);
+    if (here != page.route) context.push(page.route);
   }
 
   @override

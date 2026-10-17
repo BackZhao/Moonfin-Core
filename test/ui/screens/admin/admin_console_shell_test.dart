@@ -149,6 +149,22 @@ void main() {
     expect(find.text('settings page'), findsOneWidget);
   });
 
+  testWidgets('a page opened from the phone list has a way back to it', (
+    tester,
+  ) async {
+    setWindow(tester, const Size(390, 844));
+    await pumpShell(tester, Destinations.adminGroupPath('people'));
+    expect(find.byTooltip('Back'), findsNothing);
+
+    await tester.tap(find.text(l10n.adminDrawerUsers));
+    await tester.pumpAndSettle();
+    expect(find.text('users page'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.adminPageDescUsers), findsOneWidget);
+  });
+
   testWidgets('an edit brings up the bar and discard puts it back', (
     tester,
   ) async {

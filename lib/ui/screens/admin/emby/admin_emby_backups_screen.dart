@@ -259,7 +259,7 @@ class _AdminEmbyBackupsScreenState extends State<AdminEmbyBackupsScreen> {
                     Text(l10n.adminEmbyBackupsNoPlugin),
                     const SizedBox(height: 12),
                     FilledButton.tonal(
-                      onPressed: () => context.go(Destinations.adminPlugins),
+                      onPressed: () => context.push(Destinations.adminPlugins),
                       child: Text(l10n.adminDrawerPlugins),
                     ),
                   ],
