@@ -12953,6 +12953,20 @@ class AppLocalizationsKo extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => '사용할 수 있는 라이브러리가 없습니다.';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => '서버 관리';
 
   @override

@@ -13217,6 +13217,20 @@ class AppLocalizationsPa extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'ਕੋਈ ਲਾਇਬ੍ਰੇਰੀਆਂ ਉਪਲਬਧ ਨਹੀਂ ਹਨ।';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'ਸਰਵਰ ਪ੍ਰਸ਼ਾਸਨ';
 
   @override

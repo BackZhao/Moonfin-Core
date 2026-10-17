@@ -12008,6 +12008,17 @@
   "analyticsLibraryDetails": "Library Details",
   "analyticsLibraryBreakdown": "Library Breakdown",
   "analyticsNoLibrariesAvailable": "No libraries are available.",
+  "analyticsLibraryShare": "Share of items by library",
+  "analyticsTopRating": "Most common rating",
+  "analyticsTypicalRuntime": "Typical runtime",
+  "analyticsShareOfItems": "{percent}% of items",
+  "@analyticsShareOfItems": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
   "adminServerAdministrationTitle": "Server Administration",
   "adminServerPathData": "Data",
   "adminServerPathImageCache": "Image Cache",

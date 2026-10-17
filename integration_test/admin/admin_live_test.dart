@@ -30,7 +30,10 @@ import 'package:moonfin/data/services/socket_handler.dart';
 import 'package:moonfin/l10n/app_localizations.dart';
 import 'package:moonfin/ui/navigation/destinations.dart';
 import 'package:moonfin/ui/screens/admin/admin_draft.dart';
+import 'package:moonfin/ui/screens/admin/admin_analytics_items_screen.dart';
 import 'package:moonfin/ui/screens/admin/admin_routes.dart';
+import 'package:moonfin/ui/screens/admin/metadata/admin_metadata_edit_screen.dart';
+import 'package:moonfin/ui/screens/admin/providers/admin_media_analytics_provider.dart';
 import 'package:moonfin/ui/screens/admin/widgets/admin_settings_search.dart';
 import 'package:moonfin/ui/theme/app_theme.dart';
 import 'package:moonfin_design/moonfin_design.dart' show ThemeRegistry;
@@ -257,6 +260,12 @@ void main() {
   final pages = <String, String Function()>{
     'dashboard': () => Destinations.admin,
     'analytics': () => Destinations.adminAnalytics,
+    'analytics-items': () => AdminAnalyticsQuery(
+      libraryId: ids['library'],
+      dimension: AdminAnalyticsDimension.type,
+      values: const ['movies'],
+      title: 'Movies',
+    ).location,
     'activity': () => Destinations.adminActivity,
     'tasks': () => Destinations.adminTasks,
     'task-detail': () => Destinations.adminTask(ids['task']!),
@@ -325,6 +334,8 @@ void main() {
   // The phone layout: group tabs along the bottom, a page list per group.
   for (final key in [
     'dashboard',
+    'analytics',
+    'analytics-items',
     for (final g in ['overview', 'library', 'playback', 'people', 'system'])
       'group-$g',
     'settings',
@@ -346,6 +357,48 @@ void main() {
       AdminDraft.active.value = null;
     });
   }
+
+  // Categories open their items over the page and the items open the editor
+  // over that, each with a back arrow to the one before.
+  testWidgets('a tapped codec lists its items with a way back',
+      skip: skip != null, (tester) async {
+    currentPage = 'analytics:drill';
+    await pumpAdmin(tester, Destinations.adminAnalytics);
+    await settle(tester);
+    final codec = find.text('H.264').first;
+    await tester.ensureVisible(codec);
+    await tester.tap(codec);
+    await settle(tester);
+    expect(find.byType(AdminAnalyticsItemsScreen), findsOneWidget);
+    final back = find.byTooltip(
+      MaterialLocalizations.of(
+        tester.element(find.byType(AdminAnalyticsItemsScreen)),
+      ).backButtonTooltip,
+    );
+    expect(back, findsOneWidget);
+    await shot('desktop-analytics-drill');
+
+    await tester.tap(
+      find
+          .descendant(
+            of: find.byType(AdminAnalyticsItemsScreen),
+            matching: find.byIcon(Icons.chevron_right),
+          )
+          .first,
+    );
+    await settle(tester);
+    expect(find.byType(AdminMetadataEditScreen), findsOneWidget);
+    await tester.tap(back);
+    await settle(tester);
+    expect(find.byType(AdminAnalyticsItemsScreen), findsOneWidget);
+    await tester.tap(back);
+    await settle(tester);
+    expect(find.byType(AdminAnalyticsItemsScreen), findsNothing);
+    expect(back, findsNothing);
+    expect(tester.takeException(), isNull);
+    expectNoFailures(currentPage);
+    AdminDraft.active.value = null;
+  });
 
   // The dashboard subscribes to sessions and scheduled tasks, but the server
   // pushes only on events, so a capabilities report and a quick task stand in

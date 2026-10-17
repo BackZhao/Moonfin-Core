@@ -13369,6 +13369,20 @@ class AppLocalizationsMl extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'ലൈബ്രറികളൊന്നും ലഭ്യമല്ല.';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'സെർവർ അഡ്മിനിസ്ട്രേഷൻ';
 
   @override

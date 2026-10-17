@@ -12850,6 +12850,20 @@ class AppLocalizationsZh extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => '没有可用的媒体库。';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => '服务器管理';
 
   @override

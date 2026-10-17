@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../navigation/destinations.dart';
 import 'activity/admin_activity_screen.dart';
+import 'admin_analytics_items_screen.dart';
 import 'admin_content_analytics_screen.dart';
 import 'admin_dashboard_screen.dart';
 import 'admin_draft.dart';
@@ -32,6 +33,7 @@ import 'metadata/admin_metadata_edit_screen.dart';
 import 'plugins/admin_plugin_detail_screen.dart';
 import 'plugins/admin_plugins_screen.dart';
 import 'plugins/admin_repositories_screen.dart';
+import 'providers/admin_media_analytics_provider.dart';
 import 'settings/admin_branding_screen.dart';
 import 'settings/admin_general_settings_screen.dart';
 import 'settings/admin_networking_screen.dart';
@@ -75,6 +77,10 @@ final adminShellRoute = ShellRoute(
       (s) => AdminGroupIndexScreen(groupId: s.pathParameters['groupId']!),
     ),
     _page(Destinations.adminAnalytics, (_) => const AdminContentAnalyticsScreen()),
+    _page(
+      Destinations.adminAnalyticsItems,
+      (s) => AdminAnalyticsItemsScreen(query: AdminAnalyticsQuery.fromUri(s.uri)),
+    ),
     _page(Destinations.adminUsers, (_) => const AdminUsersScreen()),
     _page(Destinations.adminUsersAdd, (_) => const AdminUserAddScreen()),
     _page(

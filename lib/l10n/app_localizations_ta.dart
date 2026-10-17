@@ -13330,6 +13330,20 @@ class AppLocalizationsTa extends AppLocalizations {
       'நூலகங்கள் எதுவும் கிடைக்கவில்லை.';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'சர்வர் நிர்வாகம்';
 
   @override

@@ -12980,6 +12980,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => '利用できるライブラリがありません。';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'サーバー管理';
 
   @override

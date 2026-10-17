@@ -13287,6 +13287,20 @@ class AppLocalizationsUg extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'ئامبار يوق.';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'مۇلازىمېتىر باشقۇرۇش';
 
   @override

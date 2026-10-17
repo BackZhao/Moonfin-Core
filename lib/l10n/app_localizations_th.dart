@@ -13183,6 +13183,20 @@ class AppLocalizationsTh extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'ไม่มีห้องสมุดให้บริการ';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'การบริหารเซิร์ฟเวอร์';
 
   @override

@@ -13325,6 +13325,20 @@ class AppLocalizationsTe extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'లైబ్రరీలు అందుబాటులో లేవు.';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'సర్వర్ అడ్మినిస్ట్రేషన్';
 
   @override

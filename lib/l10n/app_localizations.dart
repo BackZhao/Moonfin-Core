@@ -23296,6 +23296,30 @@ abstract class AppLocalizations {
   /// **'No libraries are available.'**
   String get analyticsNoLibrariesAvailable;
 
+  /// No description provided for @analyticsLibraryShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share of items by library'**
+  String get analyticsLibraryShare;
+
+  /// No description provided for @analyticsTopRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Most common rating'**
+  String get analyticsTopRating;
+
+  /// No description provided for @analyticsTypicalRuntime.
+  ///
+  /// In en, this message translates to:
+  /// **'Typical runtime'**
+  String get analyticsTypicalRuntime;
+
+  /// No description provided for @analyticsShareOfItems.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of items'**
+  String analyticsShareOfItems(String percent);
+
   /// No description provided for @adminServerAdministrationTitle.
   ///
   /// In en, this message translates to:

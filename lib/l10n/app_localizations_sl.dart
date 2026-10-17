@@ -13319,6 +13319,20 @@ class AppLocalizationsSl extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'Na voljo ni nobene knjižnice.';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'Upravljanje strežnika';
 
   @override

@@ -13128,6 +13128,20 @@ class AppLocalizationsHe extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'אין ספריות זמינות.';
 
   @override
+  String get analyticsLibraryShare => 'Share of items by library';
+
+  @override
+  String get analyticsTopRating => 'Most common rating';
+
+  @override
+  String get analyticsTypicalRuntime => 'Typical runtime';
+
+  @override
+  String analyticsShareOfItems(String percent) {
+    return '$percent% of items';
+  }
+
+  @override
   String get adminServerAdministrationTitle => 'ניהול השרת';
 
   @override

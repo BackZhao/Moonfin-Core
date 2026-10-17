@@ -142,6 +142,7 @@ class Destinations {
   static const adminLiveTv = '/admin/live-tv';
   static const adminLiveTvChannels = '/admin/live-tv-channels';
   static const adminAnalytics = '/admin/analytics';
+  static const adminAnalyticsItems = '/admin/analytics/items';
   static const adminMetadataEdit = '/admin/metadata/:itemId';
   static const adminPremiere = '/admin/premiere';
   static const adminDatabase = '/admin/database';
