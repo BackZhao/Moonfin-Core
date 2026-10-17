@@ -38,6 +38,8 @@ import '../../widgets/playback/stream_info_dialog.dart';
 import '../../widgets/track_selector_dialog.dart';
 import '../../widgets/live_tv/channel_carousel_overlay.dart';
 import '../../widgets/live_tv/live_tv_recording_dialog.dart';
+import '../../widgets/emby_premiere_dialog.dart';
+import '../../util/error_message.dart';
 import 'channel_tune_observer.dart';
 import 'live_tv_guide_screen.dart';
 import '../../screensaver/screensaver_controller.dart';
@@ -1095,7 +1097,11 @@ class _LiveTvPlayerScreenState extends State<LiveTvPlayerScreen>
             await _client.liveTvApi.cancelSeriesTimer(recording.seriesTimerId!);
             message = l10n.seriesRecordingCancelled;
         }
-      } catch (_) {
+      } catch (e) {
+        if (isPremiereError(e) && mounted) {
+          await showPremiereRequiredDialog(context);
+          return;
+        }
         message = switch (action) {
           LiveTvRecordingAction.recordProgram => l10n.unableToCreateRecording,
           LiveTvRecordingAction.recordSeries =>

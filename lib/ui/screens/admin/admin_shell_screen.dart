@@ -435,7 +435,7 @@ class _PageList extends StatelessWidget {
                 ],
               ),
             ),
-            for (final page in group.pages)
+            for (final page in group.pagesOn(AdminServerScope.of(context)))
               AdminPageTile(page: page, selected: page == selected),
           ],
         ),

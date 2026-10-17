@@ -10780,6 +10780,1044 @@ abstract class AppLocalizations {
   /// **'Exit Admin'**
   String get adminExitTooltip;
 
+  /// No description provided for @adminPremiereNoteLiveTv.
+  ///
+  /// In en, this message translates to:
+  /// **'Live TV needs Emby Premiere. Without it the server doesn\'t import channels or record anything.'**
+  String get adminPremiereNoteLiveTv;
+
+  /// No description provided for @adminPremiereNoteBackups.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & Restore needs Emby Premiere once its trial ends.'**
+  String get adminPremiereNoteBackups;
+
+  /// No description provided for @adminGeneralRunAtStartup.
+  ///
+  /// In en, this message translates to:
+  /// **'Run the server at startup'**
+  String get adminGeneralRunAtStartup;
+
+  /// No description provided for @adminGeneralLaunchWebApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the web app in a browser when the server starts'**
+  String get adminGeneralLaunchWebApp;
+
+  /// No description provided for @adminGeneralBannerText.
+  ///
+  /// In en, this message translates to:
+  /// **'Home screen banner text'**
+  String get adminGeneralBannerText;
+
+  /// No description provided for @adminGeneralBannerTextHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown to every user on their home screen'**
+  String get adminGeneralBannerTextHelp;
+
+  /// No description provided for @adminGeneralSectionMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance mode'**
+  String get adminGeneralSectionMaintenance;
+
+  /// No description provided for @adminGeneralMaintenanceMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Put the server into maintenance mode'**
+  String get adminGeneralMaintenanceMode;
+
+  /// No description provided for @adminGeneralMaintenanceModeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Users only see the maintenance message.'**
+  String get adminGeneralMaintenanceModeHelp;
+
+  /// No description provided for @adminGeneralMaintenanceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance message'**
+  String get adminGeneralMaintenanceMessage;
+
+  /// No description provided for @adminGeneralMaintenanceMessageHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave it blank for a general message in each user\'s language.'**
+  String get adminGeneralMaintenanceMessageHelp;
+
+  /// No description provided for @adminGeneralSectionUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic updates'**
+  String get adminGeneralSectionUpdates;
+
+  /// No description provided for @adminGeneralAutoUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update the server automatically'**
+  String get adminGeneralAutoUpdate;
+
+  /// No description provided for @adminGeneralAutoRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart automatically to apply updates'**
+  String get adminGeneralAutoRestart;
+
+  /// No description provided for @adminGeneralAutoRestartHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The server only restarts while no users are active.'**
+  String get adminGeneralAutoRestartHelp;
+
+  /// No description provided for @adminTaskTriggerSystemEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'After a system event ({event})'**
+  String adminTaskTriggerSystemEvent(String event);
+
+  /// No description provided for @adminPluginNeedsPremiere.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Emby Premiere after a 14-day free trial'**
+  String get adminPluginNeedsPremiere;
+
+  /// No description provided for @adminEmbyBackupsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby backs up through its Backup & Restore plugin.'**
+  String get adminEmbyBackupsHelp;
+
+  /// No description provided for @adminEmbyBackupsNoPlugin.
+  ///
+  /// In en, this message translates to:
+  /// **'The Backup & Restore plugin isn\'t installed. Install it from the plugin catalog to back up this server.'**
+  String get adminEmbyBackupsNoPlugin;
+
+  /// No description provided for @adminEmbyBackupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get adminEmbyBackupNow;
+
+  /// No description provided for @adminEmbyFullBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Full backup'**
+  String get adminEmbyFullBackup;
+
+  /// No description provided for @adminEmbyLightBackups.
+  ///
+  /// In en, this message translates to:
+  /// **'Database backups'**
+  String get adminEmbyLightBackups;
+
+  /// No description provided for @adminEmbyBackupServerVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby {version}'**
+  String adminEmbyBackupServerVersion(String version);
+
+  /// No description provided for @adminEmbyRestoreConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore {name}? It replaces this server\'s libraries, settings, users and passwords, and the server shuts down when it\'s done. You may need to start it again yourself.'**
+  String adminEmbyRestoreConfirm(String name);
+
+  /// No description provided for @adminEmbyRestoreServerId.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore the server ID'**
+  String get adminEmbyRestoreServerId;
+
+  /// No description provided for @adminEmbyRestoreServerIdHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn this off when you restore the same backup onto more than one server.'**
+  String get adminEmbyRestoreServerIdHelp;
+
+  /// No description provided for @adminEmbyRestoreShuttingDown.
+  ///
+  /// In en, this message translates to:
+  /// **'The restore is done and the server is shutting down. Start it again if it doesn\'t restart by itself.'**
+  String get adminEmbyRestoreShuttingDown;
+
+  /// No description provided for @adminHiddenRemotely.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide from login screens when connected remotely'**
+  String get adminHiddenRemotely;
+
+  /// No description provided for @adminHiddenFromUnusedDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide from login screens on devices they\'ve never signed in on'**
+  String get adminHiddenFromUnusedDevices;
+
+  /// No description provided for @adminSimultaneousStreamLimitHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Limits how many videos this user can play at once.'**
+  String get adminSimultaneousStreamLimitHelp;
+
+  /// No description provided for @adminUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get adminUnlimited;
+
+  /// No description provided for @adminAutoRemoteQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto remote quality (Mbps)'**
+  String get adminAutoRemoteQuality;
+
+  /// No description provided for @adminAutoRemoteQualityHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Used remotely when the player is set to auto quality. Leave empty to detect it.'**
+  String get adminAutoRemoteQualityHelp;
+
+  /// No description provided for @adminAllowCameraUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow camera upload'**
+  String get adminAllowCameraUpload;
+
+  /// No description provided for @adminAllowSubtitleDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow subtitle downloading'**
+  String get adminAllowSubtitleDownloading;
+
+  /// No description provided for @adminAllowMediaConversion.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow media conversion'**
+  String get adminAllowMediaConversion;
+
+  /// No description provided for @adminAllowSyncTranscoding.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow downloads that need transcoding'**
+  String get adminAllowSyncTranscoding;
+
+  /// No description provided for @adminAllowSharingPersonalItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow sharing playlists with other users'**
+  String get adminAllowSharingPersonalItems;
+
+  /// No description provided for @adminAllowPreferenceAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow changing their own password and profile image'**
+  String get adminAllowPreferenceAccess;
+
+  /// No description provided for @adminTagMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag mode'**
+  String get adminTagMode;
+
+  /// No description provided for @adminEmbyConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby Connect'**
+  String get adminEmbyConnect;
+
+  /// No description provided for @adminEmbyConnectUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby Connect username or email'**
+  String get adminEmbyConnectUser;
+
+  /// No description provided for @adminEmbyConnectHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets this user sign in from any Emby app without knowing the server address.'**
+  String get adminEmbyConnectHelp;
+
+  /// No description provided for @adminEmbyConnectLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Link'**
+  String get adminEmbyConnectLink;
+
+  /// No description provided for @adminEmbyConnectUnlink.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink'**
+  String get adminEmbyConnectUnlink;
+
+  /// No description provided for @adminEmbyConnectLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked to Emby Connect'**
+  String get adminEmbyConnectLinked;
+
+  /// No description provided for @adminEmbyConnectPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent. The link is made once they accept it.'**
+  String get adminEmbyConnectPending;
+
+  /// No description provided for @adminEmbyConnectUnlinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby Connect link removed'**
+  String get adminEmbyConnectUnlinked;
+
+  /// No description provided for @adminEmbyConnectNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Emby Connect account has that username or email.'**
+  String get adminEmbyConnectNotFound;
+
+  /// No description provided for @adminLibImportPlaylists.
+  ///
+  /// In en, this message translates to:
+  /// **'Import playlist files'**
+  String get adminLibImportPlaylists;
+
+  /// No description provided for @adminLibExcludeFromSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclude from global search'**
+  String get adminLibExcludeFromSearch;
+
+  /// No description provided for @adminLibForcedSubtitlesOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Download forced subtitles only'**
+  String get adminLibForcedSubtitlesOnly;
+
+  /// No description provided for @adminLibImportCollections.
+  ///
+  /// In en, this message translates to:
+  /// **'Import collections from metadata downloaders'**
+  String get adminLibImportCollections;
+
+  /// No description provided for @adminLibThumbnailInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview thumbnail interval'**
+  String get adminLibThumbnailInterval;
+
+  /// No description provided for @adminLibThumbnailEverySeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {count} seconds'**
+  String adminLibThumbnailEverySeconds(int count);
+
+  /// No description provided for @adminLibThumbnailAtChapters.
+  ///
+  /// In en, this message translates to:
+  /// **'At chapter markers'**
+  String get adminLibThumbnailAtChapters;
+
+  /// No description provided for @adminLibSaveThumbnailsWithMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Save preview thumbnails into media folders'**
+  String get adminLibSaveThumbnailsWithMedia;
+
+  /// No description provided for @adminLibrarySectionMarkers.
+  ///
+  /// In en, this message translates to:
+  /// **'Intro markers'**
+  String get adminLibrarySectionMarkers;
+
+  /// No description provided for @adminLibIntroDetection.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect intros'**
+  String get adminLibIntroDetection;
+
+  /// No description provided for @adminLibIntroDetectionDuringScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect intros during the library scan'**
+  String get adminLibIntroDetectionDuringScan;
+
+  /// No description provided for @adminProviderEmbyGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby Guide Data'**
+  String get adminProviderEmbyGuide;
+
+  /// No description provided for @adminLiveTvEmbyGuideSelectLineup.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a lineup. If none are listed, check the postal code. Lineups need Emby Premiere.'**
+  String get adminLiveTvEmbyGuideSelectLineup;
+
+  /// No description provided for @adminLiveTvWakeServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake the server for recordings'**
+  String get adminLiveTvWakeServer;
+
+  /// No description provided for @adminDrawerLiveTvChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Live TV Channels'**
+  String get adminDrawerLiveTvChannels;
+
+  /// No description provided for @adminPageDescLiveTvChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn channels on and off and set their order'**
+  String get adminPageDescLiveTvChannels;
+
+  /// No description provided for @adminLiveTvChannelsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No channels yet. They show up here once a tuner is set up and the server has imported its channels.'**
+  String get adminLiveTvChannelsEmpty;
+
+  /// No description provided for @adminTranscodingHwaAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get adminTranscodingHwaAdvanced;
+
+  /// No description provided for @adminTranscodingHwaHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced lets you pick and order the hardware codecs.'**
+  String get adminTranscodingHwaHelp;
+
+  /// No description provided for @adminTranscodingHwDecoders.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred hardware decoders'**
+  String get adminTranscodingHwDecoders;
+
+  /// No description provided for @adminTranscodingHwEncoders.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred hardware encoders'**
+  String get adminTranscodingHwEncoders;
+
+  /// No description provided for @adminTranscodingTempPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Where the transcoder keeps its working files. Leave it empty to use the server\'s data folder.'**
+  String get adminTranscodingTempPathHelp;
+
+  /// No description provided for @adminTranscodingThrottleHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Slows transcoding down once enough is buffered, to lower CPU use.'**
+  String get adminTranscodingThrottleHelp;
+
+  /// No description provided for @adminTranscodingDownmixHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Raises the volume when audio is downmixed. 1 keeps the original volume.'**
+  String get adminTranscodingDownmixHelp;
+
+  /// No description provided for @adminTranscodingFontExtraction.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow font extraction on the fly'**
+  String get adminTranscodingFontExtraction;
+
+  /// No description provided for @adminTranscodingMaxResolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Max transcoding resolution'**
+  String get adminTranscodingMaxResolution;
+
+  /// No description provided for @adminTranscodingMaxResolutionHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A limit on every transcode, whatever quality the app asks for.'**
+  String get adminTranscodingMaxResolutionHelp;
+
+  /// No description provided for @adminTranscodingToneMapSoftware.
+  ///
+  /// In en, this message translates to:
+  /// **'Tone mapping in software transcodes'**
+  String get adminTranscodingToneMapSoftware;
+
+  /// No description provided for @adminTranscodingToneMapHardware.
+  ///
+  /// In en, this message translates to:
+  /// **'Tone mapping in hardware transcodes'**
+  String get adminTranscodingToneMapHardware;
+
+  /// No description provided for @adminTranscodingToneMapHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps HDR video from looking dim and washed out when it\'s transcoded.'**
+  String get adminTranscodingToneMapHelp;
+
+  /// No description provided for @adminNetworkingLocalAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Local IP address'**
+  String get adminNetworkingLocalAddress;
+
+  /// No description provided for @adminNetworkingLocalAddressHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The local address the server gives to apps. Leave it empty to detect it automatically.'**
+  String get adminNetworkingLocalAddressHelp;
+
+  /// No description provided for @adminNetworkingBehindProxy.
+  ///
+  /// In en, this message translates to:
+  /// **'HTTPS is handled by a reverse proxy'**
+  String get adminNetworkingBehindProxy;
+
+  /// No description provided for @adminNetworkingExternalDomain.
+  ///
+  /// In en, this message translates to:
+  /// **'External domain'**
+  String get adminNetworkingExternalDomain;
+
+  /// No description provided for @adminNetworkingExternalDomainHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A domain or dynamic DNS name for remote connections, without the protocol or port. A custom certificate needs it.'**
+  String get adminNetworkingExternalDomainHelp;
+
+  /// No description provided for @adminNetworkingUpnp.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable automatic port mapping'**
+  String get adminNetworkingUpnp;
+
+  /// No description provided for @adminNetworkingUpnpHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Tries to map the public port to the local port with UPnP. Some routers don\'t support it.'**
+  String get adminNetworkingUpnpHelp;
+
+  /// No description provided for @adminNetworkingProxyHeaders.
+  ///
+  /// In en, this message translates to:
+  /// **'Read proxy headers for client addresses'**
+  String get adminNetworkingProxyHeaders;
+
+  /// No description provided for @adminNetworkingProxyHeadersHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses headers like X-Forwarded-For to find each client\'s address. Only turn this on behind a reverse proxy.'**
+  String get adminNetworkingProxyHeadersHelp;
+
+  /// No description provided for @adminNetworkingProxyHeadersRemote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only when they hold remote addresses'**
+  String get adminNetworkingProxyHeadersRemote;
+
+  /// No description provided for @adminNetworkingIpv4Only.
+  ///
+  /// In en, this message translates to:
+  /// **'Use IPv4 for outgoing requests'**
+  String get adminNetworkingIpv4Only;
+
+  /// No description provided for @adminNetworkingIpv4OnlyHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'For when metadata providers and other services can\'t be reached over IPv6.'**
+  String get adminNetworkingIpv4OnlyHelp;
+
+  /// No description provided for @adminOnePerLine.
+  ///
+  /// In en, this message translates to:
+  /// **'One per line'**
+  String get adminOnePerLine;
+
+  /// No description provided for @adminStreamingStreamLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Max simultaneous video streams'**
+  String get adminStreamingStreamLimit;
+
+  /// No description provided for @adminStreamingStreamLimitHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'How many videos can play at once across the server. 0 means no limit.'**
+  String get adminStreamingStreamLimitHelp;
+
+  /// No description provided for @adminSyncJobsConversions.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversion jobs'**
+  String get adminSyncJobsConversions;
+
+  /// No description provided for @adminSyncJobsDownloads.
+  ///
+  /// In en, this message translates to:
+  /// **'Download jobs'**
+  String get adminSyncJobsDownloads;
+
+  /// No description provided for @adminSyncJobsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No jobs'**
+  String get adminSyncJobsEmpty;
+
+  /// No description provided for @adminSyncJobCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel job'**
+  String get adminSyncJobCancel;
+
+  /// No description provided for @adminSyncJobCancelConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel {name} and remove it from the list?'**
+  String adminSyncJobCancelConfirm(String name);
+
+  /// No description provided for @adminSyncJobConverting.
+  ///
+  /// In en, this message translates to:
+  /// **'Converting'**
+  String get adminSyncJobConverting;
+
+  /// No description provided for @adminSyncJobReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to transfer'**
+  String get adminSyncJobReady;
+
+  /// No description provided for @adminSyncJobTransferring.
+  ///
+  /// In en, this message translates to:
+  /// **'Transferring'**
+  String get adminSyncJobTransferring;
+
+  /// No description provided for @adminSyncJobCompletedWithError.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed with errors'**
+  String get adminSyncJobCompletedWithError;
+
+  /// No description provided for @adminSyncJobItemCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
+  String adminSyncJobItemCount(int count);
+
+  /// No description provided for @adminDrawerDatabase.
+  ///
+  /// In en, this message translates to:
+  /// **'Database'**
+  String get adminDrawerDatabase;
+
+  /// No description provided for @adminPageDescDatabase.
+  ///
+  /// In en, this message translates to:
+  /// **'Cache size and upkeep'**
+  String get adminPageDescDatabase;
+
+  /// No description provided for @adminDatabaseWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'These are advanced options. Leave them at their defaults unless you have a reason to change them.'**
+  String get adminDatabaseWarning;
+
+  /// No description provided for @adminDatabaseCacheSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Database cache size (MB)'**
+  String get adminDatabaseCacheSize;
+
+  /// No description provided for @adminDatabaseCacheSizeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'How much of each database file the server keeps in memory. More can make the server faster. Takes effect after a restart.'**
+  String get adminDatabaseCacheSizeHelp;
+
+  /// No description provided for @adminDatabaseOptimize.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimize the database when the server shuts down'**
+  String get adminDatabaseOptimize;
+
+  /// No description provided for @adminDatabaseOptimizeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Usually this does nothing, but now and then it runs an analysis that helps the server\'s queries. Shutdowns can take longer.'**
+  String get adminDatabaseOptimizeHelp;
+
+  /// No description provided for @adminDatabaseAnalysisLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis row limit'**
+  String get adminDatabaseAnalysisLimit;
+
+  /// No description provided for @adminDatabaseAnalysisLimitHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'About how many rows of each index the optimize step reads. More rows work better but can slow shutdowns.'**
+  String get adminDatabaseAnalysisLimitHelp;
+
+  /// No description provided for @adminDatabaseVacuum.
+  ///
+  /// In en, this message translates to:
+  /// **'Vacuum the database on the next startup'**
+  String get adminDatabaseVacuum;
+
+  /// No description provided for @adminDatabaseVacuumHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Rebuilds the database file so it takes up the least space, which can help performance. The server can\'t be used while it runs and shows no progress, so don\'t force it closed. It turns itself back off after that startup.'**
+  String get adminDatabaseVacuumHelp;
+
+  /// No description provided for @adminDrawerCinemaIntros.
+  ///
+  /// In en, this message translates to:
+  /// **'Cinema Intros'**
+  String get adminDrawerCinemaIntros;
+
+  /// No description provided for @adminPageDescCinemaIntros.
+  ///
+  /// In en, this message translates to:
+  /// **'Trailers and intros before playback'**
+  String get adminPageDescCinemaIntros;
+
+  /// No description provided for @adminCinemaIntrosPlayBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Play intros before'**
+  String get adminCinemaIntrosPlayBefore;
+
+  /// No description provided for @adminCinemaIntrosUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Include trailers from new and upcoming movies'**
+  String get adminCinemaIntrosUpcoming;
+
+  /// No description provided for @adminCinemaIntrosOlder.
+  ///
+  /// In en, this message translates to:
+  /// **'Include trailers from older movies'**
+  String get adminCinemaIntrosOlder;
+
+  /// No description provided for @adminCinemaIntrosLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Include trailers from movies in my libraries'**
+  String get adminCinemaIntrosLibrary;
+
+  /// No description provided for @adminCinemaIntrosLibraryHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs local trailers set up.'**
+  String get adminCinemaIntrosLibraryHelp;
+
+  /// No description provided for @adminCinemaIntrosCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of trailers to play'**
+  String get adminCinemaIntrosCount;
+
+  /// No description provided for @adminCinemaIntrosParental.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart parental control'**
+  String get adminCinemaIntrosParental;
+
+  /// No description provided for @adminCinemaIntrosParentalHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Only picks trailers rated the same as or lower than what\'s being watched.'**
+  String get adminCinemaIntrosParentalHelp;
+
+  /// No description provided for @adminCinemaIntrosUnwatchedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only play intros before unwatched content'**
+  String get adminCinemaIntrosUnwatchedOnly;
+
+  /// No description provided for @adminCinemaIntrosSimilarOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only play trailers similar to what\'s being watched'**
+  String get adminCinemaIntrosSimilarOnly;
+
+  /// No description provided for @adminCinemaIntrosSimilarOnlyHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on shared genres, tags, studios and so on.'**
+  String get adminCinemaIntrosSimilarOnlyHelp;
+
+  /// No description provided for @adminCinemaIntrosCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom intros'**
+  String get adminCinemaIntrosCustom;
+
+  /// No description provided for @adminCinemaIntrosCustomPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom intros folder'**
+  String get adminCinemaIntrosCustomPath;
+
+  /// No description provided for @adminCinemaIntrosCustomPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A folder of videos. One is picked at random and plays after the trailers.'**
+  String get adminCinemaIntrosCustomPathHelp;
+
+  /// No description provided for @adminCinemaIntrosCodecPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Codec intros folder'**
+  String get adminCinemaIntrosCodecPath;
+
+  /// No description provided for @adminCinemaIntrosCodecPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A folder of videos. One whose file name matches the video codec, audio codec, audio profile or a tag plays before the main feature.'**
+  String get adminCinemaIntrosCodecPathHelp;
+
+  /// No description provided for @adminDrawerDlna.
+  ///
+  /// In en, this message translates to:
+  /// **'DLNA'**
+  String get adminDrawerDlna;
+
+  /// No description provided for @adminPageDescDlna.
+  ///
+  /// In en, this message translates to:
+  /// **'Play To and the DLNA server'**
+  String get adminPageDescDlna;
+
+  /// No description provided for @adminDlnaPlayTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable DLNA Play To'**
+  String get adminDlnaPlayTo;
+
+  /// No description provided for @adminDlnaPlayToHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby can find devices on your network and control them remotely.'**
+  String get adminDlnaPlayToHelp;
+
+  /// No description provided for @adminDlnaServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable the DLNA server'**
+  String get adminDlnaServer;
+
+  /// No description provided for @adminDlnaServerHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets the server stream media to DLNA devices.'**
+  String get adminDlnaServerHelp;
+
+  /// No description provided for @adminDlnaDefaultUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Default user'**
+  String get adminDlnaDefaultUser;
+
+  /// No description provided for @adminDlnaDefaultUserHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Whose libraries connected devices see. A device profile can override it.'**
+  String get adminDlnaDefaultUserHelp;
+
+  /// No description provided for @adminDlnaDebugLog.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable DLNA debug logging'**
+  String get adminDlnaDebugLog;
+
+  /// No description provided for @adminDlnaDebugLogHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Makes large log files. Only turn it on while troubleshooting.'**
+  String get adminDlnaDebugLogHelp;
+
+  /// No description provided for @adminDrawerCameraUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Upload'**
+  String get adminDrawerCameraUpload;
+
+  /// No description provided for @adminPageDescCameraUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Where photos from phones are saved'**
+  String get adminPageDescCameraUpload;
+
+  /// No description provided for @adminCameraUploadPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera upload folder'**
+  String get adminCameraUploadPath;
+
+  /// No description provided for @adminCameraUploadPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave it blank to use the default folder. A custom folder also has to be added as a library.'**
+  String get adminCameraUploadPathHelp;
+
+  /// No description provided for @adminCameraUploadSubfolders.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a subfolder for each device'**
+  String get adminCameraUploadSubfolders;
+
+  /// No description provided for @adminDrawerConversions.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversions'**
+  String get adminDrawerConversions;
+
+  /// No description provided for @adminPageDescConversions.
+  ///
+  /// In en, this message translates to:
+  /// **'Converted media and downloads'**
+  String get adminPageDescConversions;
+
+  /// No description provided for @adminConversionsTempPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary file folder'**
+  String get adminConversionsTempPath;
+
+  /// No description provided for @adminConversionsTempPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Where media is kept while it\'s being converted.'**
+  String get adminConversionsTempPathHelp;
+
+  /// No description provided for @adminConversionsFullSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert at full speed'**
+  String get adminConversionsFullSpeed;
+
+  /// No description provided for @adminConversionsFullSpeedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversions run slowly by default to keep the load down.'**
+  String get adminConversionsFullSpeedHelp;
+
+  /// No description provided for @adminDrawerPremiere.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby Premiere'**
+  String get adminDrawerPremiere;
+
+  /// No description provided for @adminPageDescPremiere.
+  ///
+  /// In en, this message translates to:
+  /// **'License status and key'**
+  String get adminPageDescPremiere;
+
+  /// No description provided for @adminPremiereActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Premiere is active on this server.'**
+  String get adminPremiereActive;
+
+  /// No description provided for @adminPremiereInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'This server has no Premiere key.'**
+  String get adminPremiereInactive;
+
+  /// No description provided for @adminPremiereKeyInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'A key is set but isn\'t active. It may be mistyped or expired.'**
+  String get adminPremiereKeyInvalid;
+
+  /// No description provided for @adminPremiereCurrentKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Current key'**
+  String get adminPremiereCurrentKey;
+
+  /// No description provided for @adminPremiereNewKey.
+  ///
+  /// In en, this message translates to:
+  /// **'New key'**
+  String get adminPremiereNewKey;
+
+  /// No description provided for @adminPremiereNewKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the key from your Emby Premiere email.'**
+  String get adminPremiereNewKeyHint;
+
+  /// No description provided for @adminPremiereSaveKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Save key'**
+  String get adminPremiereSaveKey;
+
+  /// No description provided for @adminPremiereRemoveKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove key'**
+  String get adminPremiereRemoveKey;
+
+  /// No description provided for @adminPremiereKeyRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby saved the key but didn\'t accept it.'**
+  String get adminPremiereKeyRejected;
+
+  /// No description provided for @adminPremiereLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the Premiere status'**
+  String get adminPremiereLoadFailed;
+
+  /// No description provided for @embyPremiereRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emby Premiere required'**
+  String get embyPremiereRequiredTitle;
+
+  /// No description provided for @embyPremiereRequiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This needs an active Emby Premiere subscription on the server.'**
+  String get embyPremiereRequiredBody;
+
+  /// No description provided for @embyPremiereRequiredSaveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This needs an active Emby Premiere subscription. Emby keeps the setting but won\'t use it until Premiere is active.'**
+  String get embyPremiereRequiredSaveBody;
+
+  /// No description provided for @embyPremiereLearnMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn more'**
+  String get embyPremiereLearnMore;
+
+  /// No description provided for @embyPremiereSaveAnyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Save anyway'**
+  String get embyPremiereSaveAnyway;
+
+  /// No description provided for @embyPremiereEnterKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter key'**
+  String get embyPremiereEnterKey;
+
+  /// No description provided for @adminPremiereNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Emby Premiere. The server keeps this setting but won\'t use it until Premiere is active.'**
+  String get adminPremiereNote;
+
   /// No description provided for @adminExternalIdLabel.
   ///
   /// In en, this message translates to:

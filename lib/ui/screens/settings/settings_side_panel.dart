@@ -63,6 +63,7 @@ import '../../../preference/home_section_config.dart';
 import '../../../preference/seerr_preferences.dart';
 import '../../../preference/seerr_row_config.dart';
 import '../../navigation/destinations.dart';
+import '../admin/admin_nav.dart';
 import '../setup/setup_wizard_gate.dart';
 import '../../widgets/adaptive/adaptive_dialog.dart';
 import '../../widgets/adaptive/adaptive_list_section.dart';
@@ -301,12 +302,11 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final kidsMode = ref.watch(kidsModeProvider);
-    // Every admin API throws on Emby, so the area is Jellyfin only.
     final showAdmin =
         !kidsMode &&
         !PlatformDetection.isTV &&
         ref.watch(isAdminProvider) &&
-        _activeServerType() == ServerType.jellyfin;
+        adminServerSupported();
     final enablePanelAutofocus = !PlatformDetection.useMobileUi;
 
     // Kids Mode leaves one entry standing. Hiding settings outright would
@@ -477,7 +477,3 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
     );
   }
 }
-
-ServerType? _activeServerType() => GetIt.instance.isRegistered<MediaServerClient>()
-    ? GetIt.instance<MediaServerClient>().serverType
-    : null;

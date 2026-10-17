@@ -360,7 +360,10 @@ class _IdentifyDialogState extends State<IdentifyDialog> {
     return _adminApi.searchRemote(_searchType, <String, dynamic>{
       'SearchInfo': searchInfo,
       'ItemId': _targetItemId,
-      'IncludeDisabledProviders': false,
+      // A new Emby library has no providers turned on, so a search of only
+      // the enabled ones finds nothing.
+      'IncludeDisabledProviders':
+          GetIt.instance<MediaServerClient>().serverType == ServerType.emby,
       'SearchProviderName': ?providerName,
     });
   }

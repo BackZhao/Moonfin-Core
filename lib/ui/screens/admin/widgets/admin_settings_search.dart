@@ -121,7 +121,7 @@ class _AdminSettingsSearchState extends State<AdminSettingsSearch> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
-    final entries = adminSearchEntries();
+    final entries = adminSearchEntries(AdminServerScope.of(context));
     final query = _controller.text.trim();
     final results = query.length < 2
         ? const <AdminSearchEntry>[]

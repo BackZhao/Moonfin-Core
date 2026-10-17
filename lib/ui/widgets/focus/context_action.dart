@@ -81,8 +81,6 @@ List<ItemContextAction> contextActionsFor(
       !requiresCollectionPermission ||
       currentUser?.canManageCollections == true ||
       isAdminUser;
-  final canRefreshMetadata =
-      client.serverType == ServerType.jellyfin && isAdminUser;
   final actions = <ItemContextAction>[];
   final type = item.type;
 
@@ -224,7 +222,7 @@ List<ItemContextAction> contextActionsFor(
       },
     ));
 
-    if (canRefreshMetadata) {
+    if (isAdminUser) {
       actions.add(ItemContextAction(
         icon: Icons.refresh,
         label: l10n.adminRefreshMetadata,
@@ -318,7 +316,6 @@ List<ItemContextAction> contextActionsFor(
           type == 'MusicGenre' ||
           type == 'Studio' ||
           type == 'Network') &&
-      client.serverType == ServerType.jellyfin &&
       isAdminUser;
 
   if (canChangeArtwork) {

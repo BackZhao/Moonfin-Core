@@ -10,6 +10,7 @@ import 'package:server_core/server_core.dart';
 
 import '../../../data/viewmodels/live_tv_guide_view_model.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../widgets/emby_premiere_dialog.dart';
 import '../../util/error_message.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/tv_ui_scale.dart';
@@ -2595,9 +2596,13 @@ class _LiveTvGuideScreenState extends State<LiveTvGuideScreen>
                         ),
                       ),
                     );
-                  } catch (_) {
+                  } catch (e) {
                     dialogActionInProgress = false;
                     if (!pageContext.mounted) return;
+                    if (isPremiereError(e)) {
+                      await showPremiereRequiredDialog(pageContext);
+                      return;
+                    }
                     ScaffoldMessenger.of(pageContext).showSnackBar(
                       SnackBar(
                         content: Text(

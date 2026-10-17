@@ -7907,7 +7907,6 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
 
   Set<DetailAdminAction> _adminActionsFor(AggregatedItem item) =>
       detailAdminActions(
-        serverType: GetIt.instance<MediaServerClient>().serverType,
         isAdministrator:
             GetIt.instance<UserRepository>().currentUser?.isAdministrator ??
             false,
@@ -8325,11 +8324,8 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     final resume =
         !forceStartOver && (item.playbackPosition?.inMilliseconds ?? 0) > 0;
 
-    final client = GetIt.instance<MediaServerClient>();
-    final isAdmin =
-        GetIt.instance<UserRepository>().currentUser?.isAdministrator ?? false;
     final canChangeArtwork =
-        client.serverType == ServerType.jellyfin && isAdmin;
+        GetIt.instance<UserRepository>().currentUser?.isAdministrator ?? false;
 
     final options = [
       if (canChangeArtwork)

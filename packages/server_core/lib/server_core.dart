@@ -41,6 +41,7 @@ export 'src/api/admin_api_keys_api.dart';
 export 'src/api/admin_backup_api.dart';
 export 'src/api/admin_live_tv_api.dart';
 export 'src/api/admin_items_api.dart';
+export 'src/api/emby_admin_api.dart';
 export 'src/api/client_log_api.dart';
 export 'src/models/admin_models.dart';
 export 'src/models/device_models.dart';

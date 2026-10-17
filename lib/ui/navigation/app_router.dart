@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playback_core/playback_core.dart';
-import 'package:server_core/server_core.dart' show MediaServerClient, ServerType;
 
 import '../../auth/repositories/session_repository.dart';
 import '../../auth/repositories/user_repository.dart';
@@ -17,6 +16,7 @@ import '../../preference/preference_constants.dart';
 import '../../syncplay/syncplay_manager.dart';
 import '../../util/game_cores.dart';
 import '../../util/platform_detection.dart';
+import '../screens/admin/admin_nav.dart';
 import '../screens/admin/admin_routes.dart';
 import '../screens/auth/emby_connect_screen.dart';
 import '../screens/auth/login_screen.dart';
@@ -97,13 +97,9 @@ bool _shouldRunSetupWizard() {
   }
 }
 
-/// The admin area talks to Jellyfin's admin API, which Emby lacks, and has no
-/// TV layout. The settings tile is hidden in both cases, this stops deep links.
-bool _adminAvailable() {
-  if (PlatformDetection.isTV) return false;
-  if (!GetIt.instance.isRegistered<MediaServerClient>()) return false;
-  return GetIt.instance<MediaServerClient>().serverType == ServerType.jellyfin;
-}
+/// The admin area has no TV layout. The settings tile is hidden there and on
+/// servers it doesn't cover, and this stops deep links too.
+bool _adminAvailable() => !PlatformDetection.isTV && adminServerSupported();
 
 /// Surfaces that genuinely need the server. Everything else works offline
 /// against the downloads catalog.
