@@ -3739,6 +3739,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Utilisez les flèches pour modifier l\'ordre. Avec une télécommande, les touches gauche et droite déplacent le bouton sélectionné. Désactiver un bouton le place en bas de la liste.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Verrouillage de l\'orientation';
 
   @override

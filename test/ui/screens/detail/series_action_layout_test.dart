@@ -9,11 +9,13 @@ void main() {
     int buttonLimit = 0,
     bool isModernMobile = false,
     bool overflowAsMenu = false,
+    bool userArranged = false,
   }) => DetailActionButtonsState.usesTwoColumnLayout(
     itemType: type,
     isModernMobile: isModernMobile,
     overflowAsMenu: overflowAsMenu,
     buttonLimit: buttonLimit,
+    userArranged: userArranged,
   );
 
   test('series and seasons keep the two-column row on Auto', () {
@@ -25,6 +27,11 @@ void main() {
     expect(twoColumn('Series', buttonLimit: 1), isFalse);
     expect(twoColumn('Season', buttonLimit: 4), isFalse);
     expect(twoColumn('Series', buttonLimit: -1), isFalse);
+  });
+
+  test('an arranged order sends series and seasons through the count split', () {
+    expect(twoColumn('Series', userArranged: true), isFalse);
+    expect(twoColumn('Season', userArranged: true), isFalse);
   });
 
   test('movies, the Modern mobile layout and Spotlight never use it', () {

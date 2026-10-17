@@ -3624,6 +3624,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get buttonOrderHint => '使用箭头调整顺序。遥控器可通过左右方向键移动选中按钮；关闭按钮将自动后置。';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => '方向锁定';
 
   @override

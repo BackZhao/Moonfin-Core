@@ -3731,6 +3731,10 @@ class AppLocalizationsEl extends AppLocalizations {
       'Χρησιμοποιήστε τα βέλη για να αλλάξετε τη σειρά. Στο τηλεχειριστήριο, τα βέλη αριστερά και δεξιά μετακινούν το επιλεγμένο κουμπί. Αν απενεργοποιήσετε ένα κουμπί, αυτό μετακινείται κάτω από τα υπόλοιπα.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Κλείδωμα Προσανατολισμού';
 
   @override

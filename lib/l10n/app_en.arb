@@ -4964,6 +4964,10 @@
   "@buttonOrderHint": {
     "description": "Explains how to reorder the buttons in a row"
   },
+  "buttonShownInSyncPlayGroup": "Only shows while you're in a SyncPlay group",
+  "@buttonShownInSyncPlayGroup": {
+    "description": "Hint under the SyncPlay and Watch with group buttons in the button settings, which only appear once the user has joined a group"
+  },
   "orientationLock": "Orientation Lock",
   "@orientationLock": {
     "description": "Player button that locks the screen orientation"

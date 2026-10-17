@@ -3746,6 +3746,10 @@ class AppLocalizationsRo extends AppLocalizations {
       'Folosește săgețile pentru a schimba ordinea. Pe telecomandă, stânga și dreapta mută butonul evidențiat. Dezactivarea unui buton îl mută sub celelalte.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Blocare orientare';
 
   @override

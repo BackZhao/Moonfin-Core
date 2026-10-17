@@ -3714,6 +3714,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gebruik de pijltjes om de volgorde aan te passen. Op een afstandsbediening verplaatsen links en rechts te oplichtende knop. Zet je er eentje uit, dan komt deze onderaan de lijst te staan.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Vergrendeling schermstand';
 
   @override

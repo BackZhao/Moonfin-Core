@@ -6508,6 +6508,12 @@ abstract class AppLocalizations {
   /// **'Use the arrows to change the order. On a remote, left and right move the highlighted button. Switching one off drops it below the rest.'**
   String get buttonOrderHint;
 
+  /// Hint under the SyncPlay and Watch with group buttons in the button settings, which only appear once the user has joined a group
+  ///
+  /// In en, this message translates to:
+  /// **'Only shows while you\'re in a SyncPlay group'**
+  String get buttonShownInSyncPlayGroup;
+
   /// Player button that locks the screen orientation
   ///
   /// In en, this message translates to:

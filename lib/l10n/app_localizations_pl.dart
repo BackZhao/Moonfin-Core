@@ -3886,6 +3886,10 @@ class AppLocalizationsPl extends AppLocalizations {
       'Użyj strzałek, aby zmienić kolejność. Na pilocie przyciski lewo / prawo przesuwają zaznaczony przycisk. Wyłączenie przycisku przeniesie go na koniec listy.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Blokada orientacji';
 
   @override

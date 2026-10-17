@@ -3720,6 +3720,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Vaihda järjestystä nuolinäppäimillä. Kaukosäätimellä vasen ja oikea nuoli siirtävät korostettua painiketta. Kun poistat jonkin painikkeen valinnasta, se siirtyy muiden alle.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Suuntalukitus';
 
   @override

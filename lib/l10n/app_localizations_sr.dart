@@ -3743,6 +3743,10 @@ class AppLocalizationsSr extends AppLocalizations {
       'Користите стрелице да промените редослед. На даљинском управљачу притисните лево или десно да померите означено дугме. Када неко дугме искључите, оно ће бити померено испод осталих.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Закључавање оријентације';
 
   @override

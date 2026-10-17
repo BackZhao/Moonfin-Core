@@ -6472,19 +6472,23 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
 
   /// Whether a Series or Season row puts its everyday buttons inline and only
   /// the management ones behind More. The Modern mobile layout, the
-  /// menu-overflow (Spotlight) mode and a button count the user picked all
-  /// use the count split instead, the same as every other type.
+  /// menu-overflow (Spotlight) mode, a button count the user picked and an
+  /// order the user arranged all use the count split instead, the same as
+  /// every other type. The management split ignores the order, so a button
+  /// moved to the front would still end up behind More.
   @visibleForTesting
   static bool usesTwoColumnLayout({
     required String? itemType,
     required bool isModernMobile,
     required bool overflowAsMenu,
     required int buttonLimit,
+    required bool userArranged,
   }) =>
       (itemType == 'Series' || itemType == 'Season') &&
       !isModernMobile &&
       !overflowAsMenu &&
-      buttonLimit == 0;
+      buttonLimit == 0 &&
+      !userArranged;
 
   int _calculateMaxVisibleButtons(BuildContext context) {
     final override = widget.maxVisibleButtonsOverride;
@@ -7428,6 +7432,7 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
       isModernMobile: isModernMobile,
       overflowAsMenu: widget.overflowAsMenu,
       buttonLimit: prefLimit,
+      userArranged: prefs.get(detailButtonLayout.orderPreference).isNotEmpty,
     );
 
     // The buttons only fold into More once they stop fitting on one line.

@@ -3713,6 +3713,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'Usa le frecce per cambiare l\'ordine. Con un telecomando, sinistra e destra spostano il pulsante evidenziato. Se ne disattivi uno, questo finisce in fondo all\'elenco.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Blocco Orientamento';
 
   @override

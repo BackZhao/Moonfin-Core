@@ -3649,6 +3649,10 @@ class AppLocalizationsKo extends AppLocalizations {
       '화살표를 사용하여 순서를 변경하세요. 리모컨에서는 좌우 버튼으로 선택한 버튼을 이동합니다. 버튼을 끄면 나머지 버튼 아래로 이동합니다.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => '화면 방향 잠금';
 
   @override

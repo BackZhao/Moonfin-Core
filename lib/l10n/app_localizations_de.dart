@@ -3789,6 +3789,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Verwenden Sie die Pfeile, um die Reihenfolge zu ändern. Mit einer Fernbedienung verschieben Sie die markierte Schaltfläche nach links oder rechts. Deaktivierte Schaltflächen werden unterhalb der übrigen angeordnet.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Ausrichtung sperren';
 
   @override

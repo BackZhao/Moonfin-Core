@@ -3742,6 +3742,10 @@ class AppLocalizationsCa extends AppLocalizations {
       'Utilitza les fletxes per canviar l\'ordre. Amb el comandament a distància, mou cap a l\'esquerra i cap a la dreta el botó ressaltat. Apagar-ne un el fa caure per sota de la resta.';
 
   @override
+  String get buttonShownInSyncPlayGroup =>
+      'Only shows while you\'re in a SyncPlay group';
+
+  @override
   String get orientationLock => 'Bloqueig d\'orientació';
 
   @override
