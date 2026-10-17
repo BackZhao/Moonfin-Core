@@ -127,6 +127,7 @@ void main() {
     'interfaceStyle',
     'languageOverride',
     'libraryPosterSize',
+    'libraryStyle',
     'loadingAnimationImage',
     'loadingAnimationPosition',
     'loadingAnimationSize',

@@ -256,6 +256,7 @@ final List<SyncedField> syncedFields = <SyncedField>[
   SyncedField('interfaceStyle', UserPreferences.interfaceStyle, SyncCodec.enumName, enumValues: InterfaceStyle.values),
   SyncedField('languageOverride', UserPreferences.languageOverride, SyncCodec.text),
   SyncedField('libraryPosterSize', UserPreferences.libraryPosterSize, SyncCodec.enumName, enumValues: prefs.PosterSize.gridValues),
+  SyncedField('libraryStyle', UserPreferences.libraryStyle, SyncCodec.enumName, enumValues: prefs.LibraryStyle.values),
   SyncedField('liveTvChannelSortBy', UserPreferences.liveTvChannelSortBy, SyncCodec.enumName, enumValues: prefs.ChannelSortBy.values),
   SyncedField('liveTvDirectPlayEnabled', UserPreferences.liveTvDirectPlayEnabled, SyncCodec.boolean),
   SyncedField('loadingAnimationImage', UserPreferences.loadingAnimationImage, SyncCodec.enumName, enumValues: prefs.LoadingAnimationImage.values),

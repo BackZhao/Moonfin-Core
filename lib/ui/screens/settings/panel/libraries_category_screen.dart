@@ -46,6 +46,21 @@ class _LibrariesCategoryScreen extends StatelessWidget {
           _SectionHeader(l10n.libraryView),
           adaptiveListSection(
             children: [
+              EnumPreferenceTile<LibraryStyle>(
+                key: const ValueKey('pref_library_style'),
+                preference: UserPreferences.libraryStyle,
+                title: l10n.libraryStyle,
+                description: PlatformDetection.useMobileUi
+                    ? l10n.libraryStyleDescriptionPhone
+                    : l10n.libraryStyleDescription,
+                icon: Icons.view_sidebar_outlined,
+                labelOf: (v) => switch (v) {
+                  LibraryStyle.classic => l10n.libraryStyleClassic,
+                  LibraryStyle.modern => l10n.libraryStyleModern,
+                  LibraryStyle.docked => l10n.libraryStyleDocked,
+                },
+                onChanged: _pushPersonalizationSync,
+              ),
               SwitchPreferenceTile(
                 preference: UserPreferences.groupItemsIntoCollections,
                 title: l10n.groupItemsIntoCollections,

@@ -480,6 +480,7 @@ class UserPreferences extends ChangeNotifier {
     'hidden_next_up_series',
     'pref_recommendation_system_source',
     'pref_detail_screen_style',
+    'pref_library_style',
     'pref_detail_expanded_tabs',
     'pref_detail_show_technical_details',
     'pref_detail_trailers_external',
@@ -1922,6 +1923,14 @@ class UserPreferences extends ChangeNotifier {
   static final playlistsGroupByType = Preference(
     key: 'pref_playlists_group_by_type',
     defaultValue: true,
+  );
+
+  /// Header layout for the library browse screen. Stored per server and user
+  /// like [detailScreenStyle].
+  static final libraryStyle = EnumPreference(
+    key: 'pref_library_style',
+    defaultValue: LibraryStyle.classic,
+    values: LibraryStyle.values,
   );
 
   static final showMediaDetailsOnLibraryPage = Preference(

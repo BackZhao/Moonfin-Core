@@ -6057,6 +6057,42 @@
   "@libraryView": {
     "description": "Section title for library view settings"
   },
+  "libraryStyle": "Library Style",
+  "@libraryStyle": {
+    "description": "Label for the setting that picks the library page header layout"
+  },
+  "libraryStyleDescription": "Classic is the original header with icon buttons. Modern puts search and labeled sort, group and filter buttons in one bar. Docked moves the controls and the letters into a side panel.",
+  "@libraryStyleDescription": {
+    "description": "Explanation under the library style setting on TV and desktop"
+  },
+  "libraryStyleDescriptionPhone": "Classic is the original header with icon buttons. Modern adds labeled sort, group and filter chips under the search. Docked keeps the controls in a bar at the bottom of the screen.",
+  "@libraryStyleDescriptionPhone": {
+    "description": "Explanation under the library style setting on phones"
+  },
+  "libraryStyleClassic": "Classic",
+  "@libraryStyleClassic": {
+    "description": "Library style option: the original header"
+  },
+  "libraryStyleModern": "Modern",
+  "@libraryStyleModern": {
+    "description": "Library style option: one bar with labeled buttons"
+  },
+  "libraryStyleDocked": "Docked",
+  "@libraryStyleDocked": {
+    "description": "Library style option: a side panel on TV and desktop, a bottom bar on phones"
+  },
+  "libraryShowLabel": "Show",
+  "@libraryShowLabel": {
+    "description": "Library button that opens the played status filter, followed by its current value such as All or Unwatched"
+  },
+  "libraryAToZ": "A to Z",
+  "@libraryAToZ": {
+    "description": "Library bottom bar button that turns the alphabet on and off"
+  },
+  "libraryJumpToLetter": "Jump to letter",
+  "@libraryJumpToLetter": {
+    "description": "Label of the alphabet in a library, which scrolls to the first item starting with the chosen letter"
+  },
   "enableFolderView": "Enable Folder View",
   "@enableFolderView": {
     "description": "Setting for enabling folder view"

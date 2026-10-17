@@ -354,6 +354,19 @@ enum DetailScreenStyle {
   minimalist;
 }
 
+/// Selectable header layout for the library browse screen.
+///
+/// [classic] is the original centered title with a row of icon buttons and is
+/// the default. [modern] puts Home, search and labeled Sort, Group and Show
+/// pills in one bar. [docked] moves the controls and the letters into a side
+/// panel on TV and desktop and a floating bottom bar on phones. Stored per
+/// server and user.
+enum LibraryStyle {
+  classic,
+  modern,
+  docked;
+}
+
 /// Selectable algorithm source for similarity recommendation system.
 enum RecommendationSystemSource {
   local,

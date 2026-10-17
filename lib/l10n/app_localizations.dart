@@ -8116,6 +8116,60 @@ abstract class AppLocalizations {
   /// **'Library View'**
   String get libraryView;
 
+  /// Label for the setting that picks the library page header layout
+  ///
+  /// In en, this message translates to:
+  /// **'Library Style'**
+  String get libraryStyle;
+
+  /// Explanation under the library style setting on TV and desktop
+  ///
+  /// In en, this message translates to:
+  /// **'Classic is the original header with icon buttons. Modern puts search and labeled sort, group and filter buttons in one bar. Docked moves the controls and the letters into a side panel.'**
+  String get libraryStyleDescription;
+
+  /// Explanation under the library style setting on phones
+  ///
+  /// In en, this message translates to:
+  /// **'Classic is the original header with icon buttons. Modern adds labeled sort, group and filter chips under the search. Docked keeps the controls in a bar at the bottom of the screen.'**
+  String get libraryStyleDescriptionPhone;
+
+  /// Library style option: the original header
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get libraryStyleClassic;
+
+  /// Library style option: one bar with labeled buttons
+  ///
+  /// In en, this message translates to:
+  /// **'Modern'**
+  String get libraryStyleModern;
+
+  /// Library style option: a side panel on TV and desktop, a bottom bar on phones
+  ///
+  /// In en, this message translates to:
+  /// **'Docked'**
+  String get libraryStyleDocked;
+
+  /// Library button that opens the played status filter, followed by its current value such as All or Unwatched
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get libraryShowLabel;
+
+  /// Library bottom bar button that turns the alphabet on and off
+  ///
+  /// In en, this message translates to:
+  /// **'A to Z'**
+  String get libraryAToZ;
+
+  /// Label of the alphabet in a library, which scrolls to the first item starting with the chosen letter
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to letter'**
+  String get libraryJumpToLetter;
+
   /// Setting for enabling folder view
   ///
   /// In en, this message translates to:
