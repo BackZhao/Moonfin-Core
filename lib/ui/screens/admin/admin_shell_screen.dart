@@ -67,7 +67,9 @@ class AdminShellScreen extends StatelessWidget {
       ),
       child: ScrollConfiguration(
         behavior: const _AdminShellScrollBehavior(),
-        child: child,
+        // Each page's route blocks the semantics painted before it, which
+        // would hide the rail and page list from screen readers.
+        child: Semantics(container: true, child: child),
       ),
     );
 
@@ -226,7 +228,7 @@ class _NarrowShell extends StatelessWidget {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         // The area sits over the home screen, so an empty slot would get an
-        // implied arrow that leaves it, which is what the exit button is for.
+        // implied arrow that leaves it, which is what the Moonfin mark is for.
         automaticallyImplyLeading: false,
         backgroundColor: theme.colorScheme.surface,
         leading: canGoBack
@@ -235,10 +237,7 @@ class _NarrowShell extends StatelessWidget {
                 tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                 onPressed: context.pop,
               )
-            : const Padding(
-                padding: EdgeInsets.all(12),
-                child: _MoonfinMark(size: 28),
-              ),
+            : const Center(child: _ExitMark(size: 24)),
         titleSpacing: canGoBack ? 4 : 0,
         title: Column(
           mainAxisSize: MainAxisSize.min,
@@ -261,7 +260,6 @@ class _NarrowShell extends StatelessWidget {
             ),
           ],
         ),
-        actions: const [_ExitButton()],
       ),
       body: DecoratedBox(
         decoration: backdrop,
@@ -316,7 +314,7 @@ class _GroupRail extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const _MoonfinMark(size: 34),
+            const _ExitMark(size: 34),
             const SizedBox(height: 18),
             for (final group in adminGroups)
               _RailButton(
@@ -327,13 +325,6 @@ class _GroupRail extends StatelessWidget {
                 // opens straight on its first page.
                 onTap: () => context.go(group.pages.first.route),
               ),
-            const Spacer(),
-            _RailButton(
-              icon: Icons.logout,
-              label: l10n.adminExitTooltip,
-              selected: false,
-              onTap: () => context.go(Destinations.home),
-            ),
           ],
         ),
       ),
@@ -575,35 +566,58 @@ class _Breadcrumbs extends StatelessWidget {
   }
 }
 
-class _ExitButton extends StatelessWidget {
-  const _ExitButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.logout),
-      tooltip: AppLocalizations.of(context).adminExitTooltip,
-      onPressed: () => context.go(Destinations.home),
-    );
-  }
-}
-
-/// The Moonfin mark in a single theme color, white on the default dark theme.
-class _MoonfinMark extends StatelessWidget {
-  const _MoonfinMark({required this.size});
+/// The Moonfin mark with Exit under it. Tapping it leaves the area.
+class _ExitMark extends StatelessWidget {
+  const _ExitMark({required this.size});
 
   final double size;
 
   @override
   Widget build(BuildContext context) {
-    return ExcludeSemantics(
-      child: SvgPicture.asset(
-        'assets/icons/moonfin_logo.svg',
-        width: size,
-        height: size,
-        colorFilter: ColorFilter.mode(
-          Theme.of(context).colorScheme.onSurface,
-          BlendMode.srcIn,
+    final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
+    void leave() => context.go(Destinations.home);
+    return Semantics(
+      button: true,
+      label: l10n.adminExitTooltip,
+      excludeSemantics: true,
+      onTap: leave,
+      child: Tooltip(
+        message: l10n.adminExitTooltip,
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            borderRadius: AppRadius.circular(10),
+            onTap: leave,
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/moonfin_logo.svg',
+                    width: size,
+                    height: size,
+                    colorFilter: ColorFilter.mode(
+                      scheme.onSurface,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.exit,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w500,
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
