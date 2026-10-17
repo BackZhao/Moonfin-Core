@@ -665,17 +665,16 @@ class AppLocalizationsFi extends AppLocalizations {
   String get gameFastForward => 'Pikakelaus';
 
   @override
-  String get gameOrientation => 'Game orientation';
+  String get gameOrientation => 'Pelien näytön suuntaus';
 
   @override
-  String get gameOrientationSubtitle =>
-      'Screen orientation while playing games';
+  String get gameOrientationSubtitle => 'Näytön suunta pelatessa';
 
   @override
-  String get landscape => 'Landscape';
+  String get landscape => 'Vaakasuuntainen';
 
   @override
-  String get portrait => 'Portrait';
+  String get portrait => 'Pystykuva';
 
   @override
   String get gameEmulatorSettings => 'Emulaattorin asetukset';
@@ -688,20 +687,20 @@ class AppLocalizationsFi extends AppLocalizations {
   String get gameHoldToOpenMenu => 'Avaa valikko pitämällä painettuna';
 
   @override
-  String get gameKeepPlaying => 'Keep playing';
+  String get gameKeepPlaying => 'Jatka pelaamista';
 
   @override
-  String get gameSaveAndExit => 'Save & exit';
+  String get gameSaveAndExit => 'Tallenna & Poistu';
 
   @override
-  String get gameExitGame => 'Exit game';
+  String get gameExitGame => 'Poistu pelistä';
 
   @override
-  String get gameSavingBeforeExit => 'Saving…';
+  String get gameSavingBeforeExit => 'Tallennetaan…';
 
   @override
   String get gameSaveFailedStillPlaying =>
-      'Could not save state. Still playing.';
+      'Tilaa ei voitu tallentaa. Peli jatkuu.';
 
   @override
   String get gamePlaybackUnsupported =>
@@ -2167,7 +2166,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get shortcutPreviousItem => 'Edellinen kappale';
 
   @override
-  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+  String get shortcutSkipSegment =>
+      'Ohita alkutekstit tai lopputekstit, kun sitä pyydetään';
 
   @override
   String get shortcutShowShortcuts => 'Näytä tämä lista';
@@ -2498,7 +2498,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get liveBadge => 'LIVE';
 
   @override
-  String get liveTvJumpToLive => 'Jump to Live';
+  String get liveTvJumpToLive => 'Siirry Live-tilaan';
 
   @override
   String guideNextProgram(String time, String title) {
@@ -2603,7 +2603,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get playbackVideoUnsupported =>
-      'This device can\'t play this video\'s format. Try an external player.';
+      'Tämä laite ei tue tämän videon tiedostomuotoa. Kokeile ulkoista toistinta.';
 
   @override
   String liveReconnecting(int attempt, int total) {
@@ -3721,7 +3721,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get buttonShownInSyncPlayGroup =>
-      'Only shows while you\'re in a SyncPlay group';
+      'Näkyy vain, kun olet SyncPlay-ryhmässä';
 
   @override
   String get orientationLock => 'Suuntalukitus';
@@ -4171,11 +4171,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get defaultSubtitleLanguage => 'Tekstityksen oletuskieli';
 
   @override
-  String get subtitleDownloadLanguages => 'Subtitle Download Languages';
+  String get subtitleDownloadLanguages => 'Tekstitysten latauskielet';
 
   @override
   String get subtitleDownloadLanguagesDescription =>
-      'Languages to search when downloading subtitles, up to 5. Auto searches one language picked from your default subtitle language or the video.';
+      'Kielet, joilla hakua suoritetaan tekstityksiä ladattaessa, enintään 5. Järjestelmä etsii automaattisesti yhtä kieltä, joka valitaan oletustekstityskielesi tai videon kielen joukosta.';
 
   @override
   String get preferredSecondarySubtitleLanguage =>
@@ -4613,15 +4613,15 @@ class AppLocalizationsFi extends AppLocalizations {
   String get libraryView => 'Kirjastonäkymä';
 
   @override
-  String get libraryStyle => 'Library Style';
+  String get libraryStyle => 'Kirjastotyyli';
 
   @override
   String get libraryStyleDescription =>
-      'Classic is the original header with icon buttons. Modern puts search and labeled sort, group and filter buttons in one bar. Docked moves the controls and the letters into a side panel.';
+      '”Classic” on alkuperäinen otsikkopalkki, jossa on kuvakepainikkeet. ”Modern”-tilassa haku sekä nimikoidut lajittelu-, ryhmittely- ja suodatuspainikkeet on sijoitettu yhteen palkkiin. ”Docked”-tilassa hallintapainikkeet ja kirjaimet siirretään sivupaneeliin.';
 
   @override
   String get libraryStyleDescriptionPhone =>
-      'Classic is the original header with icon buttons. Modern adds labeled sort, group and filter chips under the search. Docked keeps the controls in a bar at the bottom of the screen.';
+      '”Classic” on alkuperäinen otsikkopalkki, jossa on kuvakepainikkeet. ”Modern” lisää hakukentän alle nimikoidut lajittelu-, ryhmittely- ja suodatuspainikkeet. ”Docked” sijoittaa hallintapainikkeet palkkiin näytön alareunaan.';
 
   @override
   String get libraryStyleClassic => 'Classic';
@@ -4630,16 +4630,16 @@ class AppLocalizationsFi extends AppLocalizations {
   String get libraryStyleModern => 'Modern';
 
   @override
-  String get libraryStyleDocked => 'Docked';
+  String get libraryStyleDocked => 'Telakoituna';
 
   @override
-  String get libraryShowLabel => 'Show';
+  String get libraryShowLabel => 'Näytä';
 
   @override
-  String get libraryAToZ => 'A to Z';
+  String get libraryAToZ => 'A–Z';
 
   @override
-  String get libraryJumpToLetter => 'Jump to letter';
+  String get libraryJumpToLetter => 'Siirry kirjaimeen';
 
   @override
   String get enableFolderView => 'Ota käyttöön kansionäkymä';
@@ -6694,47 +6694,48 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get adminExternalIdTypePerson => 'Person';
+  String get adminExternalIdTypePerson => 'Henkilö';
 
   @override
-  String get adminExternalIdTypeArtist => 'Artist';
+  String get adminExternalIdTypeArtist => 'Artisti';
 
   @override
-  String get adminExternalIdTypeAlbumArtist => 'Album Artist';
+  String get adminExternalIdTypeAlbumArtist => 'Albumin Artisti';
 
   @override
-  String get adminExternalIdTypeOtherArtist => 'Other Artist';
+  String get adminExternalIdTypeOtherArtist => 'Muu Artisti';
 
   @override
-  String get adminExternalIdTypeReleaseGroup => 'Release Group';
+  String get adminExternalIdTypeReleaseGroup => 'Julkaisuryhmä';
 
   @override
-  String get adminExternalIdTypeBook => 'Book';
+  String get adminExternalIdTypeBook => 'Kirja';
 
   @override
   String get adminPlaybackHwAccelWarning =>
-      'Hardware acceleration can be unstable on some systems. Keep the operating system and video drivers up to date, and set this back to None if video stops playing.';
+      'Laitteistokiihdytys voi toimia epävakaasti joissakin järjestelmissä. Pidä käyttöjärjestelmä ja näytönohjaimen ajurit ajan tasalla, ja aseta tämä asetus takaisin arvoon ”Ei mitään”, jos videon toisto keskeytyy.';
 
   @override
   String get adminLibMetadataChangeHelp =>
-      'Changes to metadata settings apply to new content. To update existing content, refresh it from its detail page or refresh the library.';
+      'Metatietoasetusten muutokset koskevat uutta sisältöä. Jos haluat päivittää olemassa olevaa sisältöä, päivitä se sen tietosivulta tai päivitä kirjasto.';
 
   @override
-  String get adminLibFetcherSettings => 'Fetcher settings';
+  String get adminLibFetcherSettings => 'Fetcher-asetukset';
 
   @override
   String adminLibImageOptionsTitle(String type) {
-    return 'Image options for $type';
+    return '$type:n kuvavaihtoehdot';
   }
 
   @override
-  String get adminLibFetchImages => 'Fetch images';
+  String get adminLibFetchImages => 'Hae kuvat';
 
   @override
-  String get adminLibMaxBackdrops => 'Maximum number of backdrops per item';
+  String get adminLibMaxBackdrops => 'Kohteen taustakuvien enimmäismäärä';
 
   @override
-  String get adminLibMinBackdropWidth => 'Minimum backdrop download width';
+  String get adminLibMinBackdropWidth =>
+      'Taustakuvan vähimmäisleveys latausta varten';
 
   @override
   String get adminImageTypeArt => 'Clearart';
@@ -6743,80 +6744,81 @@ class AppLocalizationsFi extends AppLocalizations {
   String get adminImageTypeBox => 'Box';
 
   @override
-  String get adminImageTypeBoxRear => 'Box (back)';
+  String get adminImageTypeBoxRear => 'Box (takaisin)';
 
   @override
-  String get adminImageTypeDisc => 'Disc';
+  String get adminImageTypeDisc => 'Levy';
 
   @override
-  String get adminImageTypeMenu => 'Menu';
+  String get adminImageTypeMenu => 'Valikko';
 
   @override
-  String get adminActivityMediaDetails => 'Media details';
+  String get adminActivityMediaDetails => 'Median  yksityiskohdat';
 
   @override
   String get adminNetworkingOtherPublishedUriHint =>
       'e.g. 192.168.1.0/24=http://192.168.1.5:8096';
 
   @override
-  String get adminMetadataFieldOriginalLanguage => 'Original language';
+  String get adminMetadataFieldOriginalLanguage => 'Alkuperäinen kieli';
 
   @override
-  String get adminMetadataFieldDateAdded => 'Date added';
+  String get adminMetadataFieldDateAdded => 'Lisäyspäivä';
 
   @override
-  String get adminMetadataFieldArtists => 'Artists';
+  String get adminMetadataFieldArtists => 'Artisti';
 
   @override
-  String get adminMetadataFieldAlbumArtists => 'Album artists';
+  String get adminMetadataFieldAlbumArtists => 'Albumin esittäjät';
 
   @override
-  String get adminMetadataFieldAlbum => 'Album';
+  String get adminMetadataFieldAlbum => 'Albumi';
 
   @override
-  String get adminMetadataFieldSeriesName => 'Series name';
+  String get adminMetadataFieldSeriesName => 'Sarjan nimi';
 
   @override
-  String get adminMetadataFieldEpisodeNumber => 'Episode number';
+  String get adminMetadataFieldEpisodeNumber => 'Jakson numero';
 
   @override
-  String get adminMetadataFieldSeasonNumber => 'Season number';
+  String get adminMetadataFieldSeasonNumber => 'Kausinumero';
 
   @override
-  String get adminMetadataFieldTrackNumber => 'Track number';
+  String get adminMetadataFieldTrackNumber => 'Kappaleen numero';
 
   @override
-  String get adminMetadataFieldDiscNumber => 'Disc number';
+  String get adminMetadataFieldDiscNumber => 'Levyn numero';
 
   @override
   String get adminMetadataFieldAirTime => 'Air time';
 
   @override
-  String get adminMetadataFieldRuntime => 'Runtime in minutes';
+  String get adminMetadataFieldRuntime => 'Kesto minuutteina';
 
   @override
-  String get adminMetadataFieldPlaceOfBirth => 'Place of birth';
+  String get adminMetadataFieldPlaceOfBirth => 'Syntymäpaikka';
 
   @override
-  String get adminMetadataFieldBirthDate => 'Birth date';
+  String get adminMetadataFieldBirthDate => 'Syntymäpäivä';
 
   @override
-  String get adminMetadataFieldBirthYear => 'Birth year';
+  String get adminMetadataFieldBirthYear => 'Syntymävuosi';
 
   @override
-  String get adminMetadataFieldDeathDate => 'Death date';
+  String get adminMetadataFieldDeathDate => 'Kuolinpäivä';
 
   @override
-  String get adminMetadataFieldAspectRatio => 'Original aspect ratio';
+  String get adminMetadataFieldAspectRatio => 'Alkuperäinen kuvasuhde';
 
   @override
-  String get adminMetadataFieldAirsBeforeSeason => 'Airs before season';
+  String get adminMetadataFieldAirsBeforeSeason =>
+      'Esitetään ennen kauden alkua';
 
   @override
-  String get adminMetadataFieldAirsAfterSeason => 'Airs after season';
+  String get adminMetadataFieldAirsAfterSeason => 'Esitetään kauden jälkeen';
 
   @override
-  String get adminMetadataFieldAirsBeforeEpisode => 'Airs before episode';
+  String get adminMetadataFieldAirsBeforeEpisode => 'Esitetään ennen jaksoa';
 
   @override
   String get adminMetadataNamesHelp =>
@@ -8699,7 +8701,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get adminNoPackagesAvailable => 'Paketteja ei ole saatavilla';
 
   @override
-  String get adminExperimentalIntegration => 'Kokeellinen integraatio';
+  String get adminExperimentalIntegration =>
+      'Kokeellinen tietojen yhdistäminen';
 
   @override
   String get adminExperimentalWarning =>
@@ -9806,7 +9809,8 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get adminPluginDetailExperimental => 'Kokeellinen integraatio';
+  String get adminPluginDetailExperimental =>
+      'Kokeellinen tietojen yhdistäminen';
 
   @override
   String get adminPluginDetailExperimentalContent =>
@@ -11194,87 +11198,88 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tämän palvelimen varmennetta ei pidetä luotettavana. Jos kyseessä on oma palvelimesi ja se käyttää itse allekirjoitettua tai yksityistä varmennetta, voit sallia sen tässä.';
 
   @override
-  String get clientCertTitle => 'Client certificate';
+  String get clientCertTitle => 'Asiakas varmenne';
 
   @override
   String clientCertHost(String host) {
-    return 'Certificate for $host';
+    return 'Varmenne $host:lle';
   }
 
   @override
-  String get clientCertChooseFile => 'Choose file';
+  String get clientCertChooseFile => 'Valitse tiedosto';
 
   @override
-  String get clientCertPassword => 'Certificate password';
+  String get clientCertPassword => 'Varmenteen salasana';
 
   @override
-  String get clientCertStartUpload => 'Send from phone';
+  String get clientCertStartUpload => 'Lähetä puhelimesta';
 
   @override
   String get clientCertUploadHint =>
-      'Scan this code with your phone, or open the address in its browser, then pick the file and enter its password.';
+      'Skannaa tämä koodi puhelimellasi tai avaa osoite puhelimesi selaimessa, valitse sitten tiedosto ja syötä sen salasana.';
 
   @override
-  String get clientCertStopUpload => 'Stop waiting';
+  String get clientCertStopUpload => 'Älä odota';
 
   @override
-  String get clientCertNoFileData => 'Couldn\'t read the file. Try again.';
+  String get clientCertNoFileData =>
+      'Tiedostoa ei voitu lukea. Yritä uudelleen.';
 
   @override
-  String get clientCertPickFailed => 'Couldn\'t open the file picker.';
+  String get clientCertPickFailed => 'Tiedostonvalintaikkunaa ei voitu avata.';
 
   @override
   String get clientCertUploadFailed =>
-      'Couldn\'t start the upload page. Try again.';
+      'Lataussivua ei voitu avata. Yritä uudelleen.';
 
   @override
   String get clientCertNoSecureStorage =>
-      'This device has no secure storage, so the certificate can\'t be saved. On Linux, install libsecret and try again.';
+      'Tässä laitteessa ei ole suojattua tallennustilaa, joten varmennetta ei voi tallentaa. Asenna Linuxissa libsecret ja yritä uudelleen.';
 
   @override
   String get clientCertDecodeFailed =>
-      'Couldn\'t read that file as a certificate. Make sure it\'s a .p12 or .pfx.';
+      'Tiedostoa ei voitu lukea varmenteena. Varmista, että tiedostomuoto on .p12 tai .pfx.';
 
   @override
   String get clientCertWrongPassword =>
-      'That password doesn\'t unlock this certificate.';
+      'Tuo salasana ei avaa tätä varmennetta.';
 
   @override
   String get clientCertRequired =>
-      'This server needs a client certificate (mTLS). Add one for this host to continue.';
+      'Tämä palvelin vaatii sertifikaatin (mTLS). Lisää sellainen jotta voit jatkaa.';
 
   @override
   String clientCertExpired(String date) {
-    return 'The certificate for this server expired on $date. Replace it to continue.';
+    return 'Tämän palvelimen varmenne vanhentui $date. Vaihda se, jotta voit jatkaa.';
   }
 
   @override
-  String get clientCertAddButton => 'Add client certificate';
+  String get clientCertAddButton => 'Lisää sertifikaatti';
 
   @override
-  String get settingsClientCertificates => 'Client certificates';
+  String get settingsClientCertificates => 'Asiakasvarmenteet';
 
   @override
   String get settingsClientCertificatesSubtitle =>
-      'Certificates this app presents to servers that require one (mTLS)';
+      'Sertifikaatit, jotka tämä sovellus esittää niille palvelimille, jotka niitä vaativat (mTLS)';
 
   @override
-  String get clientCertSubject => 'Subject';
+  String get clientCertSubject => 'Aihe';
 
   @override
   String clientCertExpires(String date) {
-    return 'Expires $date';
+    return 'Voimassaolo päättyy $date';
   }
 
   @override
-  String get clientCertReplace => 'Replace';
+  String get clientCertReplace => 'Korvaa';
 
   @override
-  String get clientCertAdd => 'Add certificate';
+  String get clientCertAdd => 'Lisää varmenne';
 
   @override
   String get clientCertAddHostPrompt =>
-      'Which server host needs a certificate?';
+      'Mille palvelinpalvelimelle tarvitaan varmenne?';
 
   @override
   String get itemBlockedByParentalControls => 'Tätä ei ole saatavilla';
@@ -14919,7 +14924,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get storageAndDownloads => 'Tallennus & Lataukset';
 
   @override
-  String get integrations => 'Integraatiot';
+  String get integrations => 'Tietojen yhdistäminen';
 
   @override
   String get settingsSync => 'Asetusten synkronointi';

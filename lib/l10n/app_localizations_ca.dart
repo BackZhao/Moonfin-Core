@@ -662,17 +662,17 @@ class AppLocalizationsCa extends AppLocalizations {
   String get gameFastForward => 'Avançar';
 
   @override
-  String get gameOrientation => 'Game orientation';
+  String get gameOrientation => 'Orientació en els jocs';
 
   @override
   String get gameOrientationSubtitle =>
-      'Screen orientation while playing games';
+      'Orientació de la pantalla mentre jugues';
 
   @override
-  String get landscape => 'Landscape';
+  String get landscape => 'Horitzontal';
 
   @override
-  String get portrait => 'Portrait';
+  String get portrait => 'Vertical';
 
   @override
   String get gameEmulatorSettings => 'Paràmetres de l\'emulador';
@@ -684,20 +684,20 @@ class AppLocalizationsCa extends AppLocalizations {
   String get gameHoldToOpenMenu => 'Mantén premut per obrir el menú';
 
   @override
-  String get gameKeepPlaying => 'Keep playing';
+  String get gameKeepPlaying => 'Continua jugant';
 
   @override
-  String get gameSaveAndExit => 'Save & exit';
+  String get gameSaveAndExit => 'Desa i surt';
 
   @override
-  String get gameExitGame => 'Exit game';
+  String get gameExitGame => 'Surt del joc';
 
   @override
-  String get gameSavingBeforeExit => 'Saving…';
+  String get gameSavingBeforeExit => 'S\'està desant…';
 
   @override
   String get gameSaveFailedStillPlaying =>
-      'Could not save state. Still playing.';
+      'No s\'ha pogut desar l\'estat. Continues jugant.';
 
   @override
   String get gamePlaybackUnsupported =>
@@ -2508,7 +2508,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get liveBadge => 'En Viu';
 
   @override
-  String get liveTvJumpToLive => 'Jump to Live';
+  String get liveTvJumpToLive => 'Ves al directe';
 
   @override
   String guideNextProgram(String time, String title) {
@@ -2617,7 +2617,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get playbackVideoUnsupported =>
-      'This device can\'t play this video\'s format. Try an external player.';
+      'Aquest dispositiu no pot reproduir el format d\'aquest vídeo. Prova un reproductor extern.';
 
   @override
   String liveReconnecting(int attempt, int total) {
@@ -11300,87 +11300,89 @@ class AppLocalizationsCa extends AppLocalizations {
       'No es confia en el certificat d\'aquest servidor. Si és el teu propi servidor i fa servir un certificat autosignat o privat, pots permetre\'l aquí.';
 
   @override
-  String get clientCertTitle => 'Client certificate';
+  String get clientCertTitle => 'Certificat de client';
 
   @override
   String clientCertHost(String host) {
-    return 'Certificate for $host';
+    return 'Certificat per a $host';
   }
 
   @override
-  String get clientCertChooseFile => 'Choose file';
+  String get clientCertChooseFile => 'Tria un fitxer';
 
   @override
-  String get clientCertPassword => 'Certificate password';
+  String get clientCertPassword => 'Contrasenya del certificat';
 
   @override
-  String get clientCertStartUpload => 'Send from phone';
+  String get clientCertStartUpload => 'Envia des del telèfon';
 
   @override
   String get clientCertUploadHint =>
-      'Scan this code with your phone, or open the address in its browser, then pick the file and enter its password.';
+      'Escaneja aquest codi amb el telèfon, o obre l\'adreça al seu navegador, i després tria el fitxer i introdueix-ne la contrasenya.';
 
   @override
-  String get clientCertStopUpload => 'Stop waiting';
+  String get clientCertStopUpload => 'Deixa d\'esperar';
 
   @override
-  String get clientCertNoFileData => 'Couldn\'t read the file. Try again.';
+  String get clientCertNoFileData =>
+      'No s\'ha pogut llegir el fitxer. Torna-ho a provar.';
 
   @override
-  String get clientCertPickFailed => 'Couldn\'t open the file picker.';
+  String get clientCertPickFailed =>
+      'No s\'ha pogut obrir el selector de fitxers.';
 
   @override
   String get clientCertUploadFailed =>
-      'Couldn\'t start the upload page. Try again.';
+      'No s\'ha pogut iniciar la pàgina de pujada. Torna-ho a provar.';
 
   @override
   String get clientCertNoSecureStorage =>
-      'This device has no secure storage, so the certificate can\'t be saved. On Linux, install libsecret and try again.';
+      'Aquest dispositiu no té emmagatzematge segur, així que no es pot desar el certificat. A Linux, instal·la libsecret i torna-ho a provar.';
 
   @override
   String get clientCertDecodeFailed =>
-      'Couldn\'t read that file as a certificate. Make sure it\'s a .p12 or .pfx.';
+      'No s\'ha pogut llegir aquest fitxer com a certificat. Assegura\'t que sigui un .p12 o un .pfx.';
 
   @override
   String get clientCertWrongPassword =>
-      'That password doesn\'t unlock this certificate.';
+      'Aquesta contrasenya no desbloqueja aquest certificat.';
 
   @override
   String get clientCertRequired =>
-      'This server needs a client certificate (mTLS). Add one for this host to continue.';
+      'Aquest servidor necessita un certificat de client (mTLS). Afegeix-ne un per a aquest amfitrió per continuar.';
 
   @override
   String clientCertExpired(String date) {
-    return 'The certificate for this server expired on $date. Replace it to continue.';
+    return 'El certificat d\'aquest servidor va caducar el $date. Substitueix-lo per continuar.';
   }
 
   @override
-  String get clientCertAddButton => 'Add client certificate';
+  String get clientCertAddButton => 'Afegeix un certificat de client';
 
   @override
-  String get settingsClientCertificates => 'Client certificates';
+  String get settingsClientCertificates => 'Certificats de client';
 
   @override
   String get settingsClientCertificatesSubtitle =>
-      'Certificates this app presents to servers that require one (mTLS)';
+      'Certificats que aquesta aplicació presenta als servidors que en requereixen un (mTLS)';
 
   @override
-  String get clientCertSubject => 'Subject';
+  String get clientCertSubject => 'Subjecte';
 
   @override
   String clientCertExpires(String date) {
-    return 'Expires $date';
+    return 'Caduca el $date';
   }
 
   @override
-  String get clientCertReplace => 'Replace';
+  String get clientCertReplace => 'Substitueix';
 
   @override
-  String get clientCertAdd => 'Add certificate';
+  String get clientCertAdd => 'Afegeix un certificat';
 
   @override
   String get clientCertAddHostPrompt =>
-      'Which server host needs a certificate?';
+      'Quin amfitrió necessita un certificat?';
 
   @override
   String get itemBlockedByParentalControls => 'Això no està disponible';
@@ -11868,7 +11870,7 @@ class AppLocalizationsCa extends AppLocalizations {
       'Desplaçament addicional de SyncPlay';
 
   @override
-  String get onNow => 'En Ara';
+  String get onNow => 'Ara';
 
   @override
   String get collections => 'Col·leccions';
@@ -11994,7 +11996,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get themeStoreLoadFailed =>
-      'No s\'ha pogut carregar la botiga de temes. Verifica la teva conexió i intenta-ho de nou.';
+      'No s\'ha pogut carregar la botiga de temes. Verifica la teva connexió i intenta-ho de nou.';
 
   @override
   String get themeStoreSave => 'Desa';
