@@ -19,8 +19,10 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
     required String name,
     String? collectionType,
     List<String>? paths,
+    Map<String, dynamic>? libraryOptions,
     bool refreshLibrary = false,
   }) async {
+    final hasPaths = paths != null && paths.isNotEmpty;
     await _dio.post(
       '/Library/VirtualFolders',
       queryParameters: {
@@ -32,11 +34,13 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
       // ignores any other body field. Its query list splits on commas, which
       // breaks a folder with one in its name.
       data: {
-        if (paths != null && paths.isNotEmpty)
+        if (libraryOptions != null || hasPaths)
           'LibraryOptions': {
-            'PathInfos': [
-              for (final path in paths) {'Path': path},
-            ],
+            ...?libraryOptions,
+            if (hasPaths)
+              'PathInfos': [
+                for (final path in paths) {'Path': path},
+              ],
           },
       },
     );
@@ -73,9 +77,14 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
   }
 
   @override
-  Future<void> addMediaPath(String libraryName, String path) async {
+  Future<void> addMediaPath(
+    String libraryName,
+    String path, {
+    bool refreshLibrary = false,
+  }) async {
     await _dio.post(
       '/Library/VirtualFolders/Paths',
+      queryParameters: {'refreshLibrary': refreshLibrary},
       data: {
         'Name': libraryName,
         'Path': path,
@@ -139,8 +148,11 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
   }
 
   @override
-  Future<List<VirtualFolderInfo>> getMediaFolders() async {
-    final response = await _dio.get('/Library/MediaFolders');
+  Future<List<VirtualFolderInfo>> getMediaFolders({bool? isHidden}) async {
+    final response = await _dio.get(
+      '/Library/MediaFolders',
+      queryParameters: {'isHidden': ?isHidden},
+    );
     final data = response.data as Map<String, dynamic>;
     return (data['Items'] as List<dynamic>?)
             ?.map(

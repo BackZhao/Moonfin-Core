@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:moonfin_design/moonfin_design.dart';
 import 'package:server_core/server_core.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../util/error_message.dart';
+import '../admin_draft.dart';
 import '../widgets/admin_form_styles.dart';
 
 /// Server-wide preferred metadata language/country and chapter image settings.
-/// Mirrors jellyfin-web's Libraries > Metadata and Images page.
 class AdminLibraryMetadataScreen extends StatefulWidget {
   const AdminLibraryMetadataScreen({super.key});
 
@@ -18,13 +18,12 @@ class AdminLibraryMetadataScreen extends StatefulWidget {
 }
 
 class _AdminLibraryMetadataScreenState
-    extends State<AdminLibraryMetadataScreen> {
+    extends State<AdminLibraryMetadataScreen> with AdminDraftHost {
   late final AdminSystemApi _api;
   Map<String, dynamic>? _config;
   List<Map<String, dynamic>> _cultures = const [];
   List<Map<String, dynamic>> _countries = const [];
   bool _loading = true;
-  bool _saving = false;
   String? _error;
 
   static const _resolutions = [
@@ -53,10 +52,9 @@ class _AdminLibraryMetadataScreenState
     });
     try {
       final config = await _api.getServerConfiguration();
-      final cultures =
-          await _api.getCultures().catchError((_) => <Map<String, dynamic>>[]);
-      final countries =
-          await _api.getCountries().catchError((_) => <Map<String, dynamic>>[]);
+      // Either list failing shows the error instead of the form.
+      final cultures = await _api.getCultures();
+      final countries = await _api.getCountries();
       if (!mounted) return;
       setState(() {
         _config = config;
@@ -64,6 +62,13 @@ class _AdminLibraryMetadataScreenState
         _countries = countries;
         _loading = false;
       });
+      hostDraft(
+        AdminDraft.single(
+          working: config,
+          reload: _api.getServerConfiguration,
+          post: _api.updateServerConfiguration,
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -73,28 +78,9 @@ class _AdminLibraryMetadataScreenState
     }
   }
 
-  Future<void> _save() async {
-    if (_config == null) return;
-    setState(() => _saving = true);
-    try {
-      await _api.updateServerConfiguration(_config!);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).adminSettingsSaved)),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.adminSettingsSaveFailed(describeError(e, l10n))),
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _saving = false);
-    }
+  void _set(String key, Object? value) {
+    setState(() => _config![key] = value);
+    edited();
   }
 
   @override
@@ -119,7 +105,8 @@ class _AdminLibraryMetadataScreenState
     }
 
     final bottomSafe = MediaQuery.of(context).padding.bottom;
-    final currentRes = _config!['ChapterImageResolution']?.toString() ?? 'MatchSource';
+    final currentRes =
+        _config!['ChapterImageResolution']?.toString() ?? 'MatchSource';
     return ListView(
       padding: EdgeInsets.fromLTRB(16, 20, 16, bottomSafe + 40),
       children: [
@@ -128,61 +115,90 @@ class _AdminLibraryMetadataScreenState
           title: l10n.adminLibMetadataTitle,
           icon: Icons.description_outlined,
         ),
-        adminSectionLabel(context, l10n.adminLibMetadataLangSection,
-            icon: Icons.language),
-        adminCodeDropdown(
-          label: l10n.adminGeneralMetadataLanguage,
-          defaultLabel: l10n.adminLibDefault,
-          current: _config!['PreferredMetadataLanguage']?.toString() ?? '',
-          rawItems: _cultures.map((c) => (
-                (c['TwoLetterISOLanguageName'] ?? c['ThreeLetterISOLanguageName'])
-                    ?.toString(),
-                (c['DisplayName'] ?? c['Name'])?.toString(),
-              )),
-          onChanged: (v) =>
-              setState(() => _config!['PreferredMetadataLanguage'] = v),
-        ),
-        const SizedBox(height: 12),
-        adminCodeDropdown(
-          label: l10n.adminGeneralMetadataCountry,
-          defaultLabel: l10n.adminLibDefault,
-          current: _config!['MetadataCountryCode']?.toString() ?? '',
-          rawItems: _countries.map((c) => (
-                (c['TwoLetterISORegionName'] ?? c['Name'])?.toString(),
-                (c['DisplayName'] ?? c['Name'])?.toString(),
-              )),
-          onChanged: (v) => setState(() => _config!['MetadataCountryCode'] = v),
-        ),
-        adminSectionLabel(context, l10n.adminLibChaptersSection,
-            icon: Icons.bookmark_outline),
-        TextFormField(
-          initialValue:
-              (_config!['DummyChapterDuration'] as num?)?.toString() ?? '0',
-          decoration: adminInputDecoration(
-            label: l10n.adminLibDummyChapterDuration,
-            helper: l10n.adminLibDummyChapterDurationHint,
+        draftKeyed(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              adminSection(
+                context,
+                title: l10n.adminLibMetadataLangSection,
+                icon: Icons.language,
+                children: [
+                  adminCodeDropdown(
+                    label: l10n.adminGeneralMetadataLanguage,
+                    anchor: 'metadata.PreferredMetadataLanguage',
+                    defaultLabel: l10n.adminLibDefault,
+                    current:
+                        _config!['PreferredMetadataLanguage']?.toString() ?? '',
+                    rawItems: _cultures.map((c) => (
+                          (c['TwoLetterISOLanguageName'] ??
+                                  c['ThreeLetterISOLanguageName'])
+                              ?.toString(),
+                          (c['DisplayName'] ?? c['Name'])?.toString(),
+                        )),
+                    onChanged: (v) => _set('PreferredMetadataLanguage', v),
+                  ),
+                  adminCodeDropdown(
+                    label: l10n.adminGeneralMetadataCountry,
+                    anchor: 'metadata.MetadataCountryCode',
+                    defaultLabel: l10n.adminLibDefault,
+                    current: _config!['MetadataCountryCode']?.toString() ?? '',
+                    rawItems: _countries.map((c) => (
+                          (c['TwoLetterISORegionName'] ?? c['Name'])?.toString(),
+                          (c['DisplayName'] ?? c['Name'])?.toString(),
+                        )),
+                    onChanged: (v) => _set('MetadataCountryCode', v),
+                  ),
+                ],
+              ),
+              adminSection(
+                context,
+                title: l10n.adminLibChaptersSection,
+                icon: Icons.bookmark_outline,
+                children: [
+                  adminFieldRow(
+                    label: l10n.adminLibDummyChapterDuration,
+                    helper: l10n.adminLibDummyChapterDurationHint,
+                    anchor: 'metadata.DummyChapterDuration',
+                    child: TextFormField(
+                      initialValue:
+                          (_config!['DummyChapterDuration'] as num?)
+                                  ?.toString() ??
+                              '0',
+                      decoration: adminInputDecoration(),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      onChanged: (v) {
+                        _config!['DummyChapterDuration'] = int.tryParse(v) ?? 0;
+                        edited();
+                      },
+                    ),
+                  ),
+                  adminFieldRow(
+                    label: l10n.adminLibChapterImageResolution,
+                    anchor: 'metadata.ChapterImageResolution',
+                    child: DropdownButtonFormField<String>(
+                      initialValue: _resolutions.any((r) => r.$1 == currentRes)
+                          ? currentRes
+                          : 'MatchSource',
+                      isExpanded: true,
+                      decoration: adminInputDecoration(),
+                      items: _resolutions
+                          .map((r) => DropdownMenuItem(
+                                value: r.$1,
+                                child: Text(r.$1 == 'MatchSource'
+                                    ? l10n.adminLibChapterImageResolutionMatchSource
+                                    : r.$2),
+                              ))
+                          .toList(),
+                      onChanged: (v) => _set('ChapterImageResolution', v),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          keyboardType: TextInputType.number,
-          onChanged: (v) => _config!['DummyChapterDuration'] = int.tryParse(v) ?? 0,
         ),
-        const SizedBox(height: 12),
-        DropdownButtonFormField<String>(
-          initialValue:
-              _resolutions.any((r) => r.$1 == currentRes) ? currentRes : 'MatchSource',
-          decoration:
-              adminInputDecoration(label: l10n.adminLibChapterImageResolution),
-          items: _resolutions
-              .map((r) => DropdownMenuItem(
-                    value: r.$1,
-                    child: Text(r.$1 == 'MatchSource'
-                        ? l10n.adminLibChapterImageResolutionMatchSource
-                        : r.$2),
-                  ))
-              .toList(),
-          onChanged: (v) => setState(() => _config!['ChapterImageResolution'] = v),
-        ),
-        const SizedBox(height: AppSpacing.spaceXl),
-        adminSaveButton(label: l10n.save, saving: _saving, onPressed: _save),
       ],
     );
   }

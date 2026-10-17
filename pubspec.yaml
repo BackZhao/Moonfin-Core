@@ -189,6 +189,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # Live admin checks against a test server (integration_test/admin).
+  integration_test:
+    sdk: flutter
   flutter_lints: ^6.0.0
   build_runner: ^2.5.4
   json_serializable: ^6.9.5

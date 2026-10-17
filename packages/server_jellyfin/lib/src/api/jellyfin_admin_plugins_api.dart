@@ -113,6 +113,15 @@ class JellyfinAdminPluginsApi implements AdminPluginsApi {
   }
 
   @override
+  Future<List<Map<String, dynamic>>> getConfigurationPages() async {
+    final response = await _dio.get('/web/ConfigurationPages');
+    return (response.data as List<dynamic>)
+        .whereType<Map>()
+        .map((e) => e.cast<String, dynamic>())
+        .toList();
+  }
+
+  @override
   Future<PackageInfo?> getPackageInfo(String name,
       {String? assemblyGuid}) async {
     final response = await _dio.get(

@@ -12,6 +12,7 @@ import '../../../widgets/adaptive/adaptive_dialog.dart';
 import '../admin_plugin_version_utils.dart';
 import '../providers/admin_user_providers.dart';
 import '../widgets/admin_form_styles.dart';
+import 'admin_plugin_install_confirm.dart';
 
 class AdminPluginsScreen extends ConsumerStatefulWidget {
   const AdminPluginsScreen({super.key});
@@ -49,11 +50,19 @@ class _AdminPluginsScreenState extends ConsumerState<AdminPluginsScreen>
     return Column(
       children: [
         Material(
-          color: Theme.of(context).colorScheme.surface,
+          type: MaterialType.transparency,
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+                child: adminScreenHeader(
+                  context,
+                  title: AppLocalizations.of(context).adminDrawerPlugins,
+                  icon: Icons.extension_outlined,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: TextField(
                   controller: _searchController,
                   decoration: adminInputDecoration(
@@ -162,6 +171,7 @@ class _AdminPluginsScreenState extends ConsumerState<AdminPluginsScreen>
   }
 
   Future<void> _installPackage(PackageInfo package, VersionInfo version) async {
+    if (!await confirmPluginInstall(context, version) || !mounted) return;
     try {
       await _api.installPackage(
         package.name,
@@ -191,6 +201,7 @@ class _AdminPluginsScreenState extends ConsumerState<AdminPluginsScreen>
     PackageInfo package,
     VersionInfo version,
   ) async {
+    if (!await confirmPluginInstall(context, version) || !mounted) return;
     try {
       await _api.installPackage(
         package.name,
@@ -600,49 +611,53 @@ class _InstalledPluginTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: Colors.orange,
+                color: AppColorScheme.recordingScheduled,
                 fontWeight: FontWeight.w600,
               ),
             ),
         ],
       ),
-      trailing: PopupMenuButton<String>(
-        onSelected: (value) {
-          switch (value) {
-            case 'toggle':
-              onToggle();
-              return;
-            case 'update':
-              onUpdate?.call();
-              return;
-            case 'uninstall':
-              onUninstall();
-              return;
-          }
-        },
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            value: 'toggle',
-            child: Text(plugin.status == PluginStatus.disabled
-                ? AppLocalizations.of(context).adminPluginsEnable
-                : AppLocalizations.of(context).adminPluginsDisable),
+      trailing: !plugin.canUninstall && onUpdate == null
+          ? null
+          : PopupMenuButton<String>(
+            onSelected: (value) {
+              switch (value) {
+                case 'toggle':
+                  onToggle();
+                  return;
+                case 'update':
+                  onUpdate?.call();
+                  return;
+                case 'uninstall':
+                  onUninstall();
+                  return;
+              }
+            },
+            itemBuilder: (context) => [
+              // Bundled plugins can't be turned off, as on the plugin page.
+              if (plugin.canUninstall)
+                PopupMenuItem(
+                  value: 'toggle',
+                  child: Text(plugin.status == PluginStatus.disabled
+                      ? AppLocalizations.of(context).adminPluginsEnable
+                      : AppLocalizations.of(context).adminPluginsDisable),
+                ),
+              if (hasUpdate && onUpdate != null)
+                PopupMenuItem(
+                  value: 'update',
+                  child: Text(
+                    latestVersion != null
+                        ? AppLocalizations.of(context).adminPluginsInstallUpdateVersioned(latestVersion!)
+                        : AppLocalizations.of(context).adminPluginsInstallUpdate,
+                  ),
+                ),
+              if (plugin.canUninstall)
+                PopupMenuItem(
+                  value: 'uninstall',
+                  child: Text(AppLocalizations.of(context).uninstall),
+                ),
+            ],
           ),
-          if (hasUpdate && onUpdate != null)
-            PopupMenuItem(
-              value: 'update',
-              child: Text(
-                latestVersion != null
-                    ? AppLocalizations.of(context).adminPluginsInstallUpdateVersioned(latestVersion!)
-                    : AppLocalizations.of(context).adminPluginsInstallUpdate,
-              ),
-            ),
-          if (plugin.canUninstall)
-            PopupMenuItem(
-              value: 'uninstall',
-              child: Text(AppLocalizations.of(context).uninstall),
-            ),
-        ],
-      ),
     );
   }
 }

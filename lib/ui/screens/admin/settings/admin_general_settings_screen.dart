@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:moonfin_design/moonfin_design.dart';
 import 'package:server_core/server_core.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../util/error_message.dart';
+import '../admin_draft.dart';
 import '../widgets/admin_form_styles.dart';
 import '../widgets/filesystem_browser.dart';
+import 'admin_number_input.dart';
 
 class AdminGeneralSettingsScreen extends StatefulWidget {
   const AdminGeneralSettingsScreen({super.key});
@@ -17,16 +18,20 @@ class AdminGeneralSettingsScreen extends StatefulWidget {
 }
 
 class _AdminGeneralSettingsScreenState
-    extends State<AdminGeneralSettingsScreen> {
+    extends State<AdminGeneralSettingsScreen>
+    with AdminDraftHost {
   late final AdminSystemApi _api;
   Map<String, dynamic>? _config;
   List<Map<String, dynamic>> _cultures = const [];
   List<Map<String, dynamic>> _countries = const [];
   List<Map<String, dynamic>> _localizationOptions = const [];
   bool _loading = true;
-  bool _saving = false;
   String? _error;
   String? _browsingField;
+
+  /// Bumped when the browser picks a folder, so the path field shows it.
+  /// Keying on the value would rebuild the field on every keystroke.
+  int _picks = 0;
 
   @override
   void initState() {
@@ -60,6 +65,13 @@ class _AdminGeneralSettingsScreenState
         _localizationOptions = localizationOptions;
         _loading = false;
       });
+      hostDraft(
+        AdminDraft.single(
+          working: config,
+          reload: _api.getServerConfiguration,
+          post: _api.updateServerConfiguration,
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -69,26 +81,9 @@ class _AdminGeneralSettingsScreenState
     }
   }
 
-  Future<void> _save() async {
-    if (_config == null) return;
-    setState(() => _saving = true);
-    try {
-      await _api.updateServerConfiguration(_config!);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).adminSettingsSaved)),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.adminSettingsSaveFailed(describeError(e, l10n)))),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _saving = false);
-    }
+  void _set(String key, Object? value) {
+    setState(() => _config![key] = value);
+    edited();
   }
 
   @override
@@ -115,6 +110,7 @@ class _AdminGeneralSettingsScreenState
     }
 
     final bottomSafe = MediaQuery.of(context).padding.bottom;
+    final slowWarning = _config!['EnableSlowResponseWarning'] as bool? ?? false;
     return ListView(
       padding: EdgeInsets.fromLTRB(16, 20, 16, bottomSafe + 40),
       children: [
@@ -123,45 +119,68 @@ class _AdminGeneralSettingsScreenState
           title: l10n.adminGeneralSettingsTitle,
           icon: Icons.settings_outlined,
         ),
-        adminSectionLabel(context, l10n.adminGeneralSectionServer,
-            icon: Icons.dns_outlined),
-        _textField('ServerName', l10n.adminGeneralServerName),
-        const SizedBox(height: 12),
-        _buildDisplayLanguageDropdown(l10n),
-        const SizedBox(height: 8),
-        adminGlassGroup(context, children: [
-          _switchTile('QuickConnectAvailable', l10n.adminGeneralQuickConnect),
-        ]),
-        adminSectionLabel(context, l10n.adminGeneralSectionMetadata,
-            icon: Icons.language),
-        _buildLanguageDropdown(l10n),
-        const SizedBox(height: 12),
-        _buildCountryDropdown(l10n),
-        adminSectionLabel(context, l10n.adminGeneralSectionPaths,
-            icon: Icons.folder_outlined),
-        _pathField('CachePath', l10n.adminGeneralCachePath),
-        const SizedBox(height: 12),
-        _pathField('MetadataPath', l10n.adminGeneralMetadataPath),
-        adminSectionLabel(context, l10n.adminGeneralSectionPerformance,
-            icon: Icons.speed),
-        _intField('LibraryScanFanoutConcurrency',
-            l10n.adminGeneralLibraryScanConcurrency),
-        const SizedBox(height: 12),
-        _intField(
-            'ParallelImageEncodingLimit', l10n.adminGeneralImageEncodingLimit),
-        const SizedBox(height: 12),
-        _intField(
-            'SlowResponseThresholdMs', l10n.adminGeneralSlowResponseThreshold),
-        const SizedBox(height: 8),
-        adminGlassGroup(context, children: [
-          _switchTile(
-              'EnableSlowResponseWarning', l10n.adminGeneralEnableSlowResponse),
-        ]),
-        const SizedBox(height: AppSpacing.spaceXl),
-        adminSaveButton(
-          label: l10n.save,
-          saving: _saving,
-          onPressed: _save,
+        draftKeyed(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              adminSection(
+                context,
+                title: l10n.adminGeneralSectionServer,
+                icon: Icons.dns_outlined,
+                children: [
+                  _textField('ServerName', l10n.adminGeneralServerName),
+                  _buildDisplayLanguageDropdown(l10n),
+                  _switchTile(
+                    'QuickConnectAvailable',
+                    l10n.adminGeneralQuickConnect,
+                  ),
+                ],
+              ),
+              adminSection(
+                context,
+                title: l10n.adminGeneralSectionMetadata,
+                icon: Icons.language,
+                children: [
+                  _buildLanguageDropdown(l10n),
+                  _buildCountryDropdown(l10n),
+                ],
+              ),
+              adminSection(
+                context,
+                title: l10n.adminGeneralSectionPaths,
+                icon: Icons.folder_outlined,
+                children: [
+                  _pathField('CachePath', l10n.adminGeneralCachePath),
+                  _pathField('MetadataPath', l10n.adminGeneralMetadataPath),
+                ],
+              ),
+              adminSection(
+                context,
+                title: l10n.adminGeneralSectionPerformance,
+                icon: Icons.speed,
+                children: [
+                  _intField(
+                    'LibraryScanFanoutConcurrency',
+                    l10n.adminGeneralLibraryScanConcurrency,
+                  ),
+                  _intField(
+                    'ParallelImageEncodingLimit',
+                    l10n.adminGeneralImageEncodingLimit,
+                  ),
+                  _switchTile(
+                    'EnableSlowResponseWarning',
+                    l10n.adminGeneralEnableSlowResponse,
+                  ),
+                  _intField(
+                    'SlowResponseThresholdMs',
+                    l10n.adminGeneralSlowResponseThreshold,
+                    enabled: slowWarning,
+                    fallback: 500,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -170,8 +189,9 @@ class _AdminGeneralSettingsScreenState
   Widget _switchTile(String key, String title) {
     return adminSwitchRow(
       title: title,
+      anchor: 'settings.$key',
       value: _config![key] as bool? ?? false,
-      onChanged: (v) => setState(() => _config![key] = v),
+      onChanged: (v) => _set(key, v),
     );
   }
 
@@ -184,6 +204,7 @@ class _AdminGeneralSettingsScreenState
     }
     return adminCodeDropdown(
       label: l10n.adminGeneralMetadataLanguage,
+      anchor: 'settings.PreferredMetadataLanguage',
       defaultLabel: l10n.adminLibDefault,
       current: current,
       rawItems: _cultures.map((c) => (
@@ -191,8 +212,7 @@ class _AdminGeneralSettingsScreenState
                 ?.toString(),
             (c['DisplayName'] ?? c['Name'])?.toString(),
           )),
-      onChanged: (v) =>
-          setState(() => _config!['PreferredMetadataLanguage'] = v),
+      onChanged: (v) => _set('PreferredMetadataLanguage', v),
     );
   }
 
@@ -203,13 +223,14 @@ class _AdminGeneralSettingsScreenState
     }
     return adminCodeDropdown(
       label: l10n.adminGeneralDisplayLanguage,
+      anchor: 'settings.UICulture',
       defaultLabel: l10n.adminLibDefault,
       current: current,
       rawItems: _localizationOptions.map((o) => (
             o['Value']?.toString(),
             (o['Name'] ?? o['Value'])?.toString(),
           )),
-      onChanged: (v) => setState(() => _config!['UICulture'] = v),
+      onChanged: (v) => _set('UICulture', v),
     );
   }
 
@@ -221,74 +242,103 @@ class _AdminGeneralSettingsScreenState
     }
     return adminCodeDropdown(
       label: l10n.adminGeneralMetadataCountry,
+      anchor: 'settings.MetadataCountryCode',
       defaultLabel: l10n.adminLibDefault,
       current: current,
       rawItems: _countries.map((c) => (
             (c['TwoLetterISORegionName'] ?? c['Name'])?.toString(),
             (c['DisplayName'] ?? c['Name'])?.toString(),
           )),
-      onChanged: (v) => setState(() => _config!['MetadataCountryCode'] = v),
+      onChanged: (v) => _set('MetadataCountryCode', v),
     );
   }
 
   Widget _textField(String key, String label, {String? hint}) {
-    return TextFormField(
-      initialValue: _config![key]?.toString() ?? '',
-      decoration: adminInputDecoration(label: label, hint: hint),
-      onChanged: (v) => _config![key] = v,
+    return adminFieldRow(
+      label: label,
+      anchor: 'settings.$key',
+      child: TextFormField(
+        initialValue: _config![key]?.toString() ?? '',
+        decoration: adminInputDecoration(hint: hint),
+        onChanged: (v) {
+          _config![key] = v;
+          edited();
+        },
+      ),
     );
   }
 
-  Widget _intField(String key, String label) {
-    return TextFormField(
-      initialValue: (_config![key] as num?)?.toString() ?? '0',
-      decoration: adminInputDecoration(label: label),
-      keyboardType: TextInputType.number,
-      onChanged: (v) => _config![key] = int.tryParse(v) ?? 0,
+  /// A cleared box saves [fallback], the server's default.
+  Widget _intField(
+    String key,
+    String label, {
+    bool enabled = true,
+    int fallback = 0,
+  }) {
+    return adminFieldRow(
+      label: label,
+      anchor: 'settings.$key',
+      child: adminNumberInput(
+        text: (_config![key] as num?)?.toString() ?? '',
+        fallback: fallback,
+        enabled: enabled,
+        onChanged: (n) {
+          _config![key] = n;
+          edited();
+        },
+      ),
     );
   }
 
   Widget _pathField(String key, String label) {
+    final l10n = AppLocalizations.of(context);
     final isBrowsing = _browsingField == key;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                key: ValueKey(_config![key]),
-                initialValue: _config![key]?.toString() ?? '',
-                decoration: adminInputDecoration(label: label),
-                onChanged: (v) => _config![key] = v,
+    return adminFieldRow(
+      label: label,
+      anchor: 'settings.$key',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  key: ValueKey('$key-$_picks'),
+                  initialValue: _config![key]?.toString() ?? '',
+                  decoration: adminInputDecoration(),
+                  onChanged: (v) {
+                    _config![key] = v;
+                    edited();
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                icon: Icon(isBrowsing ? Icons.close : Icons.folder_open),
+                tooltip: isBrowsing ? l10n.adminCloseBrowser : l10n.adminBrowse,
+                onPressed: () => setState(() {
+                  _browsingField = isBrowsing ? null : key;
+                }),
+              ),
+            ],
+          ),
+          if (isBrowsing) ...[
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 300,
+              child: FilesystemBrowser(
+                initialPath: _config![key]?.toString(),
+                validateWritable: true,
+                onPathSelected: (path) {
+                  _browsingField = null;
+                  _picks++;
+                  _set(key, path);
+                },
               ),
             ),
-            const SizedBox(width: 8),
-            IconButton(
-              icon: Icon(isBrowsing ? Icons.close : Icons.folder_open),
-              tooltip: isBrowsing ? AppLocalizations.of(context).adminCloseBrowser : AppLocalizations.of(context).adminBrowse,
-              onPressed: () => setState(() {
-                _browsingField = isBrowsing ? null : key;
-              }),
-            ),
           ],
-        ),
-        if (isBrowsing) ...[
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 300,
-            child: FilesystemBrowser(
-              initialPath: _config![key]?.toString(),
-              onPathSelected: (path) {
-                setState(() {
-                  _config![key] = path;
-                  _browsingField = null;
-                });
-              },
-            ),
-          ),
         ],
-      ],
+      ),
     );
   }
 }

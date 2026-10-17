@@ -2,10 +2,13 @@ import '../models/admin_models.dart';
 
 abstract class AdminLibraryApi {
   Future<List<VirtualFolderInfo>> getVirtualFolders();
+  /// [libraryOptions] is saved as sent, so pass the full set or the library
+  /// gets the server's constructor defaults.
   Future<void> addVirtualFolder({
     required String name,
     String? collectionType,
     List<String>? paths,
+    Map<String, dynamic>? libraryOptions,
     bool refreshLibrary = false,
   });
   Future<void> removeVirtualFolder(String name, {bool refreshLibrary = false});
@@ -14,7 +17,11 @@ abstract class AdminLibraryApi {
     String newName, {
     bool refreshLibrary = false,
   });
-  Future<void> addMediaPath(String libraryName, String path);
+  Future<void> addMediaPath(
+    String libraryName,
+    String path, {
+    bool refreshLibrary = false,
+  });
   Future<void> updateMediaPath(
     String libraryName,
     Map<String, dynamic> pathInfo,
@@ -30,7 +37,9 @@ abstract class AdminLibraryApi {
   );
   Future<void> refreshLibrary();
   Future<List<String>> getPhysicalPaths();
-  Future<List<VirtualFolderInfo>> getMediaFolders();
+  /// The library folders. Pass `isHidden: false` for the ones offered for
+  /// user access.
+  Future<List<VirtualFolderInfo>> getMediaFolders({bool? isHidden});
 
   /// Available metadata/image/subtitle/lyric fetchers and savers for a library
   /// content type, used to build the downloader-ordering UI. Returned as a raw

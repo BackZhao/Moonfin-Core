@@ -5884,6 +5884,804 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminExitTooltip => '退出管理';
 
   @override
+  String adminExternalIdLabel(String name) {
+    return '$name Id';
+  }
+
+  @override
+  String get adminExternalIdTypePerson => 'Person';
+
+  @override
+  String get adminExternalIdTypeArtist => 'Artist';
+
+  @override
+  String get adminExternalIdTypeAlbumArtist => 'Album Artist';
+
+  @override
+  String get adminExternalIdTypeOtherArtist => 'Other Artist';
+
+  @override
+  String get adminExternalIdTypeReleaseGroup => 'Release Group';
+
+  @override
+  String get adminExternalIdTypeBook => 'Book';
+
+  @override
+  String get adminPlaybackHwAccelWarning =>
+      'Hardware acceleration can be unstable on some systems. Keep the operating system and video drivers up to date, and set this back to None if video stops playing.';
+
+  @override
+  String get adminLibMetadataChangeHelp =>
+      'Changes to metadata settings apply to new content. To update existing content, refresh it from its detail page or refresh the library.';
+
+  @override
+  String get adminLibFetcherSettings => 'Fetcher settings';
+
+  @override
+  String adminLibImageOptionsTitle(String type) {
+    return 'Image options for $type';
+  }
+
+  @override
+  String get adminLibFetchImages => 'Fetch images';
+
+  @override
+  String get adminLibMaxBackdrops => 'Maximum number of backdrops per item';
+
+  @override
+  String get adminLibMinBackdropWidth => 'Minimum backdrop download width';
+
+  @override
+  String get adminImageTypeArt => 'Clearart';
+
+  @override
+  String get adminImageTypeBox => 'Box';
+
+  @override
+  String get adminImageTypeBoxRear => 'Box (back)';
+
+  @override
+  String get adminImageTypeDisc => 'Disc';
+
+  @override
+  String get adminImageTypeMenu => 'Menu';
+
+  @override
+  String get adminActivityMediaDetails => 'Media details';
+
+  @override
+  String get adminNetworkingOtherPublishedUriHint =>
+      'e.g. 192.168.1.0/24=http://192.168.1.5:8096';
+
+  @override
+  String get adminMetadataFieldOriginalLanguage => 'Original language';
+
+  @override
+  String get adminMetadataFieldDateAdded => 'Date added';
+
+  @override
+  String get adminMetadataFieldArtists => 'Artists';
+
+  @override
+  String get adminMetadataFieldAlbumArtists => 'Album artists';
+
+  @override
+  String get adminMetadataFieldAlbum => 'Album';
+
+  @override
+  String get adminMetadataFieldSeriesName => 'Series name';
+
+  @override
+  String get adminMetadataFieldEpisodeNumber => 'Episode number';
+
+  @override
+  String get adminMetadataFieldSeasonNumber => 'Season number';
+
+  @override
+  String get adminMetadataFieldTrackNumber => 'Track number';
+
+  @override
+  String get adminMetadataFieldDiscNumber => 'Disc number';
+
+  @override
+  String get adminMetadataFieldAirTime => 'Air time';
+
+  @override
+  String get adminMetadataFieldRuntime => 'Runtime in minutes';
+
+  @override
+  String get adminMetadataFieldPlaceOfBirth => 'Place of birth';
+
+  @override
+  String get adminMetadataFieldBirthDate => 'Birth date';
+
+  @override
+  String get adminMetadataFieldBirthYear => 'Birth year';
+
+  @override
+  String get adminMetadataFieldDeathDate => 'Death date';
+
+  @override
+  String get adminMetadataFieldAspectRatio => 'Original aspect ratio';
+
+  @override
+  String get adminMetadataFieldAirsBeforeSeason => 'Airs before season';
+
+  @override
+  String get adminMetadataFieldAirsAfterSeason => 'Airs after season';
+
+  @override
+  String get adminMetadataFieldAirsBeforeEpisode => 'Airs before episode';
+
+  @override
+  String get adminMetadataNamesHelp =>
+      'Separate several names with a semicolon.';
+
+  @override
+  String get adminMetadataSectionRatings => 'Ratings';
+
+  @override
+  String get adminMetadataItemLocked =>
+      'This item\'s metadata is locked. Unlock it before you identify it.';
+
+  @override
+  String get adminMetadataNameOrIdRequired => 'Enter a name or an external ID.';
+
+  @override
+  String get adminLibMetadataReaders => 'Metadata readers';
+
+  @override
+  String adminLibSimilarProvidersFor(String type) {
+    return 'Similar item providers: $type';
+  }
+
+  @override
+  String get adminLibMediaSegmentProviders => 'Media segment providers';
+
+  @override
+  String get adminLibEnableLibrary => 'Enable the library';
+
+  @override
+  String get adminLibEnableLibraryHelp =>
+      'Disabling the library hides it from all user views.';
+
+  @override
+  String get adminLibSaveLyricsWithMedia => 'Save lyrics into media folders';
+
+  @override
+  String get adminLibUseCustomTagDelimiters => 'Use custom tag delimiter';
+
+  @override
+  String get adminLibCustomTagDelimiters => 'Custom tag delimiter';
+
+  @override
+  String get adminLibCustomTagDelimitersHelp =>
+      'Characters to treat as delimiters that separate tags.';
+
+  @override
+  String get adminLibDelimiterWhitelist => 'Delimiter whitelist';
+
+  @override
+  String get adminLibDelimiterWhitelistHelp =>
+      'Items to leave out of tag splitting, one per line.';
+
+  @override
+  String get adminLibDownloadLanguages => 'Download languages';
+
+  @override
+  String get adminLibraryFolderRequired =>
+      'Add at least one folder to this library.';
+
+  @override
+  String get adminRenameLibraryWarning =>
+      'Renaming a library loses all of its metadata. Proceed with caution.';
+
+  @override
+  String adminDeleteLibraryConfirm(String name) {
+    return 'Remove the library \"$name\"? Files on disk are not deleted.';
+  }
+
+  @override
+  String get adminDeleteLibraryLocations =>
+      'These media locations will be removed from the library:';
+
+  @override
+  String get adminRefreshMode => 'Refresh mode';
+
+  @override
+  String get adminRefreshModeScan => 'Scan for new and updated files';
+
+  @override
+  String get adminRefreshModeMissing => 'Search for missing metadata';
+
+  @override
+  String get adminReplaceTrickplayImages => 'Replace existing trickplay images';
+
+  @override
+  String get adminRefreshDialogHelp =>
+      'Metadata is refreshed based on the settings and internet services enabled in the dashboard.';
+
+  @override
+  String adminActivityCount(String shown, String total) {
+    return '$shown of $total';
+  }
+
+  @override
+  String get adminLiveTvTabSources => 'Tuners and guide';
+
+  @override
+  String get adminLiveTvTabRecordings => 'Recordings';
+
+  @override
+  String get adminLiveTvAddTuner => 'Add tuner device';
+
+  @override
+  String get adminLiveTvEditTuner => 'Edit tuner device';
+
+  @override
+  String get adminLiveTvTunerType => 'Tuner type';
+
+  @override
+  String get adminLiveTvDetectDevices => 'Detect my devices';
+
+  @override
+  String get adminLiveTvNoNewDevices => 'No new devices found';
+
+  @override
+  String get adminLiveTvDrmNote => 'Channels with DRM will not be imported.';
+
+  @override
+  String get adminLiveTvTunerSaved => 'Tuner saved';
+
+  @override
+  String get adminLiveTvDeleteTuner => 'Delete tuner device';
+
+  @override
+  String get adminLiveTvDeleteTunerConfirm =>
+      'Are you sure you want to delete this tuner device?';
+
+  @override
+  String get adminLiveTvDeleteProvider => 'Delete guide provider';
+
+  @override
+  String get adminLiveTvDeleteProviderConfirm =>
+      'Are you sure you want to delete this guide provider?';
+
+  @override
+  String get adminLiveTvProviderSaved => 'Guide provider saved';
+
+  @override
+  String get adminLiveTvAddProvider => 'Add provider';
+
+  @override
+  String get adminLiveTvRefreshGuide => 'Refresh guide data';
+
+  @override
+  String get adminLiveTvMapChannels => 'Map channels';
+
+  @override
+  String get adminLiveTvNoTunerChannels => 'No tuner channels found';
+
+  @override
+  String get adminLiveTvXmltvPathHelp =>
+      'A path or URL to an XMLTV file. The server reads it and checks it for updates. You are responsible for creating and updating the file.';
+
+  @override
+  String adminLiveTvSdCreateAccount(String url) {
+    return 'Create an account at $url';
+  }
+
+  @override
+  String get adminLiveTvSdSignIn => 'Sign in';
+
+  @override
+  String get adminLiveTvSdLineup => 'Lineup';
+
+  @override
+  String get adminLiveTvSdSelectLineup =>
+      'Select a lineup. If none are listed, check your username, password and postal code.';
+
+  @override
+  String get adminLiveTvGuideDays => 'Number of days of guide data to download';
+
+  @override
+  String get adminLiveTvGuideDaysHelp =>
+      'More days let you schedule further ahead and see more listings, but the download takes longer. Automatic picks a value from the number of channels.';
+
+  @override
+  String get adminLiveTvRecordingPath => 'Default recording path';
+
+  @override
+  String get adminLiveTvRecordingPathHelp =>
+      'Where recordings are saved. If empty, the server\'s program data folder is used.';
+
+  @override
+  String get adminLiveTvStartWhenPossible => 'Start when possible';
+
+  @override
+  String get adminLiveTvStopWhenPossible => 'Stop when possible';
+
+  @override
+  String get adminLiveTvMinutesBefore => 'minutes before';
+
+  @override
+  String get adminLiveTvMinutesAfter => 'minutes after';
+
+  @override
+  String get adminLiveTvSectionGuide => 'Guide data';
+
+  @override
+  String get adminLiveTvSectionDefaultRecording => 'Default recording settings';
+
+  @override
+  String get adminLiveTvSectionMetadata => 'Recording metadata';
+
+  @override
+  String adminUserLastActivity(String time) {
+    return 'Last activity $time';
+  }
+
+  @override
+  String get adminCurrentPassword => 'Current password';
+
+  @override
+  String get adminChannelAccess => 'Channel access';
+
+  @override
+  String get adminDeviceAccess => 'Device access';
+
+  @override
+  String get adminDeleteFromAllLibraries => 'All libraries';
+
+  @override
+  String get adminUserDisabledBanner =>
+      'This user is disabled. Turn off Disabled under Permissions to let them sign in again.';
+
+  @override
+  String get adminNewPasswordEmpty => 'New password cannot be empty';
+
+  @override
+  String get adminScheduleStartBeforeEnd =>
+      'The start time must be before the end time';
+
+  @override
+  String get adminDashboardAlerts => 'Alerts';
+
+  @override
+  String get adminSessionGoHome => 'Go to home screen';
+
+  @override
+  String get adminPlayMethodRemux => 'Remuxing';
+
+  @override
+  String get adminPlayMethodDirectStream => 'Direct streaming';
+
+  @override
+  String get adminPlayMethodDirectPlay => 'Direct playing';
+
+  @override
+  String get adminLogLevelTrace => 'Trace';
+
+  @override
+  String get adminLogLevelDebug => 'Debug';
+
+  @override
+  String get adminLogLevelInformation => 'Information';
+
+  @override
+  String get adminLogLevelWarning => 'Warning';
+
+  @override
+  String get adminLogLevelError => 'Error';
+
+  @override
+  String get adminLogLevelCritical => 'Critical';
+
+  @override
+  String get adminLogLevelNone => 'None';
+
+  @override
+  String get adminActivityAllUsers => 'All users';
+
+  @override
+  String adminTaskLastRan(String time, String duration) {
+    return 'Last ran $time, taking $duration.';
+  }
+
+  @override
+  String get adminTaskResultFailed => 'Failed';
+
+  @override
+  String get adminTaskResultCancelled => 'Cancelled';
+
+  @override
+  String get adminTaskResultAborted => 'Aborted by server shutdown';
+
+  @override
+  String adminDurationSecondsShort(String seconds) {
+    return '${seconds}s';
+  }
+
+  @override
+  String get adminDeleteTaskTrigger => 'Delete task trigger';
+
+  @override
+  String get adminDeleteTaskTriggerConfirm =>
+      'Are you sure you want to delete this task trigger?';
+
+  @override
+  String adminTaskTriggerEveryMinutes(String minutes) {
+    return 'Every $minutes minutes';
+  }
+
+  @override
+  String adminTaskTriggerEveryHours(String hours) {
+    return 'Every $hours hours';
+  }
+
+  @override
+  String adminTaskMinutesValue(String minutes) {
+    return '$minutes minutes';
+  }
+
+  @override
+  String adminTaskHoursValue(String hours) {
+    return '$hours hours';
+  }
+
+  @override
+  String get adminTimeLimitHours => 'Time limit (hours)';
+
+  @override
+  String get adminTranscodingDecodingFor => 'Enable hardware decoding for';
+
+  @override
+  String get adminTranscodingThreadCountHelp =>
+      'The most threads a transcode can use. Fewer threads lower CPU use but may be too slow for smooth playback.';
+
+  @override
+  String get adminTranscodingThreadMax => 'Max';
+
+  @override
+  String get adminTranscodingFfmpegPath => 'FFmpeg path';
+
+  @override
+  String get adminTranscodingFfmpegPathHelp =>
+      'The FFmpeg the server runs. It is set on the server, not here.';
+
+  @override
+  String get adminTranscodingAudioSeek => 'Audio seek strategy';
+
+  @override
+  String get adminTranscodingAudioSeekHelp =>
+      'How the server handles audio when you seek in an HLS stream.';
+
+  @override
+  String get adminTranscodingTrimCopiedAudio => 'Trim copied audio';
+
+  @override
+  String get adminTranscodingTranscodeAudio => 'Transcode audio';
+
+  @override
+  String get adminResumeMinAudiobookMinutes =>
+      'Minimum audiobook resume (minutes)';
+
+  @override
+  String get adminResumeMinAudiobookHelp =>
+      'Audiobooks stopped before this time count as unplayed.';
+
+  @override
+  String get adminResumeAudiobookRemaining =>
+      'Audiobook remaining minutes to resume';
+
+  @override
+  String get adminResumeAudiobookRemainingHelp =>
+      'Audiobooks stopped with less than this many minutes left count as played.';
+
+  @override
+  String get adminBrandingSplashSection => 'Splash screen';
+
+  @override
+  String get adminBrandingSectionWebClient => 'Web client';
+
+  @override
+  String get adminBrandingSplashSizeHint =>
+      'Custom images should be in a 16x9 aspect ratio at a minimum size of 1920x1080.';
+
+  @override
+  String get adminNetworkingSectionServerAddress => 'Server address settings';
+
+  @override
+  String get adminNetworkingSectionHttps => 'HTTPS settings';
+
+  @override
+  String get adminNetworkingSectionRemoteAccess => 'Remote access settings';
+
+  @override
+  String get adminNetworkingSectionIpProtocols => 'IP protocols';
+
+  @override
+  String get adminNetworkingSectionDiscovery => 'Network discovery';
+
+  @override
+  String get adminNetworkingSectionFirewall => 'Firewall and proxy settings';
+
+  @override
+  String get adminNetworkingLocalHttpPort => 'Local HTTP port number';
+
+  @override
+  String get adminNetworkingLocalHttpPortHelp =>
+      'The TCP port number for the HTTP server.';
+
+  @override
+  String get adminNetworkingEnableHttpsHelp =>
+      'Listen on the HTTPS port. A valid certificate must also be set for this to take effect.';
+
+  @override
+  String get adminNetworkingLocalHttpsPort => 'Local HTTPS port number';
+
+  @override
+  String get adminNetworkingLocalHttpsPortHelp =>
+      'The TCP port number for the HTTPS server.';
+
+  @override
+  String get adminNetworkingBaseUrlHelp =>
+      'Adds a subdirectory to the server URL, for example https://example.com/jellyfin.';
+
+  @override
+  String get adminNetworkingBindAddress => 'Bind to local network address';
+
+  @override
+  String get adminNetworkingBindAddressHelp =>
+      'Overrides the local IP address of the HTTP server. Leave it empty to bind to all addresses. A change needs a restart.';
+
+  @override
+  String get adminNetworkingLanNetworksHelp =>
+      'IP addresses or IP/netmask entries of networks treated as local for bandwidth and remote access limits. Leave it empty to treat all RFC1918 addresses as local.';
+
+  @override
+  String get adminNetworkingKnownProxiesHelp =>
+      'IP addresses or host names of the proxies in front of this server. Needed to read X-Forwarded-For headers. A change needs a restart.';
+
+  @override
+  String get adminNetworkingCustomCertPath => 'Custom SSL certificate path';
+
+  @override
+  String get adminNetworkingCertPathHelp =>
+      'Path to a PKCS #12 file with a certificate and private key, for TLS on a custom domain.';
+
+  @override
+  String get adminNetworkingCertPasswordHelp =>
+      'Enter the password if your certificate needs one.';
+
+  @override
+  String get adminNetworkingAllowRemote =>
+      'Allow remote connections to this server';
+
+  @override
+  String get adminNetworkingAllowRemoteHelp =>
+      'When off, all remote connections are blocked.';
+
+  @override
+  String get adminNetworkingRemoteIpFilterHelp =>
+      'IP addresses or IP/netmask entries of remote networks. Leave it empty to allow every remote address.';
+
+  @override
+  String get adminNetworkingRemoteIpFilterMode =>
+      'Remote IP address filter mode';
+
+  @override
+  String get adminNetworkingPublicHttpPortHelp =>
+      'The public port mapped to the local HTTP port.';
+
+  @override
+  String get adminNetworkingPublicHttpsPortHelp =>
+      'The public port mapped to the local HTTPS port.';
+
+  @override
+  String get adminNetworkingAutoDiscoveryLabel => 'Enable auto discovery';
+
+  @override
+  String get adminNetworkingAutoDiscoveryHelp =>
+      'Lets apps find this server on UDP port 7359.';
+
+  @override
+  String get adminNetworkingSamePublishedUri =>
+      'Use the same published server URI for internal and external access';
+
+  @override
+  String get adminNetworkingPublishedUri => 'Published server URI';
+
+  @override
+  String get adminNetworkingPublishedUriHelp =>
+      'Overrides the URI the server gives out, based on the interface or the client IP address.';
+
+  @override
+  String get adminNetworkingInternalUri => 'Internal URI';
+
+  @override
+  String get adminNetworkingInternalUriHelp =>
+      'Published server URI for internal access.';
+
+  @override
+  String get adminNetworkingExternalUri => 'External URI';
+
+  @override
+  String get adminNetworkingExternalUriHelp =>
+      'Published server URI for external access.';
+
+  @override
+  String get adminNetworkingOtherPublishedUris => 'Other published URIs';
+
+  @override
+  String get adminNetworkingOtherPublishedUrisHelp =>
+      'URIs for one subnet or interface, written as subnet=URI.';
+
+  @override
+  String get adminBackupsHelp =>
+      'Create and restore snapshots of your server. They can include the database, metadata, subtitles and trickplay images.';
+
+  @override
+  String get adminBackupDisclaimer =>
+      'Depending on the size of your library, the backup can take a while.';
+
+  @override
+  String get adminBackupTasksWarningTitle => 'Scheduled tasks are running';
+
+  @override
+  String get adminBackupTasksWarning =>
+      'Stop these tasks or wait for them to finish before you create a backup.';
+
+  @override
+  String get adminBackupArchiveNotFound =>
+      'The server could not find this backup archive.';
+
+  @override
+  String get adminRestoreInProgress => 'Restore in progress';
+
+  @override
+  String get adminRestoreWaitingForServer =>
+      'Waiting for the server to come back.';
+
+  @override
+  String get adminRestoreSucceeded => 'Restore completed';
+
+  @override
+  String get adminLogWatch => 'Watch';
+
+  @override
+  String get adminLogStopWatching => 'Stop watching';
+
+  @override
+  String get adminPluginInstallConfirmTitle => 'Confirm plugin installation';
+
+  @override
+  String get adminPluginInstallDisclaimer =>
+      'Installing a third party plugin carries risks. It may contain unstable or malicious code, and it can change at any time. Only install plugins from authors you trust, and know what they can do, such as query outside services, slow down library scans or add background work.';
+
+  @override
+  String get adminGroupOverview => 'Overview';
+
+  @override
+  String get adminGroupLibrary => 'Library';
+
+  @override
+  String get adminGroupPlayback => 'Playback';
+
+  @override
+  String get adminGroupPeople => 'People';
+
+  @override
+  String get adminGroupSystem => 'System';
+
+  @override
+  String get adminAreasLabel => 'Admin areas';
+
+  @override
+  String get adminPagesLabel => 'Pages';
+
+  @override
+  String get adminPageDescDashboard =>
+      'Server health, sessions and recent activity';
+
+  @override
+  String get adminPageDescAnalytics => 'Library sizes, codecs and formats';
+
+  @override
+  String get adminPageDescActivity => 'Everything that happened on the server';
+
+  @override
+  String get adminPageDescTasks => 'Scans, cleanups and their triggers';
+
+  @override
+  String get adminPageDescLibraries =>
+      'Folders, scanners and metadata fetchers';
+
+  @override
+  String get adminPageDescDisplay => 'How libraries show to users';
+
+  @override
+  String get adminPageDescMetadata => 'Default language, country and images';
+
+  @override
+  String get adminPageDescNfo => 'Kodi NFO reading and saving';
+
+  @override
+  String get adminPageDescLiveTv => 'Tuners, guide data and recordings';
+
+  @override
+  String get adminPageDescTranscoding =>
+      'Hardware acceleration, encoders, tone mapping';
+
+  @override
+  String get adminPageDescResume => 'When items count as started or played';
+
+  @override
+  String get adminPageDescStreaming => 'Remote bitrate limit';
+
+  @override
+  String get adminPageDescTrickplay => 'Seek preview thumbnails';
+
+  @override
+  String get adminPageDescUsers => 'Accounts, access and parental control';
+
+  @override
+  String get adminPageDescDevices => 'Signed in devices and their names';
+
+  @override
+  String get adminPageDescApiKeys => 'Keys for apps and scripts';
+
+  @override
+  String get adminPageDescSettings =>
+      'Server name, language, paths, performance';
+
+  @override
+  String get adminPageDescBranding =>
+      'Login message, custom CSS, splash screen';
+
+  @override
+  String get adminPageDescNetworking => 'Ports, HTTPS, LAN and remote access';
+
+  @override
+  String get adminPageDescPlugins => 'Installed plugins and the catalog';
+
+  @override
+  String get adminPageDescRepositories => 'Where plugins come from';
+
+  @override
+  String get adminPageDescBackups => 'Create and restore server backups';
+
+  @override
+  String get adminPageDescLogs => 'Server log files';
+
+  @override
+  String adminSearchSettingsHint(int count) {
+    return 'Search $count settings';
+  }
+
+  @override
+  String get adminSearchNoResults => 'No settings match';
+
+  @override
+  String get adminSearchClear => 'Clear search';
+
+  @override
+  String get adminUnsavedChanges => 'Unsaved changes';
+
+  @override
+  String get adminDiscard => 'Discard';
+
+  @override
+  String get adminLeaveTitle => 'Discard unsaved changes?';
+
+  @override
+  String get adminLeaveMessage =>
+      'The changes on this page haven\'t been saved yet.';
+
+  @override
+  String get adminKeepEditing => 'Keep editing';
+
+  @override
   String get adminDashboardLoadFailed => '无法加载仪表板';
 
   @override
@@ -5908,11 +6706,6 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String adminFailedScheduledTasks(int count) {
     return '失败的计划任务：$count';
-  }
-
-  @override
-  String adminRecentAlertEntries(int count) {
-    return '最近的警告/错误条目：$count';
   }
 
   @override
@@ -5962,9 +6755,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminShutdownServer => '关闭服务器';
-
-  @override
-  String get adminScanLibraries => '扫描媒体库';
 
   @override
   String get adminLibraryScanStarted => '媒体库扫描已开始';
@@ -6050,12 +6840,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get completion => '完成度';
-
-  @override
-  String get direct => '直接';
-
-  @override
-  String get adminDisconnect => '断开连接';
 
   @override
   String get adminClearDates => '清除日期';
@@ -6197,14 +6981,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get adminLibraryOptionsSaved => '媒体库选项已保存';
-
-  @override
-  String adminLibraryOptionsSaveFailed(String error) {
-    return '无法保存选项：$error';
-  }
-
-  @override
   String get adminLibraryLoadFailed => '加载媒体库失败';
 
   @override
@@ -6215,9 +6991,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminBrowseFilesystem => '浏览服务器文件系统：';
-
-  @override
-  String get adminSaveOptions => '保存选项';
 
   @override
   String get adminPreferredMetadataLanguage => '首选元数据语言';
@@ -6291,9 +7064,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminLibRealtimeMonitorHint => '检测文件更改并自动处理。';
-
-  @override
-  String get adminLibArchiveMediaFiles => '将压缩包视为媒体文件';
 
   @override
   String get adminLibEnablePhotos => '显示照片';
@@ -6468,9 +7238,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminSelectedPaths => '选定的路径：';
 
   @override
-  String get adminNoPathsAdded => '未添加路径（可以稍后添加）';
-
-  @override
   String get adminCreateLibrary => '创建媒体库';
 
   @override
@@ -6534,18 +7301,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminUsernameRequired => '用户名不能为空';
 
   @override
-  String get adminNoProfileChanges => '没有要保存的个人资料更改';
-
-  @override
-  String get adminProfileSaved => '个人资料已保存';
-
-  @override
   String adminSaveFailed(String error) {
     return '保存失败：$error';
   }
-
-  @override
-  String get adminPermissionsSaved => '权限已保存';
 
   @override
   String get adminPasswordsMismatch => '密码不匹配';
@@ -6557,12 +7315,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminUserLoadFailed => '加载用户失败';
-
-  @override
-  String get adminBackToUsers => '返回用户';
-
-  @override
-  String get adminSaveProfile => '保存个人资料';
 
   @override
   String get adminDeleteUser => '删除用户';
@@ -6595,9 +7347,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminForceRemoteTranscoding => '强制远程源转码';
 
   @override
-  String get adminAllowContentDeletion => '允许内容删除';
-
-  @override
   String get adminAllowContentDownloading => '允许内容下载';
 
   @override
@@ -6611,9 +7360,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminAllowRemoteAccess => '允许远程访问';
-
-  @override
-  String get adminRemoteBitrateLimit => '远程客户端码率限制 (bps)';
 
   @override
   String get adminLeaveEmptyNoLimit => '留空则无限制';
@@ -6637,13 +7383,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminAllowLyricManagement => '允许歌词管理';
 
   @override
-  String get adminSavePermissions => '保存权限';
-
-  @override
   String get adminEnableAllLibraryAccess => '允许访问所有媒体库';
-
-  @override
-  String get adminSaveAccess => '保存访问权限';
 
   @override
   String get adminChangePassword => '更改密码';
@@ -6671,9 +7411,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminLibraryAccess => '媒体库访问';
-
-  @override
-  String get adminDeviceAndChannelAccess => '设备和通道访问';
 
   @override
   String get adminEnableAllDevices => '允许访问所有设备';
@@ -6779,12 +7516,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminAddTag => '添加标签';
-
-  @override
-  String get adminEnabledDevices => '启用的设备';
-
-  @override
-  String get adminEnabledChannels => '启用的频道';
 
   @override
   String get adminAuthProvider => '认证提供商';
@@ -6897,9 +7628,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminBackupOptionsTitle => '创建备份';
-
-  @override
-  String get adminBackupInclude => '选择要包含在备份中的内容。';
 
   @override
   String get adminBackupDatabase => '数据库';
@@ -7054,9 +7782,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminTriggerType => '触发类型';
 
   @override
-  String get adminTimeLimit => '时间限制（可选）';
-
-  @override
   String get adminNoLimit => '无限制';
 
   @override
@@ -7148,9 +7873,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String adminPluginUpdating(String name, String version) {
     return '正在将“$name”更新为 v$version...';
   }
-
-  @override
-  String get adminMissingAuthToken => '无法打开设置：缺少身份验证令牌。';
 
   @override
   String adminPluginLoadFailed(String error) {
@@ -7248,9 +7970,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminSlowResponseThreshold => '慢响应阈值（毫秒）';
 
   @override
-  String get adminBrandingSaved => '已保存品牌设置';
-
-  @override
   String get adminBrandingLoadFailed => '无法加载品牌设置';
 
   @override
@@ -7269,9 +7988,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminEnableSplashScreen => '启用启动画面';
 
   @override
-  String get adminStreamingSaved => '已保存串流设置';
-
-  @override
   String get adminStreamingLoadFailed => '无法加载串流设置';
 
   @override
@@ -7284,13 +8000,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminLeaveEmptyForUnlimited => '留空或 0 表示无限制';
 
   @override
-  String get adminPlaybackSaved => '播放设置已保存';
-
-  @override
   String get adminPlaybackLoadFailed => '无法加载播放设置';
-
-  @override
-  String get adminPlaybackTranscoding => '播放/转码';
 
   @override
   String get adminHardwareAcceleration => '硬件加速';
@@ -7327,9 +8037,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminThrottleBuffering => '启用缓冲节流';
-
-  @override
-  String get adminTrickplaySaved => 'Trickplay 设置已保存';
 
   @override
   String get adminTrickplayLoadFailed => '加载 Trickplay 设置失败';
@@ -7374,9 +8081,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminProcessThreads => '处理线程';
 
   @override
-  String get adminResumeSaved => '播放进度设置已保存';
-
-  @override
   String get adminResumeLoadFailed => '无法加载播放进度设置';
 
   @override
@@ -7405,9 +8109,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminMaxAudiobookResume => '有声书标记已听完的百分比';
-
-  @override
-  String get adminNetworkingSaved => '已保存网络设置。可能需要重启服务器。';
 
   @override
   String get adminNetworkingLoadFailed => '无法加载网络设置';
@@ -7470,16 +8171,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notSet => '未设置';
 
   @override
-  String get adminMetadataSaved => '元数据已保存';
-
-  @override
   String adminMetadataLoadFailed(String error) {
     return '无法加载元数据：$error';
-  }
-
-  @override
-  String adminMetadataSaveFailed(String error) {
-    return '无法保存元数据：$error';
   }
 
   @override
@@ -7490,9 +8183,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminReplaceAllMetadata => '替换所有元数据';
-
-  @override
-  String get adminReplaceAllImages => '替换所有图片';
 
   @override
   String get adminMetadataRefreshRequested => '已请求刷新元数据';
@@ -7592,12 +8282,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get adminAddTuner => '添加调谐器';
-
-  @override
-  String get adminEditTuner => '编辑调谐器';
-
-  @override
   String get adminTunerTypeM3u => 'M3U 直播源调谐器';
 
   @override
@@ -7646,9 +8330,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminTunerReadAtNativeFramerate => '按原始帧率读取源文件';
 
   @override
-  String get adminEditProvider => '编辑节目源';
-
-  @override
   String get adminProviderXmltv => 'XMLTV 节目单';
 
   @override
@@ -7691,38 +8372,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminSdPostalCode => '邮政编码';
 
   @override
-  String get adminSdGetListings => '拉取节目单';
-
-  @override
-  String get adminSdListings => '电视节目单';
-
-  @override
   String get adminEnableAllTuners => '启用全部调谐器';
-
-  @override
-  String get adminTunerType => '调谐器类型';
-
-  @override
-  String get adminTunerAdded => '已添加调谐器';
-
-  @override
-  String adminTunerAddFailed(String error) {
-    return '添加调谐器失败：$error';
-  }
-
-  @override
-  String get adminAddGuideProvider => '添加节目指南提供方';
-
-  @override
-  String get adminProviderType => '提供方类型';
-
-  @override
-  String get adminProviderAdded => '提供方已添加';
-
-  @override
-  String adminProviderAddFailed(String error) {
-    return '添加提供方失败：$error';
-  }
 
   @override
   String adminTunerRemoveFailed(String error) {
@@ -7730,32 +8380,9 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get adminTunerResetRequested => '请求重置调谐器';
-
-  @override
-  String adminTunerResetFailed(String error) {
-    return '重置调谐器失败：$error';
-  }
-
-  @override
-  String get adminTunerResetNotSupported => '此调谐器类型不支持重置。';
-
-  @override
   String adminProviderRemoveFailed(String error) {
     return '无法移除提供方：$error';
   }
-
-  @override
-  String get adminRecordingSettings => '录制设置';
-
-  @override
-  String get adminPrePadding => '提前录制（分钟）';
-
-  @override
-  String get adminPostPadding => '延后录制（分钟）';
-
-  @override
-  String get adminRecordingPath => '录制路径';
 
   @override
   String get adminSeriesRecordingPath => '剧集录制路径';
@@ -7764,15 +8391,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminMovieRecordingPath => '电影录制路径';
 
   @override
-  String get adminGuideDays => '节目指南数据天数';
-
-  @override
   String get adminGuideDaysAuto => '自动';
-
-  @override
-  String adminGuideDaysValue(int days) {
-    return '$days 天';
-  }
 
   @override
   String get adminRecordingPostProcessor => '后处理应用程序路径';
@@ -7787,42 +8406,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminSaveRecordingImages => '保存录制图片';
 
   @override
-  String get adminLiveTvSectionTiming => '时序';
-
-  @override
   String get adminLiveTvSectionPaths => '录制路径';
 
   @override
   String get adminLiveTvSectionPostProcessing => '后处理';
 
   @override
-  String adminGuideDaysDisplay(String value) {
-    return '节目指南数据: $value';
-  }
-
-  @override
-  String get adminRecordingSettingsSaved => '已保存录制设置';
-
-  @override
   String adminSettingsSaveFailed(String error) {
     return '保存设置失败：$error';
-  }
-
-  @override
-  String get adminSetChannelMappings => '设置通道映射';
-
-  @override
-  String get adminMappingJson => '映射 JSON';
-
-  @override
-  String get adminMappingJsonHint => '示例：映射 JSON 负载';
-
-  @override
-  String get adminChannelMappingsUpdated => '频道映射已更新';
-
-  @override
-  String adminMappingsUpdateFailed(String error) {
-    return '更新映射失败：$error';
   }
 
   @override
@@ -7838,48 +8429,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminGuideProviders => '节目指南提供方';
 
   @override
-  String get adminRefreshGuideData => '刷新节目指南数据';
-
-  @override
   String get adminGuideRefreshStarted => '节目指南数据刷新已开始';
 
   @override
   String get adminGuideRefreshUnavailable => '此服务器不支持节目指南刷新任务。';
 
   @override
-  String get adminAddProvider => '添加提供商';
-
-  @override
   String get adminNoListingProviders => '未配置节目单提供方';
-
-  @override
-  String adminRecordingPathDisplay(String path) {
-    return '录制路径：$path';
-  }
-
-  @override
-  String adminSeriesPathDisplay(String path) {
-    return '剧集路径：$path';
-  }
-
-  @override
-  String adminPrePaddingDisplay(int minutes) {
-    return '提前录制：$minutes 分钟';
-  }
-
-  @override
-  String adminPostPaddingDisplay(int minutes) {
-    return '延后录制：$minutes 分钟';
-  }
-
-  @override
-  String get adminTunerDiscovery => '调谐器发现';
-
-  @override
-  String get adminChannelMappings => '通道映射';
-
-  @override
-  String get adminNoDiscoveredTuners => '尚未发现调谐器';
 
   @override
   String get adminSettingsSaved => '设置已保存';
@@ -7902,9 +8458,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get adminRestoreRequested => '已请求恢复。服务器重启可能会断开此会话。';
-
-  @override
   String get adminBackupsTitle => '备份';
 
   @override
@@ -7914,19 +8467,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminUnnamedBackup => '未命名备份';
 
   @override
-  String get adminLiveTvNotAvailable => '直播电视管理在此服务器版本上不可用。';
-
-  @override
-  String get adminLiveTvTitle => '直播电视管理';
-
-  @override
   String get adminApply => '应用';
-
-  @override
-  String get adminNotSet => '未设置';
-
-  @override
-  String get adminReset => '重置';
 
   @override
   String get adminLogsTitle => '服务器日志';
@@ -8081,9 +8622,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminMetadataField3DFormat => '3D 格式';
-
-  @override
-  String get adminMetadataPersonKindUnknown => '未知';
 
   @override
   String get adminMetadataPersonKindActor => '演员';
@@ -8246,9 +8784,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminMetadataImageThumb => '缩略图';
-
-  @override
-  String get adminMetadataRecursive => '递归';
 
   @override
   String get adminMetadataProvider => '提供方';
@@ -8504,25 +9039,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminNetworkingRestartWarning => '更改网络设置可能需要重启服务器。';
 
   @override
-  String get adminNetworkingRemoteAccess => '启用远程访问';
-
-  @override
-  String get adminNetworkingPorts => '端口';
-
-  @override
-  String get adminNetworkingHttpPort => 'HTTP 端口';
-
-  @override
-  String get adminNetworkingHttpsPort => 'HTTPS 端口';
-
-  @override
   String get adminNetworkingEnableHttps => '启用 HTTPS';
-
-  @override
-  String get adminNetworkingLocalNetwork => '本地网络';
-
-  @override
-  String get adminNetworkingLocalAddresses => '本地网络地址';
 
   @override
   String get adminNetworkingAddressHint => '例如 192.168.1.0/24';
@@ -8585,9 +9102,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminPlaybackEnableHwEncoding => '启用硬件编码';
 
   @override
-  String get adminPlaybackEnableHwDecoding => '启用硬件解码：';
-
-  @override
   String get adminPlaybackQsvDevice => 'QSV 设备';
 
   @override
@@ -8595,9 +9109,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminPlaybackPreferNativeDecoder => '首选系统原生硬件解码器';
-
-  @override
-  String get adminPlaybackColorDepth => '硬件解码色深';
 
   @override
   String get adminPlaybackColorDepth10Hevc => '10位 HEVC 解码';
@@ -8663,9 +9174,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminPlaybackVppTonemappingContrast => 'VPP 色调映射对比度';
 
   @override
-  String get adminPlaybackPresetsQuality => '预设与画质';
-
-  @override
   String get adminPlaybackEncoderPreset => '编码器预设';
 
   @override
@@ -8718,12 +9226,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminResumeAudiobooks => '有声读物';
-
-  @override
-  String get adminResumeMinAudiobookPct => '有声读物保存进度的最低百分比';
-
-  @override
-  String get adminResumeMaxAudiobookPct => '有声读物标记已听完的百分比';
 
   @override
   String get adminStreamingBitrateLimit => '远程客户端码率限制（Mbps）';
@@ -8841,11 +9343,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String adminTaskTriggerInterval(String duration) {
-    return '每 $duration';
-  }
-
-  @override
   String get adminTaskTriggerStartup => '应用启动时';
 
   @override
@@ -8864,18 +9361,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminTaskTriggerEveryHour => '每小时';
 
   @override
-  String get adminTaskTriggerEvery6Hours => '每 6 小时';
-
-  @override
-  String get adminTaskTriggerEvery12Hours => '每 12 小时';
-
-  @override
-  String get adminTaskTriggerEvery24Hours => '每 24 小时';
-
-  @override
-  String get adminTaskTriggerEvery2Days => '每 2 天';
-
-  @override
   String adminTaskTriggerHours(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -8888,9 +9373,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminTaskTriggerTime => '时间';
-
-  @override
-  String get adminTaskTriggerNoLimit => '无限制';
 
   @override
   String get adminActivityJustNow => '刚刚';
@@ -8958,9 +9440,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminNetworkingBaseUrlHint => '例如 /jellyfin';
 
   @override
-  String get adminNetworkingHttps => 'HTTPS';
-
-  @override
   String get adminNetworkingPublicHttpPort => '公共 HTTP 端口';
 
   @override
@@ -8974,36 +9453,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminNetworkingCertPassword => '证书密码';
 
   @override
-  String get adminNetworkingIpSettings => 'IP 设置';
-
-  @override
   String get adminNetworkingEnableIpv4 => '启用 IPv4';
 
   @override
   String get adminNetworkingEnableIpv6 => '启用 IPv6';
 
   @override
-  String get adminNetworkingAutoDiscovery => '启用自动端口映射';
-
-  @override
   String get adminNetworkingLocalSubnets => '局域网';
-
-  @override
-  String get adminNetworkingLocalSubnetsHint =>
-      '逗号或换行分隔的 IP 地址或 CIDR 子网列表，视为本地网络。';
-
-  @override
-  String get adminNetworkingPublishedUris => '发布的服务器 URI';
-
-  @override
-  String get adminNetworkingPublishedUriHint =>
-      '将子网或地址映射到发布的 URL，例如 all=https://example.com';
-
-  @override
-  String get adminNetworkingCertPath => '证书路径';
-
-  @override
-  String get adminNetworkingRemoteIpFilter => '远程 IP 过滤';
 
   @override
   String get adminNetworkingRemoteIpFilterLabel => '远程 IP 过滤器';
@@ -9114,9 +9570,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminSettingsLoadFailed => '无法加载设置';
-
-  @override
-  String get adminDiscover => '发现';
 
   @override
   String adminChannelMappingsUpdateFailed(String error) {
@@ -10936,12 +11389,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get watchWithGroup => '与播放组一起观看';
 
   @override
-  String get errors => '错误';
-
-  @override
-  String get warnings => '警告';
-
-  @override
   String get disk => '磁盘';
 
   @override
@@ -11747,12 +12194,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminNoDevicesMatchCurrentFilters => '没有设备符合当前筛选条件';
 
   @override
-  String get passwordSet => '已设置密码';
-
-  @override
-  String get noPasswordConfigured => '未配置密码';
-
-  @override
   String get remoteAccess => '远程访问';
 
   @override
@@ -11838,24 +12279,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get needsAttention => '需要处理';
 
   @override
-  String get adminDrawerSectionServer => '服务器';
-
-  @override
-  String get adminDrawerSectionPlayback => '播放';
-
-  @override
-  String get adminDrawerSectionDevices => '设备';
-
-  @override
-  String get adminDrawerSectionAdvanced => '高级';
-
-  @override
-  String get adminDrawerSectionPlugins => '插件';
-
-  @override
-  String get adminDrawerSectionLiveTv => '直播电视';
-
-  @override
   String get homeVideos => '家庭视频';
 
   @override
@@ -11866,12 +12289,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get mixedMoviesAndShows => '电影和剧集混合';
-
-  @override
-  String get intelQuickSync => 'Intel Quick Sync';
-
-  @override
-  String get rockchipMpp => '瑞芯微 MPP';
 
   @override
   String get dolbyVision => 'Dolby Vision';
@@ -12588,24 +13005,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminLabelYear => '年份';
-
-  @override
-  String get adminLabelImdbId => 'IMDb编号';
-
-  @override
-  String get adminLabelTmdbMovieId => 'TheMovieDb 影片编号';
-
-  @override
-  String get adminLabelTmdbBoxSetId => 'TheMovieDb 合集编号';
-
-  @override
-  String get adminLabelTvdbBoxSetId => 'TheTVDB 合集编号';
-
-  @override
-  String get adminLabelTvdbId => 'TheTVDB 数字编号';
-
-  @override
-  String get adminLabelTvdbSlug => 'TheTVDB 别名标识';
 
   @override
   String get adminReplaceImages => '替换现有图片';
@@ -17789,11 +18188,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String adminRecentAlertEntries(int count) {
-    return '最近的警告／錯誤紀錄：$count 項';
-  }
-
-  @override
   String get analyticsMediaDistribution => '媒體發行';
 
   @override
@@ -17840,9 +18234,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminShutdownServer => '關閉伺服器';
-
-  @override
-  String get adminScanLibraries => '掃描媒體庫';
 
   @override
   String get adminLibraryScanStarted => '媒體庫掃描已開始';
@@ -17928,12 +18319,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get completion => '完成';
-
-  @override
-  String get direct => '直接的';
-
-  @override
-  String get adminDisconnect => '斷開';
 
   @override
   String get adminClearDates => '明確日期';
@@ -18075,14 +18460,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get adminLibraryOptionsSaved => '媒體庫選項已儲存';
-
-  @override
-  String adminLibraryOptionsSaveFailed(String error) {
-    return '無法儲存選項：$error';
-  }
-
-  @override
   String get adminLibraryLoadFailed => '載入媒體庫失敗';
 
   @override
@@ -18093,9 +18470,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminBrowseFilesystem => '瀏覽伺服器檔案系統：';
-
-  @override
-  String get adminSaveOptions => '儲存選項';
 
   @override
   String get adminPreferredMetadataLanguage => '首選元資料語言';
@@ -18169,9 +18543,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminLibRealtimeMonitorHint => '偵測檔案變更並自動處理。';
-
-  @override
-  String get adminLibArchiveMediaFiles => '將封存檔視為媒體檔案';
 
   @override
   String get adminLibEnablePhotos => '顯示相片';
@@ -18347,9 +18718,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminSelectedPaths => '選定的路徑：';
 
   @override
-  String get adminNoPathsAdded => '未新增路徑（可以稍後新增）';
-
-  @override
   String get adminCreateLibrary => '建立媒體庫';
 
   @override
@@ -18413,18 +18781,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminUsernameRequired => '使用者名稱不能為空';
 
   @override
-  String get adminNoProfileChanges => '沒有要儲存的設定檔更改';
-
-  @override
-  String get adminProfileSaved => '個人資料已儲存';
-
-  @override
   String adminSaveFailed(String error) {
     return '無法儲存：$error';
   }
-
-  @override
-  String get adminPermissionsSaved => '權限已儲存';
 
   @override
   String get adminPasswordsMismatch => '密碼不匹配';
@@ -18436,12 +18795,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminUserLoadFailed => '載入用戶失敗';
-
-  @override
-  String get adminBackToUsers => '返回用戶';
-
-  @override
-  String get adminSaveProfile => '儲存個人資料';
 
   @override
   String get adminDeleteUser => '刪除用戶';
@@ -18474,9 +18827,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminForceRemoteTranscoding => '強制遠端來源轉碼';
 
   @override
-  String get adminAllowContentDeletion => '允許內容刪除';
-
-  @override
   String get adminAllowContentDownloading => '允許內容下載';
 
   @override
@@ -18490,9 +18840,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminAllowRemoteAccess => '允許遠端存取';
-
-  @override
-  String get adminRemoteBitrateLimit => '遠端客戶端位元速率限制 (bps)';
 
   @override
   String get adminLeaveEmptyNoLimit => '留空則無限制';
@@ -18516,13 +18863,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminAllowLyricManagement => '允許歌詞管理';
 
   @override
-  String get adminSavePermissions => '保存權限';
-
-  @override
   String get adminEnableAllLibraryAccess => '允許存取所有媒體庫';
-
-  @override
-  String get adminSaveAccess => '儲存存取權限';
 
   @override
   String get adminChangePassword => '更改密碼';
@@ -18550,9 +18891,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminLibraryAccess => '媒體庫存取';
-
-  @override
-  String get adminDeviceAndChannelAccess => '設備和通道訪問';
 
   @override
   String get adminEnableAllDevices => '啟用對所有裝置的訪問';
@@ -18658,12 +18996,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminAddTag => '新增標籤';
-
-  @override
-  String get adminEnabledDevices => '已啟用的裝置';
-
-  @override
-  String get adminEnabledChannels => '已啟用的頻道';
 
   @override
   String get adminAuthProvider => '驗證提供者';
@@ -18776,9 +19108,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminBackupOptionsTitle => '建立備份';
-
-  @override
-  String get adminBackupInclude => '選擇要納入備份的項目。';
 
   @override
   String get adminBackupDatabase => '資料庫';
@@ -18933,9 +19262,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminTriggerType => '觸發類型';
 
   @override
-  String get adminTimeLimit => '時間限制（可選）';
-
-  @override
   String get adminNoLimit => '無限制';
 
   @override
@@ -19027,9 +19353,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String adminPluginUpdating(String name, String version) {
     return '正在將「$name」更新至 v$version...';
   }
-
-  @override
-  String get adminMissingAuthToken => '無法開啟設定：缺少身份驗證令牌。';
 
   @override
   String adminPluginLoadFailed(String error) {
@@ -19127,9 +19450,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminSlowResponseThreshold => '慢響應閾值（毫秒）';
 
   @override
-  String get adminBrandingSaved => '已儲存品牌設定';
-
-  @override
   String get adminBrandingLoadFailed => '無法加載品牌設置';
 
   @override
@@ -19148,9 +19468,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminEnableSplashScreen => '啟用啟動畫面';
 
   @override
-  String get adminStreamingSaved => '已儲存串流媒體設定';
-
-  @override
   String get adminStreamingLoadFailed => '無法加載串流媒體設置';
 
   @override
@@ -19163,13 +19480,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminLeaveEmptyForUnlimited => '留空或 0 表示無限制';
 
   @override
-  String get adminPlaybackSaved => '已儲存播放設定';
-
-  @override
   String get adminPlaybackLoadFailed => '無法載入播放設定';
-
-  @override
-  String get adminPlaybackTranscoding => '播放/轉碼';
 
   @override
   String get adminHardwareAcceleration => '硬體加速';
@@ -19206,9 +19517,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminThrottleBuffering => '油門緩衝';
-
-  @override
-  String get adminTrickplaySaved => '已儲存 Trickplay 設定';
 
   @override
   String get adminTrickplayLoadFailed => '無法載入 Trickplay 設定';
@@ -19253,9 +19561,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminProcessThreads => '處理線程';
 
   @override
-  String get adminResumeSaved => '恢復已儲存的設定';
-
-  @override
   String get adminResumeLoadFailed => '無法載入恢復設定';
 
   @override
@@ -19284,9 +19589,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminMaxAudiobookResume => '最大有聲書恢復百分比';
-
-  @override
-  String get adminNetworkingSaved => '已儲存網路設定。可能需要重新啟動伺服器。';
 
   @override
   String get adminNetworkingLoadFailed => '無法載入網路設定';
@@ -19349,16 +19651,8 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get notSet => '未設定';
 
   @override
-  String get adminMetadataSaved => '元資料已儲存';
-
-  @override
   String adminMetadataLoadFailed(String error) {
     return '無法載入中繼資料：$error';
-  }
-
-  @override
-  String adminMetadataSaveFailed(String error) {
-    return '無法儲存中繼資料：$error';
   }
 
   @override
@@ -19369,9 +19663,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminReplaceAllMetadata => '替換所有元數據';
-
-  @override
-  String get adminReplaceAllImages => '替換所有圖像';
 
   @override
   String get adminMetadataRefreshRequested => '請求元資料刷新';
@@ -19471,12 +19762,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get adminAddTuner => '新增調音器';
-
-  @override
-  String get adminEditTuner => '編輯調諧器';
-
-  @override
   String get adminTunerTypeM3u => 'M3U 調諧器';
 
   @override
@@ -19525,9 +19810,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminTunerReadAtNativeFramerate => '以原生影格率讀取輸入';
 
   @override
-  String get adminEditProvider => '編輯提供者';
-
-  @override
   String get adminProviderXmltv => 'XMLTV';
 
   @override
@@ -19570,38 +19852,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminSdPostalCode => '郵遞區號';
 
   @override
-  String get adminSdGetListings => '取得節目表';
-
-  @override
-  String get adminSdListings => '節目表';
-
-  @override
   String get adminEnableAllTuners => '啟用所有調諧器';
-
-  @override
-  String get adminTunerType => '調音器類型';
-
-  @override
-  String get adminTunerAdded => '新增了調音器';
-
-  @override
-  String adminTunerAddFailed(String error) {
-    return '無法新增調諧器：$error';
-  }
-
-  @override
-  String get adminAddGuideProvider => '新增嚮導提供者';
-
-  @override
-  String get adminProviderType => '提供者類型';
-
-  @override
-  String get adminProviderAdded => '提供者已新增';
-
-  @override
-  String adminProviderAddFailed(String error) {
-    return '無法新增提供者：$error';
-  }
 
   @override
   String adminTunerRemoveFailed(String error) {
@@ -19609,32 +19860,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get adminTunerResetRequested => '請求重置調諧器';
-
-  @override
-  String adminTunerResetFailed(String error) {
-    return '無法重設調諧器：$error';
-  }
-
-  @override
-  String get adminTunerResetNotSupported => '此類型的調諧器不支援重設。';
-
-  @override
   String adminProviderRemoveFailed(String error) {
     return '無法移除提供者：$error';
   }
-
-  @override
-  String get adminRecordingSettings => '錄音設定';
-
-  @override
-  String get adminPrePadding => '預填（分鐘）';
-
-  @override
-  String get adminPostPadding => '後填充（分鐘）';
-
-  @override
-  String get adminRecordingPath => '錄音路徑';
 
   @override
   String get adminSeriesRecordingPath => '劇集錄製路徑';
@@ -19643,15 +19871,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminMovieRecordingPath => '電影錄影路徑';
 
   @override
-  String get adminGuideDays => '節目表資料天數';
-
-  @override
   String get adminGuideDaysAuto => '自動';
-
-  @override
-  String adminGuideDaysValue(int days) {
-    return '$days 天';
-  }
 
   @override
   String get adminRecordingPostProcessor => '後製處理程式路徑';
@@ -19666,42 +19886,14 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminSaveRecordingImages => '儲存錄影圖片';
 
   @override
-  String get adminLiveTvSectionTiming => '時間設定';
-
-  @override
   String get adminLiveTvSectionPaths => '錄影路徑';
 
   @override
   String get adminLiveTvSectionPostProcessing => '後製處理';
 
   @override
-  String adminGuideDaysDisplay(String value) {
-    return '節目表資料：$value';
-  }
-
-  @override
-  String get adminRecordingSettingsSaved => '已儲存錄音設定';
-
-  @override
   String adminSettingsSaveFailed(String error) {
     return '無法儲存設定：$error';
-  }
-
-  @override
-  String get adminSetChannelMappings => '設定通道映射';
-
-  @override
-  String get adminMappingJson => '映射 JSON';
-
-  @override
-  String get adminMappingJsonHint => '範例：映射 JSON 負載';
-
-  @override
-  String get adminChannelMappingsUpdated => '頻道映射已更新';
-
-  @override
-  String adminMappingsUpdateFailed(String error) {
-    return '無法更新對應：$error';
   }
 
   @override
@@ -19717,48 +19909,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminGuideProviders => '導遊提供者';
 
   @override
-  String get adminRefreshGuideData => '重新整理節目表資料';
-
-  @override
   String get adminGuideRefreshStarted => '已開始重新整理節目表資料';
 
   @override
   String get adminGuideRefreshUnavailable => '此伺服器沒有節目表重新整理工作。';
 
   @override
-  String get adminAddProvider => '新增提供者';
-
-  @override
   String get adminNoListingProviders => '未配置清單提供者';
-
-  @override
-  String adminRecordingPathDisplay(String path) {
-    return '錄影路徑：$path';
-  }
-
-  @override
-  String adminSeriesPathDisplay(String path) {
-    return '劇集路徑：$path';
-  }
-
-  @override
-  String adminPrePaddingDisplay(int minutes) {
-    return '提前錄影：$minutes 分鐘';
-  }
-
-  @override
-  String adminPostPaddingDisplay(int minutes) {
-    return '延後錄影：$minutes 分鐘';
-  }
-
-  @override
-  String get adminTunerDiscovery => '調音器發現';
-
-  @override
-  String get adminChannelMappings => '通道映射';
-
-  @override
-  String get adminNoDiscoveredTuners => '尚未發現調諧器';
 
   @override
   String get adminSettingsSaved => '設定已儲存';
@@ -19781,9 +19938,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get adminRestoreRequested => '已請求恢復。伺服器重新啟動可能會中斷此會話。';
-
-  @override
   String get adminBackupsTitle => '備份';
 
   @override
@@ -19793,19 +19947,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminUnnamedBackup => '未命名備份';
 
   @override
-  String get adminLiveTvNotAvailable => '直播電視管理在此伺服器版本上不可用。';
-
-  @override
-  String get adminLiveTvTitle => '直播電視管理';
-
-  @override
   String get adminApply => '套用';
-
-  @override
-  String get adminNotSet => '未設定';
-
-  @override
-  String get adminReset => '重設';
 
   @override
   String get adminLogsTitle => '伺服器日誌';
@@ -19942,9 +20084,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminMetadataImageThumb => '大拇指';
-
-  @override
-  String get adminMetadataRecursive => '遞迴';
 
   @override
   String get adminMetadataProvider => '提供者';
@@ -20191,25 +20330,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminNetworkingRestartWarning => '更改網路設定可能需要重新啟動伺服器。';
 
   @override
-  String get adminNetworkingRemoteAccess => '啟用遠端存取';
-
-  @override
-  String get adminNetworkingPorts => '港口';
-
-  @override
-  String get adminNetworkingHttpPort => 'HTTP連接埠';
-
-  @override
-  String get adminNetworkingHttpsPort => 'HTTPS連接埠';
-
-  @override
   String get adminNetworkingEnableHttps => '啟用 HTTPS';
-
-  @override
-  String get adminNetworkingLocalNetwork => '本地網路';
-
-  @override
-  String get adminNetworkingLocalAddresses => '本地網路位址';
 
   @override
   String get adminNetworkingAddressHint => '例如192.168.1.0/24';
@@ -20272,9 +20393,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminPlaybackEnableHwEncoding => '啟用硬體編碼';
 
   @override
-  String get adminPlaybackEnableHwDecoding => '啟用硬體解碼：';
-
-  @override
   String get adminPlaybackQsvDevice => 'QSV 裝置';
 
   @override
@@ -20282,9 +20400,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminPlaybackPreferNativeDecoder => '優先使用系統原生的硬體解碼器';
-
-  @override
-  String get adminPlaybackColorDepth => '硬體解碼色彩深度';
 
   @override
   String get adminPlaybackColorDepth10Hevc => '10-bit HEVC 解碼';
@@ -20350,9 +20465,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminPlaybackVppTonemappingContrast => 'VPP 色調對應對比度';
 
   @override
-  String get adminPlaybackPresetsQuality => '預設集與品質';
-
-  @override
   String get adminPlaybackEncoderPreset => '編碼器預設集';
 
   @override
@@ -20405,12 +20517,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminResumeAudiobooks => '有聲書';
-
-  @override
-  String get adminResumeMinAudiobookPct => '有聲書最低履歷百分比';
-
-  @override
-  String get adminResumeMaxAudiobookPct => '最大有聲書恢復百分比';
 
   @override
   String get adminStreamingBitrateLimit => '遠端客戶端位元速率限制 (Mbps)';
@@ -20528,11 +20634,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String adminTaskTriggerInterval(String duration) {
-    return '每 $duration';
-  }
-
-  @override
   String get adminTaskTriggerStartup => '應用程式啟動時';
 
   @override
@@ -20551,18 +20652,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminTaskTriggerEveryHour => '每小時';
 
   @override
-  String get adminTaskTriggerEvery6Hours => '每 6 小時';
-
-  @override
-  String get adminTaskTriggerEvery12Hours => '每12小時一次';
-
-  @override
-  String get adminTaskTriggerEvery24Hours => '每24小時一次';
-
-  @override
-  String get adminTaskTriggerEvery2Days => '每2天一次';
-
-  @override
   String adminTaskTriggerHours(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -20575,9 +20664,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminTaskTriggerTime => '時間';
-
-  @override
-  String get adminTaskTriggerNoLimit => '無限制';
 
   @override
   String get adminActivityJustNow => '現在';
@@ -20645,9 +20731,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminNetworkingBaseUrlHint => '例如 /jellyfin';
 
   @override
-  String get adminNetworkingHttps => 'HTTPS';
-
-  @override
   String get adminNetworkingPublicHttpPort => '公開 HTTP 連接埠';
 
   @override
@@ -20661,36 +20744,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adminNetworkingCertPassword => '憑證密碼';
 
   @override
-  String get adminNetworkingIpSettings => 'IP 設定';
-
-  @override
   String get adminNetworkingEnableIpv4 => '啟用 IPv4';
 
   @override
   String get adminNetworkingEnableIpv6 => '啟用 IPv6';
 
   @override
-  String get adminNetworkingAutoDiscovery => '啟用自動連接埠對應';
-
-  @override
   String get adminNetworkingLocalSubnets => '區域網路';
-
-  @override
-  String get adminNetworkingLocalSubnetsHint =>
-      '以逗號或換行分隔的 IP 位址或 CIDR 子網路清單，這些將被視為位於區域網路內。';
-
-  @override
-  String get adminNetworkingPublishedUris => '公開的伺服器 URI';
-
-  @override
-  String get adminNetworkingPublishedUriHint =>
-      '將子網路或位址對應至公開 URL，例如 all=https://example.com';
-
-  @override
-  String get adminNetworkingCertPath => '證書路徑';
-
-  @override
-  String get adminNetworkingRemoteIpFilter => '遠端IP過濾';
 
   @override
   String get adminNetworkingRemoteIpFilterLabel => '遠端IP過濾器';
@@ -20801,9 +20861,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminSettingsLoadFailed => '無法載入設定';
-
-  @override
-  String get adminDiscover => '發現';
 
   @override
   String adminChannelMappingsUpdateFailed(String error) {
@@ -22277,12 +22334,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get watchWithGroup => '與群組一起觀看';
 
   @override
-  String get errors => '錯誤';
-
-  @override
-  String get warnings => '警告';
-
-  @override
   String get disk => '磁碟';
 
   @override
@@ -22317,12 +22368,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get adminNoDevicesMatchCurrentFilters => '沒有裝置符合目前的篩選條件';
-
-  @override
-  String get passwordSet => '已設定密碼';
-
-  @override
-  String get noPasswordConfigured => '未設定密碼';
 
   @override
   String get remoteAccess => '遠端存取';
@@ -22410,24 +22455,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get needsAttention => '需要處理';
 
   @override
-  String get adminDrawerSectionServer => '伺服器';
-
-  @override
-  String get adminDrawerSectionPlayback => '播放';
-
-  @override
-  String get adminDrawerSectionDevices => '裝置';
-
-  @override
-  String get adminDrawerSectionAdvanced => '進階';
-
-  @override
-  String get adminDrawerSectionPlugins => '外掛程式';
-
-  @override
-  String get adminDrawerSectionLiveTv => '直播電視';
-
-  @override
   String get homeVideos => '家庭影片';
 
   @override
@@ -22438,12 +22465,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get mixedMoviesAndShows => '電影與影集混合';
-
-  @override
-  String get intelQuickSync => 'Intel Quick Sync';
-
-  @override
-  String get rockchipMpp => 'Rockchip MPP';
 
   @override
   String get dolbyVision => 'Dolby Vision';

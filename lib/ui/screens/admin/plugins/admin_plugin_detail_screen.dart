@@ -5,8 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:server_core/server_core.dart';
 import 'package:dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:convert';
-import 'dart:io';
 
 import '../admin_plugin_version_utils.dart';
 import '../../../widgets/adaptive/adaptive_dialog.dart';
@@ -15,6 +13,7 @@ import '../widgets/admin_form_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../util/error_message.dart';
 import '../../../../util/platform_detection.dart';
+import 'admin_plugin_install_confirm.dart';
 
 final _packageInfoProvider = FutureProvider.family<PackageInfo?, String>((
   ref,
@@ -31,6 +30,39 @@ final _packageInfoProvider = FutureProvider.family<PackageInfo?, String>((
     return null;
   }
 });
+
+/// A failed lookup only hides the Settings entries.
+final _configurationPagesProvider =
+    FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+  try {
+    return await GetIt.instance<MediaServerClient>()
+        .adminPluginsApi
+        .getConfigurationPages();
+  } catch (_) {
+    return const [];
+  }
+});
+
+/// The settings page to open for [pluginId]: the plugin's main-menu page,
+/// else its first one.
+String? configurationPageFor(
+  List<Map<String, dynamic>> pages,
+  String pluginId,
+) {
+  Map<String, dynamic>? page;
+  for (final candidate in pages) {
+    if ('${candidate['PluginId']}'.toLowerCase() != pluginId.toLowerCase()) {
+      continue;
+    }
+    page ??= candidate;
+    if (candidate['EnableInMainMenu'] == true) {
+      page = candidate;
+      break;
+    }
+  }
+  final name = (page?['Name'] ?? '').toString().trim();
+  return name.isEmpty ? null : name;
+}
 
 class AdminPluginDetailScreen extends ConsumerStatefulWidget {
   final String pluginId;
@@ -137,6 +169,7 @@ class _AdminPluginDetailScreenState
     PackageInfo package,
     VersionInfo version,
   ) async {
+    if (!await confirmPluginInstall(context, version) || !mounted) return;
     try {
       await _api.installPackage(
         package.name,
@@ -189,83 +222,10 @@ class _AdminPluginDetailScreenState
     return Uri.parse('$_webBaseUrl/web/#/configurationpage?name=$encoded');
   }
 
-  Future<String?> _resolveConfigurationPageName(PluginInfo plugin) async {
-    final client = GetIt.instance<MediaServerClient>();
-    final token = client.accessToken;
-    if (token == null || token.isEmpty) {
-      return null;
-    }
-
-    final uri = Uri.parse('$_webBaseUrl/web/ConfigurationPages');
-    final httpClient = HttpClient()..userAgent = serverUserAgent;
-    try {
-      final request = await httpClient.getUrl(uri);
-      request.headers.set('X-Emby-Token', token);
-      request.headers.set('Accept', 'application/json');
-      final response = await request.close();
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        return null;
-      }
-
-      final jsonText = await utf8.decoder.bind(response).join();
-      final decoded = jsonDecode(jsonText);
-      if (decoded is! List) {
-        return null;
-      }
-
-      Map<String, dynamic>? firstMatch;
-      for (final entry in decoded) {
-        if (entry is! Map) {
-          continue;
-        }
-
-        final mapped = Map<String, dynamic>.from(entry);
-        final pagePluginId = (mapped['PluginId'] ?? '').toString();
-        if (pagePluginId.toLowerCase() != plugin.id.toLowerCase()) {
-          continue;
-        }
-
-        firstMatch ??= mapped;
-        final inMainMenu = mapped['EnableInMainMenu'] == true;
-        if (inMainMenu) {
-          firstMatch = mapped;
-          break;
-        }
-      }
-
-      final name = (firstMatch?['Name'] ?? '').toString().trim();
-      return name.isEmpty ? null : name;
-    } catch (_) {
-      return null;
-    } finally {
-      httpClient.close(force: true);
-    }
-  }
-
   /// A plugin's settings page is the server's own web client, written for a
   /// desktop browser and signed in by its own session, so it opens in the
   /// browser rather than a web view the app would have to sign into itself.
-  Future<void> _openHtmlSettings(PluginInfo plugin) async {
-    final token = GetIt.instance<MediaServerClient>().accessToken;
-    if (token == null || token.isEmpty) {
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context).adminMissingAuthToken),
-        ),
-      );
-      return;
-    }
-
-    final configPageName =
-        await _resolveConfigurationPageName(plugin) ?? plugin.name;
-    if (!mounted) {
-      return;
-    }
-
+  Future<void> _openHtmlSettings(String configPageName) async {
     final uri = _pluginHtmlSettingsUri(configPageName);
     final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && mounted) {
@@ -284,6 +244,8 @@ class _AdminPluginDetailScreenState
     final l10n = AppLocalizations.of(context);
     final pluginsAsync = ref.watch(adminInstalledPluginsProvider);
     final packageInfoAsync = ref.watch(_packageInfoProvider(widget.pluginId));
+    final configPages =
+        ref.watch(_configurationPagesProvider).valueOrNull ?? const [];
 
     return pluginsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -308,7 +270,12 @@ class _AdminPluginDetailScreenState
           );
         }
         final packageInfo = packageInfoAsync.valueOrNull;
-        return _buildContent(context, plugin, packageInfo);
+        return _buildContent(
+          context,
+          plugin,
+          packageInfo,
+          configurationPageFor(configPages, plugin.id),
+        );
       },
     );
   }
@@ -317,6 +284,7 @@ class _AdminPluginDetailScreenState
     BuildContext context,
     PluginInfo plugin,
     PackageInfo? packageInfo,
+    String? configPage,
   ) {
     final theme = Theme.of(context);
     final isWide = MediaQuery.sizeOf(context).width >= 800;
@@ -381,7 +349,8 @@ class _AdminPluginDetailScreenState
                           : packageInfo?.imageUrl,
                     ),
                     const SizedBox(height: 16),
-                    if (plugin.canUninstall) ...[
+                    // Bundled plugins have no actions but keep their Settings.
+                    if (plugin.canUninstall || configPage != null) ...[
                       _ActionsSection(
                         plugin: plugin,
                         toggling: _toggling,
@@ -396,7 +365,9 @@ class _AdminPluginDetailScreenState
                                 latestUpdateVersion,
                               ),
                         onUninstall: () => _uninstallPlugin(plugin),
-                        onOpenHtmlSettings: () => _openHtmlSettings(plugin),
+                        onOpenHtmlSettings: configPage == null
+                            ? null
+                            : () => _openHtmlSettings(configPage),
                       ),
                       const SizedBox(height: 16),
                     ],
@@ -450,7 +421,7 @@ class _AdminPluginDetailScreenState
           ),
         ],
 
-        if (plugin.canUninstall) ...[
+        if (plugin.canUninstall || configPage != null) ...[
           const SizedBox(height: 16),
           _ActionsSection(
             plugin: plugin,
@@ -465,7 +436,9 @@ class _AdminPluginDetailScreenState
                     latestUpdateVersion,
                   ),
             onUninstall: () => _uninstallPlugin(plugin),
-            onOpenHtmlSettings: () => _openHtmlSettings(plugin),
+            onOpenHtmlSettings: configPage == null
+                ? null
+                : () => _openHtmlSettings(configPage),
           ),
         ],
 
@@ -580,7 +553,7 @@ class _ActionsSection extends StatelessWidget {
   final VoidCallback onToggle;
   final VoidCallback? onInstallUpdate;
   final VoidCallback onUninstall;
-  final VoidCallback onOpenHtmlSettings;
+  final VoidCallback? onOpenHtmlSettings;
 
   const _ActionsSection({
     required this.plugin,
@@ -589,7 +562,7 @@ class _ActionsSection extends StatelessWidget {
     required this.onToggle,
     this.onInstallUpdate,
     required this.onUninstall,
-    required this.onOpenHtmlSettings,
+    this.onOpenHtmlSettings,
   });
 
   @override
@@ -600,16 +573,19 @@ class _ActionsSection extends StatelessWidget {
     return adminGlassGroup(
       context,
       children: [
-        SwitchListTile.adaptive(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          title: Text(
-            AppLocalizations.of(context).adminPluginDetailEnablePlugin,
+        if (plugin.canUninstall)
+          SwitchListTile.adaptive(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            title: Text(
+              AppLocalizations.of(context).adminPluginDetailEnablePlugin,
+            ),
+            value: plugin.status != PluginStatus.disabled,
+            onChanged:
+                (isRestartPending || toggling) ? null : (_) => onToggle(),
           ),
-          value: plugin.status != PluginStatus.disabled,
-          onChanged:
-              (isRestartPending || toggling) ? null : (_) => onToggle(),
-        ),
-        if (!PlatformDetection.isTV && onInstallUpdate != null)
+        if (plugin.canUninstall &&
+            !PlatformDetection.isTV &&
+            onInstallUpdate != null)
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             leading: Icon(Icons.download, color: theme.colorScheme.primary),
@@ -624,27 +600,29 @@ class _ActionsSection extends StatelessWidget {
             ),
             onTap: onInstallUpdate,
           ),
-        ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          leading: Icon(Icons.web, color: theme.colorScheme.primary),
-          title: Text(AppLocalizations.of(context).settings),
-          subtitle: Text(
-            AppLocalizations.of(context).adminPluginSettingsPage,
+        if (onOpenHtmlSettings != null)
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: Icon(Icons.web, color: theme.colorScheme.primary),
+            title: Text(AppLocalizations.of(context).settings),
+            subtitle: Text(
+              AppLocalizations.of(context).adminPluginSettingsPage,
+            ),
+            onTap: onOpenHtmlSettings,
           ),
-          onTap: onOpenHtmlSettings,
-        ),
-        ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          leading: Icon(
-            Icons.delete_outline,
-            color: theme.colorScheme.error,
+        if (plugin.canUninstall)
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: Icon(
+              Icons.delete_outline,
+              color: theme.colorScheme.error,
+            ),
+            title: Text(
+              AppLocalizations.of(context).uninstall,
+              style: TextStyle(color: theme.colorScheme.error),
+            ),
+            onTap: onUninstall,
           ),
-          title: Text(
-            AppLocalizations.of(context).uninstall,
-            style: TextStyle(color: theme.colorScheme.error),
-          ),
-          onTap: onUninstall,
-        ),
       ],
     );
   }

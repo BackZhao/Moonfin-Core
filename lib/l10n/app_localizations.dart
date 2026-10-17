@@ -10780,6 +10780,1422 @@ abstract class AppLocalizations {
   /// **'Exit Admin'**
   String get adminExitTooltip;
 
+  /// No description provided for @adminExternalIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} Id'**
+  String adminExternalIdLabel(String name);
+
+  /// No description provided for @adminExternalIdTypePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get adminExternalIdTypePerson;
+
+  /// No description provided for @adminExternalIdTypeArtist.
+  ///
+  /// In en, this message translates to:
+  /// **'Artist'**
+  String get adminExternalIdTypeArtist;
+
+  /// No description provided for @adminExternalIdTypeAlbumArtist.
+  ///
+  /// In en, this message translates to:
+  /// **'Album Artist'**
+  String get adminExternalIdTypeAlbumArtist;
+
+  /// No description provided for @adminExternalIdTypeOtherArtist.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Artist'**
+  String get adminExternalIdTypeOtherArtist;
+
+  /// No description provided for @adminExternalIdTypeReleaseGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Release Group'**
+  String get adminExternalIdTypeReleaseGroup;
+
+  /// No description provided for @adminExternalIdTypeBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Book'**
+  String get adminExternalIdTypeBook;
+
+  /// No description provided for @adminPlaybackHwAccelWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Hardware acceleration can be unstable on some systems. Keep the operating system and video drivers up to date, and set this back to None if video stops playing.'**
+  String get adminPlaybackHwAccelWarning;
+
+  /// No description provided for @adminLibMetadataChangeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes to metadata settings apply to new content. To update existing content, refresh it from its detail page or refresh the library.'**
+  String get adminLibMetadataChangeHelp;
+
+  /// No description provided for @adminLibFetcherSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetcher settings'**
+  String get adminLibFetcherSettings;
+
+  /// No description provided for @adminLibImageOptionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Image options for {type}'**
+  String adminLibImageOptionsTitle(String type);
+
+  /// No description provided for @adminLibFetchImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetch images'**
+  String get adminLibFetchImages;
+
+  /// No description provided for @adminLibMaxBackdrops.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum number of backdrops per item'**
+  String get adminLibMaxBackdrops;
+
+  /// No description provided for @adminLibMinBackdropWidth.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum backdrop download width'**
+  String get adminLibMinBackdropWidth;
+
+  /// No description provided for @adminImageTypeArt.
+  ///
+  /// In en, this message translates to:
+  /// **'Clearart'**
+  String get adminImageTypeArt;
+
+  /// No description provided for @adminImageTypeBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Box'**
+  String get adminImageTypeBox;
+
+  /// No description provided for @adminImageTypeBoxRear.
+  ///
+  /// In en, this message translates to:
+  /// **'Box (back)'**
+  String get adminImageTypeBoxRear;
+
+  /// No description provided for @adminImageTypeDisc.
+  ///
+  /// In en, this message translates to:
+  /// **'Disc'**
+  String get adminImageTypeDisc;
+
+  /// No description provided for @adminImageTypeMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get adminImageTypeMenu;
+
+  /// No description provided for @adminActivityMediaDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Media details'**
+  String get adminActivityMediaDetails;
+
+  /// No description provided for @adminNetworkingOtherPublishedUriHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 192.168.1.0/24=http://192.168.1.5:8096'**
+  String get adminNetworkingOtherPublishedUriHint;
+
+  /// No description provided for @adminMetadataFieldOriginalLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Original language'**
+  String get adminMetadataFieldOriginalLanguage;
+
+  /// No description provided for @adminMetadataFieldDateAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Date added'**
+  String get adminMetadataFieldDateAdded;
+
+  /// No description provided for @adminMetadataFieldArtists.
+  ///
+  /// In en, this message translates to:
+  /// **'Artists'**
+  String get adminMetadataFieldArtists;
+
+  /// No description provided for @adminMetadataFieldAlbumArtists.
+  ///
+  /// In en, this message translates to:
+  /// **'Album artists'**
+  String get adminMetadataFieldAlbumArtists;
+
+  /// No description provided for @adminMetadataFieldAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Album'**
+  String get adminMetadataFieldAlbum;
+
+  /// No description provided for @adminMetadataFieldSeriesName.
+  ///
+  /// In en, this message translates to:
+  /// **'Series name'**
+  String get adminMetadataFieldSeriesName;
+
+  /// No description provided for @adminMetadataFieldEpisodeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Episode number'**
+  String get adminMetadataFieldEpisodeNumber;
+
+  /// No description provided for @adminMetadataFieldSeasonNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Season number'**
+  String get adminMetadataFieldSeasonNumber;
+
+  /// No description provided for @adminMetadataFieldTrackNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Track number'**
+  String get adminMetadataFieldTrackNumber;
+
+  /// No description provided for @adminMetadataFieldDiscNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Disc number'**
+  String get adminMetadataFieldDiscNumber;
+
+  /// No description provided for @adminMetadataFieldAirTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Air time'**
+  String get adminMetadataFieldAirTime;
+
+  /// No description provided for @adminMetadataFieldRuntime.
+  ///
+  /// In en, this message translates to:
+  /// **'Runtime in minutes'**
+  String get adminMetadataFieldRuntime;
+
+  /// No description provided for @adminMetadataFieldPlaceOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Place of birth'**
+  String get adminMetadataFieldPlaceOfBirth;
+
+  /// No description provided for @adminMetadataFieldBirthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth date'**
+  String get adminMetadataFieldBirthDate;
+
+  /// No description provided for @adminMetadataFieldBirthYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth year'**
+  String get adminMetadataFieldBirthYear;
+
+  /// No description provided for @adminMetadataFieldDeathDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Death date'**
+  String get adminMetadataFieldDeathDate;
+
+  /// No description provided for @adminMetadataFieldAspectRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Original aspect ratio'**
+  String get adminMetadataFieldAspectRatio;
+
+  /// No description provided for @adminMetadataFieldAirsBeforeSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Airs before season'**
+  String get adminMetadataFieldAirsBeforeSeason;
+
+  /// No description provided for @adminMetadataFieldAirsAfterSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Airs after season'**
+  String get adminMetadataFieldAirsAfterSeason;
+
+  /// No description provided for @adminMetadataFieldAirsBeforeEpisode.
+  ///
+  /// In en, this message translates to:
+  /// **'Airs before episode'**
+  String get adminMetadataFieldAirsBeforeEpisode;
+
+  /// No description provided for @adminMetadataNamesHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate several names with a semicolon.'**
+  String get adminMetadataNamesHelp;
+
+  /// No description provided for @adminMetadataSectionRatings.
+  ///
+  /// In en, this message translates to:
+  /// **'Ratings'**
+  String get adminMetadataSectionRatings;
+
+  /// No description provided for @adminMetadataItemLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'This item\'s metadata is locked. Unlock it before you identify it.'**
+  String get adminMetadataItemLocked;
+
+  /// No description provided for @adminMetadataNameOrIdRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name or an external ID.'**
+  String get adminMetadataNameOrIdRequired;
+
+  /// No description provided for @adminLibMetadataReaders.
+  ///
+  /// In en, this message translates to:
+  /// **'Metadata readers'**
+  String get adminLibMetadataReaders;
+
+  /// No description provided for @adminLibSimilarProvidersFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar item providers: {type}'**
+  String adminLibSimilarProvidersFor(String type);
+
+  /// No description provided for @adminLibMediaSegmentProviders.
+  ///
+  /// In en, this message translates to:
+  /// **'Media segment providers'**
+  String get adminLibMediaSegmentProviders;
+
+  /// No description provided for @adminLibEnableLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable the library'**
+  String get adminLibEnableLibrary;
+
+  /// No description provided for @adminLibEnableLibraryHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabling the library hides it from all user views.'**
+  String get adminLibEnableLibraryHelp;
+
+  /// No description provided for @adminLibSaveLyricsWithMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Save lyrics into media folders'**
+  String get adminLibSaveLyricsWithMedia;
+
+  /// No description provided for @adminLibUseCustomTagDelimiters.
+  ///
+  /// In en, this message translates to:
+  /// **'Use custom tag delimiter'**
+  String get adminLibUseCustomTagDelimiters;
+
+  /// No description provided for @adminLibCustomTagDelimiters.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom tag delimiter'**
+  String get adminLibCustomTagDelimiters;
+
+  /// No description provided for @adminLibCustomTagDelimitersHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Characters to treat as delimiters that separate tags.'**
+  String get adminLibCustomTagDelimitersHelp;
+
+  /// No description provided for @adminLibDelimiterWhitelist.
+  ///
+  /// In en, this message translates to:
+  /// **'Delimiter whitelist'**
+  String get adminLibDelimiterWhitelist;
+
+  /// No description provided for @adminLibDelimiterWhitelistHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Items to leave out of tag splitting, one per line.'**
+  String get adminLibDelimiterWhitelistHelp;
+
+  /// No description provided for @adminLibDownloadLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Download languages'**
+  String get adminLibDownloadLanguages;
+
+  /// No description provided for @adminLibraryFolderRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one folder to this library.'**
+  String get adminLibraryFolderRequired;
+
+  /// No description provided for @adminRenameLibraryWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Renaming a library loses all of its metadata. Proceed with caution.'**
+  String get adminRenameLibraryWarning;
+
+  /// No description provided for @adminDeleteLibraryConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the library \"{name}\"? Files on disk are not deleted.'**
+  String adminDeleteLibraryConfirm(String name);
+
+  /// No description provided for @adminDeleteLibraryLocations.
+  ///
+  /// In en, this message translates to:
+  /// **'These media locations will be removed from the library:'**
+  String get adminDeleteLibraryLocations;
+
+  /// No description provided for @adminRefreshMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh mode'**
+  String get adminRefreshMode;
+
+  /// No description provided for @adminRefreshModeScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan for new and updated files'**
+  String get adminRefreshModeScan;
+
+  /// No description provided for @adminRefreshModeMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for missing metadata'**
+  String get adminRefreshModeMissing;
+
+  /// No description provided for @adminReplaceTrickplayImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace existing trickplay images'**
+  String get adminReplaceTrickplayImages;
+
+  /// No description provided for @adminRefreshDialogHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Metadata is refreshed based on the settings and internet services enabled in the dashboard.'**
+  String get adminRefreshDialogHelp;
+
+  /// No description provided for @adminActivityCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{shown} of {total}'**
+  String adminActivityCount(String shown, String total);
+
+  /// No description provided for @adminLiveTvTabSources.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuners and guide'**
+  String get adminLiveTvTabSources;
+
+  /// No description provided for @adminLiveTvTabRecordings.
+  ///
+  /// In en, this message translates to:
+  /// **'Recordings'**
+  String get adminLiveTvTabRecordings;
+
+  /// No description provided for @adminLiveTvAddTuner.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tuner device'**
+  String get adminLiveTvAddTuner;
+
+  /// No description provided for @adminLiveTvEditTuner.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit tuner device'**
+  String get adminLiveTvEditTuner;
+
+  /// No description provided for @adminLiveTvTunerType.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuner type'**
+  String get adminLiveTvTunerType;
+
+  /// No description provided for @adminLiveTvDetectDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect my devices'**
+  String get adminLiveTvDetectDevices;
+
+  /// No description provided for @adminLiveTvNoNewDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'No new devices found'**
+  String get adminLiveTvNoNewDevices;
+
+  /// No description provided for @adminLiveTvDrmNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels with DRM will not be imported.'**
+  String get adminLiveTvDrmNote;
+
+  /// No description provided for @adminLiveTvTunerSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuner saved'**
+  String get adminLiveTvTunerSaved;
+
+  /// No description provided for @adminLiveTvDeleteTuner.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete tuner device'**
+  String get adminLiveTvDeleteTuner;
+
+  /// No description provided for @adminLiveTvDeleteTunerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this tuner device?'**
+  String get adminLiveTvDeleteTunerConfirm;
+
+  /// No description provided for @adminLiveTvDeleteProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete guide provider'**
+  String get adminLiveTvDeleteProvider;
+
+  /// No description provided for @adminLiveTvDeleteProviderConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this guide provider?'**
+  String get adminLiveTvDeleteProviderConfirm;
+
+  /// No description provided for @adminLiveTvProviderSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide provider saved'**
+  String get adminLiveTvProviderSaved;
+
+  /// No description provided for @adminLiveTvAddProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Add provider'**
+  String get adminLiveTvAddProvider;
+
+  /// No description provided for @adminLiveTvRefreshGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh guide data'**
+  String get adminLiveTvRefreshGuide;
+
+  /// No description provided for @adminLiveTvMapChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Map channels'**
+  String get adminLiveTvMapChannels;
+
+  /// No description provided for @adminLiveTvNoTunerChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'No tuner channels found'**
+  String get adminLiveTvNoTunerChannels;
+
+  /// No description provided for @adminLiveTvXmltvPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A path or URL to an XMLTV file. The server reads it and checks it for updates. You are responsible for creating and updating the file.'**
+  String get adminLiveTvXmltvPathHelp;
+
+  /// No description provided for @adminLiveTvSdCreateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account at {url}'**
+  String adminLiveTvSdCreateAccount(String url);
+
+  /// No description provided for @adminLiveTvSdSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get adminLiveTvSdSignIn;
+
+  /// No description provided for @adminLiveTvSdLineup.
+  ///
+  /// In en, this message translates to:
+  /// **'Lineup'**
+  String get adminLiveTvSdLineup;
+
+  /// No description provided for @adminLiveTvSdSelectLineup.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a lineup. If none are listed, check your username, password and postal code.'**
+  String get adminLiveTvSdSelectLineup;
+
+  /// No description provided for @adminLiveTvGuideDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of days of guide data to download'**
+  String get adminLiveTvGuideDays;
+
+  /// No description provided for @adminLiveTvGuideDaysHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'More days let you schedule further ahead and see more listings, but the download takes longer. Automatic picks a value from the number of channels.'**
+  String get adminLiveTvGuideDaysHelp;
+
+  /// No description provided for @adminLiveTvRecordingPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Default recording path'**
+  String get adminLiveTvRecordingPath;
+
+  /// No description provided for @adminLiveTvRecordingPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Where recordings are saved. If empty, the server\'s program data folder is used.'**
+  String get adminLiveTvRecordingPathHelp;
+
+  /// No description provided for @adminLiveTvStartWhenPossible.
+  ///
+  /// In en, this message translates to:
+  /// **'Start when possible'**
+  String get adminLiveTvStartWhenPossible;
+
+  /// No description provided for @adminLiveTvStopWhenPossible.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop when possible'**
+  String get adminLiveTvStopWhenPossible;
+
+  /// No description provided for @adminLiveTvMinutesBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes before'**
+  String get adminLiveTvMinutesBefore;
+
+  /// No description provided for @adminLiveTvMinutesAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes after'**
+  String get adminLiveTvMinutesAfter;
+
+  /// No description provided for @adminLiveTvSectionGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide data'**
+  String get adminLiveTvSectionGuide;
+
+  /// No description provided for @adminLiveTvSectionDefaultRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Default recording settings'**
+  String get adminLiveTvSectionDefaultRecording;
+
+  /// No description provided for @adminLiveTvSectionMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording metadata'**
+  String get adminLiveTvSectionMetadata;
+
+  /// No description provided for @adminUserLastActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Last activity {time}'**
+  String adminUserLastActivity(String time);
+
+  /// No description provided for @adminCurrentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get adminCurrentPassword;
+
+  /// No description provided for @adminChannelAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel access'**
+  String get adminChannelAccess;
+
+  /// No description provided for @adminDeviceAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Device access'**
+  String get adminDeviceAccess;
+
+  /// No description provided for @adminDeleteFromAllLibraries.
+  ///
+  /// In en, this message translates to:
+  /// **'All libraries'**
+  String get adminDeleteFromAllLibraries;
+
+  /// No description provided for @adminUserDisabledBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'This user is disabled. Turn off Disabled under Permissions to let them sign in again.'**
+  String get adminUserDisabledBanner;
+
+  /// No description provided for @adminNewPasswordEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'New password cannot be empty'**
+  String get adminNewPasswordEmpty;
+
+  /// No description provided for @adminScheduleStartBeforeEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'The start time must be before the end time'**
+  String get adminScheduleStartBeforeEnd;
+
+  /// No description provided for @adminDashboardAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts'**
+  String get adminDashboardAlerts;
+
+  /// No description provided for @adminSessionGoHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to home screen'**
+  String get adminSessionGoHome;
+
+  /// No description provided for @adminPlayMethodRemux.
+  ///
+  /// In en, this message translates to:
+  /// **'Remuxing'**
+  String get adminPlayMethodRemux;
+
+  /// No description provided for @adminPlayMethodDirectStream.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct streaming'**
+  String get adminPlayMethodDirectStream;
+
+  /// No description provided for @adminPlayMethodDirectPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct playing'**
+  String get adminPlayMethodDirectPlay;
+
+  /// No description provided for @adminLogLevelTrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Trace'**
+  String get adminLogLevelTrace;
+
+  /// No description provided for @adminLogLevelDebug.
+  ///
+  /// In en, this message translates to:
+  /// **'Debug'**
+  String get adminLogLevelDebug;
+
+  /// No description provided for @adminLogLevelInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get adminLogLevelInformation;
+
+  /// No description provided for @adminLogLevelWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get adminLogLevelWarning;
+
+  /// No description provided for @adminLogLevelError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get adminLogLevelError;
+
+  /// No description provided for @adminLogLevelCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get adminLogLevelCritical;
+
+  /// No description provided for @adminLogLevelNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get adminLogLevelNone;
+
+  /// No description provided for @adminActivityAllUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'All users'**
+  String get adminActivityAllUsers;
+
+  /// No description provided for @adminTaskLastRan.
+  ///
+  /// In en, this message translates to:
+  /// **'Last ran {time}, taking {duration}.'**
+  String adminTaskLastRan(String time, String duration);
+
+  /// No description provided for @adminTaskResultFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get adminTaskResultFailed;
+
+  /// No description provided for @adminTaskResultCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get adminTaskResultCancelled;
+
+  /// No description provided for @adminTaskResultAborted.
+  ///
+  /// In en, this message translates to:
+  /// **'Aborted by server shutdown'**
+  String get adminTaskResultAborted;
+
+  /// No description provided for @adminDurationSecondsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds}s'**
+  String adminDurationSecondsShort(String seconds);
+
+  /// No description provided for @adminDeleteTaskTrigger.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete task trigger'**
+  String get adminDeleteTaskTrigger;
+
+  /// No description provided for @adminDeleteTaskTriggerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this task trigger?'**
+  String get adminDeleteTaskTriggerConfirm;
+
+  /// No description provided for @adminTaskTriggerEveryMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {minutes} minutes'**
+  String adminTaskTriggerEveryMinutes(String minutes);
+
+  /// No description provided for @adminTaskTriggerEveryHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {hours} hours'**
+  String adminTaskTriggerEveryHours(String hours);
+
+  /// No description provided for @adminTaskMinutesValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes'**
+  String adminTaskMinutesValue(String minutes);
+
+  /// No description provided for @adminTaskHoursValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hours'**
+  String adminTaskHoursValue(String hours);
+
+  /// No description provided for @adminTimeLimitHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Time limit (hours)'**
+  String get adminTimeLimitHours;
+
+  /// No description provided for @adminTranscodingDecodingFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable hardware decoding for'**
+  String get adminTranscodingDecodingFor;
+
+  /// No description provided for @adminTranscodingThreadCountHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The most threads a transcode can use. Fewer threads lower CPU use but may be too slow for smooth playback.'**
+  String get adminTranscodingThreadCountHelp;
+
+  /// No description provided for @adminTranscodingThreadMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get adminTranscodingThreadMax;
+
+  /// No description provided for @adminTranscodingFfmpegPath.
+  ///
+  /// In en, this message translates to:
+  /// **'FFmpeg path'**
+  String get adminTranscodingFfmpegPath;
+
+  /// No description provided for @adminTranscodingFfmpegPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The FFmpeg the server runs. It is set on the server, not here.'**
+  String get adminTranscodingFfmpegPathHelp;
+
+  /// No description provided for @adminTranscodingAudioSeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio seek strategy'**
+  String get adminTranscodingAudioSeek;
+
+  /// No description provided for @adminTranscodingAudioSeekHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'How the server handles audio when you seek in an HLS stream.'**
+  String get adminTranscodingAudioSeekHelp;
+
+  /// No description provided for @adminTranscodingTrimCopiedAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim copied audio'**
+  String get adminTranscodingTrimCopiedAudio;
+
+  /// No description provided for @adminTranscodingTranscodeAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcode audio'**
+  String get adminTranscodingTranscodeAudio;
+
+  /// No description provided for @adminResumeMinAudiobookMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum audiobook resume (minutes)'**
+  String get adminResumeMinAudiobookMinutes;
+
+  /// No description provided for @adminResumeMinAudiobookHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Audiobooks stopped before this time count as unplayed.'**
+  String get adminResumeMinAudiobookHelp;
+
+  /// No description provided for @adminResumeAudiobookRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Audiobook remaining minutes to resume'**
+  String get adminResumeAudiobookRemaining;
+
+  /// No description provided for @adminResumeAudiobookRemainingHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Audiobooks stopped with less than this many minutes left count as played.'**
+  String get adminResumeAudiobookRemainingHelp;
+
+  /// No description provided for @adminBrandingSplashSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Splash screen'**
+  String get adminBrandingSplashSection;
+
+  /// No description provided for @adminBrandingSectionWebClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Web client'**
+  String get adminBrandingSectionWebClient;
+
+  /// No description provided for @adminBrandingSplashSizeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom images should be in a 16x9 aspect ratio at a minimum size of 1920x1080.'**
+  String get adminBrandingSplashSizeHint;
+
+  /// No description provided for @adminNetworkingSectionServerAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Server address settings'**
+  String get adminNetworkingSectionServerAddress;
+
+  /// No description provided for @adminNetworkingSectionHttps.
+  ///
+  /// In en, this message translates to:
+  /// **'HTTPS settings'**
+  String get adminNetworkingSectionHttps;
+
+  /// No description provided for @adminNetworkingSectionRemoteAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote access settings'**
+  String get adminNetworkingSectionRemoteAccess;
+
+  /// No description provided for @adminNetworkingSectionIpProtocols.
+  ///
+  /// In en, this message translates to:
+  /// **'IP protocols'**
+  String get adminNetworkingSectionIpProtocols;
+
+  /// No description provided for @adminNetworkingSectionDiscovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Network discovery'**
+  String get adminNetworkingSectionDiscovery;
+
+  /// No description provided for @adminNetworkingSectionFirewall.
+  ///
+  /// In en, this message translates to:
+  /// **'Firewall and proxy settings'**
+  String get adminNetworkingSectionFirewall;
+
+  /// No description provided for @adminNetworkingLocalHttpPort.
+  ///
+  /// In en, this message translates to:
+  /// **'Local HTTP port number'**
+  String get adminNetworkingLocalHttpPort;
+
+  /// No description provided for @adminNetworkingLocalHttpPortHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The TCP port number for the HTTP server.'**
+  String get adminNetworkingLocalHttpPortHelp;
+
+  /// No description provided for @adminNetworkingEnableHttpsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen on the HTTPS port. A valid certificate must also be set for this to take effect.'**
+  String get adminNetworkingEnableHttpsHelp;
+
+  /// No description provided for @adminNetworkingLocalHttpsPort.
+  ///
+  /// In en, this message translates to:
+  /// **'Local HTTPS port number'**
+  String get adminNetworkingLocalHttpsPort;
+
+  /// No description provided for @adminNetworkingLocalHttpsPortHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The TCP port number for the HTTPS server.'**
+  String get adminNetworkingLocalHttpsPortHelp;
+
+  /// No description provided for @adminNetworkingBaseUrlHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Adds a subdirectory to the server URL, for example https://example.com/jellyfin.'**
+  String get adminNetworkingBaseUrlHelp;
+
+  /// No description provided for @adminNetworkingBindAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Bind to local network address'**
+  String get adminNetworkingBindAddress;
+
+  /// No description provided for @adminNetworkingBindAddressHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Overrides the local IP address of the HTTP server. Leave it empty to bind to all addresses. A change needs a restart.'**
+  String get adminNetworkingBindAddressHelp;
+
+  /// No description provided for @adminNetworkingLanNetworksHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'IP addresses or IP/netmask entries of networks treated as local for bandwidth and remote access limits. Leave it empty to treat all RFC1918 addresses as local.'**
+  String get adminNetworkingLanNetworksHelp;
+
+  /// No description provided for @adminNetworkingKnownProxiesHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'IP addresses or host names of the proxies in front of this server. Needed to read X-Forwarded-For headers. A change needs a restart.'**
+  String get adminNetworkingKnownProxiesHelp;
+
+  /// No description provided for @adminNetworkingCustomCertPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom SSL certificate path'**
+  String get adminNetworkingCustomCertPath;
+
+  /// No description provided for @adminNetworkingCertPathHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Path to a PKCS #12 file with a certificate and private key, for TLS on a custom domain.'**
+  String get adminNetworkingCertPathHelp;
+
+  /// No description provided for @adminNetworkingCertPasswordHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the password if your certificate needs one.'**
+  String get adminNetworkingCertPasswordHelp;
+
+  /// No description provided for @adminNetworkingAllowRemote.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow remote connections to this server'**
+  String get adminNetworkingAllowRemote;
+
+  /// No description provided for @adminNetworkingAllowRemoteHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'When off, all remote connections are blocked.'**
+  String get adminNetworkingAllowRemoteHelp;
+
+  /// No description provided for @adminNetworkingRemoteIpFilterHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'IP addresses or IP/netmask entries of remote networks. Leave it empty to allow every remote address.'**
+  String get adminNetworkingRemoteIpFilterHelp;
+
+  /// No description provided for @adminNetworkingRemoteIpFilterMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote IP address filter mode'**
+  String get adminNetworkingRemoteIpFilterMode;
+
+  /// No description provided for @adminNetworkingPublicHttpPortHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The public port mapped to the local HTTP port.'**
+  String get adminNetworkingPublicHttpPortHelp;
+
+  /// No description provided for @adminNetworkingPublicHttpsPortHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'The public port mapped to the local HTTPS port.'**
+  String get adminNetworkingPublicHttpsPortHelp;
+
+  /// No description provided for @adminNetworkingAutoDiscoveryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable auto discovery'**
+  String get adminNetworkingAutoDiscoveryLabel;
+
+  /// No description provided for @adminNetworkingAutoDiscoveryHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets apps find this server on UDP port 7359.'**
+  String get adminNetworkingAutoDiscoveryHelp;
+
+  /// No description provided for @adminNetworkingSamePublishedUri.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the same published server URI for internal and external access'**
+  String get adminNetworkingSamePublishedUri;
+
+  /// No description provided for @adminNetworkingPublishedUri.
+  ///
+  /// In en, this message translates to:
+  /// **'Published server URI'**
+  String get adminNetworkingPublishedUri;
+
+  /// No description provided for @adminNetworkingPublishedUriHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Overrides the URI the server gives out, based on the interface or the client IP address.'**
+  String get adminNetworkingPublishedUriHelp;
+
+  /// No description provided for @adminNetworkingInternalUri.
+  ///
+  /// In en, this message translates to:
+  /// **'Internal URI'**
+  String get adminNetworkingInternalUri;
+
+  /// No description provided for @adminNetworkingInternalUriHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Published server URI for internal access.'**
+  String get adminNetworkingInternalUriHelp;
+
+  /// No description provided for @adminNetworkingExternalUri.
+  ///
+  /// In en, this message translates to:
+  /// **'External URI'**
+  String get adminNetworkingExternalUri;
+
+  /// No description provided for @adminNetworkingExternalUriHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Published server URI for external access.'**
+  String get adminNetworkingExternalUriHelp;
+
+  /// No description provided for @adminNetworkingOtherPublishedUris.
+  ///
+  /// In en, this message translates to:
+  /// **'Other published URIs'**
+  String get adminNetworkingOtherPublishedUris;
+
+  /// No description provided for @adminNetworkingOtherPublishedUrisHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'URIs for one subnet or interface, written as subnet=URI.'**
+  String get adminNetworkingOtherPublishedUrisHelp;
+
+  /// No description provided for @adminBackupsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and restore snapshots of your server. They can include the database, metadata, subtitles and trickplay images.'**
+  String get adminBackupsHelp;
+
+  /// No description provided for @adminBackupDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Depending on the size of your library, the backup can take a while.'**
+  String get adminBackupDisclaimer;
+
+  /// No description provided for @adminBackupTasksWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled tasks are running'**
+  String get adminBackupTasksWarningTitle;
+
+  /// No description provided for @adminBackupTasksWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop these tasks or wait for them to finish before you create a backup.'**
+  String get adminBackupTasksWarning;
+
+  /// No description provided for @adminBackupArchiveNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The server could not find this backup archive.'**
+  String get adminBackupArchiveNotFound;
+
+  /// No description provided for @adminRestoreInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore in progress'**
+  String get adminRestoreInProgress;
+
+  /// No description provided for @adminRestoreWaitingForServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the server to come back.'**
+  String get adminRestoreWaitingForServer;
+
+  /// No description provided for @adminRestoreSucceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore completed'**
+  String get adminRestoreSucceeded;
+
+  /// No description provided for @adminLogWatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch'**
+  String get adminLogWatch;
+
+  /// No description provided for @adminLogStopWatching.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop watching'**
+  String get adminLogStopWatching;
+
+  /// No description provided for @adminPluginInstallConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm plugin installation'**
+  String get adminPluginInstallConfirmTitle;
+
+  /// No description provided for @adminPluginInstallDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Installing a third party plugin carries risks. It may contain unstable or malicious code, and it can change at any time. Only install plugins from authors you trust, and know what they can do, such as query outside services, slow down library scans or add background work.'**
+  String get adminPluginInstallDisclaimer;
+
+  /// No description provided for @adminGroupOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get adminGroupOverview;
+
+  /// No description provided for @adminGroupLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Library'**
+  String get adminGroupLibrary;
+
+  /// No description provided for @adminGroupPlayback.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback'**
+  String get adminGroupPlayback;
+
+  /// No description provided for @adminGroupPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get adminGroupPeople;
+
+  /// No description provided for @adminGroupSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get adminGroupSystem;
+
+  /// No description provided for @adminAreasLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin areas'**
+  String get adminAreasLabel;
+
+  /// No description provided for @adminPagesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages'**
+  String get adminPagesLabel;
+
+  /// No description provided for @adminPageDescDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Server health, sessions and recent activity'**
+  String get adminPageDescDashboard;
+
+  /// No description provided for @adminPageDescAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Library sizes, codecs and formats'**
+  String get adminPageDescAnalytics;
+
+  /// No description provided for @adminPageDescActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything that happened on the server'**
+  String get adminPageDescActivity;
+
+  /// No description provided for @adminPageDescTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Scans, cleanups and their triggers'**
+  String get adminPageDescTasks;
+
+  /// No description provided for @adminPageDescLibraries.
+  ///
+  /// In en, this message translates to:
+  /// **'Folders, scanners and metadata fetchers'**
+  String get adminPageDescLibraries;
+
+  /// No description provided for @adminPageDescDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'How libraries show to users'**
+  String get adminPageDescDisplay;
+
+  /// No description provided for @adminPageDescMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Default language, country and images'**
+  String get adminPageDescMetadata;
+
+  /// No description provided for @adminPageDescNfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Kodi NFO reading and saving'**
+  String get adminPageDescNfo;
+
+  /// No description provided for @adminPageDescLiveTv.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuners, guide data and recordings'**
+  String get adminPageDescLiveTv;
+
+  /// No description provided for @adminPageDescTranscoding.
+  ///
+  /// In en, this message translates to:
+  /// **'Hardware acceleration, encoders, tone mapping'**
+  String get adminPageDescTranscoding;
+
+  /// No description provided for @adminPageDescResume.
+  ///
+  /// In en, this message translates to:
+  /// **'When items count as started or played'**
+  String get adminPageDescResume;
+
+  /// No description provided for @adminPageDescStreaming.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote bitrate limit'**
+  String get adminPageDescStreaming;
+
+  /// No description provided for @adminPageDescTrickplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Seek preview thumbnails'**
+  String get adminPageDescTrickplay;
+
+  /// No description provided for @adminPageDescUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts, access and parental control'**
+  String get adminPageDescUsers;
+
+  /// No description provided for @adminPageDescDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in devices and their names'**
+  String get adminPageDescDevices;
+
+  /// No description provided for @adminPageDescApiKeys.
+  ///
+  /// In en, this message translates to:
+  /// **'Keys for apps and scripts'**
+  String get adminPageDescApiKeys;
+
+  /// No description provided for @adminPageDescSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Server name, language, paths, performance'**
+  String get adminPageDescSettings;
+
+  /// No description provided for @adminPageDescBranding.
+  ///
+  /// In en, this message translates to:
+  /// **'Login message, custom CSS, splash screen'**
+  String get adminPageDescBranding;
+
+  /// No description provided for @adminPageDescNetworking.
+  ///
+  /// In en, this message translates to:
+  /// **'Ports, HTTPS, LAN and remote access'**
+  String get adminPageDescNetworking;
+
+  /// No description provided for @adminPageDescPlugins.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed plugins and the catalog'**
+  String get adminPageDescPlugins;
+
+  /// No description provided for @adminPageDescRepositories.
+  ///
+  /// In en, this message translates to:
+  /// **'Where plugins come from'**
+  String get adminPageDescRepositories;
+
+  /// No description provided for @adminPageDescBackups.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and restore server backups'**
+  String get adminPageDescBackups;
+
+  /// No description provided for @adminPageDescLogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Server log files'**
+  String get adminPageDescLogs;
+
+  /// No description provided for @adminSearchSettingsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search {count} settings'**
+  String adminSearchSettingsHint(int count);
+
+  /// No description provided for @adminSearchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No settings match'**
+  String get adminSearchNoResults;
+
+  /// No description provided for @adminSearchClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get adminSearchClear;
+
+  /// No description provided for @adminUnsavedChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved changes'**
+  String get adminUnsavedChanges;
+
+  /// No description provided for @adminDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get adminDiscard;
+
+  /// No description provided for @adminLeaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard unsaved changes?'**
+  String get adminLeaveTitle;
+
+  /// No description provided for @adminLeaveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The changes on this page haven\'t been saved yet.'**
+  String get adminLeaveMessage;
+
+  /// No description provided for @adminKeepEditing.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep editing'**
+  String get adminKeepEditing;
+
   /// No description provided for @adminDashboardLoadFailed.
   ///
   /// In en, this message translates to:
@@ -10821,12 +12237,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed scheduled tasks: {count}'**
   String adminFailedScheduledTasks(int count);
-
-  /// No description provided for @adminRecentAlertEntries.
-  ///
-  /// In en, this message translates to:
-  /// **'Recent warning/error entries: {count}'**
-  String adminRecentAlertEntries(int count);
 
   /// No description provided for @analyticsMediaDistribution.
   ///
@@ -10923,12 +12333,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shutdown Server'**
   String get adminShutdownServer;
-
-  /// No description provided for @adminScanLibraries.
-  ///
-  /// In en, this message translates to:
-  /// **'Scan Libraries'**
-  String get adminScanLibraries;
 
   /// No description provided for @adminLibraryScanStarted.
   ///
@@ -11091,18 +12495,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Completion'**
   String get completion;
-
-  /// No description provided for @direct.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct'**
-  String get direct;
-
-  /// No description provided for @adminDisconnect.
-  ///
-  /// In en, this message translates to:
-  /// **'Disconnect'**
-  String get adminDisconnect;
 
   /// No description provided for @adminClearDates.
   ///
@@ -11326,18 +12718,6 @@ abstract class AppLocalizations {
   /// **'Failed to remove path: {error}'**
   String adminRemovePathFailed(String error);
 
-  /// No description provided for @adminLibraryOptionsSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Library options saved'**
-  String get adminLibraryOptionsSaved;
-
-  /// No description provided for @adminLibraryOptionsSaveFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to save options: {error}'**
-  String adminLibraryOptionsSaveFailed(String error);
-
   /// No description provided for @adminLibraryLoadFailed.
   ///
   /// In en, this message translates to:
@@ -11361,12 +12741,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Browse server filesystem:'**
   String get adminBrowseFilesystem;
-
-  /// No description provided for @adminSaveOptions.
-  ///
-  /// In en, this message translates to:
-  /// **'Save Options'**
-  String get adminSaveOptions;
 
   /// No description provided for @adminPreferredMetadataLanguage.
   ///
@@ -11505,12 +12879,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Detect file changes and process them automatically.'**
   String get adminLibRealtimeMonitorHint;
-
-  /// No description provided for @adminLibArchiveMediaFiles.
-  ///
-  /// In en, this message translates to:
-  /// **'Treat archives as media files'**
-  String get adminLibArchiveMediaFiles;
 
   /// No description provided for @adminLibEnablePhotos.
   ///
@@ -11848,12 +13216,6 @@ abstract class AppLocalizations {
   /// **'Selected Paths:'**
   String get adminSelectedPaths;
 
-  /// No description provided for @adminNoPathsAdded.
-  ///
-  /// In en, this message translates to:
-  /// **'No paths added (can be added later)'**
-  String get adminNoPathsAdded;
-
   /// No description provided for @adminCreateLibrary.
   ///
   /// In en, this message translates to:
@@ -11956,29 +13318,11 @@ abstract class AppLocalizations {
   /// **'Username cannot be empty'**
   String get adminUsernameRequired;
 
-  /// No description provided for @adminNoProfileChanges.
-  ///
-  /// In en, this message translates to:
-  /// **'No profile changes to save'**
-  String get adminNoProfileChanges;
-
-  /// No description provided for @adminProfileSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Profile saved'**
-  String get adminProfileSaved;
-
   /// No description provided for @adminSaveFailed.
   ///
   /// In en, this message translates to:
   /// **'Failed to save: {error}'**
   String adminSaveFailed(String error);
-
-  /// No description provided for @adminPermissionsSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Permissions saved'**
-  String get adminPermissionsSaved;
 
   /// No description provided for @adminPasswordsMismatch.
   ///
@@ -11997,18 +13341,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load user'**
   String get adminUserLoadFailed;
-
-  /// No description provided for @adminBackToUsers.
-  ///
-  /// In en, this message translates to:
-  /// **'Back to Users'**
-  String get adminBackToUsers;
-
-  /// No description provided for @adminSaveProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'Save Profile'**
-  String get adminSaveProfile;
 
   /// No description provided for @adminDeleteUser.
   ///
@@ -12070,12 +13402,6 @@ abstract class AppLocalizations {
   /// **'Force remote source transcoding'**
   String get adminForceRemoteTranscoding;
 
-  /// No description provided for @adminAllowContentDeletion.
-  ///
-  /// In en, this message translates to:
-  /// **'Allow content deletion'**
-  String get adminAllowContentDeletion;
-
   /// No description provided for @adminAllowContentDownloading.
   ///
   /// In en, this message translates to:
@@ -12105,12 +13431,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow remote access'**
   String get adminAllowRemoteAccess;
-
-  /// No description provided for @adminRemoteBitrateLimit.
-  ///
-  /// In en, this message translates to:
-  /// **'Remote client bitrate limit (bps)'**
-  String get adminRemoteBitrateLimit;
 
   /// No description provided for @adminLeaveEmptyNoLimit.
   ///
@@ -12154,23 +13474,11 @@ abstract class AppLocalizations {
   /// **'Allow lyric management'**
   String get adminAllowLyricManagement;
 
-  /// No description provided for @adminSavePermissions.
-  ///
-  /// In en, this message translates to:
-  /// **'Save Permissions'**
-  String get adminSavePermissions;
-
   /// No description provided for @adminEnableAllLibraryAccess.
   ///
   /// In en, this message translates to:
   /// **'Enable access to all libraries'**
   String get adminEnableAllLibraryAccess;
-
-  /// No description provided for @adminSaveAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Save Access'**
-  String get adminSaveAccess;
 
   /// No description provided for @adminChangePassword.
   ///
@@ -12225,12 +13533,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Library Access'**
   String get adminLibraryAccess;
-
-  /// No description provided for @adminDeviceAndChannelAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Device & Channel Access'**
-  String get adminDeviceAndChannelAccess;
 
   /// No description provided for @adminEnableAllDevices.
   ///
@@ -12442,18 +13744,6 @@ abstract class AppLocalizations {
   /// **'Add tag'**
   String get adminAddTag;
 
-  /// No description provided for @adminEnabledDevices.
-  ///
-  /// In en, this message translates to:
-  /// **'Enabled devices'**
-  String get adminEnabledDevices;
-
-  /// No description provided for @adminEnabledChannels.
-  ///
-  /// In en, this message translates to:
-  /// **'Enabled channels'**
-  String get adminEnabledChannels;
-
   /// No description provided for @adminAuthProvider.
   ///
   /// In en, this message translates to:
@@ -12645,12 +13935,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create Backup'**
   String get adminBackupOptionsTitle;
-
-  /// No description provided for @adminBackupInclude.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose what to include in the backup.'**
-  String get adminBackupInclude;
 
   /// No description provided for @adminBackupDatabase.
   ///
@@ -12904,12 +14188,6 @@ abstract class AppLocalizations {
   /// **'Trigger Type'**
   String get adminTriggerType;
 
-  /// No description provided for @adminTimeLimit.
-  ///
-  /// In en, this message translates to:
-  /// **'Time limit (optional)'**
-  String get adminTimeLimit;
-
   /// No description provided for @adminNoLimit.
   ///
   /// In en, this message translates to:
@@ -13047,12 +14325,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Updating \"{name}\" to v{version}...'**
   String adminPluginUpdating(String name, String version);
-
-  /// No description provided for @adminMissingAuthToken.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to open settings: missing auth token.'**
-  String get adminMissingAuthToken;
 
   /// No description provided for @adminPluginLoadFailed.
   ///
@@ -13216,12 +14488,6 @@ abstract class AppLocalizations {
   /// **'Slow response threshold (ms)'**
   String get adminSlowResponseThreshold;
 
-  /// No description provided for @adminBrandingSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Branding settings saved'**
-  String get adminBrandingSaved;
-
   /// No description provided for @adminBrandingLoadFailed.
   ///
   /// In en, this message translates to:
@@ -13258,12 +14524,6 @@ abstract class AppLocalizations {
   /// **'Enable splash screen'**
   String get adminEnableSplashScreen;
 
-  /// No description provided for @adminStreamingSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Streaming settings saved'**
-  String get adminStreamingSaved;
-
   /// No description provided for @adminStreamingLoadFailed.
   ///
   /// In en, this message translates to:
@@ -13288,23 +14548,11 @@ abstract class AppLocalizations {
   /// **'Leave empty or 0 for unlimited'**
   String get adminLeaveEmptyForUnlimited;
 
-  /// No description provided for @adminPlaybackSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Playback settings saved'**
-  String get adminPlaybackSaved;
-
   /// No description provided for @adminPlaybackLoadFailed.
   ///
   /// In en, this message translates to:
   /// **'Failed to load playback settings'**
   String get adminPlaybackLoadFailed;
-
-  /// No description provided for @adminPlaybackTranscoding.
-  ///
-  /// In en, this message translates to:
-  /// **'Playback / Transcoding'**
-  String get adminPlaybackTranscoding;
 
   /// No description provided for @adminHardwareAcceleration.
   ///
@@ -13377,12 +14625,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Throttle buffering'**
   String get adminThrottleBuffering;
-
-  /// No description provided for @adminTrickplaySaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Trickplay settings saved'**
-  String get adminTrickplaySaved;
 
   /// No description provided for @adminTrickplayLoadFailed.
   ///
@@ -13468,12 +14710,6 @@ abstract class AppLocalizations {
   /// **'Process threads'**
   String get adminProcessThreads;
 
-  /// No description provided for @adminResumeSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Resume settings saved'**
-  String get adminResumeSaved;
-
   /// No description provided for @adminResumeLoadFailed.
   ///
   /// In en, this message translates to:
@@ -13533,12 +14769,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Maximum audiobook resume percentage'**
   String get adminMaxAudiobookResume;
-
-  /// No description provided for @adminNetworkingSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Networking settings saved. A server restart may be required.'**
-  String get adminNetworkingSaved;
 
   /// No description provided for @adminNetworkingLoadFailed.
   ///
@@ -13660,23 +14890,11 @@ abstract class AppLocalizations {
   /// **'Not set'**
   String get notSet;
 
-  /// No description provided for @adminMetadataSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Metadata saved'**
-  String get adminMetadataSaved;
-
   /// No description provided for @adminMetadataLoadFailed.
   ///
   /// In en, this message translates to:
   /// **'Failed to load metadata: {error}'**
   String adminMetadataLoadFailed(String error);
-
-  /// No description provided for @adminMetadataSaveFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to save metadata: {error}'**
-  String adminMetadataSaveFailed(String error);
 
   /// No description provided for @adminRefreshMetadata.
   ///
@@ -13695,12 +14913,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replace all metadata'**
   String get adminReplaceAllMetadata;
-
-  /// No description provided for @adminReplaceAllImages.
-  ///
-  /// In en, this message translates to:
-  /// **'Replace all images'**
-  String get adminReplaceAllImages;
 
   /// No description provided for @adminMetadataRefreshRequested.
   ///
@@ -13852,18 +15064,6 @@ abstract class AppLocalizations {
   /// **'Tuner discovery failed: {error}'**
   String adminTunerDiscoveryFailed(String error);
 
-  /// No description provided for @adminAddTuner.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Tuner'**
-  String get adminAddTuner;
-
-  /// No description provided for @adminEditTuner.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit Tuner'**
-  String get adminEditTuner;
-
   /// No description provided for @adminTunerTypeM3u.
   ///
   /// In en, this message translates to:
@@ -13960,12 +15160,6 @@ abstract class AppLocalizations {
   /// **'Read input at native frame rate'**
   String get adminTunerReadAtNativeFramerate;
 
-  /// No description provided for @adminEditProvider.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit Provider'**
-  String get adminEditProvider;
-
   /// No description provided for @adminProviderXmltv.
   ///
   /// In en, this message translates to:
@@ -14050,65 +15244,11 @@ abstract class AppLocalizations {
   /// **'Postal code'**
   String get adminSdPostalCode;
 
-  /// No description provided for @adminSdGetListings.
-  ///
-  /// In en, this message translates to:
-  /// **'Get listings'**
-  String get adminSdGetListings;
-
-  /// No description provided for @adminSdListings.
-  ///
-  /// In en, this message translates to:
-  /// **'Listings'**
-  String get adminSdListings;
-
   /// No description provided for @adminEnableAllTuners.
   ///
   /// In en, this message translates to:
   /// **'Enable all tuners'**
   String get adminEnableAllTuners;
-
-  /// No description provided for @adminTunerType.
-  ///
-  /// In en, this message translates to:
-  /// **'Tuner Type'**
-  String get adminTunerType;
-
-  /// No description provided for @adminTunerAdded.
-  ///
-  /// In en, this message translates to:
-  /// **'Tuner added'**
-  String get adminTunerAdded;
-
-  /// No description provided for @adminTunerAddFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to add tuner: {error}'**
-  String adminTunerAddFailed(String error);
-
-  /// No description provided for @adminAddGuideProvider.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Guide Provider'**
-  String get adminAddGuideProvider;
-
-  /// No description provided for @adminProviderType.
-  ///
-  /// In en, this message translates to:
-  /// **'Provider Type'**
-  String get adminProviderType;
-
-  /// No description provided for @adminProviderAdded.
-  ///
-  /// In en, this message translates to:
-  /// **'Provider added'**
-  String get adminProviderAdded;
-
-  /// No description provided for @adminProviderAddFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to add provider: {error}'**
-  String adminProviderAddFailed(String error);
 
   /// No description provided for @adminTunerRemoveFailed.
   ///
@@ -14116,53 +15256,11 @@ abstract class AppLocalizations {
   /// **'Failed to remove tuner: {error}'**
   String adminTunerRemoveFailed(String error);
 
-  /// No description provided for @adminTunerResetRequested.
-  ///
-  /// In en, this message translates to:
-  /// **'Tuner reset requested'**
-  String get adminTunerResetRequested;
-
-  /// No description provided for @adminTunerResetFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to reset tuner: {error}'**
-  String adminTunerResetFailed(String error);
-
-  /// No description provided for @adminTunerResetNotSupported.
-  ///
-  /// In en, this message translates to:
-  /// **'This tuner type does not support resetting.'**
-  String get adminTunerResetNotSupported;
-
   /// No description provided for @adminProviderRemoveFailed.
   ///
   /// In en, this message translates to:
   /// **'Failed to remove provider: {error}'**
   String adminProviderRemoveFailed(String error);
-
-  /// No description provided for @adminRecordingSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'Recording Settings'**
-  String get adminRecordingSettings;
-
-  /// No description provided for @adminPrePadding.
-  ///
-  /// In en, this message translates to:
-  /// **'Pre-padding (minutes)'**
-  String get adminPrePadding;
-
-  /// No description provided for @adminPostPadding.
-  ///
-  /// In en, this message translates to:
-  /// **'Post-padding (minutes)'**
-  String get adminPostPadding;
-
-  /// No description provided for @adminRecordingPath.
-  ///
-  /// In en, this message translates to:
-  /// **'Recording path'**
-  String get adminRecordingPath;
 
   /// No description provided for @adminSeriesRecordingPath.
   ///
@@ -14176,23 +15274,11 @@ abstract class AppLocalizations {
   /// **'Movie recording path'**
   String get adminMovieRecordingPath;
 
-  /// No description provided for @adminGuideDays.
-  ///
-  /// In en, this message translates to:
-  /// **'Guide data days'**
-  String get adminGuideDays;
-
   /// No description provided for @adminGuideDaysAuto.
   ///
   /// In en, this message translates to:
   /// **'Automatic'**
   String get adminGuideDaysAuto;
-
-  /// No description provided for @adminGuideDaysValue.
-  ///
-  /// In en, this message translates to:
-  /// **'{days} days'**
-  String adminGuideDaysValue(int days);
 
   /// No description provided for @adminRecordingPostProcessor.
   ///
@@ -14218,12 +15304,6 @@ abstract class AppLocalizations {
   /// **'Save recording images'**
   String get adminSaveRecordingImages;
 
-  /// No description provided for @adminLiveTvSectionTiming.
-  ///
-  /// In en, this message translates to:
-  /// **'Timing'**
-  String get adminLiveTvSectionTiming;
-
   /// No description provided for @adminLiveTvSectionPaths.
   ///
   /// In en, this message translates to:
@@ -14236,53 +15316,11 @@ abstract class AppLocalizations {
   /// **'Post-processing'**
   String get adminLiveTvSectionPostProcessing;
 
-  /// No description provided for @adminGuideDaysDisplay.
-  ///
-  /// In en, this message translates to:
-  /// **'Guide data: {value}'**
-  String adminGuideDaysDisplay(String value);
-
-  /// No description provided for @adminRecordingSettingsSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Recording settings saved'**
-  String get adminRecordingSettingsSaved;
-
   /// No description provided for @adminSettingsSaveFailed.
   ///
   /// In en, this message translates to:
   /// **'Failed to save settings: {error}'**
   String adminSettingsSaveFailed(String error);
-
-  /// No description provided for @adminSetChannelMappings.
-  ///
-  /// In en, this message translates to:
-  /// **'Set Channel Mappings'**
-  String get adminSetChannelMappings;
-
-  /// No description provided for @adminMappingJson.
-  ///
-  /// In en, this message translates to:
-  /// **'Mapping JSON'**
-  String get adminMappingJson;
-
-  /// No description provided for @adminMappingJsonHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Example: mappings JSON payload'**
-  String get adminMappingJsonHint;
-
-  /// No description provided for @adminChannelMappingsUpdated.
-  ///
-  /// In en, this message translates to:
-  /// **'Channel mappings updated'**
-  String get adminChannelMappingsUpdated;
-
-  /// No description provided for @adminMappingsUpdateFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to update mappings: {error}'**
-  String adminMappingsUpdateFailed(String error);
 
   /// No description provided for @adminLiveTvLoadFailed.
   ///
@@ -14308,12 +15346,6 @@ abstract class AppLocalizations {
   /// **'Guide Providers'**
   String get adminGuideProviders;
 
-  /// No description provided for @adminRefreshGuideData.
-  ///
-  /// In en, this message translates to:
-  /// **'Refresh Guide Data'**
-  String get adminRefreshGuideData;
-
   /// No description provided for @adminGuideRefreshStarted.
   ///
   /// In en, this message translates to:
@@ -14326,59 +15358,11 @@ abstract class AppLocalizations {
   /// **'Guide refresh task is not available on this server.'**
   String get adminGuideRefreshUnavailable;
 
-  /// No description provided for @adminAddProvider.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Provider'**
-  String get adminAddProvider;
-
   /// No description provided for @adminNoListingProviders.
   ///
   /// In en, this message translates to:
   /// **'No listing providers configured'**
   String get adminNoListingProviders;
-
-  /// No description provided for @adminRecordingPathDisplay.
-  ///
-  /// In en, this message translates to:
-  /// **'Recording path: {path}'**
-  String adminRecordingPathDisplay(String path);
-
-  /// No description provided for @adminSeriesPathDisplay.
-  ///
-  /// In en, this message translates to:
-  /// **'Series path: {path}'**
-  String adminSeriesPathDisplay(String path);
-
-  /// No description provided for @adminPrePaddingDisplay.
-  ///
-  /// In en, this message translates to:
-  /// **'Pre-padding: {minutes} min'**
-  String adminPrePaddingDisplay(int minutes);
-
-  /// No description provided for @adminPostPaddingDisplay.
-  ///
-  /// In en, this message translates to:
-  /// **'Post-padding: {minutes} min'**
-  String adminPostPaddingDisplay(int minutes);
-
-  /// No description provided for @adminTunerDiscovery.
-  ///
-  /// In en, this message translates to:
-  /// **'Tuner Discovery'**
-  String get adminTunerDiscovery;
-
-  /// No description provided for @adminChannelMappings.
-  ///
-  /// In en, this message translates to:
-  /// **'Channel Mappings'**
-  String get adminChannelMappings;
-
-  /// No description provided for @adminNoDiscoveredTuners.
-  ///
-  /// In en, this message translates to:
-  /// **'No discovered tuners yet'**
-  String get adminNoDiscoveredTuners;
 
   /// No description provided for @adminSettingsSaved.
   ///
@@ -14416,12 +15400,6 @@ abstract class AppLocalizations {
   /// **'Restore backup {name} now?'**
   String adminRestoreConfirmMessage(String name);
 
-  /// No description provided for @adminRestoreRequested.
-  ///
-  /// In en, this message translates to:
-  /// **'Restore requested. Server restart may disconnect this session.'**
-  String get adminRestoreRequested;
-
   /// No description provided for @adminBackupsTitle.
   ///
   /// In en, this message translates to:
@@ -14440,35 +15418,11 @@ abstract class AppLocalizations {
   /// **'Unnamed Backup'**
   String get adminUnnamedBackup;
 
-  /// No description provided for @adminLiveTvNotAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Live TV administration is not available on this server build.'**
-  String get adminLiveTvNotAvailable;
-
-  /// No description provided for @adminLiveTvTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Live TV Administration'**
-  String get adminLiveTvTitle;
-
   /// No description provided for @adminApply.
   ///
   /// In en, this message translates to:
   /// **'Apply'**
   String get adminApply;
-
-  /// No description provided for @adminNotSet.
-  ///
-  /// In en, this message translates to:
-  /// **'Not set'**
-  String get adminNotSet;
-
-  /// No description provided for @adminReset.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset'**
-  String get adminReset;
 
   /// No description provided for @adminLogsTitle.
   ///
@@ -14757,12 +15711,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'3D format'**
   String get adminMetadataField3DFormat;
-
-  /// No description provided for @adminMetadataPersonKindUnknown.
-  ///
-  /// In en, this message translates to:
-  /// **'Unknown'**
-  String get adminMetadataPersonKindUnknown;
 
   /// No description provided for @adminMetadataPersonKindActor.
   ///
@@ -15087,12 +16035,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thumb'**
   String get adminMetadataImageThumb;
-
-  /// No description provided for @adminMetadataRecursive.
-  ///
-  /// In en, this message translates to:
-  /// **'Recursive'**
-  String get adminMetadataRecursive;
 
   /// No description provided for @adminMetadataProvider.
   ///
@@ -15538,47 +16480,11 @@ abstract class AppLocalizations {
   /// **'Changes to networking settings may require a server restart.'**
   String get adminNetworkingRestartWarning;
 
-  /// No description provided for @adminNetworkingRemoteAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable remote access'**
-  String get adminNetworkingRemoteAccess;
-
-  /// No description provided for @adminNetworkingPorts.
-  ///
-  /// In en, this message translates to:
-  /// **'Ports'**
-  String get adminNetworkingPorts;
-
-  /// No description provided for @adminNetworkingHttpPort.
-  ///
-  /// In en, this message translates to:
-  /// **'HTTP port'**
-  String get adminNetworkingHttpPort;
-
-  /// No description provided for @adminNetworkingHttpsPort.
-  ///
-  /// In en, this message translates to:
-  /// **'HTTPS port'**
-  String get adminNetworkingHttpsPort;
-
   /// No description provided for @adminNetworkingEnableHttps.
   ///
   /// In en, this message translates to:
   /// **'Enable HTTPS'**
   String get adminNetworkingEnableHttps;
-
-  /// No description provided for @adminNetworkingLocalNetwork.
-  ///
-  /// In en, this message translates to:
-  /// **'Local Network'**
-  String get adminNetworkingLocalNetwork;
-
-  /// No description provided for @adminNetworkingLocalAddresses.
-  ///
-  /// In en, this message translates to:
-  /// **'Local network addresses'**
-  String get adminNetworkingLocalAddresses;
 
   /// No description provided for @adminNetworkingAddressHint.
   ///
@@ -15700,12 +16606,6 @@ abstract class AppLocalizations {
   /// **'Enable hardware encoding'**
   String get adminPlaybackEnableHwEncoding;
 
-  /// No description provided for @adminPlaybackEnableHwDecoding.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable hardware decoding for:'**
-  String get adminPlaybackEnableHwDecoding;
-
   /// No description provided for @adminPlaybackQsvDevice.
   ///
   /// In en, this message translates to:
@@ -15723,12 +16623,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prefer system native hardware decoder'**
   String get adminPlaybackPreferNativeDecoder;
-
-  /// No description provided for @adminPlaybackColorDepth.
-  ///
-  /// In en, this message translates to:
-  /// **'Hardware decoding color depth'**
-  String get adminPlaybackColorDepth;
 
   /// No description provided for @adminPlaybackColorDepth10Hevc.
   ///
@@ -15856,12 +16750,6 @@ abstract class AppLocalizations {
   /// **'VPP tone mapping contrast'**
   String get adminPlaybackVppTonemappingContrast;
 
-  /// No description provided for @adminPlaybackPresetsQuality.
-  ///
-  /// In en, this message translates to:
-  /// **'Presets & Quality'**
-  String get adminPlaybackPresetsQuality;
-
   /// No description provided for @adminPlaybackEncoderPreset.
   ///
   /// In en, this message translates to:
@@ -15969,18 +16857,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Audiobooks'**
   String get adminResumeAudiobooks;
-
-  /// No description provided for @adminResumeMinAudiobookPct.
-  ///
-  /// In en, this message translates to:
-  /// **'Minimum audiobook resume percentage'**
-  String get adminResumeMinAudiobookPct;
-
-  /// No description provided for @adminResumeMaxAudiobookPct.
-  ///
-  /// In en, this message translates to:
-  /// **'Maximum audiobook resume percentage'**
-  String get adminResumeMaxAudiobookPct;
 
   /// No description provided for @adminStreamingBitrateLimit.
   ///
@@ -16204,12 +17080,6 @@ abstract class AppLocalizations {
   /// **'Every {day} at {time}'**
   String adminTaskTriggerWeekly(String day, String time);
 
-  /// No description provided for @adminTaskTriggerInterval.
-  ///
-  /// In en, this message translates to:
-  /// **'Every {duration}'**
-  String adminTaskTriggerInterval(String duration);
-
   /// No description provided for @adminTaskTriggerStartup.
   ///
   /// In en, this message translates to:
@@ -16246,30 +17116,6 @@ abstract class AppLocalizations {
   /// **'Every hour'**
   String get adminTaskTriggerEveryHour;
 
-  /// No description provided for @adminTaskTriggerEvery6Hours.
-  ///
-  /// In en, this message translates to:
-  /// **'Every 6 hours'**
-  String get adminTaskTriggerEvery6Hours;
-
-  /// No description provided for @adminTaskTriggerEvery12Hours.
-  ///
-  /// In en, this message translates to:
-  /// **'Every 12 hours'**
-  String get adminTaskTriggerEvery12Hours;
-
-  /// No description provided for @adminTaskTriggerEvery24Hours.
-  ///
-  /// In en, this message translates to:
-  /// **'Every 24 hours'**
-  String get adminTaskTriggerEvery24Hours;
-
-  /// No description provided for @adminTaskTriggerEvery2Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Every 2 days'**
-  String get adminTaskTriggerEvery2Days;
-
   /// No description provided for @adminTaskTriggerHours.
   ///
   /// In en, this message translates to:
@@ -16281,12 +17127,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time'**
   String get adminTaskTriggerTime;
-
-  /// No description provided for @adminTaskTriggerNoLimit.
-  ///
-  /// In en, this message translates to:
-  /// **'No limit'**
-  String get adminTaskTriggerNoLimit;
 
   /// No description provided for @adminActivityJustNow.
   ///
@@ -16390,12 +17230,6 @@ abstract class AppLocalizations {
   /// **'e.g. /jellyfin'**
   String get adminNetworkingBaseUrlHint;
 
-  /// No description provided for @adminNetworkingHttps.
-  ///
-  /// In en, this message translates to:
-  /// **'HTTPS'**
-  String get adminNetworkingHttps;
-
   /// No description provided for @adminNetworkingPublicHttpPort.
   ///
   /// In en, this message translates to:
@@ -16420,12 +17254,6 @@ abstract class AppLocalizations {
   /// **'Certificate password'**
   String get adminNetworkingCertPassword;
 
-  /// No description provided for @adminNetworkingIpSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'IP Settings'**
-  String get adminNetworkingIpSettings;
-
   /// No description provided for @adminNetworkingEnableIpv4.
   ///
   /// In en, this message translates to:
@@ -16438,47 +17266,11 @@ abstract class AppLocalizations {
   /// **'Enable IPv6'**
   String get adminNetworkingEnableIpv6;
 
-  /// No description provided for @adminNetworkingAutoDiscovery.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable automatic port mapping'**
-  String get adminNetworkingAutoDiscovery;
-
   /// No description provided for @adminNetworkingLocalSubnets.
   ///
   /// In en, this message translates to:
   /// **'LAN networks'**
   String get adminNetworkingLocalSubnets;
-
-  /// No description provided for @adminNetworkingLocalSubnetsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Comma or line separated list of IP addresses or CIDR subnets treated as being on the local network.'**
-  String get adminNetworkingLocalSubnetsHint;
-
-  /// No description provided for @adminNetworkingPublishedUris.
-  ///
-  /// In en, this message translates to:
-  /// **'Published server URIs'**
-  String get adminNetworkingPublishedUris;
-
-  /// No description provided for @adminNetworkingPublishedUriHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Map a subnet or address to a published URL, e.g. all=https://example.com'**
-  String get adminNetworkingPublishedUriHint;
-
-  /// No description provided for @adminNetworkingCertPath.
-  ///
-  /// In en, this message translates to:
-  /// **'Certificate path'**
-  String get adminNetworkingCertPath;
-
-  /// No description provided for @adminNetworkingRemoteIpFilter.
-  ///
-  /// In en, this message translates to:
-  /// **'Remote IP Filter'**
-  String get adminNetworkingRemoteIpFilter;
 
   /// No description provided for @adminNetworkingRemoteIpFilterLabel.
   ///
@@ -16695,12 +17487,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load settings'**
   String get adminSettingsLoadFailed;
-
-  /// No description provided for @adminDiscover.
-  ///
-  /// In en, this message translates to:
-  /// **'Discover'**
-  String get adminDiscover;
 
   /// No description provided for @adminChannelMappingsUpdateFailed.
   ///
@@ -20050,18 +20836,6 @@ abstract class AppLocalizations {
   /// **'Watch with group'**
   String get watchWithGroup;
 
-  /// No description provided for @errors.
-  ///
-  /// In en, this message translates to:
-  /// **'Errors'**
-  String get errors;
-
-  /// No description provided for @warnings.
-  ///
-  /// In en, this message translates to:
-  /// **'Warnings'**
-  String get warnings;
-
   /// No description provided for @disk.
   ///
   /// In en, this message translates to:
@@ -21412,18 +22186,6 @@ abstract class AppLocalizations {
   /// **'No devices match the current filters'**
   String get adminNoDevicesMatchCurrentFilters;
 
-  /// No description provided for @passwordSet.
-  ///
-  /// In en, this message translates to:
-  /// **'Password set'**
-  String get passwordSet;
-
-  /// No description provided for @noPasswordConfigured.
-  ///
-  /// In en, this message translates to:
-  /// **'No password configured'**
-  String get noPasswordConfigured;
-
   /// No description provided for @remoteAccess.
   ///
   /// In en, this message translates to:
@@ -21574,42 +22336,6 @@ abstract class AppLocalizations {
   /// **'Needs Attention'**
   String get needsAttention;
 
-  /// No description provided for @adminDrawerSectionServer.
-  ///
-  /// In en, this message translates to:
-  /// **'Server'**
-  String get adminDrawerSectionServer;
-
-  /// No description provided for @adminDrawerSectionPlayback.
-  ///
-  /// In en, this message translates to:
-  /// **'Playback'**
-  String get adminDrawerSectionPlayback;
-
-  /// No description provided for @adminDrawerSectionDevices.
-  ///
-  /// In en, this message translates to:
-  /// **'Devices'**
-  String get adminDrawerSectionDevices;
-
-  /// No description provided for @adminDrawerSectionAdvanced.
-  ///
-  /// In en, this message translates to:
-  /// **'Advanced'**
-  String get adminDrawerSectionAdvanced;
-
-  /// No description provided for @adminDrawerSectionPlugins.
-  ///
-  /// In en, this message translates to:
-  /// **'Plugins'**
-  String get adminDrawerSectionPlugins;
-
-  /// No description provided for @adminDrawerSectionLiveTv.
-  ///
-  /// In en, this message translates to:
-  /// **'Live TV'**
-  String get adminDrawerSectionLiveTv;
-
   /// No description provided for @homeVideos.
   ///
   /// In en, this message translates to:
@@ -21633,18 +22359,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mixed Movies & Shows'**
   String get mixedMoviesAndShows;
-
-  /// No description provided for @intelQuickSync.
-  ///
-  /// In en, this message translates to:
-  /// **'Intel Quick Sync'**
-  String get intelQuickSync;
-
-  /// No description provided for @rockchipMpp.
-  ///
-  /// In en, this message translates to:
-  /// **'Rockchip MPP'**
-  String get rockchipMpp;
 
   /// No description provided for @dolbyVision.
   ///
@@ -22878,42 +23592,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Year'**
   String get adminLabelYear;
-
-  /// Label for the IMDb identifier field in the Identify dialog. IMDb is a brand name and is normally left untranslated
-  ///
-  /// In en, this message translates to:
-  /// **'IMDb Id'**
-  String get adminLabelImdbId;
-
-  /// Label for the TheMovieDb movie identifier field in the Identify dialog. TheMovieDb is a brand name and is normally left untranslated
-  ///
-  /// In en, this message translates to:
-  /// **'TheMovieDb Movie Id'**
-  String get adminLabelTmdbMovieId;
-
-  /// Label for the TheMovieDb collection identifier field in the Identify dialog. TheMovieDb is a brand name and is normally left untranslated
-  ///
-  /// In en, this message translates to:
-  /// **'TheMovieDb Box Set Id'**
-  String get adminLabelTmdbBoxSetId;
-
-  /// Label for the TheTVDB collection identifier field in the Identify dialog. TheTVDB is a brand name and is normally left untranslated
-  ///
-  /// In en, this message translates to:
-  /// **'TheTVDB Box Set Id'**
-  String get adminLabelTvdbBoxSetId;
-
-  /// Label for the numeric TheTVDB identifier field in the Identify dialog. TheTVDB is a brand name and is normally left untranslated
-  ///
-  /// In en, this message translates to:
-  /// **'TheTVDB Numerical Id'**
-  String get adminLabelTvdbId;
-
-  /// Label for the TheTVDB slug identifier field in the Identify dialog. TheTVDB is a brand name and is normally left untranslated
-  ///
-  /// In en, this message translates to:
-  /// **'TheTVDB Slug Movie Id'**
-  String get adminLabelTvdbSlug;
 
   /// Checkbox label in the confirmation dialog shown before applying an identified metadata match
   ///

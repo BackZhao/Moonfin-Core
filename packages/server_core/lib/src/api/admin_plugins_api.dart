@@ -16,6 +16,10 @@ abstract class AdminPluginsApi {
 
   Future<List<PackageInfo>> getAvailablePackages();
 
+  /// GET /web/ConfigurationPages: the settings pages plugins register, each
+  /// with `Name`, `PluginId` and `EnableInMainMenu`.
+  Future<List<Map<String, dynamic>>> getConfigurationPages();
+
   Future<PackageInfo?> getPackageInfo(String name, {String? assemblyGuid});
 
   Future<void> installPackage(

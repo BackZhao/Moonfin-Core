@@ -7809,6 +7809,262 @@
   "adminDrawerLiveTv": "Live TV",
 
   "adminExitTooltip": "Exit Admin",
+  "adminExternalIdLabel": "{name} Id",
+  "@adminExternalIdLabel": {"placeholders": {"name": {"type": "String"}}},
+  "adminExternalIdTypePerson": "Person",
+  "adminExternalIdTypeArtist": "Artist",
+  "adminExternalIdTypeAlbumArtist": "Album Artist",
+  "adminExternalIdTypeOtherArtist": "Other Artist",
+  "adminExternalIdTypeReleaseGroup": "Release Group",
+  "adminExternalIdTypeBook": "Book",
+  "adminPlaybackHwAccelWarning": "Hardware acceleration can be unstable on some systems. Keep the operating system and video drivers up to date, and set this back to None if video stops playing.",
+  "adminLibMetadataChangeHelp": "Changes to metadata settings apply to new content. To update existing content, refresh it from its detail page or refresh the library.",
+  "adminLibFetcherSettings": "Fetcher settings",
+  "adminLibImageOptionsTitle": "Image options for {type}",
+  "@adminLibImageOptionsTitle": {"placeholders": {"type": {"type": "String"}}},
+  "adminLibFetchImages": "Fetch images",
+  "adminLibMaxBackdrops": "Maximum number of backdrops per item",
+  "adminLibMinBackdropWidth": "Minimum backdrop download width",
+  "adminImageTypeArt": "Clearart",
+  "adminImageTypeBox": "Box",
+  "adminImageTypeBoxRear": "Box (back)",
+  "adminImageTypeDisc": "Disc",
+  "adminImageTypeMenu": "Menu",
+  "adminActivityMediaDetails": "Media details",
+  "adminNetworkingOtherPublishedUriHint": "e.g. 192.168.1.0/24=http://192.168.1.5:8096",
+  "adminMetadataFieldOriginalLanguage": "Original language",
+  "adminMetadataFieldDateAdded": "Date added",
+  "adminMetadataFieldArtists": "Artists",
+  "adminMetadataFieldAlbumArtists": "Album artists",
+  "adminMetadataFieldAlbum": "Album",
+  "adminMetadataFieldSeriesName": "Series name",
+  "adminMetadataFieldEpisodeNumber": "Episode number",
+  "adminMetadataFieldSeasonNumber": "Season number",
+  "adminMetadataFieldTrackNumber": "Track number",
+  "adminMetadataFieldDiscNumber": "Disc number",
+  "adminMetadataFieldAirTime": "Air time",
+  "adminMetadataFieldRuntime": "Runtime in minutes",
+  "adminMetadataFieldPlaceOfBirth": "Place of birth",
+  "adminMetadataFieldBirthDate": "Birth date",
+  "adminMetadataFieldBirthYear": "Birth year",
+  "adminMetadataFieldDeathDate": "Death date",
+  "adminMetadataFieldAspectRatio": "Original aspect ratio",
+  "adminMetadataFieldAirsBeforeSeason": "Airs before season",
+  "adminMetadataFieldAirsAfterSeason": "Airs after season",
+  "adminMetadataFieldAirsBeforeEpisode": "Airs before episode",
+  "adminMetadataNamesHelp": "Separate several names with a semicolon.",
+  "adminMetadataSectionRatings": "Ratings",
+  "adminMetadataItemLocked": "This item's metadata is locked. Unlock it before you identify it.",
+  "adminMetadataNameOrIdRequired": "Enter a name or an external ID.",
+  "adminLibMetadataReaders": "Metadata readers",
+  "adminLibSimilarProvidersFor": "Similar item providers: {type}",
+  "@adminLibSimilarProvidersFor": {"placeholders": {"type": {"type": "String"}}},
+  "adminLibMediaSegmentProviders": "Media segment providers",
+  "adminLibEnableLibrary": "Enable the library",
+  "adminLibEnableLibraryHelp": "Disabling the library hides it from all user views.",
+  "adminLibSaveLyricsWithMedia": "Save lyrics into media folders",
+  "adminLibUseCustomTagDelimiters": "Use custom tag delimiter",
+  "adminLibCustomTagDelimiters": "Custom tag delimiter",
+  "adminLibCustomTagDelimitersHelp": "Characters to treat as delimiters that separate tags.",
+  "adminLibDelimiterWhitelist": "Delimiter whitelist",
+  "adminLibDelimiterWhitelistHelp": "Items to leave out of tag splitting, one per line.",
+  "adminLibDownloadLanguages": "Download languages",
+  "adminLibraryFolderRequired": "Add at least one folder to this library.",
+  "adminRenameLibraryWarning": "Renaming a library loses all of its metadata. Proceed with caution.",
+  "adminDeleteLibraryConfirm": "Remove the library \"{name}\"? Files on disk are not deleted.",
+  "@adminDeleteLibraryConfirm": {"placeholders": {"name": {"type": "String"}}},
+  "adminDeleteLibraryLocations": "These media locations will be removed from the library:",
+  "adminRefreshMode": "Refresh mode",
+  "adminRefreshModeScan": "Scan for new and updated files",
+  "adminRefreshModeMissing": "Search for missing metadata",
+  "adminReplaceTrickplayImages": "Replace existing trickplay images",
+  "adminRefreshDialogHelp": "Metadata is refreshed based on the settings and internet services enabled in the dashboard.",
+  "adminActivityCount": "{shown} of {total}",
+  "@adminActivityCount": {"placeholders": {"shown": {"type": "String"}, "total": {"type": "String"}}},
+  "adminLiveTvTabSources": "Tuners and guide",
+  "adminLiveTvTabRecordings": "Recordings",
+  "adminLiveTvAddTuner": "Add tuner device",
+  "adminLiveTvEditTuner": "Edit tuner device",
+  "adminLiveTvTunerType": "Tuner type",
+  "adminLiveTvDetectDevices": "Detect my devices",
+  "adminLiveTvNoNewDevices": "No new devices found",
+  "adminLiveTvDrmNote": "Channels with DRM will not be imported.",
+  "adminLiveTvTunerSaved": "Tuner saved",
+  "adminLiveTvDeleteTuner": "Delete tuner device",
+  "adminLiveTvDeleteTunerConfirm": "Are you sure you want to delete this tuner device?",
+  "adminLiveTvDeleteProvider": "Delete guide provider",
+  "adminLiveTvDeleteProviderConfirm": "Are you sure you want to delete this guide provider?",
+  "adminLiveTvProviderSaved": "Guide provider saved",
+  "adminLiveTvAddProvider": "Add provider",
+  "adminLiveTvRefreshGuide": "Refresh guide data",
+  "adminLiveTvMapChannels": "Map channels",
+  "adminLiveTvNoTunerChannels": "No tuner channels found",
+  "adminLiveTvXmltvPathHelp": "A path or URL to an XMLTV file. The server reads it and checks it for updates. You are responsible for creating and updating the file.",
+  "adminLiveTvSdCreateAccount": "Create an account at {url}",
+  "@adminLiveTvSdCreateAccount": {"placeholders": {"url": {"type": "String"}}},
+  "adminLiveTvSdSignIn": "Sign in",
+  "adminLiveTvSdLineup": "Lineup",
+  "adminLiveTvSdSelectLineup": "Select a lineup. If none are listed, check your username, password and postal code.",
+  "adminLiveTvGuideDays": "Number of days of guide data to download",
+  "adminLiveTvGuideDaysHelp": "More days let you schedule further ahead and see more listings, but the download takes longer. Automatic picks a value from the number of channels.",
+  "adminLiveTvRecordingPath": "Default recording path",
+  "adminLiveTvRecordingPathHelp": "Where recordings are saved. If empty, the server's program data folder is used.",
+  "adminLiveTvStartWhenPossible": "Start when possible",
+  "adminLiveTvStopWhenPossible": "Stop when possible",
+  "adminLiveTvMinutesBefore": "minutes before",
+  "adminLiveTvMinutesAfter": "minutes after",
+  "adminLiveTvSectionGuide": "Guide data",
+  "adminLiveTvSectionDefaultRecording": "Default recording settings",
+  "adminLiveTvSectionMetadata": "Recording metadata",
+  "adminUserLastActivity": "Last activity {time}",
+  "@adminUserLastActivity": {"placeholders": {"time": {"type": "String"}}},
+  "adminCurrentPassword": "Current password",
+  "adminChannelAccess": "Channel access",
+  "adminDeviceAccess": "Device access",
+  "adminDeleteFromAllLibraries": "All libraries",
+  "adminUserDisabledBanner": "This user is disabled. Turn off Disabled under Permissions to let them sign in again.",
+  "adminNewPasswordEmpty": "New password cannot be empty",
+  "adminScheduleStartBeforeEnd": "The start time must be before the end time",
+  "adminDashboardAlerts": "Alerts",
+  "adminSessionGoHome": "Go to home screen",
+  "adminPlayMethodRemux": "Remuxing",
+  "adminPlayMethodDirectStream": "Direct streaming",
+  "adminPlayMethodDirectPlay": "Direct playing",
+  "adminLogLevelTrace": "Trace",
+  "adminLogLevelDebug": "Debug",
+  "adminLogLevelInformation": "Information",
+  "adminLogLevelWarning": "Warning",
+  "adminLogLevelError": "Error",
+  "adminLogLevelCritical": "Critical",
+  "adminLogLevelNone": "None",
+  "adminActivityAllUsers": "All users",
+  "adminTaskLastRan": "Last ran {time}, taking {duration}.",
+  "@adminTaskLastRan": {"placeholders": {"time": {"type": "String"}, "duration": {"type": "String"}}},
+  "adminTaskResultFailed": "Failed",
+  "adminTaskResultCancelled": "Cancelled",
+  "adminTaskResultAborted": "Aborted by server shutdown",
+  "adminDurationSecondsShort": "{seconds}s",
+  "@adminDurationSecondsShort": {"placeholders": {"seconds": {"type": "String"}}},
+  "adminDeleteTaskTrigger": "Delete task trigger",
+  "adminDeleteTaskTriggerConfirm": "Are you sure you want to delete this task trigger?",
+  "adminTaskTriggerEveryMinutes": "Every {minutes} minutes",
+  "@adminTaskTriggerEveryMinutes": {"placeholders": {"minutes": {"type": "String"}}},
+  "adminTaskTriggerEveryHours": "Every {hours} hours",
+  "@adminTaskTriggerEveryHours": {"placeholders": {"hours": {"type": "String"}}},
+  "adminTaskMinutesValue": "{minutes} minutes",
+  "@adminTaskMinutesValue": {"placeholders": {"minutes": {"type": "String"}}},
+  "adminTaskHoursValue": "{hours} hours",
+  "@adminTaskHoursValue": {"placeholders": {"hours": {"type": "String"}}},
+  "adminTimeLimitHours": "Time limit (hours)",
+  "adminTranscodingDecodingFor": "Enable hardware decoding for",
+  "adminTranscodingThreadCountHelp": "The most threads a transcode can use. Fewer threads lower CPU use but may be too slow for smooth playback.",
+  "adminTranscodingThreadMax": "Max",
+  "adminTranscodingFfmpegPath": "FFmpeg path",
+  "adminTranscodingFfmpegPathHelp": "The FFmpeg the server runs. It is set on the server, not here.",
+  "adminTranscodingAudioSeek": "Audio seek strategy",
+  "adminTranscodingAudioSeekHelp": "How the server handles audio when you seek in an HLS stream.",
+  "adminTranscodingTrimCopiedAudio": "Trim copied audio",
+  "adminTranscodingTranscodeAudio": "Transcode audio",
+  "adminResumeMinAudiobookMinutes": "Minimum audiobook resume (minutes)",
+  "adminResumeMinAudiobookHelp": "Audiobooks stopped before this time count as unplayed.",
+  "adminResumeAudiobookRemaining": "Audiobook remaining minutes to resume",
+  "adminResumeAudiobookRemainingHelp": "Audiobooks stopped with less than this many minutes left count as played.",
+  "adminBrandingSplashSection": "Splash screen",
+  "adminBrandingSectionWebClient": "Web client",
+  "adminBrandingSplashSizeHint": "Custom images should be in a 16x9 aspect ratio at a minimum size of 1920x1080.",
+  "adminNetworkingSectionServerAddress": "Server address settings",
+  "adminNetworkingSectionHttps": "HTTPS settings",
+  "adminNetworkingSectionRemoteAccess": "Remote access settings",
+  "adminNetworkingSectionIpProtocols": "IP protocols",
+  "adminNetworkingSectionDiscovery": "Network discovery",
+  "adminNetworkingSectionFirewall": "Firewall and proxy settings",
+  "adminNetworkingLocalHttpPort": "Local HTTP port number",
+  "adminNetworkingLocalHttpPortHelp": "The TCP port number for the HTTP server.",
+  "adminNetworkingEnableHttpsHelp": "Listen on the HTTPS port. A valid certificate must also be set for this to take effect.",
+  "adminNetworkingLocalHttpsPort": "Local HTTPS port number",
+  "adminNetworkingLocalHttpsPortHelp": "The TCP port number for the HTTPS server.",
+  "adminNetworkingBaseUrlHelp": "Adds a subdirectory to the server URL, for example https://example.com/jellyfin.",
+  "adminNetworkingBindAddress": "Bind to local network address",
+  "adminNetworkingBindAddressHelp": "Overrides the local IP address of the HTTP server. Leave it empty to bind to all addresses. A change needs a restart.",
+  "adminNetworkingLanNetworksHelp": "IP addresses or IP/netmask entries of networks treated as local for bandwidth and remote access limits. Leave it empty to treat all RFC1918 addresses as local.",
+  "adminNetworkingKnownProxiesHelp": "IP addresses or host names of the proxies in front of this server. Needed to read X-Forwarded-For headers. A change needs a restart.",
+  "adminNetworkingCustomCertPath": "Custom SSL certificate path",
+  "adminNetworkingCertPathHelp": "Path to a PKCS #12 file with a certificate and private key, for TLS on a custom domain.",
+  "adminNetworkingCertPasswordHelp": "Enter the password if your certificate needs one.",
+  "adminNetworkingAllowRemote": "Allow remote connections to this server",
+  "adminNetworkingAllowRemoteHelp": "When off, all remote connections are blocked.",
+  "adminNetworkingRemoteIpFilterHelp": "IP addresses or IP/netmask entries of remote networks. Leave it empty to allow every remote address.",
+  "adminNetworkingRemoteIpFilterMode": "Remote IP address filter mode",
+  "adminNetworkingPublicHttpPortHelp": "The public port mapped to the local HTTP port.",
+  "adminNetworkingPublicHttpsPortHelp": "The public port mapped to the local HTTPS port.",
+  "adminNetworkingAutoDiscoveryLabel": "Enable auto discovery",
+  "adminNetworkingAutoDiscoveryHelp": "Lets apps find this server on UDP port 7359.",
+  "adminNetworkingSamePublishedUri": "Use the same published server URI for internal and external access",
+  "adminNetworkingPublishedUri": "Published server URI",
+  "adminNetworkingPublishedUriHelp": "Overrides the URI the server gives out, based on the interface or the client IP address.",
+  "adminNetworkingInternalUri": "Internal URI",
+  "adminNetworkingInternalUriHelp": "Published server URI for internal access.",
+  "adminNetworkingExternalUri": "External URI",
+  "adminNetworkingExternalUriHelp": "Published server URI for external access.",
+  "adminNetworkingOtherPublishedUris": "Other published URIs",
+  "adminNetworkingOtherPublishedUrisHelp": "URIs for one subnet or interface, written as subnet=URI.",
+  "adminBackupsHelp": "Create and restore snapshots of your server. They can include the database, metadata, subtitles and trickplay images.",
+  "adminBackupDisclaimer": "Depending on the size of your library, the backup can take a while.",
+  "adminBackupTasksWarningTitle": "Scheduled tasks are running",
+  "adminBackupTasksWarning": "Stop these tasks or wait for them to finish before you create a backup.",
+  "adminBackupArchiveNotFound": "The server could not find this backup archive.",
+  "adminRestoreInProgress": "Restore in progress",
+  "adminRestoreWaitingForServer": "Waiting for the server to come back.",
+  "adminRestoreSucceeded": "Restore completed",
+  "adminLogWatch": "Watch",
+  "adminLogStopWatching": "Stop watching",
+  "adminPluginInstallConfirmTitle": "Confirm plugin installation",
+  "adminPluginInstallDisclaimer": "Installing a third party plugin carries risks. It may contain unstable or malicious code, and it can change at any time. Only install plugins from authors you trust, and know what they can do, such as query outside services, slow down library scans or add background work.",
+  "adminGroupOverview": "Overview",
+  "adminGroupLibrary": "Library",
+  "adminGroupPlayback": "Playback",
+  "adminGroupPeople": "People",
+  "adminGroupSystem": "System",
+  "adminAreasLabel": "Admin areas",
+  "adminPagesLabel": "Pages",
+  "adminPageDescDashboard": "Server health, sessions and recent activity",
+  "adminPageDescAnalytics": "Library sizes, codecs and formats",
+  "adminPageDescActivity": "Everything that happened on the server",
+  "adminPageDescTasks": "Scans, cleanups and their triggers",
+  "adminPageDescLibraries": "Folders, scanners and metadata fetchers",
+  "adminPageDescDisplay": "How libraries show to users",
+  "adminPageDescMetadata": "Default language, country and images",
+  "adminPageDescNfo": "Kodi NFO reading and saving",
+  "adminPageDescLiveTv": "Tuners, guide data and recordings",
+  "adminPageDescTranscoding": "Hardware acceleration, encoders, tone mapping",
+  "adminPageDescResume": "When items count as started or played",
+  "adminPageDescStreaming": "Remote bitrate limit",
+  "adminPageDescTrickplay": "Seek preview thumbnails",
+  "adminPageDescUsers": "Accounts, access and parental control",
+  "adminPageDescDevices": "Signed in devices and their names",
+  "adminPageDescApiKeys": "Keys for apps and scripts",
+  "adminPageDescSettings": "Server name, language, paths, performance",
+  "adminPageDescBranding": "Login message, custom CSS, splash screen",
+  "adminPageDescNetworking": "Ports, HTTPS, LAN and remote access",
+  "adminPageDescPlugins": "Installed plugins and the catalog",
+  "adminPageDescRepositories": "Where plugins come from",
+  "adminPageDescBackups": "Create and restore server backups",
+  "adminPageDescLogs": "Server log files",
+  "adminSearchSettingsHint": "Search {count} settings",
+  "@adminSearchSettingsHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminSearchNoResults": "No settings match",
+  "adminSearchClear": "Clear search",
+  "adminUnsavedChanges": "Unsaved changes",
+  "adminDiscard": "Discard",
+  "adminLeaveTitle": "Discard unsaved changes?",
+  "adminLeaveMessage": "The changes on this page haven't been saved yet.",
+  "adminKeepEditing": "Keep editing",
 
   "adminDashboardLoadFailed": "Failed to load dashboard",
   "adminMediaOverview": "Media Overview",
@@ -7832,12 +8088,6 @@
       "count": {"type": "int"}
     }
   },
-  "adminRecentAlertEntries": "Recent warning/error entries: {count}",
-  "@adminRecentAlertEntries": {
-    "placeholders": {
-      "count": {"type": "int"}
-    }
-  },
 
   "analyticsMediaDistribution": "Media Distribution",
   "analyticsVideoCodecs": "Video Codecs",
@@ -7856,7 +8106,6 @@
   "adminServerActions": "Server Actions",
   "adminRestartServer": "Restart Server",
   "adminShutdownServer": "Shutdown Server",
-  "adminScanLibraries": "Scan Libraries",
   "adminLibraryScanStarted": "Library scan started",
   "errorGeneric": "Error: {error}",
   "@errorGeneric": {
@@ -7896,8 +8145,6 @@
   "audioCodec": "Audio Codec",
   "hwAccel": "HW Accel",
   "completion": "Completion",
-  "direct": "Direct",
-  "adminDisconnect": "Disconnect",
 
   "adminClearDates": "Clear dates",
   "adminActivitySeverityAll": "All severities",
@@ -8016,18 +8263,10 @@
       "error": {"type": "String"}
     }
   },
-  "adminLibraryOptionsSaved": "Library options saved",
-  "adminLibraryOptionsSaveFailed": "Failed to save options: {error}",
-  "@adminLibraryOptionsSaveFailed": {
-    "placeholders": {
-      "error": {"type": "String"}
-    }
-  },
   "adminLibraryLoadFailed": "Failed to load library",
   "adminNoMediaPaths": "No media paths configured",
   "adminAddPath": "Add Path",
   "adminBrowseFilesystem": "Browse server filesystem:",
-  "adminSaveOptions": "Save Options",
   "adminPreferredMetadataLanguage": "Preferred metadata language",
   "adminMetadataLanguageHint": "e.g. en, de, fr",
   "adminMetadataCountryCode": "Metadata country code",
@@ -8065,7 +8304,6 @@
   "adminLibrarySectionMovies": "Movies",
   "adminLibRealtimeMonitor": "Enable real-time monitoring",
   "adminLibRealtimeMonitorHint": "Detect file changes and process them automatically.",
-  "adminLibArchiveMediaFiles": "Treat archives as media files",
   "adminLibEnablePhotos": "Display photos",
   "adminLibSaveLocalMetadata": "Save artwork into media folders",
   "adminLibRefreshInterval": "Automatic metadata refresh",
@@ -8135,7 +8373,6 @@
   },
   "adminLibraryName": "Library Name",
   "adminSelectedPaths": "Selected Paths:",
-  "adminNoPathsAdded": "No paths added (can be added later)",
   "adminCreateLibrary": "Create Library",
   "paths": "Paths:",
 
@@ -8186,15 +8423,12 @@
   "adminPasswordOptional": "Password (optional)",
 
   "adminUsernameRequired": "Username cannot be empty",
-  "adminNoProfileChanges": "No profile changes to save",
-  "adminProfileSaved": "Profile saved",
   "adminSaveFailed": "Failed to save: {error}",
   "@adminSaveFailed": {
     "placeholders": {
       "error": {"type": "String"}
     }
   },
-  "adminPermissionsSaved": "Permissions saved",
   "adminPasswordsMismatch": "Passwords do not match",
   "adminFailed": "Failed: {error}",
   "@adminFailed": {
@@ -8203,8 +8437,6 @@
     }
   },
   "adminUserLoadFailed": "Failed to load user",
-  "adminBackToUsers": "Back to Users",
-  "adminSaveProfile": "Save Profile",
   "adminDeleteUser": "Delete User",
   "admin": "Admin",
   "adminFullAccessWarning": "Administrators have complete access to the server. Grant with caution.",
@@ -8215,13 +8447,11 @@
   "adminAllowVideoTranscoding": "Allow video transcoding",
   "adminAllowRemuxing": "Allow remuxing",
   "adminForceRemoteTranscoding": "Force remote source transcoding",
-  "adminAllowContentDeletion": "Allow content deletion",
   "adminAllowContentDownloading": "Allow content downloading",
   "adminAllowPublicSharing": "Allow public sharing",
   "adminAllowRemoteControl": "Allow remote control of other users",
   "adminAllowSharedDeviceControl": "Allow shared device control",
   "adminAllowRemoteAccess": "Allow remote access",
-  "adminRemoteBitrateLimit": "Remote client bitrate limit (bps)",
   "adminLeaveEmptyNoLimit": "Leave empty for no limit",
   "adminMaxActiveSessions": "Max active sessions",
   "adminAllowLiveTvAccess": "Allow Live TV access",
@@ -8229,9 +8459,7 @@
   "adminAllowCollectionManagement": "Allow collection management",
   "adminAllowSubtitleManagement": "Allow subtitle management",
   "adminAllowLyricManagement": "Allow lyric management",
-  "adminSavePermissions": "Save Permissions",
   "adminEnableAllLibraryAccess": "Enable access to all libraries",
-  "adminSaveAccess": "Save Access",
   "adminChangePassword": "Change Password",
   "adminNewPassword": "New Password",
   "adminConfirmPassword": "Confirm Password",
@@ -8241,7 +8469,6 @@
   "adminPasswordUpdated": "Password updated",
   "adminUserSettings": "User Settings",
   "adminLibraryAccess": "Library Access",
-  "adminDeviceAndChannelAccess": "Device & Channel Access",
   "adminEnableAllDevices": "Enable access to all devices",
   "adminEnableAllChannels": "Enable access to all channels",
   "adminParentalControl": "Parental Control",
@@ -8277,8 +8504,6 @@
   "adminBlockedTags": "Blocked tags",
   "adminBlockedTagsHint": "Content with these tags is hidden from this user.",
   "adminAddTag": "Add tag",
-  "adminEnabledDevices": "Enabled devices",
-  "adminEnabledChannels": "Enabled channels",
   "adminAuthProvider": "Authentication provider",
   "adminPasswordResetProvider": "Password reset provider",
   "adminLoginAttemptsBeforeLockout": "Maximum failed login attempts before lockout",
@@ -8361,7 +8586,6 @@
   },
 
   "adminBackupOptionsTitle": "Create Backup",
-  "adminBackupInclude": "Choose what to include in the backup.",
   "adminBackupDatabase": "Database",
   "adminBackupDatabaseAlways": "Always included",
   "adminBackupMetadata": "Metadata",
@@ -8473,7 +8697,6 @@
   "adminAddTrigger": "Add Trigger",
   "adminNoTriggers": "No triggers configured",
   "adminTriggerType": "Trigger Type",
-  "adminTimeLimit": "Time limit (optional)",
   "adminNoLimit": "No limit",
   "adminHours": "{hours} hour(s)",
   "@adminHours": {
@@ -8560,7 +8783,6 @@
       "version": {"type": "String"}
     }
   },
-  "adminMissingAuthToken": "Unable to open settings: missing auth token.",
   "adminPluginLoadFailed": "Failed to load plugin: {error}",
   "@adminPluginLoadFailed": {
     "placeholders": {
@@ -8627,7 +8849,6 @@
   "adminParallelImageEncodingLimit": "Parallel image encoding limit",
   "adminSlowResponseThreshold": "Slow response threshold (ms)",
 
-  "adminBrandingSaved": "Branding settings saved",
   "adminBrandingLoadFailed": "Failed to load branding settings",
   "adminLoginDisclaimer": "Login disclaimer",
   "adminLoginDisclaimerHint": "HTML displayed below the login form",
@@ -8635,15 +8856,12 @@
   "adminCustomCssHint": "Custom CSS applied to the web interface",
   "adminEnableSplashScreen": "Enable splash screen",
 
-  "adminStreamingSaved": "Streaming settings saved",
   "adminStreamingLoadFailed": "Failed to load streaming settings",
   "adminStreamingDescription": "Set global streaming bitrate limits for remote connections.",
   "adminRemoteBitrateLimitMbps": "Remote client bitrate limit (Mbps)",
   "adminLeaveEmptyForUnlimited": "Leave empty or 0 for unlimited",
 
-  "adminPlaybackSaved": "Playback settings saved",
   "adminPlaybackLoadFailed": "Failed to load playback settings",
-  "adminPlaybackTranscoding": "Playback / Transcoding",
   "adminHardwareAcceleration": "Hardware acceleration",
   "adminVaapiDevice": "VA-API device",
   "adminEnableHardwareEncoding": "Enable hardware encoding",
@@ -8657,7 +8875,6 @@
   "adminSegmentKeepSeconds": "Segment keep (seconds)",
   "adminThrottleBuffering": "Throttle buffering",
 
-  "adminTrickplaySaved": "Trickplay settings saved",
   "adminTrickplayLoadFailed": "Failed to load trickplay settings",
   "adminEnableHardwareAcceleration": "Enable hardware acceleration",
   "adminEnableKeyFrameExtraction": "Enable key frame only extraction",
@@ -8673,7 +8890,6 @@
   "adminQualitySubtitle": "Lower values = better quality, larger files",
   "adminProcessThreads": "Process threads",
 
-  "adminResumeSaved": "Resume settings saved",
   "adminResumeLoadFailed": "Failed to load resume settings",
   "adminResumeDescription": "Configure when content should be marked as partially played or fully played.",
   "adminMinResumePercentage": "Minimum resume percentage",
@@ -8685,7 +8901,6 @@
   "adminMinAudiobookResume": "Minimum audiobook resume percentage",
   "adminMaxAudiobookResume": "Maximum audiobook resume percentage",
 
-  "adminNetworkingSaved": "Networking settings saved. A server restart may be required.",
   "adminNetworkingLoadFailed": "Failed to load networking settings",
   "adminNetworkingWarning": "Changes to networking settings may require a server restart.",
   "adminEnableRemoteAccess": "Enable remote access",
@@ -8707,15 +8922,8 @@
   "blacklist": "Blacklist",
   "notSet": "Not set",
 
-  "adminMetadataSaved": "Metadata saved",
   "adminMetadataLoadFailed": "Failed to load metadata: {error}",
   "@adminMetadataLoadFailed": {
-    "placeholders": {
-      "error": {"type": "String"}
-    }
-  },
-  "adminMetadataSaveFailed": "Failed to save metadata: {error}",
-  "@adminMetadataSaveFailed": {
     "placeholders": {
       "error": {"type": "String"}
     }
@@ -8723,7 +8931,6 @@
   "adminRefreshMetadata": "Refresh Metadata",
   "recursive": "Recursive",
   "adminReplaceAllMetadata": "Replace all metadata",
-  "adminReplaceAllImages": "Replace all images",
   "adminMetadataRefreshRequested": "Metadata refresh requested",
   "adminMetadataRefreshFailed": "Failed to refresh metadata: {error}",
   "@adminMetadataRefreshFailed": {
@@ -8805,8 +9012,6 @@
       "error": {"type": "String"}
     }
   },
-  "adminAddTuner": "Add Tuner",
-  "adminEditTuner": "Edit Tuner",
   "adminTunerTypeM3u": "M3U Tuner",
   "adminTunerTypeHdHomerun": "HDHomeRun",
   "adminTunerFileOrUrl": "File or URL",
@@ -8823,7 +9028,6 @@
   "adminTunerEnableStreamLooping": "Enable stream looping",
   "adminTunerIgnoreDts": "Ignore DTS",
   "adminTunerReadAtNativeFramerate": "Read input at native frame rate",
-  "adminEditProvider": "Edit Provider",
   "adminProviderXmltv": "XMLTV",
   "adminProviderSchedulesDirect": "Schedules Direct",
   "adminXmltvPath": "File or URL",
@@ -8838,90 +9042,30 @@
   "adminSdCountry": "Country",
   "adminSdCountrySelect": "Select a country",
   "adminSdPostalCode": "Postal code",
-  "adminSdGetListings": "Get listings",
-  "adminSdListings": "Listings",
   "adminEnableAllTuners": "Enable all tuners",
-  "adminTunerType": "Tuner Type",
-  "adminTunerAdded": "Tuner added",
-  "adminTunerAddFailed": "Failed to add tuner: {error}",
-  "@adminTunerAddFailed": {
-    "placeholders": {
-      "error": {"type": "String"}
-    }
-  },
-  "adminAddGuideProvider": "Add Guide Provider",
-  "adminProviderType": "Provider Type",
-  "adminProviderAdded": "Provider added",
-  "adminProviderAddFailed": "Failed to add provider: {error}",
-  "@adminProviderAddFailed": {
-    "placeholders": {
-      "error": {"type": "String"}
-    }
-  },
   "adminTunerRemoveFailed": "Failed to remove tuner: {error}",
   "@adminTunerRemoveFailed": {
     "placeholders": {
       "error": {"type": "String"}
     }
   },
-  "adminTunerResetRequested": "Tuner reset requested",
-  "adminTunerResetFailed": "Failed to reset tuner: {error}",
-  "@adminTunerResetFailed": {
-    "placeholders": {
-      "error": {"type": "String"}
-    }
-  },
-  "adminTunerResetNotSupported": "This tuner type does not support resetting.",
   "adminProviderRemoveFailed": "Failed to remove provider: {error}",
   "@adminProviderRemoveFailed": {
     "placeholders": {
       "error": {"type": "String"}
     }
   },
-  "adminRecordingSettings": "Recording Settings",
-  "adminPrePadding": "Pre-padding (minutes)",
-  "adminPostPadding": "Post-padding (minutes)",
-  "adminRecordingPath": "Recording path",
   "adminSeriesRecordingPath": "Series recording path",
   "adminMovieRecordingPath": "Movie recording path",
-  "adminGuideDays": "Guide data days",
   "adminGuideDaysAuto": "Automatic",
-  "adminGuideDaysValue": "{days} days",
-  "@adminGuideDaysValue": {
-    "placeholders": {
-      "days": {
-        "type": "int"
-      }
-    }
-  },
   "adminRecordingPostProcessor": "Post-processing application path",
   "adminRecordingPostProcessorArgs": "Post-processor arguments",
   "adminSaveRecordingNfo": "Save recording NFO metadata",
   "adminSaveRecordingImages": "Save recording images",
-  "adminLiveTvSectionTiming": "Timing",
   "adminLiveTvSectionPaths": "Recording paths",
   "adminLiveTvSectionPostProcessing": "Post-processing",
-  "adminGuideDaysDisplay": "Guide data: {value}",
-  "@adminGuideDaysDisplay": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
-  "adminRecordingSettingsSaved": "Recording settings saved",
   "adminSettingsSaveFailed": "Failed to save settings: {error}",
   "@adminSettingsSaveFailed": {
-    "placeholders": {
-      "error": {"type": "String"}
-    }
-  },
-  "adminSetChannelMappings": "Set Channel Mappings",
-  "adminMappingJson": "Mapping JSON",
-  "adminMappingJsonHint": "Example: mappings JSON payload",
-  "adminChannelMappingsUpdated": "Channel mappings updated",
-  "adminMappingsUpdateFailed": "Failed to update mappings: {error}",
-  "@adminMappingsUpdateFailed": {
     "placeholders": {
       "error": {"type": "String"}
     }
@@ -8930,38 +9074,9 @@
   "adminTunerDevices": "Tuner Devices",
   "adminNoTunerHosts": "No tuner hosts configured",
   "adminGuideProviders": "Guide Providers",
-  "adminRefreshGuideData": "Refresh Guide Data",
   "adminGuideRefreshStarted": "Guide data refresh started",
   "adminGuideRefreshUnavailable": "Guide refresh task is not available on this server.",
-  "adminAddProvider": "Add Provider",
   "adminNoListingProviders": "No listing providers configured",
-  "adminRecordingPathDisplay": "Recording path: {path}",
-  "@adminRecordingPathDisplay": {
-    "placeholders": {
-      "path": {"type": "String"}
-    }
-  },
-  "adminSeriesPathDisplay": "Series path: {path}",
-  "@adminSeriesPathDisplay": {
-    "placeholders": {
-      "path": {"type": "String"}
-    }
-  },
-  "adminPrePaddingDisplay": "Pre-padding: {minutes} min",
-  "@adminPrePaddingDisplay": {
-    "placeholders": {
-      "minutes": {"type": "int"}
-    }
-  },
-  "adminPostPaddingDisplay": "Post-padding: {minutes} min",
-  "@adminPostPaddingDisplay": {
-    "placeholders": {
-      "minutes": {"type": "int"}
-    }
-  },
-  "adminTunerDiscovery": "Tuner Discovery",
-  "adminChannelMappings": "Channel Mappings",
-  "adminNoDiscoveredTuners": "No discovered tuners yet",
 
   "adminSettingsSaved": "Settings saved",
 
@@ -8975,16 +9090,11 @@
       "name": {"type": "String"}
     }
   },
-  "adminRestoreRequested": "Restore requested. Server restart may disconnect this session.",
   "adminBackupsTitle": "Backups",
   "adminUnknownDate": "Unknown date",
   "adminUnnamedBackup": "Unnamed Backup",
 
-  "adminLiveTvNotAvailable": "Live TV administration is not available on this server build.",
-  "adminLiveTvTitle": "Live TV Administration",
   "adminApply": "Apply",
-  "adminNotSet": "Not set",
-  "adminReset": "Reset",
 
   "adminLogsTitle": "Server Logs",
   "adminLogsNewestFirst": "Newest First",
@@ -9061,7 +9171,6 @@
   "adminMetadataCountryRegion": "Country/Region",
   "adminMetadataInheritHelp": "Leave this on Default to inherit the setting from a parent item, or from the server default.",
   "adminMetadataField3DFormat": "3D format",
-  "adminMetadataPersonKindUnknown": "Unknown",
   "adminMetadataPersonKindActor": "Actor",
   "adminMetadataPersonKindDirector": "Director",
   "adminMetadataPersonKindComposer": "Composer",
@@ -9116,7 +9225,6 @@
   "adminMetadataImageLogo": "Logo",
   "adminMetadataImageBanner": "Banner",
   "adminMetadataImageThumb": "Thumb",
-  "adminMetadataRecursive": "Recursive",
   "adminMetadataProvider": "Provider",
   "adminMetadataImageUpdated": "{imageType} image updated",
   "@adminMetadataImageUpdated": {
@@ -9281,13 +9389,7 @@
 
   "adminNetworkingTitle": "Networking",
   "adminNetworkingRestartWarning": "Changes to networking settings may require a server restart.",
-  "adminNetworkingRemoteAccess": "Enable remote access",
-  "adminNetworkingPorts": "Ports",
-  "adminNetworkingHttpPort": "HTTP port",
-  "adminNetworkingHttpsPort": "HTTPS port",
   "adminNetworkingEnableHttps": "Enable HTTPS",
-  "adminNetworkingLocalNetwork": "Local Network",
-  "adminNetworkingLocalAddresses": "Local network addresses",
   "adminNetworkingAddressHint": "e.g. 192.168.1.0/24",
   "adminNetworkingKnownProxies": "Known proxies",
   "adminNetworkingProxyHint": "e.g. 10.0.0.1",
@@ -9310,11 +9412,9 @@
   "adminPlaybackHwAccel": "Hardware Acceleration",
   "adminPlaybackHwAccelLabel": "Hardware acceleration",
   "adminPlaybackEnableHwEncoding": "Enable hardware encoding",
-  "adminPlaybackEnableHwDecoding": "Enable hardware decoding for:",
   "adminPlaybackQsvDevice": "QSV device",
   "adminPlaybackEnhancedNvdec": "Enable enhanced NVDEC decoder",
   "adminPlaybackPreferNativeDecoder": "Prefer system native hardware decoder",
-  "adminPlaybackColorDepth": "Hardware decoding color depth",
   "adminPlaybackColorDepth10Hevc": "10-bit HEVC decoding",
   "adminPlaybackColorDepth10Vp9": "10-bit VP9 decoding",
   "adminPlaybackColorDepth10HevcRext": "HEVC RExt 8/10-bit decoding",
@@ -9336,7 +9436,6 @@
   "adminPlaybackTonemappingParam": "Tone mapping parameter",
   "adminPlaybackVppTonemappingBrightness": "VPP tone mapping brightness",
   "adminPlaybackVppTonemappingContrast": "VPP tone mapping contrast",
-  "adminPlaybackPresetsQuality": "Presets & Quality",
   "adminPlaybackEncoderPreset": "Encoder preset",
   "adminPlaybackH264Crf": "H.264 encoding CRF",
   "adminPlaybackH265Crf": "H.265 (HEVC) encoding CRF",
@@ -9356,8 +9455,6 @@
 
   "adminResumeVideo": "Video",
   "adminResumeAudiobooks": "Audiobooks",
-  "adminResumeMinAudiobookPct": "Minimum audiobook resume percentage",
-  "adminResumeMaxAudiobookPct": "Maximum audiobook resume percentage",
 
   "adminStreamingBitrateLimit": "Remote client bitrate limit (Mbps)",
   "adminStreamingBitrateLimitHint": "Leave empty or 0 for unlimited",
@@ -9409,22 +9506,12 @@
       "time": {"type": "String"}
     }
   },
-  "adminTaskTriggerInterval": "Every {duration}",
-  "@adminTaskTriggerInterval": {
-    "placeholders": {
-      "duration": {"type": "String"}
-    }
-  },
   "adminTaskTriggerStartup": "On application startup",
   "adminTaskTriggerTypeDaily": "Daily",
   "adminTaskTriggerTypeWeekly": "Weekly",
   "adminTaskTriggerTypeInterval": "On an interval",
   "adminTaskTriggerIntervalLabel": "Interval",
   "adminTaskTriggerEveryHour": "Every hour",
-  "adminTaskTriggerEvery6Hours": "Every 6 hours",
-  "adminTaskTriggerEvery12Hours": "Every 12 hours",
-  "adminTaskTriggerEvery24Hours": "Every 24 hours",
-  "adminTaskTriggerEvery2Days": "Every 2 days",
   "adminTaskTriggerHours": "{count, plural, one{1 hour} other{{count} hours}}",
   "@adminTaskTriggerHours": {
     "placeholders": {
@@ -9432,7 +9519,6 @@
     }
   },
   "adminTaskTriggerTime": "Time",
-  "adminTaskTriggerNoLimit": "No limit",
 
   "adminActivityJustNow": "Just now",
   "adminActivityLastHour": "Last hour",
@@ -9489,21 +9575,13 @@
   "adminNetworkingPublicHttpsPort": "Public HTTPS port",
   "adminNetworkingBaseUrl": "Base URL",
   "adminNetworkingBaseUrlHint": "e.g. /jellyfin",
-  "adminNetworkingHttps": "HTTPS",
   "adminNetworkingPublicHttpPort": "Public HTTP port",
   "adminNetworkingRequireHttps": "Require HTTPS",
   "adminNetworkingRequireHttpsHint": "Redirect all remote requests to HTTPS. Has no effect if the server has no valid certificate.",
   "adminNetworkingCertPassword": "Certificate password",
-  "adminNetworkingIpSettings": "IP Settings",
   "adminNetworkingEnableIpv4": "Enable IPv4",
   "adminNetworkingEnableIpv6": "Enable IPv6",
-  "adminNetworkingAutoDiscovery": "Enable automatic port mapping",
   "adminNetworkingLocalSubnets": "LAN networks",
-  "adminNetworkingLocalSubnetsHint": "Comma or line separated list of IP addresses or CIDR subnets treated as being on the local network.",
-  "adminNetworkingPublishedUris": "Published server URIs",
-  "adminNetworkingPublishedUriHint": "Map a subnet or address to a published URL, e.g. all=https://example.com",
-  "adminNetworkingCertPath": "Certificate path",
-  "adminNetworkingRemoteIpFilter": "Remote IP Filter",
   "adminNetworkingRemoteIpFilterLabel": "Remote IP filter",
 
   "adminPlaybackVaapiDevice": "VA-API device",
@@ -9550,7 +9628,6 @@
   "adminGeneralServerName": "Server name",
   "adminGeneralDisplayLanguage": "Preferred display language",
   "adminSettingsLoadFailed": "Failed to load settings",
-  "adminDiscover": "Discover",
   "adminChannelMappingsUpdateFailed": "Failed to update mappings: {error}",
   "@adminChannelMappingsUpdateFailed": {
     "placeholders": {
@@ -10687,8 +10764,6 @@
   "appearancesSeerr": "Appearances (Seerr)",
   "crewContributionsSeerr": "Crew Contributions (Seerr)",
   "watchWithGroup": "Watch with group",
-  "errors": "Errors",
-  "warnings": "Warnings",
   "disk": "Disk",
   "openInBrowser": "Open in Browser",
   "achievementBadges": "Achievement Badges",
@@ -11735,8 +11810,6 @@
   "adminNoUsersMatchSearch": "No users match your search",
   "adminNoDevicesFound": "No devices found",
   "adminNoDevicesMatchCurrentFilters": "No devices match the current filters",
-  "passwordSet": "Password set",
-  "noPasswordConfigured": "No password configured",
   "remoteAccess": "Remote Access",
   "localOnly": "Local Only",
   "adminMediaAnalyticsLoadFailed": "Failed to load media analytics",
@@ -11776,18 +11849,10 @@
   "userActivity": "User Activity",
   "systemEvents": "System Events",
   "needsAttention": "Needs Attention",
-  "adminDrawerSectionServer": "Server",
-  "adminDrawerSectionPlayback": "Playback",
-  "adminDrawerSectionDevices": "Devices",
-  "adminDrawerSectionAdvanced": "Advanced",
-  "adminDrawerSectionPlugins": "Plugins",
-  "adminDrawerSectionLiveTv": "Live TV",
   "homeVideos": "Home Videos",
   "mixedContent": "Mixed Content",
   "homeVideosAndPhotos": "Home Videos & Photos",
   "mixedMoviesAndShows": "Mixed Movies & Shows",
-  "intelQuickSync": "Intel Quick Sync",
-  "rockchipMpp": "Rockchip MPP",
   "dolbyVision": "Dolby Vision",
   "noRecordingsFound": "No recordings found",
   "noImagePagesFoundInArchive": "No image pages found inside .{extension} archive.",
@@ -12251,30 +12316,6 @@
   "adminLabelYear": "Year",
   "@adminLabelYear": {
     "description": "Label for the release year field in the Identify dialog"
-  },
-  "adminLabelImdbId": "IMDb Id",
-  "@adminLabelImdbId": {
-    "description": "Label for the IMDb identifier field in the Identify dialog. IMDb is a brand name and is normally left untranslated"
-  },
-  "adminLabelTmdbMovieId": "TheMovieDb Movie Id",
-  "@adminLabelTmdbMovieId": {
-    "description": "Label for the TheMovieDb movie identifier field in the Identify dialog. TheMovieDb is a brand name and is normally left untranslated"
-  },
-  "adminLabelTmdbBoxSetId": "TheMovieDb Box Set Id",
-  "@adminLabelTmdbBoxSetId": {
-    "description": "Label for the TheMovieDb collection identifier field in the Identify dialog. TheMovieDb is a brand name and is normally left untranslated"
-  },
-  "adminLabelTvdbBoxSetId": "TheTVDB Box Set Id",
-  "@adminLabelTvdbBoxSetId": {
-    "description": "Label for the TheTVDB collection identifier field in the Identify dialog. TheTVDB is a brand name and is normally left untranslated"
-  },
-  "adminLabelTvdbId": "TheTVDB Numerical Id",
-  "@adminLabelTvdbId": {
-    "description": "Label for the numeric TheTVDB identifier field in the Identify dialog. TheTVDB is a brand name and is normally left untranslated"
-  },
-  "adminLabelTvdbSlug": "TheTVDB Slug Movie Id",
-  "@adminLabelTvdbSlug": {
-    "description": "Label for the TheTVDB slug identifier field in the Identify dialog. TheTVDB is a brand name and is normally left untranslated"
   },
   "adminReplaceImages": "Replace existing images",
   "@adminReplaceImages": {

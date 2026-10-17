@@ -117,10 +117,10 @@ void main() {
 
       // Dialog opens with Sort By title
       expect(find.byType(PlaylistSortDialog), findsOneWidget);
-      expect(find.text('Date added'), findsOneWidget);
+      expect(find.text('Date Added'), findsOneWidget);
 
-      // Tap Date added
-      await tester.tap(find.text('Date added'));
+      // Tap Date Added
+      await tester.tap(find.text('Date Added'));
       await tester.pumpAndSettle();
 
       // Dialog closes and callback was invoked

@@ -31,6 +31,19 @@ const adminMediaMetrics = <AdminMediaMetricDefinition>[
   AdminMediaMetricDefinition('videos', ['Video']),
 ];
 
+/// The dashboard's count cards. All of them are ItemCounts fields, so the
+/// dashboard needs no extra /Items counts.
+const adminDashboardMetricKeys = <String>[
+  'movies',
+  'series',
+  'episodes',
+  'albums',
+  'songs',
+  'musicVideos',
+  'books',
+  'collections',
+];
+
 String adminMediaMetricLabel(AppLocalizations l10n, String key) {
   switch (key) {
     case 'movies':
@@ -168,7 +181,7 @@ class AdminTechnicalProfile {
 
 final adminMediaSummaryProvider = FutureProvider<AdminMediaCountSummary>((ref) async {
   final client = GetIt.instance<MediaServerClient>();
-  return _loadSummary(client);
+  return _loadSummary(client, adminDashboardMetricKeys);
 });
 
 final adminMediaAnalyticsProvider = StreamProvider<AdminAnalyticsLoadingState>((ref) async* {
@@ -203,8 +216,7 @@ final adminMediaAnalyticsProvider = StreamProvider<AdminAnalyticsLoadingState>((
       yield const AdminAnalyticsLoadingState(progress: 0.15);
     }
 
-    final summaryFuture = _loadSummary(client);
-    final summary = await summaryFuture;
+    final summary = await ref.read(adminMediaSummaryProvider.future);
     if (cachedData == null) {
       yield const AdminAnalyticsLoadingState(progress: 0.25);
     }
@@ -284,7 +296,9 @@ final adminMediaAnalyticsProvider = StreamProvider<AdminAnalyticsLoadingState>((
   }
 });
 
-String _countsKeyForMetricKey(String key) {
+/// The ItemCounts field for a metric, null for the ones ItemCounts lacks
+/// (audiobooks, photos, videos), which need an /Items count.
+String? _countsKeyForMetricKey(String key) {
   switch (key) {
     case 'movies':
       return 'MovieCount';
@@ -298,28 +312,28 @@ String _countsKeyForMetricKey(String key) {
       return 'SongCount';
     case 'books':
       return 'BookCount';
-    case 'audiobooks':
-      return 'AudioBookCount';
     case 'collections':
-      return 'CollectionCount';
+      return 'BoxSetCount';
     case 'musicVideos':
       return 'MusicVideoCount';
-    case 'photos':
-      return 'PhotoCount';
-    case 'videos':
-      return 'VideoCount';
     default:
-      return '';
+      return null;
   }
 }
 
-Future<AdminMediaCountSummary> _loadSummary(MediaServerClient client) async {
+/// Counts [keys] from /Items/Counts, asking /Items only for a key that has no
+/// ItemCounts field, or for every key when /Items/Counts fails.
+Future<AdminMediaCountSummary> _loadSummary(
+  MediaServerClient client,
+  List<String> keys,
+) async {
+  final metrics = _metricsForKeys(keys);
   try {
     final counts = await client.adminSystemApi.getItemCounts();
     final totals = <String, int>{};
-    for (final metric in adminMediaMetrics) {
+    for (final metric in metrics) {
       final serverKey = _countsKeyForMetricKey(metric.key);
-      final count = counts[serverKey];
+      final count = serverKey == null ? null : counts[serverKey];
       if (count is num) {
         totals[metric.key] = count.toInt();
       } else {
@@ -332,7 +346,7 @@ Future<AdminMediaCountSummary> _loadSummary(MediaServerClient client) async {
     return AdminMediaCountSummary(totals: totals);
   } catch (_) {
     final entries = await Future.wait(
-      adminMediaMetrics.map((metric) async {
+      metrics.map((metric) async {
         final count = await _safeFetchCount(
           client,
           includeItemTypes: metric.includeItemTypes,
@@ -365,7 +379,7 @@ Future<AdminLibraryMediaAnalytics> _loadLibraryAnalytics(
     );
   }
 
-  final relevantMetrics = _metricsForCollectionType(library.collectionType);
+  final relevantMetrics = adminMetricsForCollectionType(library.collectionType);
   final countEntries = await Future.wait(
     relevantMetrics.map((metric) async {
       final count = await _safeFetchCount(
@@ -434,7 +448,10 @@ Future<int> _fetchCount(
   return 0;
 }
 
-List<AdminMediaMetricDefinition> _metricsForCollectionType(String? collectionType) {
+/// The metrics a library of [collectionType] can have.
+List<AdminMediaMetricDefinition> adminMetricsForCollectionType(
+  String? collectionType,
+) {
   switch ((collectionType ?? '').toLowerCase()) {
     case 'movies':
       return _metricsForKeys(['movies']);
@@ -446,10 +463,9 @@ List<AdminMediaMetricDefinition> _metricsForCollectionType(String? collectionTyp
       return _metricsForKeys(['musicVideos']);
     case 'books':
       return _metricsForKeys(['books', 'audiobooks']);
-    case 'photos':
-      return _metricsForKeys(['photos']);
+    // Jellyfin has no photos library type, photo libraries are homevideos.
     case 'homevideos':
-      return _metricsForKeys(['videos']);
+      return _metricsForKeys(['videos', 'photos']);
     case 'boxsets':
       return const [];
     default:
@@ -471,28 +487,22 @@ Future<AdminLibraryInsights> _loadLibraryInsights(
   List<String> includeItemTypes;
   String fields;
 
-  int pageSize = 1000;
+  // Only ItemFields names go in Fields. ProductionYear, OfficialRating,
+  // RunTimeTicks, Container, Artists and AlbumArtists come back without it.
+  const pageSize = 1000;
   switch (collectionType) {
     case 'movies':
       includeItemTypes = const ['Movie'];
-      fields =
-          'Genres,ProductionYear,OfficialRating,RunTimeTicks,Container,MediaSources,MediaStreams';
-      pageSize = 1000;
+      fields = 'Genres,MediaSources,MediaStreams';
     case 'tvshows':
       includeItemTypes = const ['Series', 'Episode'];
-      fields =
-          'Genres,ProductionYear,OfficialRating,RunTimeTicks,Container,MediaSources,MediaStreams';
-      pageSize = 1000;
+      fields = 'Genres,MediaSources,MediaStreams';
     case 'music':
       includeItemTypes = const ['Audio', 'MusicAlbum'];
-      fields =
-          'Genres,Artists,AlbumArtists,ProductionYear,Container,MediaSources,MediaStreams';
-      pageSize = 1000;
+      fields = 'Genres,MediaSources,MediaStreams';
     case 'books':
       includeItemTypes = const ['Book', 'AudioBook'];
-      fields =
-          'Genres,People,Authors,ProductionYear,Path,Container,MediaSources,MediaStreams';
-      pageSize = 1000;
+      fields = 'Genres,People,Path,MediaSources,MediaStreams';
     default:
       return const AdminLibraryInsights();
   }
@@ -502,8 +512,9 @@ Future<AdminLibraryInsights> _loadLibraryInsights(
 
   try {
     while (true) {
+      // GET /Items takes the user from the token, /Users/{id}/Items is obsolete.
       final response = await client.itemsApi.getItems(
-        serverWide: false,
+        serverWide: true,
         parentId: library.itemId,
         includeItemTypes: includeItemTypes,
         recursive: true,
@@ -568,8 +579,6 @@ Future<AdminLibraryInsights> _loadLibraryInsights(
           hasContainer = true;
         }
 
-        var hasVideoStream = false;
-        var hasAudioStream = false;
         final mediaStreams = _mapList(source['MediaStreams']);
         for (final stream in mediaStreams) {
           final streamType = _normalizeToken(stream['Type']);
@@ -580,24 +589,8 @@ Future<AdminLibraryInsights> _loadLibraryInsights(
 
           if (streamType == 'video') {
             _incrementCount(videoCodecs, streamCodec);
-            hasVideoStream = true;
           } else if (streamType == 'audio') {
             _incrementCount(audioCodecs, streamCodec);
-            hasAudioStream = true;
-          }
-        }
-
-        if (!hasVideoStream) {
-          final sourceVideoCodec = _normalizeToken(source['VideoCodec']);
-          if (sourceVideoCodec != null) {
-            _incrementCount(videoCodecs, sourceVideoCodec);
-          }
-        }
-
-        if (!hasAudioStream) {
-          final sourceAudioCodec = _normalizeToken(source['AudioCodec']);
-          if (sourceAudioCodec != null) {
-            _incrementCount(audioCodecs, sourceAudioCodec);
           }
         }
       }
@@ -659,9 +652,7 @@ Future<AdminLibraryInsights> _loadLibraryInsights(
           }
         }
       } else {
-        for (final author in _extractStringList(item['Authors'])) {
-          _incrementDisplayCount(contributors, author);
-        }
+        // BaseItemDto has no Authors, book writers come from People.
         final people = _mapList(item['People']);
         for (final person in people) {
           final role = (person['Type'] ?? '').toString().toLowerCase();

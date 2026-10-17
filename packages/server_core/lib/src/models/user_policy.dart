@@ -37,6 +37,9 @@ class UserPolicy {
   final String authenticationProviderId;
   final String passwordResetProviderId;
 
+  /// The policy exactly as the server sent it, every key included.
+  final Map<String, dynamic> _raw;
+
   const UserPolicy({
     this.isAdministrator = false,
     this.isHidden = false,
@@ -77,7 +80,8 @@ class UserPolicy {
         'Jellyfin.Server.Implementations.Users.DefaultAuthenticationProvider',
     this.passwordResetProviderId =
         'Jellyfin.Server.Implementations.Users.DefaultPasswordResetProvider',
-  });
+    Map<String, dynamic> raw = const {},
+  }) : _raw = raw;
 
   factory UserPolicy.fromJson(Map<String, dynamic> json) => UserPolicy(
         isAdministrator: json['IsAdministrator'] as bool? ?? false,
@@ -136,9 +140,16 @@ class UserPolicy {
             'Jellyfin.Server.Implementations.Users.DefaultAuthenticationProvider',
         passwordResetProviderId: json['PasswordResetProviderId'] as String? ??
             'Jellyfin.Server.Implementations.Users.DefaultPasswordResetProvider',
+        raw: json,
       );
 
-  Map<String, dynamic> toJson() => {
+  /// The server replaces the whole policy on POST and resets every key the
+  /// body leaves out, so a policy read from the server goes back as it came.
+  /// The class has no copyWith, so that map is always the current value.
+  Map<String, dynamic> toJson() =>
+      _raw.isNotEmpty ? Map<String, dynamic>.from(_raw) : _typedJson();
+
+  Map<String, dynamic> _typedJson() => {
         'IsAdministrator': isAdministrator,
         'IsHidden': isHidden,
         'IsDisabled': isDisabled,

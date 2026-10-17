@@ -7,6 +7,7 @@ import 'package:server_core/server_core.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../util/error_message.dart';
 import '../../../widgets/adaptive/adaptive_dialog.dart';
+import '../../../../util/relative_time_label.dart';
 import '../providers/admin_user_providers.dart';
 import '../widgets/admin_form_styles.dart';
 
@@ -32,16 +33,18 @@ class _AdminDevicesScreenState extends ConsumerState<AdminDevicesScreen> {
 
   Future<void> _editDeviceName(DeviceInfoDto device) async {
     final l10n = AppLocalizations.of(context);
-    final controller = TextEditingController(text: device.displayName);
+    // No controller: the dialog still builds while it animates out.
+    var text = device.displayName;
     final newName = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog.adaptive(
         title: Text(l10n.adminEditDeviceName),
-        content: TextField(
-          controller: controller,
+        content: TextFormField(
+          initialValue: text,
           autofocus: true,
           decoration: adminInputDecoration(label: l10n.adminCustomName),
-          onSubmitted: (value) => Navigator.pop(ctx, value.trim()),
+          onChanged: (value) => text = value,
+          onFieldSubmitted: (value) => Navigator.pop(ctx, value.trim()),
         ),
         actions: [
           adaptiveDialogAction(
@@ -49,14 +52,13 @@ class _AdminDevicesScreenState extends ConsumerState<AdminDevicesScreen> {
             child: Text(l10n.cancel),
           ),
           FilledButton(
-            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            onPressed: () => Navigator.pop(ctx, text.trim()),
             child: Text(l10n.save),
           ),
         ],
       ),
     );
-    controller.dispose();
-    if (newName == null || !mounted) return;
+    if (newName == null || newName == device.displayName || !mounted) return;
 
     try {
       final options = DeviceOptionsDto(
@@ -171,15 +173,12 @@ class _AdminDevicesScreenState extends ConsumerState<AdminDevicesScreen> {
     return theme.colorScheme.onSurfaceVariant;
   }
 
-  String _formatDate(DateTime? date) {
-    if (date == null) return 'Never';
+  String _formatDate(DateTime? date, AppLocalizations l10n) {
+    if (date == null) return l10n.never;
     final local = date.toLocal();
-    final now = DateTime.now();
-    final diff = now.difference(local);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-    if (diff.inDays < 1) return '${diff.inHours}h ago';
-    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    if (DateTime.now().difference(local).inDays < 7) {
+      return relativeTimeLabel(l10n, local);
+    }
     return '${local.year}-${local.month.toString().padLeft(2, '0')}-${local.day.toString().padLeft(2, '0')}';
   }
 
@@ -232,7 +231,7 @@ class _AdminDevicesScreenState extends ConsumerState<AdminDevicesScreen> {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
               child: Row(
                 children: [
                   Expanded(
@@ -319,7 +318,8 @@ class _AdminDevicesScreenState extends ConsumerState<AdminDevicesScreen> {
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.fromLTRB(
+                  16, 8, 16, MediaQuery.of(context).padding.bottom + 40),
               itemCount: filtered.length,
               itemBuilder: (context, index) {
                 final device = filtered[index];
@@ -373,7 +373,7 @@ class _AdminDevicesScreenState extends ConsumerState<AdminDevicesScreen> {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              _formatDate(device.dateLastActivity),
+                              _formatDate(device.dateLastActivity, l10n),
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: _lastSeenColor(device.dateLastActivity, theme),
                               ),

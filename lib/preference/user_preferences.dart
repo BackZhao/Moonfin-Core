@@ -1854,11 +1854,6 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: true,
   );
 
-  static final adminDrawerOrder = Preference(
-    key: 'pref_admin_drawer_order',
-    defaultValue: '',
-  );
-
   static final navbarPosition = EnumPreference(
     key: 'pref_navbar_position',
     defaultValue: NavbarPosition.top,

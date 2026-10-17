@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
@@ -26,6 +27,11 @@ class AdminLogViewerScreen extends StatefulWidget {
 
 class _AdminLogViewerScreenState extends State<AdminLogViewerScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  /// Watch mode refetches every 2 s and follows the end of the log while the
+  /// view is already at the bottom.
+  Timer? _watchTimer;
 
   bool _loading = true;
   String? _error;
@@ -43,8 +49,48 @@ class _AdminLogViewerScreenState extends State<AdminLogViewerScreen> {
 
   @override
   void dispose() {
+    _watchTimer?.cancel();
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _toggleWatch() {
+    if (_watchTimer != null) {
+      setState(() {
+        _watchTimer!.cancel();
+        _watchTimer = null;
+      });
+      return;
+    }
+    setState(() {
+      _watchTimer = Timer.periodic(const Duration(seconds: 2), (_) => _refetch());
+    });
+    _scrollToBottom();
+  }
+
+  bool get _atBottom =>
+      !_scrollController.hasClients ||
+      _scrollController.position.extentAfter < 24;
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+  }
+
+  /// A watch refetch keeps the current text on screen and drops a failed
+  /// read. The next tick tries again.
+  Future<void> _refetch() async {
+    try {
+      final text = await _api.getLogFileContent(widget.fileName);
+      if (!mounted || _watchTimer == null || text == _content) return;
+      final follow = _atBottom;
+      setState(() => _content = text);
+      if (follow) _scrollToBottom();
+    } catch (_) {}
   }
 
   Future<void> _loadLog() async {
@@ -229,6 +275,15 @@ class _AdminLogViewerScreenState extends State<AdminLogViewerScreen> {
                 onPressed: _copyAll,
                 icon: const Icon(Icons.copy_all),
               ),
+              IconButton(
+                tooltip: _watchTimer == null
+                    ? AppLocalizations.of(context).adminLogWatch
+                    : AppLocalizations.of(context).adminLogStopWatching,
+                isSelected: _watchTimer != null,
+                onPressed: _toggleWatch,
+                icon: const Icon(Icons.visibility_outlined),
+                selectedIcon: const Icon(Icons.visibility_off_outlined),
+              ),
               if (!PlatformDetection.isTV)
                 IconButton(
                   tooltip: AppLocalizations.of(context).save,
@@ -261,7 +316,7 @@ class _AdminLogViewerScreenState extends State<AdminLogViewerScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
               for (final (label, filter) in <(String, String?)>[
-                ('All', null),
+                (AppLocalizations.of(context).all, null),
                 ('ERR', 'ERR'),
                 ('WRN', 'WRN'),
                 ('INF', 'INF'),
@@ -294,6 +349,7 @@ class _AdminLogViewerScreenState extends State<AdminLogViewerScreen> {
           child: lines.isEmpty
               ? Center(child: Text(AppLocalizations.of(context).adminLogViewerNoMatches))
               : ListView.builder(
+                  controller: _scrollController,
                   itemCount: lines.length,
                   itemBuilder: (context, index) {
                     final line = lines[index];

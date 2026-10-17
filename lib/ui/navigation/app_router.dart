@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playback_core/playback_core.dart';
+import 'package:server_core/server_core.dart' show MediaServerClient, ServerType;
 
 import '../../auth/repositories/session_repository.dart';
 import '../../auth/repositories/user_repository.dart';
@@ -16,6 +17,7 @@ import '../../preference/preference_constants.dart';
 import '../../syncplay/syncplay_manager.dart';
 import '../../util/game_cores.dart';
 import '../../util/platform_detection.dart';
+import '../screens/admin/admin_routes.dart';
 import '../screens/auth/emby_connect_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/server_screen.dart';
@@ -68,38 +70,6 @@ import '../screens/search/search_screen.dart';
 import '../screens/settings/settings_side_panel.dart';
 import '../screens/setup/setup_wizard_gate.dart';
 import '../screens/setup/setup_wizard_screen.dart';
-import '../screens/admin/admin_shell_screen.dart';
-import '../screens/admin/admin_content_analytics_screen.dart';
-import '../screens/admin/admin_dashboard_screen.dart';
-import '../screens/admin/users/admin_users_screen.dart';
-import '../screens/admin/users/admin_user_add_screen.dart';
-import '../screens/admin/users/admin_user_edit_screen.dart';
-import '../screens/admin/libraries/admin_libraries_screen.dart';
-import '../screens/admin/libraries/admin_library_add_screen.dart';
-import '../screens/admin/libraries/admin_library_edit_screen.dart';
-import '../screens/admin/tasks/admin_tasks_screen.dart';
-import '../screens/admin/tasks/admin_task_detail_screen.dart';
-import '../screens/admin/activity/admin_activity_screen.dart';
-import '../screens/admin/settings/admin_general_settings_screen.dart';
-import '../screens/admin/settings/admin_branding_screen.dart';
-import '../screens/admin/settings/admin_networking_screen.dart';
-import '../screens/admin/settings/admin_playback_settings_screen.dart';
-import '../screens/admin/settings/admin_resume_settings_screen.dart';
-import '../screens/admin/settings/admin_streaming_screen.dart';
-import '../screens/admin/settings/admin_trickplay_screen.dart';
-import '../screens/admin/libraries/admin_library_display_screen.dart';
-import '../screens/admin/libraries/admin_library_metadata_screen.dart';
-import '../screens/admin/libraries/admin_library_nfo_screen.dart';
-import '../screens/admin/plugins/admin_plugins_screen.dart';
-import '../screens/admin/plugins/admin_plugin_detail_screen.dart';
-import '../screens/admin/plugins/admin_repositories_screen.dart';
-import '../screens/admin/devices/admin_devices_screen.dart';
-import '../screens/admin/keys/admin_api_keys_screen.dart';
-import '../screens/admin/backups/admin_backups_screen.dart';
-import '../screens/admin/logs/admin_logs_screen.dart';
-import '../screens/admin/logs/admin_log_viewer_screen.dart';
-import '../screens/admin/livetv/admin_live_tv_screen.dart';
-import '../screens/admin/metadata/admin_metadata_edit_screen.dart';
 import 'destinations.dart';
 import 'focus_route_observer.dart';
 import 'route_lifecycle_observer.dart';
@@ -125,6 +95,14 @@ bool _shouldRunSetupWizard() {
   } catch (_) {
     return false;
   }
+}
+
+/// The admin area talks to Jellyfin's admin API, which Emby lacks, and has no
+/// TV layout. The settings tile is hidden in both cases, this stops deep links.
+bool _adminAvailable() {
+  if (PlatformDetection.isTV) return false;
+  if (!GetIt.instance.isRegistered<MediaServerClient>()) return false;
+  return GetIt.instance<MediaServerClient>().serverType == ServerType.jellyfin;
 }
 
 /// Surfaces that genuinely need the server. Everything else works offline
@@ -216,7 +194,7 @@ final appRouter = GoRouter(
 
     if (path.startsWith('/admin')) {
       final user = getIt<UserRepository>().currentUser;
-      if (user == null || !user.isAdministrator) {
+      if (user == null || !user.isAdministrator || !_adminAvailable()) {
         return Destinations.home;
       }
     }
@@ -657,146 +635,7 @@ final appRouter = GoRouter(
     ),
 
     // Admin
-    ShellRoute(
-      navigatorKey: AdminShellScreen.navigatorKey,
-      builder: (context, state, child) => AdminShellScreen(child: child),
-      routes: [
-        GoRoute(
-          path: Destinations.admin,
-          builder: (context, state) => const AdminDashboardScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminAnalytics,
-          builder: (context, state) => const AdminContentAnalyticsScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminUsers,
-          builder: (context, state) => const AdminUsersScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminUsersAdd,
-          builder: (context, state) => const AdminUserAddScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminUsersEdit,
-          builder: (context, state) =>
-              AdminUserEditScreen(userId: state.pathParameters['userId']!),
-        ),
-        GoRoute(
-          path: Destinations.adminLibraries,
-          builder: (context, state) => const AdminLibrariesScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminLibrariesAdd,
-          builder: (context, state) => const AdminLibraryAddScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminLibrariesEdit,
-          builder: (context, state) => AdminLibraryEditScreen(
-            libraryId: state.pathParameters['libraryId']!,
-          ),
-        ),
-        GoRoute(
-          path: Destinations.adminSettings,
-          builder: (context, state) => const AdminGeneralSettingsScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsPlayback,
-          builder: (context, state) => const AdminPlaybackSettingsScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsResume,
-          builder: (context, state) => const AdminResumeSettingsScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsStreaming,
-          builder: (context, state) => const AdminStreamingScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsTrickplay,
-          builder: (context, state) => const AdminTrickplayScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsNetworking,
-          builder: (context, state) => const AdminNetworkingScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsBranding,
-          builder: (context, state) => const AdminBrandingScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsDisplay,
-          builder: (context, state) => const AdminLibraryDisplayScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsMetadata,
-          builder: (context, state) => const AdminLibraryMetadataScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminSettingsNfo,
-          builder: (context, state) => const AdminLibraryNfoScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminTasks,
-          builder: (context, state) => const AdminTasksScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminTasksDetail,
-          builder: (context, state) =>
-              AdminTaskDetailScreen(taskId: state.pathParameters['taskId']!),
-        ),
-        GoRoute(
-          path: Destinations.adminPlugins,
-          builder: (context, state) => const AdminPluginsScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminPluginsDetail,
-          builder: (context, state) => AdminPluginDetailScreen(
-            pluginId: state.pathParameters['pluginId']!,
-          ),
-        ),
-        GoRoute(
-          path: Destinations.adminRepositories,
-          builder: (context, state) => const AdminRepositoriesScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminActivity,
-          builder: (context, state) => const AdminActivityScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminDevices,
-          builder: (context, state) => const AdminDevicesScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminKeys,
-          builder: (context, state) => const AdminApiKeysScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminBackups,
-          builder: (context, state) => const AdminBackupsScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminLogs,
-          builder: (context, state) => const AdminLogsScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminLogsFile,
-          builder: (context, state) => AdminLogViewerScreen(
-            // go_router already decodes path parameters, no need for a second decode
-            fileName: state.pathParameters['fileName']!,
-          ),
-        ),
-        GoRoute(
-          path: Destinations.adminLiveTv,
-          builder: (context, state) => const AdminLiveTvScreen(),
-        ),
-        GoRoute(
-          path: Destinations.adminMetadataEdit,
-          builder: (context, state) =>
-              AdminMetadataEditScreen(itemId: state.pathParameters['itemId']!),
-        ),
-      ],
-    ),
+    adminShellRoute,
 
     // Settings
     GoRoute(

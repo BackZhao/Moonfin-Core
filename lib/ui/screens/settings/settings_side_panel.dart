@@ -301,8 +301,12 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final kidsMode = ref.watch(kidsModeProvider);
+    // Every admin API throws on Emby, so the area is Jellyfin only.
     final showAdmin =
-        !kidsMode && !PlatformDetection.isTV && ref.watch(isAdminProvider);
+        !kidsMode &&
+        !PlatformDetection.isTV &&
+        ref.watch(isAdminProvider) &&
+        _activeServerType() == ServerType.jellyfin;
     final enablePanelAutofocus = !PlatformDetection.useMobileUi;
 
     // Kids Mode leaves one entry standing. Hiding settings outright would
@@ -473,3 +477,7 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
     );
   }
 }
+
+ServerType? _activeServerType() => GetIt.instance.isRegistered<MediaServerClient>()
+    ? GetIt.instance<MediaServerClient>().serverType
+    : null;

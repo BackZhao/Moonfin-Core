@@ -186,30 +186,25 @@ class _AdminContentAnalyticsScreenState
               ? Icons.dashboard_customize_outlined
               : AdminLibrariesScreen.iconForType(selectedLibrary.collectionType),
         ),
-        const SizedBox(height: 16),
         _MetricDistributionCard(
           title: l10n.analyticsMediaDistribution,
           summary: scopedSummary,
           metrics: scopedMetrics,
         ),
-        const SizedBox(height: 16),
         if (selectedLibrary != null) ..._buildLibraryInsightCards(selectedLibrary, l10n),
         if (selectedLibrary == null) ...[
           _TokenDistributionCard(
             title: l10n.analyticsVideoCodecs,
             values: analytics.technicalProfile.videoCodecs,
           ),
-          const SizedBox(height: 16),
           _TokenDistributionCard(
             title: l10n.analyticsAudioCodecs,
             values: analytics.technicalProfile.audioCodecs,
           ),
-          const SizedBox(height: 16),
           _TokenDistributionCard(
             title: l10n.analyticsContainers,
             values: analytics.technicalProfile.containers,
           ),
-          const SizedBox(height: 16),
         ],
         if (selectedLibrary == null)
           _LibraryBreakdownCard(
@@ -236,7 +231,6 @@ class _AdminContentAnalyticsScreenState
           formatLabels: false,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     if (insights.contributors.isNotEmpty) {
@@ -252,7 +246,6 @@ class _AdminContentAnalyticsScreenState
           formatLabels: false,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     if (insights.years.isNotEmpty) {
@@ -263,7 +256,6 @@ class _AdminContentAnalyticsScreenState
           formatLabels: false,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     if ((type == 'movies' || type == 'tvshows') && insights.ratings.isNotEmpty) {
@@ -274,7 +266,6 @@ class _AdminContentAnalyticsScreenState
           formatLabels: false,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     if ((type == 'movies' || type == 'tvshows') &&
@@ -286,7 +277,6 @@ class _AdminContentAnalyticsScreenState
           formatLabels: false,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     if ((type == 'movies' ||
@@ -300,7 +290,6 @@ class _AdminContentAnalyticsScreenState
           values: insights.containers,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     if ((type == 'movies' ||
@@ -314,7 +303,6 @@ class _AdminContentAnalyticsScreenState
           values: insights.videoCodecs,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     if ((type == 'movies' ||
@@ -328,7 +316,6 @@ class _AdminContentAnalyticsScreenState
           values: insights.audioCodecs,
         ),
       );
-      cards.add(const SizedBox(height: 16));
     }
 
     return cards;
@@ -375,43 +362,45 @@ class _LibraryTabGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final maxWidth = constraints.maxWidth;
-            const spacing = 8.0;
-            final columns = maxWidth >= 1200
-                ? 6
-                : maxWidth >= 900
-                    ? 5
-                    : maxWidth >= 700
-                        ? 4
-                        : maxWidth >= 520
-                            ? 3
-                            : 2;
-            final tileWidth = (maxWidth - ((columns - 1) * spacing)) / columns;
+    return adminGlassGroup(
+      context,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final maxWidth = constraints.maxWidth;
+              const spacing = 8.0;
+              final columns = maxWidth >= 1200
+                  ? 6
+                  : maxWidth >= 900
+                      ? 5
+                      : maxWidth >= 700
+                          ? 4
+                          : maxWidth >= 520
+                              ? 3
+                              : 2;
+              final tileWidth = (maxWidth - ((columns - 1) * spacing)) / columns;
 
-            return Wrap(
-              spacing: spacing,
-              runSpacing: spacing,
-              children: [
-                for (final tab in tabs)
-                  SizedBox(
-                    width: tileWidth,
-                    child: _LibraryTabBox(
-                      item: tab,
-                      selected: selectedKey == tab.key,
-                      onTap: () => onSelected(tab.key),
+              return Wrap(
+                spacing: spacing,
+                runSpacing: spacing,
+                children: [
+                  for (final tab in tabs)
+                    SizedBox(
+                      width: tileWidth,
+                      child: _LibraryTabBox(
+                        item: tab,
+                        selected: selectedKey == tab.key,
+                        onTap: () => onSelected(tab.key),
+                      ),
                     ),
-                  ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -502,54 +491,57 @@ class _ScopeHeaderCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            CircleAvatar(radius: 22, child: Icon(icon)),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return adminGlassGroup(
+      context,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              CircleAvatar(radius: 22, child: Icon(icon)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+                    formatAdminCount(totalTrackedItems),
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const SizedBox(height: 4),
                   Text(
-                    subtitle,
+                    l10n.analyticsLibrariesCount(libraryCount),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  formatAdminCount(totalTrackedItems),
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                Text(
-                  l10n.analyticsLibrariesCount(libraryCount),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -576,36 +568,38 @@ class _MetricDistributionCard extends StatelessWidget {
       (sum, metric) => sum + summary.countFor(metric.key),
     );
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: theme.textTheme.titleMedium),
-            const SizedBox(height: 12),
-            if (nonZeroMetrics.isEmpty)
-              Text(
-                AppLocalizations.of(context).analyticsNoIndexedMediaTotals,
-                style: theme.textTheme.bodyMedium,
-              )
-            else
-              for (final metric in nonZeroMetrics) ...[
-                _DistributionRow(
-                  label: adminMediaMetricLabel(
-                    AppLocalizations.of(context),
-                    metric.key,
+    return adminSection(
+      context,
+      title: title,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (nonZeroMetrics.isEmpty)
+                Text(
+                  AppLocalizations.of(context).analyticsNoIndexedMediaTotals,
+                  style: theme.textTheme.bodyMedium,
+                )
+              else
+                for (final metric in nonZeroMetrics) ...[
+                  _DistributionRow(
+                    label: adminMediaMetricLabel(
+                      AppLocalizations.of(context),
+                      metric.key,
+                    ),
+                    icon: adminMediaIconForKey(metric.key),
+                    value: summary.countFor(metric.key),
+                    fraction:
+                        total == 0 ? 0 : summary.countFor(metric.key) / total,
                   ),
-                  icon: adminMediaIconForKey(metric.key),
-                  value: summary.countFor(metric.key),
-                  fraction:
-                      total == 0 ? 0 : summary.countFor(metric.key) / total,
-                ),
-                if (metric != nonZeroMetrics.last) const SizedBox(height: 12),
-              ],
-          ],
+                  if (metric != nonZeroMetrics.last) const SizedBox(height: 12),
+                ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -630,35 +624,37 @@ class _TokenDistributionCard extends StatelessWidget {
     final topEntries = sorted.take(8).toList();
     final total = topEntries.fold<int>(0, (sum, entry) => sum + entry.value);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: theme.textTheme.titleMedium),
-            const SizedBox(height: 12),
-            if (topEntries.isEmpty)
-              Text(l10n.analyticsNoData, style: theme.textTheme.bodyMedium)
-            else
-              for (final entry in topEntries) ...[
-                _DistributionRow(
-                  label: formatLabels
-                      ? _prettyToken(
-                          entry.key,
-                          l10n.unknown,
-                          l10n.dolbyVision,
-                        )
-                      : entry.key,
-                  icon: Icons.bar_chart,
-                  value: entry.value,
-                  fraction: total == 0 ? 0 : entry.value / total,
-                ),
-                if (entry != topEntries.last) const SizedBox(height: 12),
-              ],
-          ],
+    return adminSection(
+      context,
+      title: title,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (topEntries.isEmpty)
+                Text(l10n.analyticsNoData, style: theme.textTheme.bodyMedium)
+              else
+                for (final entry in topEntries) ...[
+                  _DistributionRow(
+                    label: formatLabels
+                        ? _prettyToken(
+                            entry.key,
+                            l10n.unknown,
+                            l10n.dolbyVision,
+                          )
+                        : entry.key,
+                    icon: Icons.bar_chart,
+                    value: entry.value,
+                    fraction: total == 0 ? 0 : entry.value / total,
+                  ),
+                  if (entry != topEntries.last) const SizedBox(height: 12),
+                ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -719,32 +715,31 @@ class _LibraryBreakdownCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              libraries.length == 1
-                  ? l10n.analyticsLibraryDetails
-                  : l10n.analyticsLibraryBreakdown,
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            if (libraries.isEmpty)
-              Text(
-                l10n.analyticsNoLibrariesAvailable,
-                style: theme.textTheme.bodyMedium,
-              )
-            else
-              for (final library in libraries) ...[
-                _LibraryAnalyticsTile(library: library),
-                if (library != libraries.last) const Divider(height: 24),
-              ],
-          ],
+    return adminSection(
+      context,
+      title: libraries.length == 1
+          ? l10n.analyticsLibraryDetails
+          : l10n.analyticsLibraryBreakdown,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (libraries.isEmpty)
+                Text(
+                  l10n.analyticsNoLibrariesAvailable,
+                  style: theme.textTheme.bodyMedium,
+                )
+              else
+                for (final library in libraries) ...[
+                  _LibraryAnalyticsTile(library: library),
+                  if (library != libraries.last) const Divider(height: 24),
+                ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -901,38 +896,9 @@ bool _isExcludedLibraryType(String? collectionType) {
       normalized == 'collections';
 }
 
-const _excludedMetricKeys = <String>{'collections'};
-
 List<AdminMediaMetricDefinition> _metricsForCollectionType(
   String? collectionType,
   AdminMediaCountSummary summary,
-) {
-  List<String> keys;
-  switch ((collectionType ?? '').toLowerCase()) {
-    case 'movies':
-      keys = const ['movies'];
-    case 'tvshows':
-      keys = const ['series', 'episodes'];
-    case 'music':
-      keys = const ['albums', 'songs'];
-    case 'musicvideos':
-      keys = const ['musicVideos'];
-    case 'books':
-      keys = const ['books', 'audiobooks'];
-    case 'photos':
-      keys = const ['photos'];
-    case 'homevideos':
-      keys = const ['videos'];
-    default:
-      keys = adminMediaMetrics
-          .map((metric) => metric.key)
-          .where((key) => !_excludedMetricKeys.contains(key))
-          .toList();
-  }
-
-  return adminMediaMetrics
-      .where((metric) => keys.contains(metric.key))
-      .where((metric) => !_excludedMetricKeys.contains(metric.key))
-      .where((metric) => summary.countFor(metric.key) > 0)
-      .toList();
-}
+) => adminMetricsForCollectionType(collectionType)
+    .where((metric) => summary.countFor(metric.key) > 0)
+    .toList();

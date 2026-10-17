@@ -6070,6 +6070,804 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminExitTooltip => 'అడ్మిన్ నుండి నిష్క్రమించండి';
 
   @override
+  String adminExternalIdLabel(String name) {
+    return '$name Id';
+  }
+
+  @override
+  String get adminExternalIdTypePerson => 'Person';
+
+  @override
+  String get adminExternalIdTypeArtist => 'Artist';
+
+  @override
+  String get adminExternalIdTypeAlbumArtist => 'Album Artist';
+
+  @override
+  String get adminExternalIdTypeOtherArtist => 'Other Artist';
+
+  @override
+  String get adminExternalIdTypeReleaseGroup => 'Release Group';
+
+  @override
+  String get adminExternalIdTypeBook => 'Book';
+
+  @override
+  String get adminPlaybackHwAccelWarning =>
+      'Hardware acceleration can be unstable on some systems. Keep the operating system and video drivers up to date, and set this back to None if video stops playing.';
+
+  @override
+  String get adminLibMetadataChangeHelp =>
+      'Changes to metadata settings apply to new content. To update existing content, refresh it from its detail page or refresh the library.';
+
+  @override
+  String get adminLibFetcherSettings => 'Fetcher settings';
+
+  @override
+  String adminLibImageOptionsTitle(String type) {
+    return 'Image options for $type';
+  }
+
+  @override
+  String get adminLibFetchImages => 'Fetch images';
+
+  @override
+  String get adminLibMaxBackdrops => 'Maximum number of backdrops per item';
+
+  @override
+  String get adminLibMinBackdropWidth => 'Minimum backdrop download width';
+
+  @override
+  String get adminImageTypeArt => 'Clearart';
+
+  @override
+  String get adminImageTypeBox => 'Box';
+
+  @override
+  String get adminImageTypeBoxRear => 'Box (back)';
+
+  @override
+  String get adminImageTypeDisc => 'Disc';
+
+  @override
+  String get adminImageTypeMenu => 'Menu';
+
+  @override
+  String get adminActivityMediaDetails => 'Media details';
+
+  @override
+  String get adminNetworkingOtherPublishedUriHint =>
+      'e.g. 192.168.1.0/24=http://192.168.1.5:8096';
+
+  @override
+  String get adminMetadataFieldOriginalLanguage => 'Original language';
+
+  @override
+  String get adminMetadataFieldDateAdded => 'Date added';
+
+  @override
+  String get adminMetadataFieldArtists => 'Artists';
+
+  @override
+  String get adminMetadataFieldAlbumArtists => 'Album artists';
+
+  @override
+  String get adminMetadataFieldAlbum => 'Album';
+
+  @override
+  String get adminMetadataFieldSeriesName => 'Series name';
+
+  @override
+  String get adminMetadataFieldEpisodeNumber => 'Episode number';
+
+  @override
+  String get adminMetadataFieldSeasonNumber => 'Season number';
+
+  @override
+  String get adminMetadataFieldTrackNumber => 'Track number';
+
+  @override
+  String get adminMetadataFieldDiscNumber => 'Disc number';
+
+  @override
+  String get adminMetadataFieldAirTime => 'Air time';
+
+  @override
+  String get adminMetadataFieldRuntime => 'Runtime in minutes';
+
+  @override
+  String get adminMetadataFieldPlaceOfBirth => 'Place of birth';
+
+  @override
+  String get adminMetadataFieldBirthDate => 'Birth date';
+
+  @override
+  String get adminMetadataFieldBirthYear => 'Birth year';
+
+  @override
+  String get adminMetadataFieldDeathDate => 'Death date';
+
+  @override
+  String get adminMetadataFieldAspectRatio => 'Original aspect ratio';
+
+  @override
+  String get adminMetadataFieldAirsBeforeSeason => 'Airs before season';
+
+  @override
+  String get adminMetadataFieldAirsAfterSeason => 'Airs after season';
+
+  @override
+  String get adminMetadataFieldAirsBeforeEpisode => 'Airs before episode';
+
+  @override
+  String get adminMetadataNamesHelp =>
+      'Separate several names with a semicolon.';
+
+  @override
+  String get adminMetadataSectionRatings => 'Ratings';
+
+  @override
+  String get adminMetadataItemLocked =>
+      'This item\'s metadata is locked. Unlock it before you identify it.';
+
+  @override
+  String get adminMetadataNameOrIdRequired => 'Enter a name or an external ID.';
+
+  @override
+  String get adminLibMetadataReaders => 'Metadata readers';
+
+  @override
+  String adminLibSimilarProvidersFor(String type) {
+    return 'Similar item providers: $type';
+  }
+
+  @override
+  String get adminLibMediaSegmentProviders => 'Media segment providers';
+
+  @override
+  String get adminLibEnableLibrary => 'Enable the library';
+
+  @override
+  String get adminLibEnableLibraryHelp =>
+      'Disabling the library hides it from all user views.';
+
+  @override
+  String get adminLibSaveLyricsWithMedia => 'Save lyrics into media folders';
+
+  @override
+  String get adminLibUseCustomTagDelimiters => 'Use custom tag delimiter';
+
+  @override
+  String get adminLibCustomTagDelimiters => 'Custom tag delimiter';
+
+  @override
+  String get adminLibCustomTagDelimitersHelp =>
+      'Characters to treat as delimiters that separate tags.';
+
+  @override
+  String get adminLibDelimiterWhitelist => 'Delimiter whitelist';
+
+  @override
+  String get adminLibDelimiterWhitelistHelp =>
+      'Items to leave out of tag splitting, one per line.';
+
+  @override
+  String get adminLibDownloadLanguages => 'Download languages';
+
+  @override
+  String get adminLibraryFolderRequired =>
+      'Add at least one folder to this library.';
+
+  @override
+  String get adminRenameLibraryWarning =>
+      'Renaming a library loses all of its metadata. Proceed with caution.';
+
+  @override
+  String adminDeleteLibraryConfirm(String name) {
+    return 'Remove the library \"$name\"? Files on disk are not deleted.';
+  }
+
+  @override
+  String get adminDeleteLibraryLocations =>
+      'These media locations will be removed from the library:';
+
+  @override
+  String get adminRefreshMode => 'Refresh mode';
+
+  @override
+  String get adminRefreshModeScan => 'Scan for new and updated files';
+
+  @override
+  String get adminRefreshModeMissing => 'Search for missing metadata';
+
+  @override
+  String get adminReplaceTrickplayImages => 'Replace existing trickplay images';
+
+  @override
+  String get adminRefreshDialogHelp =>
+      'Metadata is refreshed based on the settings and internet services enabled in the dashboard.';
+
+  @override
+  String adminActivityCount(String shown, String total) {
+    return '$shown of $total';
+  }
+
+  @override
+  String get adminLiveTvTabSources => 'Tuners and guide';
+
+  @override
+  String get adminLiveTvTabRecordings => 'Recordings';
+
+  @override
+  String get adminLiveTvAddTuner => 'Add tuner device';
+
+  @override
+  String get adminLiveTvEditTuner => 'Edit tuner device';
+
+  @override
+  String get adminLiveTvTunerType => 'Tuner type';
+
+  @override
+  String get adminLiveTvDetectDevices => 'Detect my devices';
+
+  @override
+  String get adminLiveTvNoNewDevices => 'No new devices found';
+
+  @override
+  String get adminLiveTvDrmNote => 'Channels with DRM will not be imported.';
+
+  @override
+  String get adminLiveTvTunerSaved => 'Tuner saved';
+
+  @override
+  String get adminLiveTvDeleteTuner => 'Delete tuner device';
+
+  @override
+  String get adminLiveTvDeleteTunerConfirm =>
+      'Are you sure you want to delete this tuner device?';
+
+  @override
+  String get adminLiveTvDeleteProvider => 'Delete guide provider';
+
+  @override
+  String get adminLiveTvDeleteProviderConfirm =>
+      'Are you sure you want to delete this guide provider?';
+
+  @override
+  String get adminLiveTvProviderSaved => 'Guide provider saved';
+
+  @override
+  String get adminLiveTvAddProvider => 'Add provider';
+
+  @override
+  String get adminLiveTvRefreshGuide => 'Refresh guide data';
+
+  @override
+  String get adminLiveTvMapChannels => 'Map channels';
+
+  @override
+  String get adminLiveTvNoTunerChannels => 'No tuner channels found';
+
+  @override
+  String get adminLiveTvXmltvPathHelp =>
+      'A path or URL to an XMLTV file. The server reads it and checks it for updates. You are responsible for creating and updating the file.';
+
+  @override
+  String adminLiveTvSdCreateAccount(String url) {
+    return 'Create an account at $url';
+  }
+
+  @override
+  String get adminLiveTvSdSignIn => 'Sign in';
+
+  @override
+  String get adminLiveTvSdLineup => 'Lineup';
+
+  @override
+  String get adminLiveTvSdSelectLineup =>
+      'Select a lineup. If none are listed, check your username, password and postal code.';
+
+  @override
+  String get adminLiveTvGuideDays => 'Number of days of guide data to download';
+
+  @override
+  String get adminLiveTvGuideDaysHelp =>
+      'More days let you schedule further ahead and see more listings, but the download takes longer. Automatic picks a value from the number of channels.';
+
+  @override
+  String get adminLiveTvRecordingPath => 'Default recording path';
+
+  @override
+  String get adminLiveTvRecordingPathHelp =>
+      'Where recordings are saved. If empty, the server\'s program data folder is used.';
+
+  @override
+  String get adminLiveTvStartWhenPossible => 'Start when possible';
+
+  @override
+  String get adminLiveTvStopWhenPossible => 'Stop when possible';
+
+  @override
+  String get adminLiveTvMinutesBefore => 'minutes before';
+
+  @override
+  String get adminLiveTvMinutesAfter => 'minutes after';
+
+  @override
+  String get adminLiveTvSectionGuide => 'Guide data';
+
+  @override
+  String get adminLiveTvSectionDefaultRecording => 'Default recording settings';
+
+  @override
+  String get adminLiveTvSectionMetadata => 'Recording metadata';
+
+  @override
+  String adminUserLastActivity(String time) {
+    return 'Last activity $time';
+  }
+
+  @override
+  String get adminCurrentPassword => 'Current password';
+
+  @override
+  String get adminChannelAccess => 'Channel access';
+
+  @override
+  String get adminDeviceAccess => 'Device access';
+
+  @override
+  String get adminDeleteFromAllLibraries => 'All libraries';
+
+  @override
+  String get adminUserDisabledBanner =>
+      'This user is disabled. Turn off Disabled under Permissions to let them sign in again.';
+
+  @override
+  String get adminNewPasswordEmpty => 'New password cannot be empty';
+
+  @override
+  String get adminScheduleStartBeforeEnd =>
+      'The start time must be before the end time';
+
+  @override
+  String get adminDashboardAlerts => 'Alerts';
+
+  @override
+  String get adminSessionGoHome => 'Go to home screen';
+
+  @override
+  String get adminPlayMethodRemux => 'Remuxing';
+
+  @override
+  String get adminPlayMethodDirectStream => 'Direct streaming';
+
+  @override
+  String get adminPlayMethodDirectPlay => 'Direct playing';
+
+  @override
+  String get adminLogLevelTrace => 'Trace';
+
+  @override
+  String get adminLogLevelDebug => 'Debug';
+
+  @override
+  String get adminLogLevelInformation => 'Information';
+
+  @override
+  String get adminLogLevelWarning => 'Warning';
+
+  @override
+  String get adminLogLevelError => 'Error';
+
+  @override
+  String get adminLogLevelCritical => 'Critical';
+
+  @override
+  String get adminLogLevelNone => 'None';
+
+  @override
+  String get adminActivityAllUsers => 'All users';
+
+  @override
+  String adminTaskLastRan(String time, String duration) {
+    return 'Last ran $time, taking $duration.';
+  }
+
+  @override
+  String get adminTaskResultFailed => 'Failed';
+
+  @override
+  String get adminTaskResultCancelled => 'Cancelled';
+
+  @override
+  String get adminTaskResultAborted => 'Aborted by server shutdown';
+
+  @override
+  String adminDurationSecondsShort(String seconds) {
+    return '${seconds}s';
+  }
+
+  @override
+  String get adminDeleteTaskTrigger => 'Delete task trigger';
+
+  @override
+  String get adminDeleteTaskTriggerConfirm =>
+      'Are you sure you want to delete this task trigger?';
+
+  @override
+  String adminTaskTriggerEveryMinutes(String minutes) {
+    return 'Every $minutes minutes';
+  }
+
+  @override
+  String adminTaskTriggerEveryHours(String hours) {
+    return 'Every $hours hours';
+  }
+
+  @override
+  String adminTaskMinutesValue(String minutes) {
+    return '$minutes minutes';
+  }
+
+  @override
+  String adminTaskHoursValue(String hours) {
+    return '$hours hours';
+  }
+
+  @override
+  String get adminTimeLimitHours => 'Time limit (hours)';
+
+  @override
+  String get adminTranscodingDecodingFor => 'Enable hardware decoding for';
+
+  @override
+  String get adminTranscodingThreadCountHelp =>
+      'The most threads a transcode can use. Fewer threads lower CPU use but may be too slow for smooth playback.';
+
+  @override
+  String get adminTranscodingThreadMax => 'Max';
+
+  @override
+  String get adminTranscodingFfmpegPath => 'FFmpeg path';
+
+  @override
+  String get adminTranscodingFfmpegPathHelp =>
+      'The FFmpeg the server runs. It is set on the server, not here.';
+
+  @override
+  String get adminTranscodingAudioSeek => 'Audio seek strategy';
+
+  @override
+  String get adminTranscodingAudioSeekHelp =>
+      'How the server handles audio when you seek in an HLS stream.';
+
+  @override
+  String get adminTranscodingTrimCopiedAudio => 'Trim copied audio';
+
+  @override
+  String get adminTranscodingTranscodeAudio => 'Transcode audio';
+
+  @override
+  String get adminResumeMinAudiobookMinutes =>
+      'Minimum audiobook resume (minutes)';
+
+  @override
+  String get adminResumeMinAudiobookHelp =>
+      'Audiobooks stopped before this time count as unplayed.';
+
+  @override
+  String get adminResumeAudiobookRemaining =>
+      'Audiobook remaining minutes to resume';
+
+  @override
+  String get adminResumeAudiobookRemainingHelp =>
+      'Audiobooks stopped with less than this many minutes left count as played.';
+
+  @override
+  String get adminBrandingSplashSection => 'Splash screen';
+
+  @override
+  String get adminBrandingSectionWebClient => 'Web client';
+
+  @override
+  String get adminBrandingSplashSizeHint =>
+      'Custom images should be in a 16x9 aspect ratio at a minimum size of 1920x1080.';
+
+  @override
+  String get adminNetworkingSectionServerAddress => 'Server address settings';
+
+  @override
+  String get adminNetworkingSectionHttps => 'HTTPS settings';
+
+  @override
+  String get adminNetworkingSectionRemoteAccess => 'Remote access settings';
+
+  @override
+  String get adminNetworkingSectionIpProtocols => 'IP protocols';
+
+  @override
+  String get adminNetworkingSectionDiscovery => 'Network discovery';
+
+  @override
+  String get adminNetworkingSectionFirewall => 'Firewall and proxy settings';
+
+  @override
+  String get adminNetworkingLocalHttpPort => 'Local HTTP port number';
+
+  @override
+  String get adminNetworkingLocalHttpPortHelp =>
+      'The TCP port number for the HTTP server.';
+
+  @override
+  String get adminNetworkingEnableHttpsHelp =>
+      'Listen on the HTTPS port. A valid certificate must also be set for this to take effect.';
+
+  @override
+  String get adminNetworkingLocalHttpsPort => 'Local HTTPS port number';
+
+  @override
+  String get adminNetworkingLocalHttpsPortHelp =>
+      'The TCP port number for the HTTPS server.';
+
+  @override
+  String get adminNetworkingBaseUrlHelp =>
+      'Adds a subdirectory to the server URL, for example https://example.com/jellyfin.';
+
+  @override
+  String get adminNetworkingBindAddress => 'Bind to local network address';
+
+  @override
+  String get adminNetworkingBindAddressHelp =>
+      'Overrides the local IP address of the HTTP server. Leave it empty to bind to all addresses. A change needs a restart.';
+
+  @override
+  String get adminNetworkingLanNetworksHelp =>
+      'IP addresses or IP/netmask entries of networks treated as local for bandwidth and remote access limits. Leave it empty to treat all RFC1918 addresses as local.';
+
+  @override
+  String get adminNetworkingKnownProxiesHelp =>
+      'IP addresses or host names of the proxies in front of this server. Needed to read X-Forwarded-For headers. A change needs a restart.';
+
+  @override
+  String get adminNetworkingCustomCertPath => 'Custom SSL certificate path';
+
+  @override
+  String get adminNetworkingCertPathHelp =>
+      'Path to a PKCS #12 file with a certificate and private key, for TLS on a custom domain.';
+
+  @override
+  String get adminNetworkingCertPasswordHelp =>
+      'Enter the password if your certificate needs one.';
+
+  @override
+  String get adminNetworkingAllowRemote =>
+      'Allow remote connections to this server';
+
+  @override
+  String get adminNetworkingAllowRemoteHelp =>
+      'When off, all remote connections are blocked.';
+
+  @override
+  String get adminNetworkingRemoteIpFilterHelp =>
+      'IP addresses or IP/netmask entries of remote networks. Leave it empty to allow every remote address.';
+
+  @override
+  String get adminNetworkingRemoteIpFilterMode =>
+      'Remote IP address filter mode';
+
+  @override
+  String get adminNetworkingPublicHttpPortHelp =>
+      'The public port mapped to the local HTTP port.';
+
+  @override
+  String get adminNetworkingPublicHttpsPortHelp =>
+      'The public port mapped to the local HTTPS port.';
+
+  @override
+  String get adminNetworkingAutoDiscoveryLabel => 'Enable auto discovery';
+
+  @override
+  String get adminNetworkingAutoDiscoveryHelp =>
+      'Lets apps find this server on UDP port 7359.';
+
+  @override
+  String get adminNetworkingSamePublishedUri =>
+      'Use the same published server URI for internal and external access';
+
+  @override
+  String get adminNetworkingPublishedUri => 'Published server URI';
+
+  @override
+  String get adminNetworkingPublishedUriHelp =>
+      'Overrides the URI the server gives out, based on the interface or the client IP address.';
+
+  @override
+  String get adminNetworkingInternalUri => 'Internal URI';
+
+  @override
+  String get adminNetworkingInternalUriHelp =>
+      'Published server URI for internal access.';
+
+  @override
+  String get adminNetworkingExternalUri => 'External URI';
+
+  @override
+  String get adminNetworkingExternalUriHelp =>
+      'Published server URI for external access.';
+
+  @override
+  String get adminNetworkingOtherPublishedUris => 'Other published URIs';
+
+  @override
+  String get adminNetworkingOtherPublishedUrisHelp =>
+      'URIs for one subnet or interface, written as subnet=URI.';
+
+  @override
+  String get adminBackupsHelp =>
+      'Create and restore snapshots of your server. They can include the database, metadata, subtitles and trickplay images.';
+
+  @override
+  String get adminBackupDisclaimer =>
+      'Depending on the size of your library, the backup can take a while.';
+
+  @override
+  String get adminBackupTasksWarningTitle => 'Scheduled tasks are running';
+
+  @override
+  String get adminBackupTasksWarning =>
+      'Stop these tasks or wait for them to finish before you create a backup.';
+
+  @override
+  String get adminBackupArchiveNotFound =>
+      'The server could not find this backup archive.';
+
+  @override
+  String get adminRestoreInProgress => 'Restore in progress';
+
+  @override
+  String get adminRestoreWaitingForServer =>
+      'Waiting for the server to come back.';
+
+  @override
+  String get adminRestoreSucceeded => 'Restore completed';
+
+  @override
+  String get adminLogWatch => 'Watch';
+
+  @override
+  String get adminLogStopWatching => 'Stop watching';
+
+  @override
+  String get adminPluginInstallConfirmTitle => 'Confirm plugin installation';
+
+  @override
+  String get adminPluginInstallDisclaimer =>
+      'Installing a third party plugin carries risks. It may contain unstable or malicious code, and it can change at any time. Only install plugins from authors you trust, and know what they can do, such as query outside services, slow down library scans or add background work.';
+
+  @override
+  String get adminGroupOverview => 'Overview';
+
+  @override
+  String get adminGroupLibrary => 'Library';
+
+  @override
+  String get adminGroupPlayback => 'Playback';
+
+  @override
+  String get adminGroupPeople => 'People';
+
+  @override
+  String get adminGroupSystem => 'System';
+
+  @override
+  String get adminAreasLabel => 'Admin areas';
+
+  @override
+  String get adminPagesLabel => 'Pages';
+
+  @override
+  String get adminPageDescDashboard =>
+      'Server health, sessions and recent activity';
+
+  @override
+  String get adminPageDescAnalytics => 'Library sizes, codecs and formats';
+
+  @override
+  String get adminPageDescActivity => 'Everything that happened on the server';
+
+  @override
+  String get adminPageDescTasks => 'Scans, cleanups and their triggers';
+
+  @override
+  String get adminPageDescLibraries =>
+      'Folders, scanners and metadata fetchers';
+
+  @override
+  String get adminPageDescDisplay => 'How libraries show to users';
+
+  @override
+  String get adminPageDescMetadata => 'Default language, country and images';
+
+  @override
+  String get adminPageDescNfo => 'Kodi NFO reading and saving';
+
+  @override
+  String get adminPageDescLiveTv => 'Tuners, guide data and recordings';
+
+  @override
+  String get adminPageDescTranscoding =>
+      'Hardware acceleration, encoders, tone mapping';
+
+  @override
+  String get adminPageDescResume => 'When items count as started or played';
+
+  @override
+  String get adminPageDescStreaming => 'Remote bitrate limit';
+
+  @override
+  String get adminPageDescTrickplay => 'Seek preview thumbnails';
+
+  @override
+  String get adminPageDescUsers => 'Accounts, access and parental control';
+
+  @override
+  String get adminPageDescDevices => 'Signed in devices and their names';
+
+  @override
+  String get adminPageDescApiKeys => 'Keys for apps and scripts';
+
+  @override
+  String get adminPageDescSettings =>
+      'Server name, language, paths, performance';
+
+  @override
+  String get adminPageDescBranding =>
+      'Login message, custom CSS, splash screen';
+
+  @override
+  String get adminPageDescNetworking => 'Ports, HTTPS, LAN and remote access';
+
+  @override
+  String get adminPageDescPlugins => 'Installed plugins and the catalog';
+
+  @override
+  String get adminPageDescRepositories => 'Where plugins come from';
+
+  @override
+  String get adminPageDescBackups => 'Create and restore server backups';
+
+  @override
+  String get adminPageDescLogs => 'Server log files';
+
+  @override
+  String adminSearchSettingsHint(int count) {
+    return 'Search $count settings';
+  }
+
+  @override
+  String get adminSearchNoResults => 'No settings match';
+
+  @override
+  String get adminSearchClear => 'Clear search';
+
+  @override
+  String get adminUnsavedChanges => 'Unsaved changes';
+
+  @override
+  String get adminDiscard => 'Discard';
+
+  @override
+  String get adminLeaveTitle => 'Discard unsaved changes?';
+
+  @override
+  String get adminLeaveMessage =>
+      'The changes on this page haven\'t been saved yet.';
+
+  @override
+  String get adminKeepEditing => 'Keep editing';
+
+  @override
   String get adminDashboardLoadFailed =>
       'డ్యాష్‌బోర్డ్‌ను లోడ్ చేయడంలో విఫలమైంది';
 
@@ -6097,11 +6895,6 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String adminFailedScheduledTasks(int count) {
     return 'విఫలమైన షెడ్యూల్డ్ టాస్క్‌లు: $count';
-  }
-
-  @override
-  String adminRecentAlertEntries(int count) {
-    return 'ఇటీవలి హెచ్చరిక/లోపం ఎంట్రీలు: $count';
   }
 
   @override
@@ -6151,9 +6944,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminShutdownServer => 'షట్డౌన్ సర్వర్';
-
-  @override
-  String get adminScanLibraries => 'లైబ్రరీలను స్కాన్ చేయండి';
 
   @override
   String get adminLibraryScanStarted => 'లైబ్రరీ స్కాన్ ప్రారంభించబడింది';
@@ -6240,12 +7030,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get completion => 'పూర్తి';
-
-  @override
-  String get direct => 'డైరెక్ట్';
-
-  @override
-  String get adminDisconnect => 'డిస్‌కనెక్ట్ చేయండి';
 
   @override
   String get adminClearDates => 'తేదీలను క్లియర్ చేయండి';
@@ -6387,14 +7171,6 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String get adminLibraryOptionsSaved => 'లైబ్రరీ ఎంపికలు సేవ్ చేయబడ్డాయి';
-
-  @override
-  String adminLibraryOptionsSaveFailed(String error) {
-    return 'ఎంపికలను సేవ్ చేయడం విఫలమైంది: $error';
-  }
-
-  @override
   String get adminLibraryLoadFailed => 'లైబ్రరీని లోడ్ చేయడంలో విఫలమైంది';
 
   @override
@@ -6405,9 +7181,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminBrowseFilesystem => 'సర్వర్ ఫైల్ సిస్టమ్‌ను బ్రౌజ్ చేయండి:';
-
-  @override
-  String get adminSaveOptions => 'ఎంపికలను సేవ్ చేయండి';
 
   @override
   String get adminPreferredMetadataLanguage => 'ప్రాధాన్య మెటాడేటా భాష';
@@ -6484,10 +7257,6 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get adminLibRealtimeMonitorHint =>
       'ఫైల్ మార్పులను గుర్తించి వాటిని స్వయంచాలకంగా ప్రాసెస్ చేస్తుంది.';
-
-  @override
-  String get adminLibArchiveMediaFiles =>
-      'ఆర్కైవ్‌లను మీడియా ఫైల్‌లుగా పరిగణించండి';
 
   @override
   String get adminLibEnablePhotos => 'ఫోటోలను ప్రదర్శించండి';
@@ -6687,10 +7456,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminSelectedPaths => 'ఎంచుకున్న మార్గాలు:';
 
   @override
-  String get adminNoPathsAdded =>
-      'మార్గాలు ఏవీ జోడించబడలేదు (తర్వాత జోడించబడతాయి)';
-
-  @override
   String get adminCreateLibrary => 'లైబ్రరీని సృష్టించండి';
 
   @override
@@ -6754,18 +7519,9 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminUsernameRequired => 'వినియోగదారు పేరు ఖాళీగా ఉండకూడదు';
 
   @override
-  String get adminNoProfileChanges => 'సేవ్ చేయడానికి ప్రొఫైల్ మార్పులు లేవు';
-
-  @override
-  String get adminProfileSaved => 'ప్రొఫైల్ సేవ్ చేయబడింది';
-
-  @override
   String adminSaveFailed(String error) {
     return 'సేవ్ చేయడం విఫలమైంది: $error';
   }
-
-  @override
-  String get adminPermissionsSaved => 'అనుమతులు సేవ్ చేయబడ్డాయి';
 
   @override
   String get adminPasswordsMismatch => 'పాస్‌వర్డ్‌లు సరిపోలడం లేదు';
@@ -6777,12 +7533,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminUserLoadFailed => 'వినియోగదారుని లోడ్ చేయడంలో విఫలమైంది';
-
-  @override
-  String get adminBackToUsers => 'వినియోగదారులకు తిరిగి వెళ్ళు';
-
-  @override
-  String get adminSaveProfile => 'ప్రొఫైల్‌ను సేవ్ చేయండి';
 
   @override
   String get adminDeleteUser => 'వినియోగదారుని తొలగించండి';
@@ -6819,9 +7569,6 @@ class AppLocalizationsTe extends AppLocalizations {
       'రిమోట్ సోర్స్ ట్రాన్స్‌కోడింగ్‌ను బలవంతం చేయండి';
 
   @override
-  String get adminAllowContentDeletion => 'కంటెంట్ తొలగింపును అనుమతించండి';
-
-  @override
   String get adminAllowContentDownloading => 'కంటెంట్ డౌన్‌లోడ్‌ను అనుమతించండి';
 
   @override
@@ -6837,10 +7584,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminAllowRemoteAccess => 'రిమోట్ యాక్సెస్‌ను అనుమతించండి';
-
-  @override
-  String get adminRemoteBitrateLimit =>
-      'రిమోట్ క్లయింట్ బిట్రేట్ పరిమితి (bps)';
 
   @override
   String get adminLeaveEmptyNoLimit => 'పరిమితి లేకుండా ఖాళీగా వదిలివేయండి';
@@ -6865,14 +7608,8 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminAllowLyricManagement => 'గీత నిర్వహణను అనుమతించండి';
 
   @override
-  String get adminSavePermissions => 'అనుమతులను సేవ్ చేయండి';
-
-  @override
   String get adminEnableAllLibraryAccess =>
       'అన్ని లైబ్రరీలకు యాక్సెస్‌ని ప్రారంభించండి';
-
-  @override
-  String get adminSaveAccess => 'యాక్సెస్‌ని సేవ్ చేయండి';
 
   @override
   String get adminChangePassword => 'పాస్‌వర్డ్ మార్చండి';
@@ -6900,9 +7637,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminLibraryAccess => 'లైబ్రరీ యాక్సెస్';
-
-  @override
-  String get adminDeviceAndChannelAccess => 'పరికరం & ఛానెల్ యాక్సెస్';
 
   @override
   String get adminEnableAllDevices =>
@@ -7015,12 +7749,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminAddTag => 'ట్యాగ్‌ను జోడించండి';
-
-  @override
-  String get adminEnabledDevices => 'ప్రారంభించిన పరికరాలు';
-
-  @override
-  String get adminEnabledChannels => 'ప్రారంభించిన ఛానెల్‌లు';
 
   @override
   String get adminAuthProvider => 'ప్రామాణీకరణ ప్రొవైడర్';
@@ -7139,9 +7867,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminBackupOptionsTitle => 'బ్యాకప్ సృష్టించండి';
-
-  @override
-  String get adminBackupInclude => 'బ్యాకప్‌లో దేనిని చేర్చాలో ఎంచుకోండి.';
 
   @override
   String get adminBackupDatabase => 'డేటాబేస్';
@@ -7299,9 +8024,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminTriggerType => 'ట్రిగ్గర్ రకం';
 
   @override
-  String get adminTimeLimit => 'సమయ పరిమితి (ఐచ్ఛికం)';
-
-  @override
   String get adminNoLimit => 'పరిమితి లేదు';
 
   @override
@@ -7395,10 +8117,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String adminPluginUpdating(String name, String version) {
     return '\"$name\"ని v$versionకి అప్‌డేట్ చేస్తోంది...';
   }
-
-  @override
-  String get adminMissingAuthToken =>
-      'సెట్టింగ్‌లను తెరవడం సాధ్యం కాలేదు: ప్రామాణీకరణ టోకెన్ లేదు.';
 
   @override
   String adminPluginLoadFailed(String error) {
@@ -7497,9 +8215,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminSlowResponseThreshold => 'స్లో రెస్పాన్స్ థ్రెషోల్డ్ (మిసె)';
 
   @override
-  String get adminBrandingSaved => 'బ్రాండింగ్ సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి';
-
-  @override
   String get adminBrandingLoadFailed =>
       'బ్రాండింగ్ సెట్టింగ్‌లను లోడ్ చేయడంలో విఫలమైంది';
 
@@ -7521,9 +8236,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminEnableSplashScreen => 'స్ప్లాష్ స్క్రీన్‌ని ప్రారంభించండి';
 
   @override
-  String get adminStreamingSaved => 'స్ట్రీమింగ్ సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి';
-
-  @override
   String get adminStreamingLoadFailed =>
       'స్ట్రీమింగ్ సెట్టింగ్‌లను లోడ్ చేయడంలో విఫలమైంది';
 
@@ -7540,14 +8252,8 @@ class AppLocalizationsTe extends AppLocalizations {
       'అపరిమిత కోసం ఖాళీగా లేదా 0ని వదిలివేయండి';
 
   @override
-  String get adminPlaybackSaved => 'ప్లేబ్యాక్ సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి';
-
-  @override
   String get adminPlaybackLoadFailed =>
       'ప్లేబ్యాక్ సెట్టింగ్‌లను లోడ్ చేయడంలో విఫలమైంది';
-
-  @override
-  String get adminPlaybackTranscoding => 'ప్లేబ్యాక్ / ట్రాన్స్‌కోడింగ్';
 
   @override
   String get adminHardwareAcceleration => 'హార్డ్వేర్ త్వరణం';
@@ -7586,9 +8292,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminThrottleBuffering => 'థొరెటల్ బఫరింగ్';
-
-  @override
-  String get adminTrickplaySaved => 'Trickplay సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి';
 
   @override
   String get adminTrickplayLoadFailed =>
@@ -7637,9 +8340,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminProcessThreads => 'థ్రెడ్లను ప్రాసెస్ చేయండి';
 
   @override
-  String get adminResumeSaved => 'రెస్యూమ్ సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి';
-
-  @override
   String get adminResumeLoadFailed =>
       'రెజ్యూమ్ సెట్టింగ్‌లను లోడ్ చేయడంలో విఫలమైంది';
 
@@ -7673,10 +8373,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminMaxAudiobookResume => 'గరిష్ట ఆడియోబుక్ రెజ్యూమ్ శాతం';
-
-  @override
-  String get adminNetworkingSaved =>
-      'నెట్‌వర్కింగ్ సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి. సర్వర్ పునఃప్రారంభం అవసరం కావచ్చు.';
 
   @override
   String get adminNetworkingLoadFailed =>
@@ -7741,16 +8437,8 @@ class AppLocalizationsTe extends AppLocalizations {
   String get notSet => 'సెట్ కాలేదు';
 
   @override
-  String get adminMetadataSaved => 'మెటాడేటా సేవ్ చేయబడింది';
-
-  @override
   String adminMetadataLoadFailed(String error) {
     return 'మెటాడేటాను లోడ్ చేయడం విఫలమైంది: $error';
-  }
-
-  @override
-  String adminMetadataSaveFailed(String error) {
-    return 'మెటాడేటాను సేవ్ చేయడం విఫలమైంది: $error';
   }
 
   @override
@@ -7761,9 +8449,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminReplaceAllMetadata => 'మొత్తం మెటాడేటాను భర్తీ చేయండి';
-
-  @override
-  String get adminReplaceAllImages => 'అన్ని చిత్రాలను భర్తీ చేయండి';
 
   @override
   String get adminMetadataRefreshRequested =>
@@ -7865,12 +8550,6 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String get adminAddTuner => 'ట్యూనర్‌ని జోడించండి';
-
-  @override
-  String get adminEditTuner => 'ట్యూనర్‌ను సవరించండి';
-
-  @override
   String get adminTunerTypeM3u => 'M3U ట్యూనర్';
 
   @override
@@ -7926,9 +8605,6 @@ class AppLocalizationsTe extends AppLocalizations {
       'ఇన్‌పుట్‌ను నేటివ్ ఫ్రేమ్ రేట్‌లో చదవండి';
 
   @override
-  String get adminEditProvider => 'ప్రొవైడర్‌ను సవరించండి';
-
-  @override
   String get adminProviderXmltv => 'XMLTV';
 
   @override
@@ -7972,38 +8648,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminSdPostalCode => 'పోస్టల్ కోడ్';
 
   @override
-  String get adminSdGetListings => 'జాబితాలను పొందండి';
-
-  @override
-  String get adminSdListings => 'జాబితాలు';
-
-  @override
   String get adminEnableAllTuners => 'అన్ని ట్యూనర్‌లను ప్రారంభించండి';
-
-  @override
-  String get adminTunerType => 'ట్యూనర్ రకం';
-
-  @override
-  String get adminTunerAdded => 'ట్యూనర్ జోడించబడింది';
-
-  @override
-  String adminTunerAddFailed(String error) {
-    return 'ట్యూనర్‌ను జోడించడం విఫలమైంది: $error';
-  }
-
-  @override
-  String get adminAddGuideProvider => 'గైడ్ ప్రొవైడర్‌ని జోడించండి';
-
-  @override
-  String get adminProviderType => 'ప్రొవైడర్ రకం';
-
-  @override
-  String get adminProviderAdded => 'ప్రొవైడర్ జోడించబడింది';
-
-  @override
-  String adminProviderAddFailed(String error) {
-    return 'ప్రొవైడర్‌ను జోడించడం విఫలమైంది: $error';
-  }
 
   @override
   String adminTunerRemoveFailed(String error) {
@@ -8011,33 +8656,9 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String get adminTunerResetRequested => 'ట్యూనర్ రీసెట్ అభ్యర్థించబడింది';
-
-  @override
-  String adminTunerResetFailed(String error) {
-    return 'ట్యూనర్‌ను రీసెట్ చేయడం విఫలమైంది: $error';
-  }
-
-  @override
-  String get adminTunerResetNotSupported =>
-      'ఈ ట్యూనర్ రకం రీసెట్ చేయడానికి మద్దతివ్వదు.';
-
-  @override
   String adminProviderRemoveFailed(String error) {
     return 'ప్రొవైడర్‌ను తీసివేయడం విఫలమైంది: $error';
   }
-
-  @override
-  String get adminRecordingSettings => 'రికార్డింగ్ సెట్టింగ్‌లు';
-
-  @override
-  String get adminPrePadding => 'ప్రీ-ప్యాడింగ్ (నిమిషాలు)';
-
-  @override
-  String get adminPostPadding => 'పోస్ట్-పాడింగ్ (నిమిషాలు)';
-
-  @override
-  String get adminRecordingPath => 'రికార్డింగ్ మార్గం';
 
   @override
   String get adminSeriesRecordingPath => 'సిరీస్ రికార్డింగ్ మార్గం';
@@ -8046,15 +8667,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminMovieRecordingPath => 'సినిమా రికార్డింగ్ పాత్';
 
   @override
-  String get adminGuideDays => 'గైడ్ డేటా రోజులు';
-
-  @override
   String get adminGuideDaysAuto => 'ఆటోమేటిక్';
-
-  @override
-  String adminGuideDaysValue(int days) {
-    return '$days రోజులు';
-  }
 
   @override
   String get adminRecordingPostProcessor =>
@@ -8071,44 +8684,14 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminSaveRecordingImages => 'రికార్డింగ్ ఇమేజ్‌లను సేవ్ చేయండి';
 
   @override
-  String get adminLiveTvSectionTiming => 'సమయం';
-
-  @override
   String get adminLiveTvSectionPaths => 'రికార్డింగ్ పాత్‌లు';
 
   @override
   String get adminLiveTvSectionPostProcessing => 'పోస్ట్-ప్రాసెసింగ్';
 
   @override
-  String adminGuideDaysDisplay(String value) {
-    return 'గైడ్ డేటా: $value';
-  }
-
-  @override
-  String get adminRecordingSettingsSaved =>
-      'రికార్డింగ్ సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి';
-
-  @override
   String adminSettingsSaveFailed(String error) {
     return 'సెట్టింగ్‌లను సేవ్ చేయడం విఫలమైంది: $error';
-  }
-
-  @override
-  String get adminSetChannelMappings => 'ఛానెల్ మ్యాపింగ్‌లను సెట్ చేయండి';
-
-  @override
-  String get adminMappingJson => 'JSON మ్యాపింగ్';
-
-  @override
-  String get adminMappingJsonHint => 'ఉదాహరణ: మ్యాపింగ్‌లు JSON పేలోడ్';
-
-  @override
-  String get adminChannelMappingsUpdated =>
-      'ఛానెల్ మ్యాపింగ్‌లు నవీకరించబడ్డాయి';
-
-  @override
-  String adminMappingsUpdateFailed(String error) {
-    return 'మ్యాపింగ్‌లను అప్‌డేట్ చేయడం విఫలమైంది: $error';
   }
 
   @override
@@ -8125,9 +8708,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminGuideProviders => 'గైడ్ ప్రొవైడర్లు';
 
   @override
-  String get adminRefreshGuideData => 'గైడ్ డేటాను రిఫ్రెష్ చేయండి';
-
-  @override
   String get adminGuideRefreshStarted => 'గైడ్ డేటా రిఫ్రెష్ ప్రారంభమైంది';
 
   @override
@@ -8135,40 +8715,8 @@ class AppLocalizationsTe extends AppLocalizations {
       'ఈ సర్వర్‌లో గైడ్ రిఫ్రెష్ టాస్క్ అందుబాటులో లేదు.';
 
   @override
-  String get adminAddProvider => 'ప్రదాతని జోడించండి';
-
-  @override
   String get adminNoListingProviders =>
       'లిస్టింగ్ ప్రొవైడర్లు ఏవీ కాన్ఫిగర్ చేయబడలేదు';
-
-  @override
-  String adminRecordingPathDisplay(String path) {
-    return 'రికార్డింగ్ పాత్: $path';
-  }
-
-  @override
-  String adminSeriesPathDisplay(String path) {
-    return 'సిరీస్ పాత్: $path';
-  }
-
-  @override
-  String adminPrePaddingDisplay(int minutes) {
-    return 'ప్రీ-ప్యాడింగ్: $minutes ని';
-  }
-
-  @override
-  String adminPostPaddingDisplay(int minutes) {
-    return 'పోస్ట్-ప్యాడింగ్: $minutes ని';
-  }
-
-  @override
-  String get adminTunerDiscovery => 'ట్యూనర్ ఆవిష్కరణ';
-
-  @override
-  String get adminChannelMappings => 'ఛానెల్ మ్యాపింగ్‌లు';
-
-  @override
-  String get adminNoDiscoveredTuners => 'ట్యూనర్‌లు ఇంకా కనుగొనబడలేదు';
 
   @override
   String get adminSettingsSaved => 'సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి';
@@ -8195,10 +8743,6 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String get adminRestoreRequested =>
-      'పునరుద్ధరించమని అభ్యర్థించారు. సర్వర్ పునఃప్రారంభం ఈ సెషన్‌ను డిస్‌కనెక్ట్ చేయవచ్చు.';
-
-  @override
   String get adminBackupsTitle => 'బ్యాకప్‌లు';
 
   @override
@@ -8208,20 +8752,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminUnnamedBackup => 'పేరులేని బ్యాకప్';
 
   @override
-  String get adminLiveTvNotAvailable =>
-      'ఈ సర్వర్ బిల్డ్‌లో లైవ్ టీవీ అడ్మినిస్ట్రేషన్ అందుబాటులో లేదు.';
-
-  @override
-  String get adminLiveTvTitle => 'లైవ్ టీవీ అడ్మినిస్ట్రేషన్';
-
-  @override
   String get adminApply => 'వర్తింపజేయండి';
-
-  @override
-  String get adminNotSet => 'సెట్ కాలేదు';
-
-  @override
-  String get adminReset => 'రీసెట్ చేయండి';
 
   @override
   String get adminLogsTitle => 'సర్వర్ లాగ్‌లు';
@@ -8377,9 +8908,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminMetadataField3DFormat => '3D format';
-
-  @override
-  String get adminMetadataPersonKindUnknown => 'Unknown';
 
   @override
   String get adminMetadataPersonKindActor => 'Actor';
@@ -8545,9 +9073,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminMetadataImageThumb => 'బొటనవేలు';
-
-  @override
-  String get adminMetadataRecursive => 'పునరావృతం';
 
   @override
   String get adminMetadataProvider => 'ప్రొవైడర్';
@@ -8819,25 +9344,7 @@ class AppLocalizationsTe extends AppLocalizations {
       'నెట్‌వర్కింగ్ సెట్టింగ్‌లకు మార్పులకు సర్వర్ పునఃప్రారంభం అవసరం కావచ్చు.';
 
   @override
-  String get adminNetworkingRemoteAccess => 'రిమోట్ యాక్సెస్‌ని ప్రారంభించండి';
-
-  @override
-  String get adminNetworkingPorts => 'ఓడరేవులు';
-
-  @override
-  String get adminNetworkingHttpPort => 'HTTP పోర్ట్';
-
-  @override
-  String get adminNetworkingHttpsPort => 'HTTPS పోర్ట్';
-
-  @override
   String get adminNetworkingEnableHttps => 'HTTPSని ప్రారంభించండి';
-
-  @override
-  String get adminNetworkingLocalNetwork => 'స్థానిక నెట్‌వర్క్';
-
-  @override
-  String get adminNetworkingLocalAddresses => 'స్థానిక నెట్‌వర్క్ చిరునామాలు';
 
   @override
   String get adminNetworkingAddressHint => 'ఉదా 192.168.1.0/24';
@@ -8905,10 +9412,6 @@ class AppLocalizationsTe extends AppLocalizations {
       'హార్డ్‌వేర్ ఎన్‌కోడింగ్‌ని ప్రారంభించండి';
 
   @override
-  String get adminPlaybackEnableHwDecoding =>
-      'దీని కోసం హార్డ్‌వేర్ డీకోడింగ్‌ని ప్రారంభించండి:';
-
-  @override
   String get adminPlaybackQsvDevice => 'QSV పరికరం';
 
   @override
@@ -8918,9 +9421,6 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get adminPlaybackPreferNativeDecoder =>
       'సిస్టమ్ నేటివ్ హార్డ్‌వేర్ డీకోడర్‌కు ప్రాధాన్యం ఇవ్వండి';
-
-  @override
-  String get adminPlaybackColorDepth => 'హార్డ్‌వేర్ డీకోడింగ్ కలర్ డెప్త్';
 
   @override
   String get adminPlaybackColorDepth10Hevc => '10-బిట్ HEVC డీకోడింగ్';
@@ -8995,9 +9495,6 @@ class AppLocalizationsTe extends AppLocalizations {
       'VPP టోన్ మ్యాపింగ్ కాంట్రాస్ట్';
 
   @override
-  String get adminPlaybackPresetsQuality => 'ప్రీసెట్‌లు & నాణ్యత';
-
-  @override
   String get adminPlaybackEncoderPreset => 'ఎన్‌కోడర్ ప్రీసెట్';
 
   @override
@@ -9052,12 +9549,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminResumeAudiobooks => 'ఆడియోబుక్స్';
-
-  @override
-  String get adminResumeMinAudiobookPct => 'కనీస ఆడియోబుక్ రెజ్యూమ్ శాతం';
-
-  @override
-  String get adminResumeMaxAudiobookPct => 'గరిష్ట ఆడియోబుక్ రెజ్యూమ్ శాతం';
 
   @override
   String get adminStreamingBitrateLimit =>
@@ -9184,11 +9675,6 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String adminTaskTriggerInterval(String duration) {
-    return 'ప్రతి $duration';
-  }
-
-  @override
   String get adminTaskTriggerStartup => 'అప్లికేషన్ ప్రారంభంలో';
 
   @override
@@ -9207,18 +9693,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminTaskTriggerEveryHour => 'ప్రతి గంట';
 
   @override
-  String get adminTaskTriggerEvery6Hours => 'ప్రతి 6 గంటలు';
-
-  @override
-  String get adminTaskTriggerEvery12Hours => 'ప్రతి 12 గంటలు';
-
-  @override
-  String get adminTaskTriggerEvery24Hours => 'ప్రతి 24 గంటలు';
-
-  @override
-  String get adminTaskTriggerEvery2Days => 'ప్రతి 2 రోజులు';
-
-  @override
   String adminTaskTriggerHours(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -9231,9 +9705,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminTaskTriggerTime => 'సమయం';
-
-  @override
-  String get adminTaskTriggerNoLimit => 'పరిమితి లేదు';
 
   @override
   String get adminActivityJustNow => 'ఇప్పుడే';
@@ -9302,9 +9773,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminNetworkingBaseUrlHint => 'ఉదా. /jellyfin';
 
   @override
-  String get adminNetworkingHttps => 'HTTPS';
-
-  @override
   String get adminNetworkingPublicHttpPort => 'పబ్లిక్ HTTP పోర్ట్';
 
   @override
@@ -9318,37 +9786,13 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adminNetworkingCertPassword => 'సర్టిఫికేట్ పాస్‌వర్డ్';
 
   @override
-  String get adminNetworkingIpSettings => 'IP సెట్టింగ్‌లు';
-
-  @override
   String get adminNetworkingEnableIpv4 => 'IPv4ను ప్రారంభించండి';
 
   @override
   String get adminNetworkingEnableIpv6 => 'IPv6ను ప్రారంభించండి';
 
   @override
-  String get adminNetworkingAutoDiscovery =>
-      'స్వయంచాలక పోర్ట్ మ్యాపింగ్‌ను ప్రారంభించండి';
-
-  @override
   String get adminNetworkingLocalSubnets => 'LAN నెట్‌వర్క్‌లు';
-
-  @override
-  String get adminNetworkingLocalSubnetsHint =>
-      'స్థానిక నెట్‌వర్క్‌లో ఉన్నట్లుగా పరిగణించే IP చిరునామాలు లేదా CIDR సబ్‌నెట్‌ల జాబితా, కామా లేదా లైన్ ద్వారా వేరు చేయబడింది.';
-
-  @override
-  String get adminNetworkingPublishedUris => 'ప్రచురించిన సర్వర్ URIలు';
-
-  @override
-  String get adminNetworkingPublishedUriHint =>
-      'సబ్‌నెట్ లేదా చిరునామాను ప్రచురించిన URLకి మ్యాప్ చేయండి, ఉదా. all=https://example.com';
-
-  @override
-  String get adminNetworkingCertPath => 'సర్టిఫికేట్ మార్గం';
-
-  @override
-  String get adminNetworkingRemoteIpFilter => 'రిమోట్ IP ఫిల్టర్';
 
   @override
   String get adminNetworkingRemoteIpFilterLabel => 'రిమోట్ IP ఫిల్టర్';
@@ -9465,9 +9909,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminSettingsLoadFailed => 'సెట్టింగ్‌లను లోడ్ చేయడంలో విఫలమైంది';
-
-  @override
-  String get adminDiscover => 'కనుగొనండి';
 
   @override
   String adminChannelMappingsUpdateFailed(String error) {
@@ -11415,12 +11856,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get watchWithGroup => 'సమూహంతో చూడండి';
 
   @override
-  String get errors => 'లోపాలు';
-
-  @override
-  String get warnings => 'హెచ్చరికలు';
-
-  @override
   String get disk => 'డిస్క్';
 
   @override
@@ -12231,12 +12666,6 @@ class AppLocalizationsTe extends AppLocalizations {
       'ప్రస్తుత ఫిల్టర్‌లకు ఏ పరికరాలు సరిపోలడం లేదు';
 
   @override
-  String get passwordSet => 'పాస్వర్డ్ సెట్';
-
-  @override
-  String get noPasswordConfigured => 'పాస్‌వర్డ్ కాన్ఫిగర్ చేయబడలేదు';
-
-  @override
   String get remoteAccess => 'రిమోట్ యాక్సెస్';
 
   @override
@@ -12326,24 +12755,6 @@ class AppLocalizationsTe extends AppLocalizations {
   String get needsAttention => 'శ్రద్ధ అవసరం';
 
   @override
-  String get adminDrawerSectionServer => 'సర్వర్';
-
-  @override
-  String get adminDrawerSectionPlayback => 'ప్లేబ్యాక్';
-
-  @override
-  String get adminDrawerSectionDevices => 'పరికరాలు';
-
-  @override
-  String get adminDrawerSectionAdvanced => 'అధునాతనమైనది';
-
-  @override
-  String get adminDrawerSectionPlugins => 'ప్లగిన్లు';
-
-  @override
-  String get adminDrawerSectionLiveTv => 'ప్రత్యక్ష TV';
-
-  @override
   String get homeVideos => 'హోమ్ వీడియోలు';
 
   @override
@@ -12354,12 +12765,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get mixedMoviesAndShows => 'మిశ్రమ చలనచిత్రాలు & ప్రదర్శనలు';
-
-  @override
-  String get intelQuickSync => 'Intel Quick Sync';
-
-  @override
-  String get rockchipMpp => 'రాక్‌చిప్ MPP';
 
   @override
   String get dolbyVision => 'Dolby Vision';
@@ -13097,24 +13502,6 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get adminLabelYear => 'Year';
-
-  @override
-  String get adminLabelImdbId => 'IMDb Id';
-
-  @override
-  String get adminLabelTmdbMovieId => 'TheMovieDb Movie Id';
-
-  @override
-  String get adminLabelTmdbBoxSetId => 'TheMovieDb Box Set Id';
-
-  @override
-  String get adminLabelTvdbBoxSetId => 'TheTVDB Box Set Id';
-
-  @override
-  String get adminLabelTvdbId => 'TheTVDB Numerical Id';
-
-  @override
-  String get adminLabelTvdbSlug => 'TheTVDB Slug Movie Id';
 
   @override
   String get adminReplaceImages => 'Replace existing images';
