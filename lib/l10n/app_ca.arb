@@ -6632,7 +6632,7 @@
             }
         }
     },
-    "settingsLiveTvDirect": "TV en directe",
+    "settingsLiveTvDirect": "Reproducció nativa de TV en directe",
     "settingsLiveTvDirectSubtitle": "Activa la reproducció directa per a la televisió en directe",
     "settingsOpenGroups": "Grups oberts",
     "settingsOpenGroupsSubtitle": "Crea, uneix-te o gestiona grups de SyncPlay",
@@ -13981,5 +13981,445 @@
     "clientCertAddHostPrompt": "Quin amfitrió necessita un certificat?",
     "@clientCertAddHostPrompt": {
         "description": "Title of the prompt that asks which host a new certificate is for"
+    },
+    "shortcutSkipSegment": "Salta la intro o els crèdits quan s'ofereixi",
+    "@shortcutSkipSegment": {
+        "description": "Player shortcut action that presses the skip intro or credits button while it is showing"
+    },
+    "buttonShownInSyncPlayGroup": "Només es mostra quan ets en un grup de SyncPlay",
+    "@buttonShownInSyncPlayGroup": {
+        "description": "Hint under the SyncPlay and Watch with group buttons in the button settings, which only appear once the user has joined a group"
+    },
+    "subtitleDownloadLanguages": "Idiomes de baixada de subtítols",
+    "@subtitleDownloadLanguages": {
+        "description": "Setting that picks which languages a subtitle download searches"
+    },
+    "subtitleDownloadLanguagesDescription": "Idiomes que es cerquen en baixar subtítols, fins a 5. Auto cerca un idioma triat a partir del teu idioma de subtítols predeterminat o del vídeo.",
+    "@subtitleDownloadLanguagesDescription": {
+        "description": "Description for the subtitle download languages setting"
+    },
+    "libraryStyle": "Estil de la biblioteca",
+    "@libraryStyle": {
+        "description": "Label for the setting that picks the library page header layout"
+    },
+    "libraryStyleDescription": "Clàssic és la capçalera original amb botons d'icona. Modern posa la cerca i els botons d'ordenació, agrupació i filtre amb etiquetes en una sola barra. Acoblat mou els controls i les lletres a un tauler lateral.",
+    "@libraryStyleDescription": {
+        "description": "Explanation under the library style setting on TV and desktop"
+    },
+    "libraryStyleDescriptionPhone": "Clàssic és la capçalera original amb botons d'icona. Modern afegeix sota la cerca botons d'ordenació, agrupació i filtre amb etiquetes. Acoblat manté els controls en una barra a la part inferior de la pantalla.",
+    "@libraryStyleDescriptionPhone": {
+        "description": "Explanation under the library style setting on phones"
+    },
+    "libraryStyleClassic": "Clàssic",
+    "@libraryStyleClassic": {
+        "description": "Library style option: the original header"
+    },
+    "libraryStyleModern": "Modern",
+    "@libraryStyleModern": {
+        "description": "Library style option: one bar with labeled buttons"
+    },
+    "libraryStyleDocked": "Acoblat",
+    "@libraryStyleDocked": {
+        "description": "Library style option: a side panel on TV and desktop, a bottom bar on phones"
+    },
+    "libraryShowLabel": "Mostra",
+    "@libraryShowLabel": {
+        "description": "Library button that opens the played status filter, followed by its current value such as All or Unwatched"
+    },
+    "libraryAToZ": "A-Z",
+    "@libraryAToZ": {
+        "description": "Library bottom bar button that turns the alphabet on and off"
+    },
+    "libraryJumpToLetter": "Salta a la lletra",
+    "@libraryJumpToLetter": {
+        "description": "Label of the alphabet in a library, which scrolls to the first item starting with the chosen letter"
+    },
+    "adminExternalIdLabel": "ID de {name}",
+    "@adminExternalIdLabel": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminExternalIdTypePerson": "Persona",
+    "adminExternalIdTypeArtist": "Artista",
+    "adminExternalIdTypeAlbumArtist": "Artista de l'àlbum",
+    "adminExternalIdTypeOtherArtist": "Altre artista",
+    "adminExternalIdTypeReleaseGroup": "Grup de llançaments",
+    "adminExternalIdTypeBook": "Llibre",
+    "adminPlaybackHwAccelWarning": "L'acceleració de maquinari pot ser inestable en alguns sistemes. Mantén actualitzats el sistema operatiu i els controladors de vídeo, i torna a posar-la a «Cap» si el vídeo deixa de reproduir-se.",
+    "adminLibMetadataChangeHelp": "Els canvis a la configuració de metadades s'apliquen al contingut nou. Per actualitzar el contingut existent, actualitza'l des de la seva pàgina de detalls o actualitza la biblioteca.",
+    "adminLibFetcherSettings": "Configuració dels recuperadors",
+    "adminLibImageOptionsTitle": "Opcions d'imatge per a {type}",
+    "@adminLibImageOptionsTitle": {
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLibFetchImages": "Obtén les imatges",
+    "adminLibMaxBackdrops": "Nombre màxim de telons de fons per element",
+    "adminLibMinBackdropWidth": "Amplada mínima de baixada dels telons de fons",
+    "adminImageTypeArt": "Clearart",
+    "adminImageTypeBox": "Caixa",
+    "adminImageTypeBoxRear": "Caixa (part posterior)",
+    "adminImageTypeDisc": "Disc",
+    "adminImageTypeMenu": "Menú",
+    "adminActivityMediaDetails": "Detalls multimèdia",
+    "adminNetworkingOtherPublishedUriHint": "p. ex. 192.168.1.0/24=http://192.168.1.5:8096",
+    "adminMetadataFieldOriginalLanguage": "Idioma original",
+    "adminMetadataFieldDateAdded": "Data d'afegiment",
+    "adminMetadataFieldArtists": "Artistes",
+    "adminMetadataFieldAlbumArtists": "Artistes de l'àlbum",
+    "adminMetadataFieldAlbum": "Àlbum",
+    "adminMetadataFieldSeriesName": "Nom de la sèrie",
+    "adminMetadataFieldEpisodeNumber": "Número d'episodi",
+    "adminMetadataFieldSeasonNumber": "Número de temporada",
+    "adminMetadataFieldTrackNumber": "Número de pista",
+    "adminMetadataFieldDiscNumber": "Número de disc",
+    "adminMetadataFieldAirTime": "Hora d'emissió",
+    "adminMetadataFieldRuntime": "Duració en minuts",
+    "adminMetadataFieldPlaceOfBirth": "Lloc de naixement",
+    "adminMetadataFieldBirthDate": "Data de naixement",
+    "adminMetadataFieldBirthYear": "Any de naixement",
+    "adminMetadataFieldDeathDate": "Data de defunció",
+    "adminMetadataFieldAspectRatio": "Relació d'aspecte original",
+    "adminMetadataFieldAirsBeforeSeason": "S'emet abans de la temporada",
+    "adminMetadataFieldAirsAfterSeason": "S'emet després de la temporada",
+    "adminMetadataFieldAirsBeforeEpisode": "S'emet abans de l'episodi",
+    "adminMetadataNamesHelp": "Separa els noms amb un punt i coma.",
+    "adminMetadataSectionRatings": "Valoracions",
+    "adminMetadataItemLocked": "Les metadades d'aquest element estan bloquejades. Desbloqueja-les abans d'identificar-lo.",
+    "adminMetadataNameOrIdRequired": "Introdueix un nom o un identificador extern.",
+    "adminLibMetadataReaders": "Lectors de metadades",
+    "adminLibSimilarProvidersFor": "Proveïdors d'elements similars: {type}",
+    "@adminLibSimilarProvidersFor": {
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLibMediaSegmentProviders": "Proveïdors de segments multimèdia",
+    "adminLibEnableLibrary": "Activa la biblioteca",
+    "adminLibEnableLibraryHelp": "Si desactives la biblioteca, s'amagarà de totes les vistes d'usuari.",
+    "adminLibSaveLyricsWithMedia": "Desa les lletres a les carpetes multimèdia",
+    "adminLibUseCustomTagDelimiters": "Utilitza un delimitador d'etiquetes personalitzat",
+    "adminLibCustomTagDelimiters": "Delimitador d'etiquetes personalitzat",
+    "adminLibCustomTagDelimitersHelp": "Caràcters que es tracten com a delimitadors que separen etiquetes.",
+    "adminLibDelimiterWhitelist": "Llista blanca del delimitador",
+    "adminLibDelimiterWhitelistHelp": "Elements que no s'han de dividir en etiquetes, un per línia.",
+    "adminLibDownloadLanguages": "Idiomes de baixada",
+    "adminLibraryFolderRequired": "Afegeix com a mínim una carpeta a aquesta biblioteca.",
+    "adminRenameLibraryWarning": "Si canvies el nom d'una biblioteca, se'n perden totes les metadades. Procedeix amb precaució.",
+    "adminDeleteLibraryConfirm": "Vols eliminar la biblioteca \"{name}\"? Els fitxers del disc no se suprimeixen.",
+    "@adminDeleteLibraryConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminDeleteLibraryLocations": "Aquestes ubicacions multimèdia s'eliminaran de la biblioteca:",
+    "adminRefreshMode": "Mode d'actualització",
+    "adminRefreshModeScan": "Cerca fitxers nous i actualitzats",
+    "adminRefreshModeMissing": "Cerca metadades que falten",
+    "adminReplaceTrickplayImages": "Substitueix les imatges de trickplay existents",
+    "adminRefreshDialogHelp": "Les metadades s'actualitzen segons la configuració i els serveis d'internet activats al tauler de control.",
+    "adminActivityCount": "{shown} de {total}",
+    "@adminActivityCount": {
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLiveTvTabSources": "Sintonitzadors i guia",
+    "adminLiveTvTabRecordings": "Enregistraments",
+    "adminLiveTvAddTuner": "Afegeix un dispositiu sintonitzador",
+    "adminLiveTvEditTuner": "Edita el dispositiu sintonitzador",
+    "adminLiveTvTunerType": "Tipus de sintonitzador",
+    "adminLiveTvDetectDevices": "Detecta els meus dispositius",
+    "adminLiveTvNoNewDevices": "No s'han trobat dispositius nous",
+    "adminLiveTvDrmNote": "Els canals amb DRM no s'importaran.",
+    "adminLiveTvTunerSaved": "S'ha desat el sintonitzador",
+    "adminLiveTvDeleteTuner": "Suprimeix el dispositiu sintonitzador",
+    "adminLiveTvDeleteTunerConfirm": "Segur que vols suprimir aquest dispositiu sintonitzador?",
+    "adminLiveTvDeleteProvider": "Suprimeix el proveïdor de guia",
+    "adminLiveTvDeleteProviderConfirm": "Segur que vols suprimir aquest proveïdor de guia?",
+    "adminLiveTvProviderSaved": "S'ha desat el proveïdor de guia",
+    "adminLiveTvAddProvider": "Afegeix un proveïdor",
+    "adminLiveTvRefreshGuide": "Actualitza les dades de la guia",
+    "adminLiveTvMapChannels": "Assigna els canals",
+    "adminLiveTvNoTunerChannels": "No s'han trobat canals del sintonitzador",
+    "adminLiveTvXmltvPathHelp": "Camí o URL d'un fitxer XMLTV. El servidor el llegeix i en comprova les actualitzacions. Ets responsable de crear i actualitzar el fitxer.",
+    "adminLiveTvSdCreateAccount": "Crea un compte a {url}",
+    "@adminLiveTvSdCreateAccount": {
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLiveTvSdSignIn": "Inicia la sessió",
+    "adminLiveTvSdLineup": "Graella de canals",
+    "adminLiveTvSdSelectLineup": "Selecciona una graella de canals. Si no n'hi ha cap a la llista, comprova el nom d'usuari, la contrasenya i el codi postal.",
+    "adminLiveTvGuideDays": "Nombre de dies de dades de la guia que es baixen",
+    "adminLiveTvGuideDaysHelp": "Amb més dies pots programar amb més antelació i veure més programació, però la baixada triga més. Automàtic tria un valor segons el nombre de canals.",
+    "adminLiveTvRecordingPath": "Camí d'enregistrament predeterminat",
+    "adminLiveTvRecordingPathHelp": "On es desen els enregistraments. Si és buit, s'utilitza la carpeta de dades de programa del servidor.",
+    "adminLiveTvStartWhenPossible": "Comença quan sigui possible",
+    "adminLiveTvStopWhenPossible": "Atura quan sigui possible",
+    "adminLiveTvMinutesBefore": "minuts abans",
+    "adminLiveTvMinutesAfter": "minuts després",
+    "adminLiveTvSectionGuide": "Dades de la guia",
+    "adminLiveTvSectionDefaultRecording": "Configuració d'enregistrament predeterminada",
+    "adminLiveTvSectionMetadata": "Metadades dels enregistraments",
+    "adminUserLastActivity": "Última activitat {time}",
+    "@adminUserLastActivity": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "adminCurrentPassword": "Contrasenya actual",
+    "adminChannelAccess": "Accés als canals",
+    "adminDeviceAccess": "Accés als dispositius",
+    "adminDeleteFromAllLibraries": "Totes les biblioteques",
+    "adminUserDisabledBanner": "Aquest usuari està desactivat. Desmarca «Desactivat» a «Permisos» perquè pugui tornar a iniciar la sessió.",
+    "adminNewPasswordEmpty": "La contrasenya nova no pot estar buida",
+    "adminScheduleStartBeforeEnd": "L'hora d'inici ha de ser anterior a l'hora de finalització",
+    "adminDashboardAlerts": "Alertes",
+    "adminSessionGoHome": "Ves a la pantalla d'inici",
+    "adminPlayMethodRemux": "Remuxatge",
+    "adminPlayMethodDirectStream": "Transmissió directa",
+    "adminPlayMethodDirectPlay": "Reproducció directa",
+    "adminLogLevelTrace": "Traça",
+    "adminLogLevelDebug": "Depuració",
+    "adminLogLevelInformation": "Informació",
+    "adminLogLevelWarning": "Advertiment",
+    "adminLogLevelError": "Error",
+    "adminLogLevelCritical": "Crític",
+    "adminLogLevelNone": "Cap",
+    "adminActivityAllUsers": "Tots els usuaris",
+    "adminTaskLastRan": "Última execució {time}, amb una durada de {duration}.",
+    "@adminTaskLastRan": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            },
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskResultFailed": "Ha fallat",
+    "adminTaskResultCancelled": "S'ha cancel·lat",
+    "adminTaskResultAborted": "S'ha interromput per l'aturada del servidor",
+    "adminDurationSecondsShort": "{seconds} s",
+    "@adminDurationSecondsShort": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "adminDeleteTaskTrigger": "Suprimeix el disparador de la tasca",
+    "adminDeleteTaskTriggerConfirm": "Segur que vols suprimir aquest disparador de la tasca?",
+    "adminTaskTriggerEveryMinutes": "Cada {minutes} minuts",
+    "@adminTaskTriggerEveryMinutes": {
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskTriggerEveryHours": "Cada {hours} hores",
+    "@adminTaskTriggerEveryHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskMinutesValue": "{minutes} minuts",
+    "@adminTaskMinutesValue": {
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskHoursValue": "{hours} hores",
+    "@adminTaskHoursValue": {
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTimeLimitHours": "Límit de temps (hores)",
+    "adminTranscodingDecodingFor": "Activa la descodificació de maquinari per a",
+    "adminTranscodingThreadCountHelp": "El nombre màxim de fils que pot fer servir una transcodificació. Amb menys fils es redueix l'ús de la CPU, però pot ser massa lent per a una reproducció fluida.",
+    "adminTranscodingThreadMax": "Màxim",
+    "adminTranscodingFfmpegPath": "Camí de l'FFmpeg",
+    "adminTranscodingFfmpegPathHelp": "L'FFmpeg que executa el servidor. Es configura al servidor, no aquí.",
+    "adminTranscodingAudioSeek": "Estratègia de desplaçament de l'àudio",
+    "adminTranscodingAudioSeekHelp": "Com gestiona el servidor l'àudio quan et desplaces en un flux HLS.",
+    "adminTranscodingTrimCopiedAudio": "Retalla l'àudio copiat",
+    "adminTranscodingTranscodeAudio": "Transcodifica l'àudio",
+    "adminResumeMinAudiobookMinutes": "Temps mínim per reprendre audiollibres (minuts)",
+    "adminResumeMinAudiobookHelp": "Els audiollibres aturats abans d'aquest temps compten com a no reproduïts.",
+    "adminResumeAudiobookRemaining": "Minuts restants d'un audiollibre per poder-lo reprendre",
+    "adminResumeAudiobookRemainingHelp": "Els audiollibres aturats amb menys d'aquests minuts per acabar compten com a reproduïts.",
+    "adminBrandingSplashSection": "Pantalla de presentació",
+    "adminBrandingSectionWebClient": "Client web",
+    "adminBrandingSplashSizeHint": "Les imatges personalitzades han de tenir una relació d'aspecte de 16x9 i una mida mínima de 1920x1080.",
+    "adminNetworkingSectionServerAddress": "Configuració de l'adreça del servidor",
+    "adminNetworkingSectionHttps": "Configuració d'HTTPS",
+    "adminNetworkingSectionRemoteAccess": "Configuració de l'accés remot",
+    "adminNetworkingSectionIpProtocols": "Protocols IP",
+    "adminNetworkingSectionDiscovery": "Descobriment de xarxa",
+    "adminNetworkingSectionFirewall": "Configuració del tallafoc i del proxy",
+    "adminNetworkingLocalHttpPort": "Número de port HTTP local",
+    "adminNetworkingLocalHttpPortHelp": "Número de port TCP del servidor HTTP.",
+    "adminNetworkingEnableHttpsHelp": "Escolta al port HTTPS. Perquè tingui efecte, també cal configurar un certificat vàlid.",
+    "adminNetworkingLocalHttpsPort": "Número de port HTTPS local",
+    "adminNetworkingLocalHttpsPortHelp": "Número de port TCP del servidor HTTPS.",
+    "adminNetworkingBaseUrlHelp": "Afegeix un subdirectori a l'URL del servidor, per exemple https://example.com/jellyfin.",
+    "adminNetworkingBindAddress": "Vincula a una adreça de xarxa local",
+    "adminNetworkingBindAddressHelp": "Substitueix l'adreça IP local del servidor HTTP. Deixa-ho buit per vincular-lo a totes les adreces. Cal reiniciar per aplicar el canvi.",
+    "adminNetworkingLanNetworksHelp": "Adreces IP o entrades IP/màscara de xarxa de les xarxes que es tracten com a locals per als límits d'amplada de banda i d'accés remot. Deixa-ho buit per tractar totes les adreces RFC1918 com a locals.",
+    "adminNetworkingKnownProxiesHelp": "Adreces IP o noms d'amfitrió dels proxies que hi ha davant d'aquest servidor. Cal per llegir les capçaleres X-Forwarded-For. Cal reiniciar per aplicar el canvi.",
+    "adminNetworkingCustomCertPath": "Camí del certificat SSL personalitzat",
+    "adminNetworkingCertPathHelp": "Camí a un fitxer PKCS #12 amb un certificat i una clau privada, per a TLS en un domini personalitzat.",
+    "adminNetworkingCertPasswordHelp": "Introdueix la contrasenya si el certificat en necessita una.",
+    "adminNetworkingAllowRemote": "Permet les connexions remotes a aquest servidor",
+    "adminNetworkingAllowRemoteHelp": "Si està desactivat, es bloquegen totes les connexions remotes.",
+    "adminNetworkingRemoteIpFilterHelp": "Adreces IP o entrades IP/màscara de xarxa de xarxes remotes. Deixa-ho buit per permetre totes les adreces remotes.",
+    "adminNetworkingRemoteIpFilterMode": "Mode del filtre d'adreces IP remotes",
+    "adminNetworkingPublicHttpPortHelp": "El port públic assignat al port HTTP local.",
+    "adminNetworkingPublicHttpsPortHelp": "El port públic assignat al port HTTPS local.",
+    "adminNetworkingAutoDiscoveryLabel": "Activa el descobriment automàtic",
+    "adminNetworkingAutoDiscoveryHelp": "Permet que les aplicacions trobin aquest servidor al port UDP 7359.",
+    "adminNetworkingSamePublishedUri": "Utilitza el mateix URI publicat del servidor per a l'accés intern i extern",
+    "adminNetworkingPublishedUri": "URI publicat del servidor",
+    "adminNetworkingPublishedUriHelp": "Substitueix l'URI que proporciona el servidor, segons la interfície o l'adreça IP del client.",
+    "adminNetworkingInternalUri": "URI intern",
+    "adminNetworkingInternalUriHelp": "URI publicat del servidor per a l'accés intern.",
+    "adminNetworkingExternalUri": "URI extern",
+    "adminNetworkingExternalUriHelp": "URI publicat del servidor per a l'accés extern.",
+    "adminNetworkingOtherPublishedUris": "Altres URI publicats",
+    "adminNetworkingOtherPublishedUrisHelp": "URI per a una subxarxa o interfície, escrits com a subxarxa=URI.",
+    "adminBackupsHelp": "Crea i restaura instantànies del servidor. Poden incloure la base de dades, les metadades, els subtítols i les imatges de trickplay.",
+    "adminBackupDisclaimer": "Segons la mida de la biblioteca, la còpia de seguretat pot trigar una estona.",
+    "adminBackupTasksWarningTitle": "Hi ha tasques programades en execució",
+    "adminBackupTasksWarning": "Atura aquestes tasques o espera que acabin abans de crear una còpia de seguretat.",
+    "adminBackupArchiveNotFound": "El servidor no ha trobat aquest arxiu de còpia de seguretat.",
+    "adminRestoreInProgress": "Restauració en curs",
+    "adminRestoreWaitingForServer": "S'està esperant que el servidor torni a estar disponible.",
+    "adminRestoreSucceeded": "Restauració completada",
+    "adminLogWatch": "Segueix",
+    "adminLogStopWatching": "Deixa de seguir",
+    "adminPluginInstallConfirmTitle": "Confirma la instal·lació del connector",
+    "adminPluginInstallDisclaimer": "Instal·lar un connector de tercers comporta riscos. Pot contenir codi inestable o maliciós, i pot canviar en qualsevol moment. Instal·la només connectors d'autors de confiança i assabenta't del que poden fer, com ara consultar serveis externs, alentir les exploracions de la biblioteca o afegir feina en segon pla.",
+    "adminGroupOverview": "Visió general",
+    "adminGroupLibrary": "Biblioteca",
+    "adminGroupPlayback": "Reproducció",
+    "adminGroupPeople": "Persones",
+    "adminGroupSystem": "Sistema",
+    "adminAreasLabel": "Àrees d'administració",
+    "adminPagesLabel": "Pàgines",
+    "adminPageDescDashboard": "Estat del servidor, sessions i activitat recent",
+    "adminPageDescAnalytics": "Mida de les biblioteques, còdecs i formats",
+    "adminPageDescActivity": "Tot el que ha passat al servidor",
+    "adminPageDescTasks": "Exploracions, neteges i els seus disparadors",
+    "adminPageDescLibraries": "Carpetes, escàners i recuperadors de metadades",
+    "adminPageDescDisplay": "Com es mostren les biblioteques als usuaris",
+    "adminPageDescMetadata": "Idioma, país i imatges predeterminats",
+    "adminPageDescNfo": "Lectura i desament de fitxers NFO de Kodi",
+    "adminPageDescLiveTv": "Sintonitzadors, dades de la guia i enregistraments",
+    "adminPageDescTranscoding": "Acceleració de maquinari, codificadors, mapatge de tons",
+    "adminPageDescResume": "Quan es considera que un element s'ha començat o reproduït",
+    "adminPageDescStreaming": "Límit de taxa de bits remota",
+    "adminPageDescTrickplay": "Miniatures de previsualització en desplaçar-se",
+    "adminPageDescUsers": "Comptes, accés i control parental",
+    "adminPageDescDevices": "Dispositius amb la sessió iniciada i els seus noms",
+    "adminPageDescApiKeys": "Claus per a aplicacions i scripts",
+    "adminPageDescSettings": "Nom del servidor, idioma, camins, rendiment",
+    "adminPageDescBranding": "Missatge d'inici de sessió, CSS personalitzat, pantalla de presentació",
+    "adminPageDescNetworking": "Ports, HTTPS, LAN i accés remot",
+    "adminPageDescPlugins": "Connectors instal·lats i el catàleg",
+    "adminPageDescRepositories": "D'on provenen els connectors",
+    "adminPageDescBackups": "Crea i restaura còpies de seguretat del servidor",
+    "adminPageDescLogs": "Fitxers de registre del servidor",
+    "adminSearchSettingsHint": "Cerca entre {count} opcions",
+    "@adminSearchSettingsHint": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminSearchNoResults": "Cap opció coincideix",
+    "adminSearchClear": "Esborra la cerca",
+    "adminUnsavedChanges": "Canvis sense desar",
+    "adminDiscard": "Descarta",
+    "adminLeaveTitle": "Vols descartar els canvis no desats?",
+    "adminLeaveMessage": "Els canvis d'aquesta pàgina encara no s'han desat.",
+    "adminKeepEditing": "Continua editant",
+    "librarySortPlaylistOrder": "Ordre de la llista de reproducció",
+    "@librarySortPlaylistOrder": {
+        "description": "Sort option: the playlist's own track order"
+    },
+    "librarySortDateAdded": "Data d'afegiment",
+    "@librarySortDateAdded": {
+        "description": "Sort option: when an item was added to the server library"
+    },
+    "librarySortDateEpisodeAdded": "Data d'afegiment de l'episodi",
+    "@librarySortDateEpisodeAdded": {
+        "description": "Sort option for series: when the newest episode was added"
+    },
+    "librarySortParentalRating": "Classificació per edats",
+    "@librarySortParentalRating": {
+        "description": "Sort option: by parental (age) rating such as PG-13"
+    },
+    "librarySortMyRating": "La meva valoració",
+    "@librarySortMyRating": {
+        "description": "Sort option: by the viewer's own like or dislike"
+    },
+    "librarySortAlbumArtist": "Artista de l'àlbum",
+    "@librarySortAlbumArtist": {
+        "description": "Sort option for music: by album artist"
+    },
+    "librarySortAlbum": "Àlbum",
+    "@librarySortAlbum": {
+        "description": "Sort option for music: by album name"
+    },
+    "librarySortArtist": "Artista",
+    "@librarySortArtist": {
+        "description": "Sort option for music: by track artist"
+    },
+    "librarySortTrackNumber": "Número de pista",
+    "@librarySortTrackNumber": {
+        "description": "Sort option for music: by track number"
+    },
+    "librarySortGenre": "Gènere",
+    "@librarySortGenre": {
+        "description": "Sort option: by genre"
+    },
+    "librarySortFoldersFirst": "Primer les carpetes",
+    "@librarySortFoldersFirst": {
+        "description": "Sort option for folder libraries: folders before files, then by name"
+    },
+    "librarySortLength": "Durada",
+    "@librarySortLength": {
+        "description": "Sort option for music: by track or album length"
     }
 }
