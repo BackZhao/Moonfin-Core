@@ -13985,5 +13985,112 @@
     "clientCertAddHostPrompt": "Mille palvelinpalvelimelle tarvitaan varmenne?",
     "@clientCertAddHostPrompt": {
         "description": "Title of the prompt that asks which host a new certificate is for"
-    }
+    },
+    "shortcutSkipSegment": "Ohita alkutekstit tai lopputekstit, kun sitä pyydetään",
+    "@shortcutSkipSegment": {
+        "description": "Player shortcut action that presses the skip intro or credits button while it is showing"
+    },
+    "buttonShownInSyncPlayGroup": "Näkyy vain, kun olet SyncPlay-ryhmässä",
+    "@buttonShownInSyncPlayGroup": {
+        "description": "Hint under the SyncPlay and Watch with group buttons in the button settings, which only appear once the user has joined a group"
+    },
+    "subtitleDownloadLanguages": "Tekstitysten latauskielet",
+    "@subtitleDownloadLanguages": {
+        "description": "Setting that picks which languages a subtitle download searches"
+    },
+    "subtitleDownloadLanguagesDescription": "Kielet, joilla hakua suoritetaan tekstityksiä ladattaessa, enintään 5. Järjestelmä etsii automaattisesti yhtä kieltä, joka valitaan oletustekstityskielesi tai videon kielen joukosta.",
+    "@subtitleDownloadLanguagesDescription": {
+        "description": "Description for the subtitle download languages setting"
+    },
+    "libraryStyle": "Kirjastotyyli",
+    "@libraryStyle": {
+        "description": "Label for the setting that picks the library page header layout"
+    },
+    "libraryStyleDescription": "”Classic” on alkuperäinen otsikkopalkki, jossa on kuvakepainikkeet. ”Modern”-tilassa haku sekä nimikoidut lajittelu-, ryhmittely- ja suodatuspainikkeet on sijoitettu yhteen palkkiin. ”Docked”-tilassa hallintapainikkeet ja kirjaimet siirretään sivupaneeliin.",
+    "@libraryStyleDescription": {
+        "description": "Explanation under the library style setting on TV and desktop"
+    },
+    "libraryStyleDescriptionPhone": "”Classic” on alkuperäinen otsikkopalkki, jossa on kuvakepainikkeet. ”Modern” lisää hakukentän alle nimikoidut lajittelu-, ryhmittely- ja suodatuspainikkeet. ”Docked” sijoittaa hallintapainikkeet palkkiin näytön alareunaan.",
+    "@libraryStyleDescriptionPhone": {
+        "description": "Explanation under the library style setting on phones"
+    },
+    "libraryStyleClassic": "Classic",
+    "@libraryStyleClassic": {
+        "description": "Library style option: the original header"
+    },
+    "libraryStyleModern": "Modern",
+    "@libraryStyleModern": {
+        "description": "Library style option: one bar with labeled buttons"
+    },
+    "libraryStyleDocked": "Telakoituna",
+    "@libraryStyleDocked": {
+        "description": "Library style option: a side panel on TV and desktop, a bottom bar on phones"
+    },
+    "libraryShowLabel": "Näytä",
+    "@libraryShowLabel": {
+        "description": "Library button that opens the played status filter, followed by its current value such as All or Unwatched"
+    },
+    "libraryAToZ": "A–Z",
+    "@libraryAToZ": {
+        "description": "Library bottom bar button that turns the alphabet on and off"
+    },
+    "libraryJumpToLetter": "Siirry kirjaimeen",
+    "@libraryJumpToLetter": {
+        "description": "Label of the alphabet in a library, which scrolls to the first item starting with the chosen letter"
+    },
+    "adminExternalIdLabel": "{name} Id",
+    "@adminExternalIdLabel": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminExternalIdTypePerson": "Henkilö",
+    "adminExternalIdTypeArtist": "Artisti",
+    "adminExternalIdTypeAlbumArtist": "Albumin Artisti",
+    "adminExternalIdTypeOtherArtist": "Muu Artisti",
+    "adminExternalIdTypeReleaseGroup": "Julkaisuryhmä",
+    "adminExternalIdTypeBook": "Kirja",
+    "adminPlaybackHwAccelWarning": "Laitteistokiihdytys voi toimia epävakaasti joissakin järjestelmissä. Pidä käyttöjärjestelmä ja näytönohjaimen ajurit ajan tasalla, ja aseta tämä asetus takaisin arvoon ”Ei mitään”, jos videon toisto keskeytyy.",
+    "adminLibMetadataChangeHelp": "Metatietoasetusten muutokset koskevat uutta sisältöä. Jos haluat päivittää olemassa olevaa sisältöä, päivitä se sen tietosivulta tai päivitä kirjasto.",
+    "adminLibFetcherSettings": "Fetcher-asetukset",
+    "adminLibImageOptionsTitle": "{type}:n kuvavaihtoehdot",
+    "@adminLibImageOptionsTitle": {
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLibFetchImages": "Hae kuvat",
+    "adminLibMaxBackdrops": "Kohteen taustakuvien enimmäismäärä",
+    "adminLibMinBackdropWidth": "Taustakuvan vähimmäisleveys latausta varten",
+    "adminImageTypeArt": "Clearart",
+    "adminImageTypeBox": "Box",
+    "adminImageTypeBoxRear": "Box (takaisin)",
+    "adminImageTypeDisc": "Levy",
+    "adminImageTypeMenu": "Valikko",
+    "adminActivityMediaDetails": "Median  yksityiskohdat",
+    "adminNetworkingOtherPublishedUriHint": "e.g. 192.168.1.0/24=http://192.168.1.5:8096",
+    "adminMetadataFieldOriginalLanguage": "Alkuperäinen kieli",
+    "adminMetadataFieldDateAdded": "Lisäyspäivä",
+    "adminMetadataFieldArtists": "Artisti",
+    "adminMetadataFieldAlbumArtists": "Albumin esittäjät",
+    "adminMetadataFieldAlbum": "Albumi",
+    "adminMetadataFieldSeriesName": "Sarjan nimi",
+    "adminMetadataFieldEpisodeNumber": "Jakson numero",
+    "adminMetadataFieldSeasonNumber": "Kausinumero",
+    "adminMetadataFieldTrackNumber": "Kappaleen numero",
+    "adminMetadataFieldDiscNumber": "Levyn numero",
+    "adminMetadataFieldAirTime": "Air time",
+    "adminMetadataFieldRuntime": "Kesto minuutteina",
+    "adminMetadataFieldPlaceOfBirth": "Syntymäpaikka",
+    "adminMetadataFieldBirthDate": "Syntymäpäivä",
+    "adminMetadataFieldBirthYear": "Syntymävuosi",
+    "adminMetadataFieldDeathDate": "Kuolinpäivä",
+    "adminMetadataFieldAspectRatio": "Alkuperäinen kuvasuhde",
+    "adminMetadataFieldAirsBeforeSeason": "Esitetään ennen kauden alkua",
+    "adminMetadataFieldAirsAfterSeason": "Esitetään kauden jälkeen",
+    "adminMetadataFieldAirsBeforeEpisode": "Esitetään ennen jaksoa"
 }
