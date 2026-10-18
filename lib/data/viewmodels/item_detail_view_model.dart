@@ -2161,10 +2161,22 @@ class ItemDetailViewModel extends ChangeNotifier {
         sortOrder: 'Descending',
         recursive: true,
         limit: 100,
-        fields: 'PrimaryImageAspectRatio,BasicSyncInfo',
+        fields: 'PrimaryImageAspectRatio,BasicSyncInfo,People',
       );
       final items = (data['Items'] as List?) ?? [];
-      _filmography = _mapItems(items);
+      // The cards don't know whose page they're on, so each title carries
+      // the role for its subtitle and lets go of the rest of the cast.
+      _filmography = [
+        for (final item in _mapItems(items))
+          AggregatedItem(
+            id: item.id,
+            serverId: item.serverId,
+            rawData: {
+              ...item.rawData,
+              '__moonfinPersonRole': item.roleOf(localId),
+            }..remove('People'),
+          ),
+      ];
       notifyListeners();
     } catch (_) {}
   }

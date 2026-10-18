@@ -15828,7 +15828,7 @@ class FilmographyRow extends StatelessWidget {
                 : item.name;
           } else {
             title = item.name;
-            subtitle = year?.toString();
+            subtitle = item.personRole ?? year?.toString();
           }
 
           return MediaCard(
