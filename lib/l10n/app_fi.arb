@@ -14683,7 +14683,7 @@
     "adminConversionsFullSpeedHelp": "Muunnokset suoritetaan oletusarvoisesti hitaasti kuormituksen pitämiseksi alhaisena.",
     "adminDrawerPremiere": "Emby Premiere",
     "adminPageDescPremiere": "Lisenssin tila ja avain",
-    "adminPremiereActive": "Lisenssin tila ja avain",
+    "adminPremiereActive": "Premiere on käytössä tällä palvelimella.",
     "adminPremiereInactive": "Tällä palvelimella ei ole Premiere-avainta.",
     "adminPremiereKeyInvalid": "Avain on määritetty, mutta se ei ole käytössä. Se on ehkä kirjoitettu väärin tai sen voimassaoloaika on päättynyt.",
     "adminPremiereCurrentKey": "nykyinen avain",
