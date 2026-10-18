@@ -13990,7 +13990,7 @@
     "@subtitleDownloadLanguagesDescription": {
         "description": "Description for the subtitle download languages setting"
     },
-    "libraryStyle": "Estil de la biblioteca",
+    "libraryStyle": "Estil de la biblioteca principal",
     "@libraryStyle": {
         "description": "Label for the setting that picks the library page header layout"
     },
@@ -14413,5 +14413,290 @@
     "librarySortLength": "Durada",
     "@librarySortLength": {
         "description": "Sort option for music: by track or album length"
+    },
+    "bookLibraryStyle": "Estil de la biblioteca de llibres",
+    "@bookLibraryStyle": {
+        "description": "Label for the setting that picks the book and audiobook library layout"
+    },
+    "bookLibraryStyleDescription": "«Clàssic» mostra els prestatges originals sota un títol destacat. «Sala de lectura» comença amb el que estàs llegint en targetes grans. «Llibreria» permet explorar tota la biblioteca en una graella.",
+    "@bookLibraryStyleDescription": {
+        "description": "Explanation under the book library style setting"
+    },
+    "bookLibraryStyleClassic": "Clàssic",
+    "@bookLibraryStyleClassic": {
+        "description": "Book library style option: the original shelves"
+    },
+    "bookLibraryStyleReadingRoom": "Sala de lectura",
+    "@bookLibraryStyleReadingRoom": {
+        "description": "Book library style option: large Continue cards over a few shelves"
+    },
+    "bookLibraryStyleBookstore": "Llibreria",
+    "@bookLibraryStyleBookstore": {
+        "description": "Book library style option: browse entries over a title grid"
+    },
+    "bookSeriesCount": "{count, plural, =1{1 sèrie} other{{count} sèries}}",
+    "@bookSeriesCount": {
+        "description": "How many series a book library holds",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "bookInProgressCount": "{count} en curs",
+    "@bookInProgressCount": {
+        "description": "How many books or audiobooks are started but not finished",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "bookBrowseAllTitles": "{count, plural, =1{Explora 1 títol} other{Explora els {count} títols}}",
+    "@bookBrowseAllTitles": {
+        "description": "Link from the book library to the full title grid",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "searchBooks": "Cerca llibres",
+    "@searchBooks": {
+        "description": "Button in the book library that opens search within it"
+    },
+    "homeRowsGenresAndStudios": "Gèneres i estudis",
+    "@homeRowsGenresAndStudios": {
+        "description": "Home Rows editor: heading of the group of disabled genre and studio rows"
+    },
+    "homeRowsExternalLists": "Llistes externes",
+    "@homeRowsExternalLists": {
+        "description": "Home Rows editor: heading of the group of disabled rows from IMDb, TMDB, Letterboxd and MDBList lists"
+    },
+    "adminPremiereNoteLiveTv": "La TV en directe necessita Emby Premiere. Sense, el servidor no importa canals ni enregistra res.",
+    "adminPremiereNoteBackups": "Backup & Restore necessita Emby Premiere un cop acaba el període de prova.",
+    "adminGeneralRunAtStartup": "Executa el servidor en iniciar el sistema",
+    "adminGeneralLaunchWebApp": "Obre l'aplicació web en un navegador quan s'iniciï el servidor",
+    "adminGeneralBannerText": "Text del bàner de la pantalla d'inici",
+    "adminGeneralBannerTextHelp": "Es mostra a tots els usuaris a la seva pantalla d'inici",
+    "adminGeneralSectionMaintenance": "Mode de manteniment",
+    "adminGeneralMaintenanceMode": "Posa el servidor en mode de manteniment",
+    "adminGeneralMaintenanceModeHelp": "Els usuaris només veuen el missatge de manteniment.",
+    "adminGeneralMaintenanceMessage": "Missatge de manteniment",
+    "adminGeneralMaintenanceMessageHelp": "Deixa-ho en blanc per mostrar un missatge genèric en l'idioma de cada usuari.",
+    "adminGeneralSectionUpdates": "Actualitzacions automàtiques",
+    "adminGeneralAutoUpdate": "Actualitza el servidor automàticament",
+    "adminGeneralAutoRestart": "Reinicia automàticament per aplicar les actualitzacions",
+    "adminGeneralAutoRestartHelp": "El servidor només es reinicia quan no hi ha cap usuari actiu.",
+    "adminTaskTriggerSystemEvent": "Després d'un esdeveniment del sistema ({event})",
+    "@adminTaskTriggerSystemEvent": {
+        "placeholders": {
+            "event": {
+                "type": "String"
+            }
+        }
+    },
+    "adminPluginNeedsPremiere": "Necessita Emby Premiere després d'una prova gratuïta de 14 dies",
+    "adminEmbyBackupsHelp": "Emby fa les còpies de seguretat amb el seu connector Backup & Restore.",
+    "adminEmbyBackupsNoPlugin": "El connector Backup & Restore no està instal·lat. Instal·la'l des del catàleg de connectors per fer còpies de seguretat d'aquest servidor.",
+    "adminEmbyBackupNow": "Fes una còpia ara",
+    "adminEmbyFullBackup": "Còpia completa",
+    "adminEmbyLightBackups": "Còpies de la base de dades",
+    "adminEmbyBackupServerVersion": "Emby {version}",
+    "@adminEmbyBackupServerVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "adminEmbyRestoreConfirm": "Vols restaurar {name}? Substitueix les biblioteques, la configuració, els usuaris i les contrasenyes d'aquest servidor, i el servidor s'atura quan acaba. Potser l'hauràs de tornar a iniciar tu mateix.",
+    "@adminEmbyRestoreConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminEmbyRestoreServerId": "Restaura l'ID del servidor",
+    "adminEmbyRestoreServerIdHelp": "Desactiva-ho quan restauris la mateixa còpia en més d'un servidor.",
+    "adminEmbyRestoreShuttingDown": "La restauració ha acabat i el servidor s'està aturant. Torna'l a iniciar si no es reinicia sol.",
+    "adminHiddenRemotely": "Amaga a les pantalles d'inici de sessió en connexions remotes",
+    "adminHiddenFromUnusedDevices": "Amaga a les pantalles d'inici de sessió dels dispositius on no ha iniciat mai la sessió",
+    "adminSimultaneousStreamLimitHelp": "Limita quants vídeos pot reproduir alhora aquest usuari.",
+    "adminUnlimited": "Il·limitat",
+    "adminAutoRemoteQuality": "Qualitat remota automàtica (Mbps)",
+    "adminAutoRemoteQualityHelp": "S'utilitza en remot quan el reproductor està configurat en qualitat automàtica. Deixa-ho buit per detectar-la.",
+    "adminAllowCameraUpload": "Permet la pujada des de la càmera",
+    "adminAllowSubtitleDownloading": "Permet la baixada de subtítols",
+    "adminAllowMediaConversion": "Permet la conversió de mitjans",
+    "adminAllowSyncTranscoding": "Permet les baixades que necessiten transcodificació",
+    "adminAllowSharingPersonalItems": "Permet compartir llistes de reproducció amb altres usuaris",
+    "adminAllowPreferenceAccess": "Permet canviar la pròpia contrasenya i la imatge de perfil",
+    "adminTagMode": "Mode d'etiquetes",
+    "adminEmbyConnect": "Emby Connect",
+    "adminEmbyConnectUser": "Nom d'usuari o correu electrònic d'Emby Connect",
+    "adminEmbyConnectHelp": "Permet a aquest usuari iniciar la sessió des de qualsevol aplicació d'Emby sense conèixer l'adreça del servidor.",
+    "adminEmbyConnectLink": "Enllaça",
+    "adminEmbyConnectUnlink": "Desenllaça",
+    "adminEmbyConnectLinked": "Enllaçat amb Emby Connect",
+    "adminEmbyConnectPending": "S'ha enviat la invitació. L'enllaç es fa efectiu quan l'acceptin.",
+    "adminEmbyConnectUnlinked": "S'ha eliminat l'enllaç amb Emby Connect",
+    "adminEmbyConnectNotFound": "Cap compte d'Emby Connect no té aquest nom d'usuari o correu electrònic.",
+    "adminLibImportPlaylists": "Importa fitxers de llistes de reproducció",
+    "adminLibExcludeFromSearch": "Exclou de la cerca global",
+    "adminLibForcedSubtitlesOnly": "Baixa només els subtítols forçats",
+    "adminLibImportCollections": "Importa col·leccions dels baixadors de metadades",
+    "adminLibThumbnailInterval": "Interval de les miniatures de previsualització",
+    "adminLibThumbnailEverySeconds": "Cada {count} segons",
+    "@adminLibThumbnailEverySeconds": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminLibThumbnailAtChapters": "A les marques de capítol",
+    "adminLibSaveThumbnailsWithMedia": "Desa les miniatures de previsualització a les carpetes dels mitjans",
+    "adminLibrarySectionMarkers": "Marcadors d'intro",
+    "adminLibIntroDetection": "Detecta les intros",
+    "adminLibIntroDetectionDuringScan": "Detecta les intros durant l'exploració de la biblioteca",
+    "adminProviderEmbyGuide": "Emby Guide Data",
+    "adminLiveTvEmbyGuideSelectLineup": "Selecciona una graella de canals. Si no n'hi ha cap a la llista, comprova el codi postal. Les graelles de canals necessiten Emby Premiere.",
+    "adminLiveTvWakeServer": "Desperta el servidor per als enregistraments",
+    "adminDrawerLiveTvChannels": "Canals de TV en directe",
+    "adminPageDescLiveTvChannels": "Activa i desactiva canals i defineix-ne l'ordre",
+    "adminLiveTvChannelsEmpty": "Encara no hi ha cap canal. Apareixeran aquí quan hi hagi un sintonitzador configurat i el servidor n'hagi importat els canals.",
+    "adminTranscodingHwaAdvanced": "Avançat",
+    "adminTranscodingHwaHelp": "El mode Avançat et permet triar i ordenar els còdecs de maquinari.",
+    "adminTranscodingHwDecoders": "Descodificadors de maquinari preferits",
+    "adminTranscodingHwEncoders": "Codificadors de maquinari preferits",
+    "adminTranscodingTempPathHelp": "On el transcodificador desa els fitxers de treball. Deixa-ho buit per utilitzar la carpeta de dades del servidor.",
+    "adminTranscodingThrottleHelp": "Alenteix la transcodificació quan ja hi ha prou memòria intermèdia, per reduir l'ús de la CPU.",
+    "adminTranscodingDownmixHelp": "Augmenta el volum quan es fa downmix de l'àudio. 1 manté el volum original.",
+    "adminTranscodingFontExtraction": "Permet l'extracció de tipus de lletra al moment",
+    "adminTranscodingMaxResolution": "Resolució màxima de transcodificació",
+    "adminTranscodingMaxResolutionHelp": "Un límit per a totes les transcodificacions, independentment de la qualitat que demani l'aplicació.",
+    "adminTranscodingToneMapSoftware": "Mapatge de tons a les transcodificacions per programari",
+    "adminTranscodingToneMapHardware": "Mapatge de tons a les transcodificacions per maquinari",
+    "adminTranscodingToneMapHelp": "Evita que el vídeo HDR es vegi fosc i esvaït quan es transcodifica.",
+    "adminNetworkingLocalAddress": "Adreça IP local",
+    "adminNetworkingLocalAddressHelp": "L'adreça local que el servidor dona a les aplicacions. Deixa-ho buit per detectar-la automàticament.",
+    "adminNetworkingBehindProxy": "Un proxy invers gestiona l'HTTPS",
+    "adminNetworkingExternalDomain": "Domini extern",
+    "adminNetworkingExternalDomainHelp": "Un domini o nom de DNS dinàmic per a les connexions remotes, sense el protocol ni el port. Cal per a un certificat personalitzat.",
+    "adminNetworkingUpnp": "Activa l'assignació automàtica de ports",
+    "adminNetworkingUpnpHelp": "Intenta assignar el port públic al port local amb UPnP. Alguns encaminadors no ho admeten.",
+    "adminNetworkingProxyHeaders": "Llegeix les capçaleres del proxy per obtenir les adreces dels clients",
+    "adminNetworkingProxyHeadersHelp": "Utilitza capçaleres com X-Forwarded-For per trobar l'adreça de cada client. Activa-ho només darrere d'un proxy invers.",
+    "adminNetworkingProxyHeadersRemote": "Només quan contenen adreces remotes",
+    "adminNetworkingIpv4Only": "Utilitza IPv4 per a les sol·licituds sortints",
+    "adminNetworkingIpv4OnlyHelp": "Per quan no es pot accedir als proveïdors de metadades i altres serveis per IPv6.",
+    "adminOnePerLine": "Un per línia",
+    "adminStreamingStreamLimit": "Màxim de fluxos de vídeo simultanis",
+    "adminStreamingStreamLimitHelp": "Quants vídeos es poden reproduir alhora a tot el servidor. 0 vol dir sense límit.",
+    "adminSyncJobsConversions": "Tasques de conversió",
+    "adminSyncJobsDownloads": "Tasques de baixada",
+    "adminSyncJobsEmpty": "Cap tasca",
+    "adminSyncJobCancel": "Cancel·la la tasca",
+    "adminSyncJobCancelConfirm": "Vols cancel·lar {name} i treure-la de la llista?",
+    "@adminSyncJobCancelConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminSyncJobConverting": "S'està convertint",
+    "adminSyncJobReady": "A punt per transferir",
+    "adminSyncJobTransferring": "S'està transferint",
+    "adminSyncJobCompletedWithError": "Completada amb errors",
+    "adminSyncJobItemCount": "{count, plural, =1{1 element} other{{count} elements}}",
+    "@adminSyncJobItemCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminDrawerDatabase": "Base de dades",
+    "adminPageDescDatabase": "Mida de la memòria cau i manteniment",
+    "adminDatabaseWarning": "Són opcions avançades. Deixa-les amb els valors per defecte tret que tinguis un motiu per canviar-les.",
+    "adminDatabaseCacheSize": "Mida de la memòria cau de la base de dades (MB)",
+    "adminDatabaseCacheSizeHelp": "Quina part de cada fitxer de base de dades manté el servidor a la memòria. Més memòria pot fer el servidor més ràpid. S'aplica després d'un reinici.",
+    "adminDatabaseOptimize": "Optimitza la base de dades quan el servidor s'aturi",
+    "adminDatabaseOptimizeHelp": "Normalment no fa res, però de tant en tant executa una anàlisi que ajuda les consultes del servidor. Les aturades poden trigar més.",
+    "adminDatabaseAnalysisLimit": "Límit de files de l'anàlisi",
+    "adminDatabaseAnalysisLimitHelp": "Aproximadament quantes files de cada índex llegeix el pas d'optimització. Més files funcionen millor, però poden alentir les aturades.",
+    "adminDatabaseVacuum": "Compacta la base de dades en el proper inici",
+    "adminDatabaseVacuumHelp": "Reconstrueix el fitxer de la base de dades perquè ocupi el mínim espai, cosa que pot millorar el rendiment. El servidor no es pot utilitzar mentre s'executa i no mostra cap progrés, així que no el tanquis a la força. Es torna a desactivar sol després d'aquell inici.",
+    "adminDrawerCinemaIntros": "Introduccions de cinema",
+    "adminPageDescCinemaIntros": "Tràilers i introduccions abans de la reproducció",
+    "adminCinemaIntrosPlayBefore": "Reprodueix introduccions abans de",
+    "adminCinemaIntrosUpcoming": "Inclou tràilers de pel·lícules noves i properes",
+    "adminCinemaIntrosOlder": "Inclou tràilers de pel·lícules més antigues",
+    "adminCinemaIntrosLibrary": "Inclou tràilers de pel·lícules de les meves biblioteques",
+    "adminCinemaIntrosLibraryHelp": "Cal tenir configurats tràilers locals.",
+    "adminCinemaIntrosCount": "Nombre de tràilers per reproduir",
+    "adminCinemaIntrosParental": "Control parental intel·ligent",
+    "adminCinemaIntrosParentalHelp": "Només tria tràilers amb una classificació igual o inferior a la del que s'està mirant.",
+    "adminCinemaIntrosUnwatchedOnly": "Reprodueix introduccions només abans de contingut sense veure",
+    "adminCinemaIntrosSimilarOnly": "Reprodueix només tràilers semblants al que s'està mirant",
+    "adminCinemaIntrosSimilarOnlyHelp": "Segons els gèneres, les etiquetes, els estudis, etc. que tinguin en comú.",
+    "adminCinemaIntrosCustom": "Introduccions personalitzades",
+    "adminCinemaIntrosCustomPath": "Carpeta d'introduccions personalitzades",
+    "adminCinemaIntrosCustomPathHelp": "Una carpeta de vídeos. Se'n tria un a l'atzar i es reprodueix després dels tràilers.",
+    "adminCinemaIntrosCodecPath": "Carpeta d'introduccions de còdec",
+    "adminCinemaIntrosCodecPathHelp": "Una carpeta de vídeos. Abans de la pel·lícula es reprodueix el que tingui un nom de fitxer que coincideixi amb el còdec de vídeo, el còdec d'àudio, el perfil d'àudio o una etiqueta.",
+    "adminDrawerDlna": "DLNA",
+    "adminPageDescDlna": "Play To i el servidor DLNA",
+    "adminDlnaPlayTo": "Activa DLNA Play To",
+    "adminDlnaPlayToHelp": "Emby pot trobar dispositius a la teva xarxa i controlar-los a distància.",
+    "adminDlnaServer": "Activa el servidor DLNA",
+    "adminDlnaServerHelp": "Permet que el servidor transmeti mitjans a dispositius DLNA.",
+    "adminDlnaDefaultUser": "Usuari per defecte",
+    "adminDlnaDefaultUserHelp": "L'usuari les biblioteques del qual veuen els dispositius connectats. Un perfil de dispositiu ho pot substituir.",
+    "adminDlnaDebugLog": "Activa el registre de depuració de DLNA",
+    "adminDlnaDebugLogHelp": "Genera fitxers de registre grans. Activa-ho només mentre resols problemes.",
+    "adminDrawerCameraUpload": "Pujada des de la càmera",
+    "adminPageDescCameraUpload": "On es desen les fotos dels telèfons",
+    "adminCameraUploadPath": "Carpeta de pujada des de la càmera",
+    "adminCameraUploadPathHelp": "Deixa-ho en blanc per utilitzar la carpeta per defecte. Una carpeta personalitzada també s'ha d'afegir com a biblioteca.",
+    "adminCameraUploadSubfolders": "Crea una subcarpeta per a cada dispositiu",
+    "adminDrawerConversions": "Conversions",
+    "adminPageDescConversions": "Mitjans convertits i baixades",
+    "adminConversionsTempPath": "Carpeta de fitxers temporals",
+    "adminConversionsTempPathHelp": "On es desen els mitjans mentre es converteixen.",
+    "adminConversionsFullSpeed": "Converteix a màxima velocitat",
+    "adminConversionsFullSpeedHelp": "Per defecte, les conversions s'executen lentament per mantenir la càrrega baixa.",
+    "adminDrawerPremiere": "Emby Premiere",
+    "adminPageDescPremiere": "Estat de la llicència i clau",
+    "adminPremiereActive": "Premiere està actiu en aquest servidor.",
+    "adminPremiereInactive": "Aquest servidor no té cap clau de Premiere.",
+    "adminPremiereKeyInvalid": "Hi ha una clau definida, però no està activa. Potser està mal escrita o ha caducat.",
+    "adminPremiereCurrentKey": "Clau actual",
+    "adminPremiereNewKey": "Clau nova",
+    "adminPremiereNewKeyHint": "Enganxa la clau del correu electrònic d'Emby Premiere.",
+    "adminPremiereSaveKey": "Desa la clau",
+    "adminPremiereRemoveKey": "Elimina la clau",
+    "adminPremiereKeyRejected": "Emby ha desat la clau, però no l'ha acceptada.",
+    "adminPremiereLoadFailed": "No s'ha pogut carregar l'estat de Premiere",
+    "embyPremiereRequiredTitle": "Cal Emby Premiere",
+    "embyPremiereRequiredBody": "Això necessita una subscripció activa a Emby Premiere al servidor.",
+    "embyPremiereRequiredSaveBody": "Això necessita una subscripció activa a Emby Premiere. Emby conserva la configuració, però no la farà servir fins que Premiere estigui actiu.",
+    "embyPremiereLearnMore": "Més informació",
+    "embyPremiereSaveAnyway": "Desa igualment",
+    "embyPremiereEnterKey": "Introdueix la clau",
+    "adminPremiereNote": "Necessita Emby Premiere. El servidor conserva aquesta configuració, però no la farà servir fins que Premiere estigui actiu.",
+    "analyticsLibraryShare": "Proporció d'elements per biblioteca",
+    "analyticsTopRating": "Classificació més habitual",
+    "analyticsTypicalRuntime": "Durada típica",
+    "analyticsShareOfItems": "{percent}% dels elements",
+    "@analyticsShareOfItems": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
     }
 }
