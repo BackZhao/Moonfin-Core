@@ -7935,7 +7935,7 @@
     "@seerrNotifyLibraryAddedSubtitle": {
         "description": "Subtitle for the library-added notifications toggle"
     },
-    "seerrNotifyIssuesTitle": "문제 알림",
+    "seerrNotifyIssuesTitle": "문제 상태 알림",
     "@seerrNotifyIssuesTitle": {
         "description": "Title for the issue notifications toggle"
     },
@@ -7952,7 +7952,7 @@
             }
         }
     },
-    "imageCacheLimit": "이미지 캐시 제한",
+    "imageCacheLimit": "이미지 캐시 한도",
     "clearImageCache": "이미지 캐시 지우기",
     "imageCacheCleared": "이미지 캐시를 지웠습니다",
     "seerrDownloadingPercent": "다운로드 중 · {percent}%",
@@ -9234,7 +9234,7 @@
     "@yourWatchlist": {
         "description": "Seerr row: watchlist"
     },
-    "seerrNotifyNewMediaTitle": "새 미디어 추가됨",
+    "seerrNotifyNewMediaTitle": "새 미디어 추가 알림",
     "@seerrNotifyNewMediaTitle": {
         "description": "Title for the toggle that notifies about anything newly added to the server library, not just requested media"
     },
@@ -9681,7 +9681,7 @@
     "@showAlphabeticalFilters": {
         "description": "Checkbox label for toggling alphabetical picker visibility in Sort and Filter options"
     },
-    "personalRatingStyle": "개인 평가 스타일",
+    "personalRatingStyle": "내 평가 방식",
     "@personalRatingStyle": {
         "description": "Selects how personal ratings are displayed and entered on media details."
     },
