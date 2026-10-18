@@ -105,6 +105,10 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
 
   final Set<String> _emptySectionIds = {};
 
+  /// Turns false once the server answers with no Live TV channels, which hides
+  /// the rows that need Live TV.
+  bool _serverHasLiveTv = true;
+
   /// The disabled groups that are open, by [_getSectionCategory]. General
   /// starts open since it's short.
   final Set<int> _openGroups = {1};
@@ -144,6 +148,7 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
     final tasks = <Future<void>>[];
 
     final newEmptyIds = <String>{};
+    var hasLiveTv = true;
     void setEmpty(String stableId, bool isEmpty) {
       if (isEmpty) {
         newEmptyIds.add(stableId);
@@ -336,6 +341,7 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
                 );
                 final items = response['Items'] as List? ?? [];
                 setEmpty(stableId, items.isEmpty);
+                hasLiveTv = items.isNotEmpty;
               } catch (_) {}
             }());
             break;
@@ -417,6 +423,7 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
         _emptySectionIds
           ..clear()
           ..addAll(newEmptyIds);
+        _serverHasLiveTv = hasLiveTv;
       });
     }
   }
@@ -479,7 +486,8 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
   }
 
   bool _isSeerrSectionType(HomeSectionType type) {
-    return type == HomeSectionType.seerrRecentRequests ||
+    return type == HomeSectionType.seerrShortcuts ||
+        type == HomeSectionType.seerrRecentRequests ||
         type == HomeSectionType.seerrWatchlist ||
         type == HomeSectionType.seerrRecentlyAdded ||
         type == HomeSectionType.seerrPopularMovies ||
@@ -523,7 +531,6 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
       return 5;
     }
     if (_isSeerrSectionType(section.type) ||
-        section.type == HomeSectionType.seerrShortcuts ||
         section.type == HomeSectionType.radarrCalendar ||
         section.type == HomeSectionType.sonarrCalendar) {
       return 6;
@@ -645,6 +652,19 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
         ((section.isBuiltin && _isPlaylistsSectionType(section.type)) ||
             (section.isPluginDynamic &&
                 section.pluginSource == HomeSectionPluginSource.playlists));
+    final hiddenByStudios =
+        section.type == HomeSectionType.studios &&
+        !_prefs.get(UserPreferences.displayStudiosRows);
+    final hiddenByLiveTv =
+        !_serverHasLiveTv &&
+        (section.type == HomeSectionType.liveTv ||
+            section.type == HomeSectionType.onNow ||
+            section.type == HomeSectionType.activeRecordings);
+    final hiddenByCalendars =
+        (section.type == HomeSectionType.radarrCalendar &&
+            !_prefs.get(UserPreferences.enableRadarrCalendar)) ||
+        (section.type == HomeSectionType.sonarrCalendar &&
+            !_prefs.get(UserPreferences.enableSonarrCalendar));
     final hiddenBySeerr =
         (_isSeerrSectionType(section.type) &&
             (!showSeerrRows ||
@@ -692,6 +712,9 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
         hiddenByServer ||
         hiddenByGenres ||
         hiddenByPlaylists ||
+        hiddenByStudios ||
+        hiddenByLiveTv ||
+        hiddenByCalendars ||
         hiddenBySeerr ||
         hiddenByImdb ||
         hiddenByTmdb ||
