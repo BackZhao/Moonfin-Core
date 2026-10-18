@@ -481,6 +481,7 @@ class UserPreferences extends ChangeNotifier {
     'pref_recommendation_system_source',
     'pref_detail_screen_style',
     'pref_library_style',
+    'pref_book_library_style',
     'pref_detail_expanded_tabs',
     'pref_detail_show_technical_details',
     'pref_detail_trailers_external',
@@ -1932,6 +1933,13 @@ class UserPreferences extends ChangeNotifier {
     key: 'pref_library_style',
     defaultValue: LibraryStyle.classic,
     values: LibraryStyle.values,
+  );
+
+  /// Layout for book and audiobook libraries, stored per server and user.
+  static final bookLibraryStyle = EnumPreference(
+    key: 'pref_book_library_style',
+    defaultValue: BookLibraryStyle.bookstore,
+    values: BookLibraryStyle.values,
   );
 
   static final showMediaDetailsOnLibraryPage = Preference(

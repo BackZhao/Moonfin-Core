@@ -20,7 +20,7 @@ enum BookPane { titles, series, authors, genres, collections, favorites }
 
 typedef _PanePage = ({List<AggregatedItem> items, int read, bool hasMore});
 
-class BookBrowseViewModel extends ChangeNotifier {
+class BookBrowseViewModel extends ChangeNotifier with BookLibraryHelpers {
   final RowDataSource _dataSource;
   final MediaServerClient _client;
   final String libraryId;
@@ -39,6 +39,7 @@ class BookBrowseViewModel extends ChangeNotifier {
   ];
 
   static const _panePageSize = 60;
+  static const _previewSize = 6;
   // Each collection costs a request to check that it holds books.
   static const _collectionPageSize = 20;
   static const _paneFields =
@@ -55,48 +56,45 @@ class BookBrowseViewModel extends ChangeNotifier {
   String? _collectionType;
   String? get collectionType => _collectionType;
 
+  @override
   bool get isAudiobookLibrary => _collectionType == 'audiobooks';
 
   BookScope _scope = BookScope.all;
+  @override
   BookScope get scope => _scope;
 
   int _bookCount = 0;
+  @override
   int get bookCount => _bookCount;
   int _audiobookCount = 0;
+  @override
   int get audiobookCount => _audiobookCount;
   int _comicCount = 0;
+  @override
   int get comicCount => _comicCount;
-
-  /// True when the library holds 2 or more formats (books, audiobooks, comics),
-  /// which turns on the format filter.
-  bool get isMixedLibrary {
-    if (isAudiobookLibrary) return false;
-    var count = 0;
-    if (_bookCount > 0) count++;
-    if (_audiobookCount > 0) count++;
-    if (_comicCount > 0) count++;
-    return count >= 2;
-  }
-
-  /// The active formats available in this library.
-  List<BookScope> get availableScopes => [
-    BookScope.all,
-    if (_bookCount > 0) BookScope.books,
-    if (_audiobookCount > 0) BookScope.audiobooks,
-    if (_comicCount > 0) BookScope.comics,
-  ];
 
   int _titleCount = 0;
   int get titleCount => _titleCount;
   int _genreCount = 0;
   int get genreCount => _genreCount;
+  List<AggregatedItem> _genrePreview = const [];
+  List<AggregatedItem> get genrePreview => _genrePreview;
 
   // The browse entries list the whole library whatever the format filter
   // says, and so do their counts.
   List<AggregatedItem> _allSeries = const [];
+  List<AggregatedItem> get allSeries => _allSeries;
   int get seriesCount => _allSeries.length;
   int _authorCount = 0;
   int get authorCount => _authorCount;
+  List<AggregatedItem> _artists = const [];
+  Map<String, int> _authorTitles = const {};
+
+  List<AggregatedItem> get authorPreview =>
+      [..._artists, ..._extraAuthors].take(_previewSize).toList();
+
+  int authorTitleCount(AggregatedItem author) =>
+      _authorTitles[author.name.toLowerCase()] ?? 0;
 
   int get favoriteCount {
     final row = _favoritesRow;
@@ -149,6 +147,7 @@ class BookBrowseViewModel extends ChangeNotifier {
   HomeRow? _favoritesRow;
 
   String get _serverId => _client.baseUrl;
+  @override
   ImageApi get imageApi => _dataSource.imageApi;
 
   BookBrowseViewModel({
@@ -161,62 +160,6 @@ class BookBrowseViewModel extends ChangeNotifier {
        _client = client, // ignore: prefer_initializing_formals
        _collectionType = collectionType, // ignore: prefer_initializing_formals
        _titleSort = titleSort; // ignore: prefer_initializing_formals
-
-  List<String> get _audiobookTypes =>
-      isAudiobookLibrary ? const ['AudioBook', 'Audio'] : const ['AudioBook'];
-
-  /// Types for whole-library queries. Books libraries include AudioBook so
-  /// audiobooks shelved in a books library are visible. Note: Jellyfin treats
-  /// comics as Book types, so Comic is partitioned client-side.
-  List<String> get combinedTypes =>
-      isAudiobookLibrary
-          ? const ['AudioBook', 'Audio']
-          : const ['Book', 'AudioBook'];
-
-  /// Types matching the active format, for the title grid.
-  List<String> get scopedTypes {
-    if (isAudiobookLibrary) return _audiobookTypes;
-    return switch (_scope) {
-      BookScope.books => const ['Book'],
-      BookScope.audiobooks => _audiobookTypes,
-      BookScope.comics => const ['Book'],
-      BookScope.all => combinedTypes,
-    };
-  }
-
-  /// Whether [item] is an audiobook (vs a regular book or comic). Explicit
-  /// server types win; the heuristic only breaks ties for bare audio items.
-  bool isAudiobookItem(AggregatedItem item) {
-    if (item.isComic) return false;
-    final type = item.type;
-    if (type == 'AudioBook' || type == 'Audio') return true;
-    if (type == 'Book') return false;
-    return item.isAudiobook;
-  }
-
-  bool isComicItem(AggregatedItem item) => item.isComic;
-
-  bool isBookItem(AggregatedItem item) => !isAudiobookItem(item) && !item.isComic;
-
-  bool _matchesScope(AggregatedItem item) => switch (_scope) {
-    BookScope.all => true,
-    BookScope.books => isBookItem(item),
-    BookScope.audiobooks => isAudiobookItem(item),
-    BookScope.comics => isComicItem(item),
-  };
-
-  /// Time left in an audiobook (or book with server progress); null without
-  /// runtime or progress.
-  Duration? remainingFor(AggregatedItem item) {
-    final runtime = item.runtime;
-    if (runtime == null) return null;
-    final pct = item.playedPercentage;
-    if (pct == null || pct <= 0) return runtime;
-    if (pct >= 100) return Duration.zero;
-    return Duration(
-      microseconds: (runtime.inMicroseconds * (1.0 - pct / 100.0)).round(),
-    );
-  }
 
   Future<void> load() async {
     _isLoading = true;
@@ -251,7 +194,7 @@ class BookBrowseViewModel extends ChangeNotifier {
         includeItemTypes: combinedTypes,
       );
       final collectionsF = _loadBookCollections();
-      final genreCountF = _countGenres();
+      final genresF = _loadGenres();
       final titlesF = _loadTitles();
       final foldersF = _loadFolders();
 
@@ -260,7 +203,7 @@ class BookBrowseViewModel extends ChangeNotifier {
         artistsF,
         favoritesF,
         collectionsF,
-        genreCountF,
+        genresF,
         titlesF,
         foldersF,
       ]);
@@ -268,7 +211,9 @@ class BookBrowseViewModel extends ChangeNotifier {
       _resumeRow = await resumeF;
       _favoritesRow = await favoritesF;
       _collectionsRow = await collectionsF;
-      _genreCount = await genreCountF;
+      final genres = await genresF;
+      _genrePreview = genres.items;
+      _genreCount = genres.total;
 
       final titles = await titlesF;
       _titleCount = titles.length;
@@ -277,7 +222,9 @@ class BookBrowseViewModel extends ChangeNotifier {
       _comicCount = titles.where(isComicItem).length;
       _allSeries = bookSeriesEntries(books: titles, folders: await foldersF);
 
+      _authorTitles = _tallyAuthorTitles(titles);
       final artists = await artistsF;
+      _artists = artists.items;
       _extraAuthors = _peopleAuthors(
         titles,
         known: {for (final artist in artists.items) artist.name.toLowerCase()},
@@ -481,7 +428,7 @@ class BookBrowseViewModel extends ChangeNotifier {
     );
     if (favorites) return page;
     return (
-      items: page.items.where(_matchesScope).toList(),
+      items: page.items.where(matchesScope).toList(),
       read: page.read,
       hasMore: page.hasMore,
     );
@@ -533,7 +480,7 @@ class BookBrowseViewModel extends ChangeNotifier {
           limit: _titleScanLimit,
           sortBy: 'SortName',
           sortOrder: 'Ascending',
-          fields: 'SeriesName,ParentId,Path,People',
+          fields: 'SeriesName,ParentId,Path,People,AlbumArtist,Artists',
           enableImageTypes: 'Primary',
           imageTypeLimit: 1,
           enableTotalRecordCount: false,
@@ -592,19 +539,61 @@ class BookBrowseViewModel extends ChangeNotifier {
       ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
   }
 
-  Future<int> _countGenres() async {
+  /// The first genres with the library's types, and how many there are.
+  Future<({List<AggregatedItem> items, int total})> _loadGenres() async {
     try {
       final resp = await _client.itemsApi.getGenres(
         parentId: libraryId,
         includeItemTypes: combinedTypes,
         recursive: true,
-        limit: 1,
+        sortBy: 'SortName',
+        sortOrder: 'Ascending',
+        limit: _previewSize,
+        fields: 'ItemCounts',
       );
-      return resp['TotalRecordCount'] as int? ??
-          (resp['Items'] as List? ?? const []).length;
+      final items = _pageOf(resp, 0, _previewSize).items;
+      return (
+        items: items,
+        total: resp['TotalRecordCount'] as int? ?? items.length,
+      );
     } catch (_) {
-      return 0;
+      return (items: const <AggregatedItem>[], total: 0);
     }
+  }
+
+  /// How many titles each author name is on, as people, album artist or
+  /// artists.
+  static Map<String, int> _tallyAuthorTitles(List<AggregatedItem> titles) {
+    final counts = <String, int>{};
+    for (final title in titles) {
+      final raw = title.rawData;
+      final people = raw['People'] as List? ?? const [];
+      final artists = raw['Artists'] as List? ?? const [];
+      final names = <String>{
+        for (final person in people.whereType<Map>())
+          if (person['Type'] == 'Author' || person['Role'] == 'Author')
+            if (person['Name'] case final String name) name.toLowerCase(),
+        if (raw['AlbumArtist'] case final String name) name.toLowerCase(),
+        for (final artist in artists.whereType<String>()) artist.toLowerCase(),
+      };
+      for (final name in names) {
+        counts.update(name, (n) => n + 1, ifAbsent: () => 1);
+      }
+    }
+    return counts;
+  }
+
+  /// Up to three member covers of a series, for its stacked look.
+  List<String> seriesCoverUrls(AggregatedItem series) {
+    final covers = series.rawData['StackCovers'] as List? ?? const [];
+    return [
+      for (final cover in covers.whereType<Map>())
+        imageApi.getPrimaryImageUrl(
+          cover['Id'] as String,
+          maxHeight: 400,
+          tag: cover['Tag'] as String?,
+        ),
+    ];
   }
 
   Future<List<AggregatedItem>> _loadFolders() async {
@@ -665,6 +654,92 @@ class BookBrowseViewModel extends ChangeNotifier {
       for (var i = 0; i < boxes.length; i++)
         if (containsBooks[i]) boxes[i],
     ];
+  }
+}
+
+/// What both book library view models know about a library's formats and
+/// titles.
+mixin BookLibraryHelpers {
+  ImageApi get imageApi;
+  bool get isAudiobookLibrary;
+  BookScope get scope;
+  int get bookCount;
+  int get audiobookCount;
+  int get comicCount;
+
+  /// True when the library holds 2 or more formats (books, audiobooks, comics),
+  /// which turns on the format filter.
+  bool get isMixedLibrary {
+    if (isAudiobookLibrary) return false;
+    var count = 0;
+    if (bookCount > 0) count++;
+    if (audiobookCount > 0) count++;
+    if (comicCount > 0) count++;
+    return count >= 2;
+  }
+
+  /// The formats this library holds, after All.
+  List<BookScope> get availableScopes => [
+    BookScope.all,
+    if (bookCount > 0) BookScope.books,
+    if (audiobookCount > 0) BookScope.audiobooks,
+    if (comicCount > 0) BookScope.comics,
+  ];
+
+  List<String> get audiobookTypes =>
+      isAudiobookLibrary ? const ['AudioBook', 'Audio'] : const ['AudioBook'];
+
+  /// Types for whole-library queries. A books library asks for AudioBook too,
+  /// so audiobooks filed in it show up. Jellyfin types comics as Book, so
+  /// they're told apart here instead.
+  List<String> get combinedTypes =>
+      isAudiobookLibrary
+          ? const ['AudioBook', 'Audio']
+          : const ['Book', 'AudioBook'];
+
+  /// Types matching the active format.
+  List<String> get scopedTypes {
+    if (isAudiobookLibrary) return audiobookTypes;
+    return switch (scope) {
+      BookScope.books => const ['Book'],
+      BookScope.audiobooks => audiobookTypes,
+      BookScope.comics => const ['Book'],
+      BookScope.all => combinedTypes,
+    };
+  }
+
+  /// Whether [item] is an audiobook rather than a book or comic. The server's
+  /// type wins, and the guess only settles bare audio items.
+  bool isAudiobookItem(AggregatedItem item) {
+    if (item.isComic) return false;
+    final type = item.type;
+    if (type == 'AudioBook' || type == 'Audio') return true;
+    if (type == 'Book') return false;
+    return item.isAudiobook;
+  }
+
+  bool isComicItem(AggregatedItem item) => item.isComic;
+
+  bool isBookItem(AggregatedItem item) => !isAudiobookItem(item) && !item.isComic;
+
+  bool matchesScope(AggregatedItem item) => switch (scope) {
+    BookScope.all => true,
+    BookScope.books => isBookItem(item),
+    BookScope.audiobooks => isAudiobookItem(item),
+    BookScope.comics => isComicItem(item),
+  };
+
+  /// Time left in an audiobook, or in a book with server progress. Null
+  /// without a runtime.
+  Duration? remainingFor(AggregatedItem item) {
+    final runtime = item.runtime;
+    if (runtime == null) return null;
+    final pct = item.playedPercentage;
+    if (pct == null || pct <= 0) return runtime;
+    if (pct >= 100) return Duration.zero;
+    return Duration(
+      microseconds: (runtime.inMicroseconds * (1.0 - pct / 100.0)).round(),
+    );
   }
 
   String bookSubtitle(AggregatedItem item) {
@@ -743,7 +818,6 @@ class BookBrowseViewModel extends ChangeNotifier {
 /// folders, and neither do audiobooks split into chapter files. Books sharing
 /// a SeriesName are a series too, unless every one of them already sits in a
 /// series folder.
-@visibleForTesting
 List<AggregatedItem> bookSeriesEntries({
   required List<AggregatedItem> books,
   required List<AggregatedItem> folders,
@@ -788,6 +862,7 @@ AggregatedItem _seriesEntry(
     (m) => m.primaryImageTag != null,
     orElse: () => members.first,
   );
+  final stack = members.where((m) => m.primaryImageTag != null).take(3);
   return AggregatedItem(
     id: id,
     serverId: members.first.serverId,
@@ -795,6 +870,10 @@ AggregatedItem _seriesEntry(
       'Name': name,
       'Type': 'BookSeries',
       'ChildCount': members.length,
+      'StackCovers': [
+        for (final member in stack)
+          {'Id': member.id, 'Tag': member.primaryImageTag},
+      ],
       if (folder != null) 'IsFolder': true,
       if (folderTag != null)
         'ImageTags': {'Primary': folderTag}

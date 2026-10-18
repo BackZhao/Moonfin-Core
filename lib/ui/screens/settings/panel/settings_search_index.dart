@@ -1160,6 +1160,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'header',
       'toolbar',
     ]),
+    libraries.leaf('pref_book_library_style', l10n.bookLibraryStyle, keywords: [
+      'books',
+      'audiobooks',
+      'classic',
+      'reading room',
+      'bookstore',
+    ]),
     libraries.leaf(
       'pref_group_items_into_collections',
       l10n.groupItemsIntoCollections,

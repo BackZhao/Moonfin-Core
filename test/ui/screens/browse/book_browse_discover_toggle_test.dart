@@ -18,7 +18,7 @@ import 'package:moonfin/preference/seerr_preferences.dart';
 import 'package:moonfin/preference/user_preferences.dart';
 import 'package:moonfin/ui/screens/browse/book_browse_screen.dart';
 import 'package:moonfin/ui/widgets/book/book_browse_nav.dart';
-import 'package:moonfin/ui/widgets/book/book_segmented_control.dart';
+import 'package:moonfin/ui/widgets/sliding_pill_tabs.dart';
 import 'package:moonfin/ui/widgets/book/discover/book_discover_tab.dart';
 import 'package:moonfin/ui/widgets/left_sidebar.dart';
 import 'package:moonfin/ui/widgets/navigation_layout.dart';
@@ -160,7 +160,7 @@ void main() {
   testWidgets('the Discover tab is offered by default', (tester) async {
     await pumpScreen(tester);
 
-    expect(find.byType(BookSegmentedControl), findsOneWidget);
+    expect(find.byType(SlidingPillTabs), findsOneWidget);
   });
 
   testWidgets('turning the preference off removes the tab control and Discover',
@@ -168,7 +168,7 @@ void main() {
     await prefs.set(UserPreferences.showBookDiscoverTab, false);
     await pumpScreen(tester);
 
-    expect(find.byType(BookSegmentedControl), findsNothing);
+    expect(find.byType(SlidingPillTabs), findsNothing);
     // A bare else fallback would still render Discover for any non-zero tab
     // index, so this half is the regression that matters.
     expect(find.byType(BookDiscoverTab), findsNothing);
@@ -178,12 +178,12 @@ void main() {
       (tester) async {
     await prefs.set(UserPreferences.showBookDiscoverTab, false);
     await pumpScreen(tester);
-    expect(find.byType(BookSegmentedControl), findsNothing);
+    expect(find.byType(SlidingPillTabs), findsNothing);
 
     await prefs.set(UserPreferences.showBookDiscoverTab, true);
     await tester.pumpAndSettle();
 
-    expect(find.byType(BookSegmentedControl), findsOneWidget);
+    expect(find.byType(SlidingPillTabs), findsOneWidget);
   });
 
   testWidgets('the sidebar moves the rail past it on wide layouts',
@@ -208,7 +208,7 @@ void main() {
       matching: find.text('Discover'),
     );
     expect(discover, findsOneWidget);
-    expect(find.byType(BookSegmentedControl), findsNothing);
+    expect(find.byType(SlidingPillTabs), findsNothing);
 
     await tester.tap(discover);
     await tester.pumpAndSettle();
@@ -225,7 +225,7 @@ void main() {
     await prefs.set(UserPreferences.navbarPosition, NavbarPosition.left);
     await pumpScreen(tester);
 
-    expect(tester.getTopLeft(find.byType(BookSegmentedControl)).dx, 16);
+    expect(tester.getTopLeft(find.byType(SlidingPillTabs)).dx, 16);
   });
 
   group('focus on wide layouts', () {

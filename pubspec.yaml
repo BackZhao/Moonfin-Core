@@ -316,6 +316,11 @@ flutter:
     - family: EightBitHero
       fonts:
         - asset: assets/fonts/PressStart2P-Regular.ttf
+    - family: Literata
+      fonts:
+        - asset: assets/fonts/Literata-Regular.ttf
+        - asset: assets/fonts/Literata-SemiBold.ttf
+          weight: 600
 
 # The identity has to match Partner Center's Product identity page or the Store
 # rejects the upload.

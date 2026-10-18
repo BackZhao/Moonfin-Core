@@ -8125,7 +8125,7 @@ abstract class AppLocalizations {
   /// Label for the setting that picks the library page header layout
   ///
   /// In en, this message translates to:
-  /// **'Library Style'**
+  /// **'Main Library Style'**
   String get libraryStyle;
 
   /// Explanation under the library style setting on TV and desktop
@@ -8157,6 +8157,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Docked'**
   String get libraryStyleDocked;
+
+  /// Label for the setting that picks the book and audiobook library layout
+  ///
+  /// In en, this message translates to:
+  /// **'Book Library Style'**
+  String get bookLibraryStyle;
+
+  /// Explanation under the book library style setting
+  ///
+  /// In en, this message translates to:
+  /// **'Classic is the original shelves under a featured title. Reading Room leads with what you\'re reading on large cards. Bookstore browses the whole library in a grid.'**
+  String get bookLibraryStyleDescription;
+
+  /// Book library style option: the original shelves
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get bookLibraryStyleClassic;
+
+  /// Book library style option: large Continue cards over a few shelves
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Room'**
+  String get bookLibraryStyleReadingRoom;
+
+  /// Book library style option: browse entries over a title grid
+  ///
+  /// In en, this message translates to:
+  /// **'Bookstore'**
+  String get bookLibraryStyleBookstore;
+
+  /// How many series a book library holds
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 series} other{{count} series}}'**
+  String bookSeriesCount(int count);
+
+  /// How many books or audiobooks are started but not finished
+  ///
+  /// In en, this message translates to:
+  /// **'{count} in progress'**
+  String bookInProgressCount(int count);
+
+  /// Link from the book library to the full title grid
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Browse 1 title} other{Browse all {count} titles}}'**
+  String bookBrowseAllTitles(int count);
+
+  /// Button in the book library that opens search within it
+  ///
+  /// In en, this message translates to:
+  /// **'Search books'**
+  String get searchBooks;
 
   /// Library button that opens the played status filter, followed by its current value such as All or Unwatched
   ///

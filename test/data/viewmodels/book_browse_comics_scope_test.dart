@@ -2,8 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jellyfin_preference/jellyfin_preference.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:moonfin/data/models/home_row.dart';
 import 'package:moonfin/data/services/row_data_source.dart';
 import 'package:moonfin/data/viewmodels/book_browse_view_model.dart';
+import 'package:moonfin/data/viewmodels/classic_book_browse_view_model.dart';
 import 'package:moonfin/preference/user_preferences.dart';
 import 'package:server_core/server_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -205,5 +207,57 @@ void main() {
     expect(vm.paneItems, isEmpty);
     expect(vm.bookCount, 0);
     expect(vm.comicCount, 0);
+  });
+
+  group('Classic', () {
+    ClassicBookBrowseViewModel buildClassicVm() => ClassicBookBrowseViewModel(
+      libraryId: 'lib-1',
+      dataSource: RowDataSource(client),
+      client: client,
+      collectionType: 'books',
+    );
+
+    test('the comics scope keeps every shelf on its own id', () async {
+      final vm = buildClassicVm();
+      await vm.load();
+      vm.setScope(BookScope.comics);
+
+      final ids = vm.rows.map((r) => r.id).toList();
+      expect(
+        ids.length,
+        ids.toSet().length,
+        reason: 'two shelves sharing an id share a GlobalKey and crash',
+      );
+    });
+
+    test('a comic reaches the all titles shelf', () async {
+      final vm = buildClassicVm();
+      await vm.load();
+
+      final all = vm.rows.firstWhere((r) => r.id == 'allTitles_lib-1');
+      expect(all.items.map((i) => i.id), contains('c1'));
+    });
+
+    test('comics rows ask the grid for a type the server knows', () {
+      final vm = buildClassicVm();
+      for (final id in ['latestComics_lib-1', 'allComics_lib-1']) {
+        final types = vm.seeAllTypesFor(
+          HomeRow(id: id, title: '', rowType: HomeRowType.latestMedia),
+        );
+        expect(types, isNot(contains('Comic')));
+        expect(types, contains('Book'));
+      }
+    });
+
+    test('responses missing their fields leave the screen empty', () async {
+      itemsApi.bareResponses = true;
+      final vm = buildClassicVm();
+      await vm.load();
+
+      expect(vm.isLoading, isFalse);
+      expect(vm.rows, isEmpty);
+      expect(vm.bookCount, 0);
+      expect(vm.comicCount, 0);
+    });
   });
 }

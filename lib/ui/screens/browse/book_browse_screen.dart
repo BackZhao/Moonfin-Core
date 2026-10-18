@@ -21,16 +21,18 @@ import '../../../util/platform_detection.dart';
 import '../../navigation/destinations.dart';
 import '../../widgets/book/book_browse_nav.dart';
 import '../../widgets/book/book_card.dart';
+import '../../widgets/book/book_empty_state.dart';
 import '../../widgets/book/book_format_badge.dart';
 import '../../widgets/book/book_list_tile.dart';
+import '../../widgets/book/book_navigation.dart';
 import '../../widgets/book/book_scope_filter.dart';
-import '../../widgets/book/book_segmented_control.dart';
 import '../../widgets/book/book_shelf_row.dart';
 import '../../widgets/book/discover/book_discover_tab.dart';
 import '../../widgets/focus/can_claim_initial_focus.dart';
 import '../../widgets/focus/context_menu_sheet.dart';
 import '../../widgets/focus/focusable_wrapper.dart';
 import '../../widgets/skeleton/skeleton_library_grid.dart';
+import '../../widgets/sliding_pill_tabs.dart';
 import '../../widgets/focus/locked_focus_row.dart';
 import '../../widgets/focus/request_initial_focus.dart';
 import '../../widgets/bottom_nav/bottom_navbar.dart';
@@ -139,7 +141,7 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
         // The first load lands on the top of the content. After that, an
         // update only steps in when a rebuild took the focused card away,
         // never while the viewer is somewhere on the page.
-        if (_landedOnContent && !_focusIsLost) return;
+        if (_landedOnContent && !bookFocusIsLost) return;
         _landedOnContent = true;
         _focusDefault();
       });
@@ -157,13 +159,6 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
     _coordinator.focusFirst();
   }
 
-  /// Nothing has focus, or it fell back to a scope because the focused node
-  /// left the tree.
-  static bool get _focusIsLost {
-    final primary = FocusManager.instance.primaryFocus;
-    return primary == null || primary is FocusScopeNode;
-  }
-
   bool get _wide => !PlatformDetection.useMobileUi;
 
   bool get _hasResume => _vm.resumeRow?.items.isNotEmpty ?? false;
@@ -171,81 +166,19 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
   FocusNode _gridNode(int index) =>
       getGridItemFocusNode(index, prefix: 'bookGrid');
 
-  void _openItem(AggregatedItem item) {
-    final type = item.type;
-    final isFolder = item.rawData['IsFolder'] as bool? ?? false;
-    // A series named only by metadata has no folder to open.
-    if (type == 'BookSeries' && !isFolder) {
-      context.push(
-        Destinations.searchInLibrary(widget.libraryId, query: item.name),
-      );
-      return;
-    }
-    if (type == 'Genre') {
-      context.push(
-        Destinations.genre(
-          item.name,
-          genreId: item.id,
-          parentId: widget.libraryId,
-        ),
-      );
-      return;
-    }
-    if (type == 'BoxSet') {
-      context.push(Destinations.collection(item.id));
-      return;
-    }
-    if (isFolder || type == 'Folder' || type == 'CollectionFolder') {
-      context.push(Destinations.folder(item.id, serverId: item.serverId));
-      return;
-    }
-    context.push(Destinations.item(item.id, serverId: item.serverId));
-  }
+  void _openItem(AggregatedItem item) =>
+      openBookLibraryItem(context, item, libraryId: widget.libraryId);
 
-  /// Opens the reader for a book or comic, and resumes an audiobook through
-  /// its details screen, which owns playback.
-  void _readOrListen(AggregatedItem item) {
-    if (_vm.isAudiobookItem(item)) {
-      context.push(
-        Destinations.item(item.id, serverId: item.serverId, autoPlay: true),
-      );
-      return;
-    }
-    context.push(Destinations.book(item.id, serverId: item.serverId));
-  }
+  void _readOrListen(AggregatedItem item) =>
+      readOrListenBook(context, item, isAudiobook: _vm.isAudiobookItem(item));
 
   void _onItemLongPress(AggregatedItem item) {
     if (item.type == 'BookSeries' || item.type == 'Genre') return;
     showContextMenu(context, item, onChanged: () => setState(() {}));
   }
 
-  bool _moveVertical(int fromIndex, bool isUp) {
-    if (_coordinator.moveVertical(fromIndex: fromIndex, isUp: isUp)) {
-      return true;
-    }
-    if (isUp) {
-      final focusNavbar = NavigationLayout.focusNavbarNotifier.value;
-      if (focusNavbar != null) {
-        focusNavbar();
-        return true;
-      }
-    }
-    return false;
-  }
-
-  void _onRowLeftEdge() {
-    final navbarIsLeft =
-        _prefs.get(UserPreferences.navbarPosition) == NavbarPosition.left;
-    if (!navbarIsLeft) return;
-    NavigationLayout.focusNavbarNotifier.value?.call();
-  }
-
-  // The sidebar draws over the screen, so content moves past it.
-  double get _sidebarInset {
-    final sidebar =
-        _prefs.get(UserPreferences.navbarPosition) == NavbarPosition.left;
-    return sidebar && !PlatformDetection.useMobileUi ? 52 : 0;
-  }
+  bool _moveVertical(int fromIndex, bool isUp) =>
+      moveBookFocus(_coordinator, fromIndex, isUp);
 
   FocusNode _railNode(String id) =>
       _railNodes.putIfAbsent(id, () => FocusNode(debugLabel: 'bookRail:$id'));
@@ -607,24 +540,12 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
           child: Padding(
             key: _tabsContainerKey,
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
-            child: FocusableWrapper(
+            child: SlidingPillTabs(
+              labels: [l10n.library, l10n.discover],
+              selectedIndex: _tab,
+              onChanged: (v) => setState(() => _tab = v),
               focusNode: _tabsFocusNode,
-              borderRadius: 22,
-              descendantsAreFocusable: false,
-              onSelect: () => setState(() => _tab = _tab == 0 ? 1 : 0),
-              onNavigateLeft: () {
-                if (_tab != 0) setState(() => _tab = 0);
-              },
-              onNavigateRight: () {
-                if (_tab != 1) setState(() => _tab = 1);
-              },
-              onNavigateUp: () => _moveVertical(chain.tabs, true),
-              onNavigateDown: () => _moveVertical(chain.tabs, false),
-              child: BookSegmentedControl(
-                labels: [l10n.library, l10n.discover],
-                selectedIndex: _tab,
-                onChanged: (v) => setState(() => _tab = v),
-              ),
+              onVerticalNavigation: (isUp) => _moveVertical(chain.tabs, isUp),
             ),
           ),
         ),
@@ -693,7 +614,7 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
     final chain = _focusChain(showTabs: false, showScope: false);
 
     return Padding(
-      padding: EdgeInsets.only(left: _sidebarInset),
+      padding: EdgeInsets.only(left: bookSidebarInset),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -713,7 +634,7 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
               sections: _railSections(l10n, showDiscover: showDiscover),
               focusNodeFor: _railNode,
               onNavigateRight: _focusContent,
-              onNavigateLeft: _onRowLeftEdge,
+              onNavigateLeft: focusBookSidebar,
               topInset: topReserve,
             ),
           ),
@@ -782,7 +703,7 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
       tileWidth: tileWidth,
       leadingInset: inset,
       onVerticalNavigation: (isUp) => _moveVertical(entryIndex, isUp),
-      onLeftEdge: _wide ? _focusRail : _onRowLeftEdge,
+      onLeftEdge: _wide ? _focusRail : focusBookSidebar,
       onItemTap: _openItem,
       onItemPlay: _readOrListen,
       onItemLongPress: _onItemLongPress,
@@ -909,7 +830,7 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
                   padding: EdgeInsets.all(48),
                   child: Center(child: CircularProgressIndicator()),
                 )
-              : _buildEmptyState(l10n),
+              : const BookEmptyState(),
         ),
       ];
     }
@@ -1068,44 +989,6 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
       onKeyEvent: wide ? (_, event) => _onGridKey(index, 1, event) : null,
       onTap: () => _openItem(item),
       onLongPress: () => _onItemLongPress(item),
-    );
-  }
-
-  Widget _buildEmptyState(AppLocalizations l10n) {
-    final onSurface = AppColorScheme.onSurface;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.auto_stories_outlined,
-              size: 56,
-              color: onSurface.withValues(alpha: 0.35),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noBooksFound,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: onSurface.withValues(alpha: 0.85),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.noBooksFoundDescription,
-              style: TextStyle(
-                fontSize: 14,
-                color: onSurface.withValues(alpha: 0.5),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

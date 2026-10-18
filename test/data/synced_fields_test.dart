@@ -128,6 +128,7 @@ void main() {
     'languageOverride',
     'libraryPosterSize',
     'libraryStyle',
+    'bookLibraryStyle',
     'loadingAnimationImage',
     'loadingAnimationPosition',
     'loadingAnimationSize',

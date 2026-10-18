@@ -6061,7 +6061,7 @@
   "@libraryView": {
     "description": "Section title for library view settings"
   },
-  "libraryStyle": "Library Style",
+  "libraryStyle": "Main Library Style",
   "@libraryStyle": {
     "description": "Label for the setting that picks the library page header layout"
   },
@@ -6084,6 +6084,51 @@
   "libraryStyleDocked": "Docked",
   "@libraryStyleDocked": {
     "description": "Library style option: a side panel on TV and desktop, a bottom bar on phones"
+  },
+  "bookLibraryStyle": "Book Library Style",
+  "@bookLibraryStyle": {
+    "description": "Label for the setting that picks the book and audiobook library layout"
+  },
+  "bookLibraryStyleDescription": "Classic is the original shelves under a featured title. Reading Room leads with what you're reading on large cards. Bookstore browses the whole library in a grid.",
+  "@bookLibraryStyleDescription": {
+    "description": "Explanation under the book library style setting"
+  },
+  "bookLibraryStyleClassic": "Classic",
+  "@bookLibraryStyleClassic": {
+    "description": "Book library style option: the original shelves"
+  },
+  "bookLibraryStyleReadingRoom": "Reading Room",
+  "@bookLibraryStyleReadingRoom": {
+    "description": "Book library style option: large Continue cards over a few shelves"
+  },
+  "bookLibraryStyleBookstore": "Bookstore",
+  "@bookLibraryStyleBookstore": {
+    "description": "Book library style option: browse entries over a title grid"
+  },
+  "bookSeriesCount": "{count, plural, =1{1 series} other{{count} series}}",
+  "@bookSeriesCount": {
+    "description": "How many series a book library holds",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "bookInProgressCount": "{count} in progress",
+  "@bookInProgressCount": {
+    "description": "How many books or audiobooks are started but not finished",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "bookBrowseAllTitles": "{count, plural, =1{Browse 1 title} other{Browse all {count} titles}}",
+  "@bookBrowseAllTitles": {
+    "description": "Link from the book library to the full title grid",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "searchBooks": "Search books",
+  "@searchBooks": {
+    "description": "Button in the book library that opens search within it"
   },
   "libraryShowLabel": "Show",
   "@libraryShowLabel": {

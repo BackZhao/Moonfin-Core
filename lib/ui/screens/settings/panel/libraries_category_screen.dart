@@ -61,6 +61,20 @@ class _LibrariesCategoryScreen extends StatelessWidget {
                 },
                 onChanged: _pushPersonalizationSync,
               ),
+              EnumPreferenceTile<BookLibraryStyle>(
+                key: const ValueKey('pref_book_library_style'),
+                preference: UserPreferences.bookLibraryStyle,
+                title: l10n.bookLibraryStyle,
+                description: l10n.bookLibraryStyleDescription,
+                icon: Icons.auto_stories_outlined,
+                labelOf: (v) => switch (v) {
+                  BookLibraryStyle.classic => l10n.bookLibraryStyleClassic,
+                  BookLibraryStyle.readingRoom =>
+                    l10n.bookLibraryStyleReadingRoom,
+                  BookLibraryStyle.bookstore => l10n.bookLibraryStyleBookstore,
+                },
+                onChanged: _pushPersonalizationSync,
+              ),
               SwitchPreferenceTile(
                 preference: UserPreferences.groupItemsIntoCollections,
                 title: l10n.groupItemsIntoCollections,

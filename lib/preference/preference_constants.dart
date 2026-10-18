@@ -367,6 +367,18 @@ enum LibraryStyle {
   docked;
 }
 
+/// Selectable layout for book and audiobook libraries.
+///
+/// [classic] is the original shelves under a featured title. [readingRoom]
+/// leads with large Continue cards over a few shelves. [bookstore] is the
+/// default, a rail or tiles of browse entries over a paged title grid. Stored
+/// per server and user.
+enum BookLibraryStyle {
+  classic,
+  readingRoom,
+  bookstore;
+}
+
 /// Selectable algorithm source for similarity recommendation system.
 enum RecommendationSystemSource {
   local,
