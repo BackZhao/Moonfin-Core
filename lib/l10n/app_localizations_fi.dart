@@ -4326,13 +4326,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get magenta => 'Magenta';
 
   @override
-  String get global => 'Maailmanlaajuinen';
+  String get global => 'Globaali';
 
   @override
-  String get desktop => 'Työpöytä';
+  String get desktop => 'Työpöytäversio';
 
   @override
-  String get mobile => 'mobiili';
+  String get mobile => 'Mobiiliversio';
 
   @override
   String get tv => 'TV';
@@ -4613,7 +4613,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get libraryView => 'Kirjastonäkymä';
 
   @override
-  String get libraryStyle => 'Kirjastotyyli';
+  String get libraryStyle => 'Pääkirjaston tyyli';
 
   @override
   String get libraryStyleDescription =>
@@ -4633,20 +4633,20 @@ class AppLocalizationsFi extends AppLocalizations {
   String get libraryStyleDocked => 'Telakoituna';
 
   @override
-  String get bookLibraryStyle => 'Book Library Style';
+  String get bookLibraryStyle => 'Kirjahyllyn Tyyli';
 
   @override
   String get bookLibraryStyleDescription =>
-      'Classic is the original shelves under a featured title. Reading Room leads with what you\'re reading on large cards. Bookstore browses the whole library in a grid.';
+      '”Classic” on alkuperäinen hyllyvalikoima, joka sijaitsee esillä olevan teoksen alla. ”Reading Room” näyttää etusivulla suuria kortteja, joissa on tiedot parhaillaan lukemastasi teoksesta. ”Bookstore” esittelee koko kirjaston ruudukkomuodossa.';
 
   @override
   String get bookLibraryStyleClassic => 'Classic';
 
   @override
-  String get bookLibraryStyleReadingRoom => 'Reading Room';
+  String get bookLibraryStyleReadingRoom => 'Lukunurkka';
 
   @override
-  String get bookLibraryStyleBookstore => 'Bookstore';
+  String get bookLibraryStyleBookstore => 'Kirjakauppa';
 
   @override
   String get musicLibraryStyle => 'Music Library Style';
@@ -4689,7 +4689,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String bookInProgressCount(int count) {
-    return '$count in progress';
+    return '$count käynnissä';
   }
 
   @override
@@ -4704,7 +4704,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get searchBooks => 'Search books';
+  String get searchBooks => 'Hae kirjoja';
 
   @override
   String get libraryShowLabel => 'Näytä';
@@ -4993,10 +4993,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Mukauta etusivu rivien täytön välistä etäisyyttä';
 
   @override
-  String get homeRowsGenresAndStudios => 'Genres and Studios';
+  String get homeRowsGenresAndStudios => 'Genret & Studiot';
 
   @override
-  String get homeRowsExternalLists => 'External Lists';
+  String get homeRowsExternalLists => 'Ulkoiset listat';
 
   @override
   String get perRowSettings => 'Rivikohtaiset asetukset';
@@ -6158,83 +6158,83 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get adminPremiereNoteLiveTv =>
-      'Live TV needs Emby Premiere. Without it the server doesn\'t import channels or record anything.';
+      'Suora TV-lähetys vaatii Emby Premiere -sovelluksen. Ilman sitä palvelin ei tuo kanavia eikä tallenna mitään';
 
   @override
   String get adminPremiereNoteBackups =>
-      'Backup & Restore needs Emby Premiere once its trial ends.';
+      'Varmuuskopiointi- ja palautustoiminnot edellyttävät Emby Premiere -ohjelmistoa kokeilujakson päätyttyä.';
 
   @override
-  String get adminGeneralRunAtStartup => 'Run the server at startup';
+  String get adminGeneralRunAtStartup =>
+      'Käynnistä palvelin järjestelmän käynnistyksen yhteydessä';
 
   @override
   String get adminGeneralLaunchWebApp =>
-      'Open the web app in a browser when the server starts';
+      'Avaa verkkosovellus selaimessa, kun palvelin käynnistyy';
 
   @override
-  String get adminGeneralBannerText => 'Home screen banner text';
+  String get adminGeneralBannerText => 'Aloitusnäytön bannerin teksti';
 
   @override
   String get adminGeneralBannerTextHelp =>
-      'Shown to every user on their home screen';
+      'Näytetään jokaiselle käyttäjälle aloitusnäytöllä';
 
   @override
-  String get adminGeneralSectionMaintenance => 'Maintenance mode';
+  String get adminGeneralSectionMaintenance => 'Huoltotila';
 
   @override
-  String get adminGeneralMaintenanceMode =>
-      'Put the server into maintenance mode';
+  String get adminGeneralMaintenanceMode => 'Aseta palvelin huoltotilaan';
 
   @override
   String get adminGeneralMaintenanceModeHelp =>
-      'Users only see the maintenance message.';
+      'Käyttäjille näkyy vain huoltoviesti.';
 
   @override
-  String get adminGeneralMaintenanceMessage => 'Maintenance message';
+  String get adminGeneralMaintenanceMessage => 'Huoltotiedote';
 
   @override
   String get adminGeneralMaintenanceMessageHelp =>
-      'Leave it blank for a general message in each user\'s language.';
+      'Jätä kenttä tyhjäksi, jos haluat näyttää yleisen viestin kunkin käyttäjän kielellä.';
 
   @override
-  String get adminGeneralSectionUpdates => 'Automatic updates';
+  String get adminGeneralSectionUpdates => 'Automaattiset päivitykset';
 
   @override
-  String get adminGeneralAutoUpdate => 'Update the server automatically';
+  String get adminGeneralAutoUpdate => 'Päivitä palvelin automaattisesti';
 
   @override
   String get adminGeneralAutoRestart =>
-      'Restart automatically to apply updates';
+      'Käynnistä tietokone uudelleen automaattisesti päivitysten asentamiseksi';
 
   @override
   String get adminGeneralAutoRestartHelp =>
-      'The server only restarts while no users are active.';
+      'Palvelin käynnistyy uudelleen vain silloin, kun aktiivisia käyttäjiä ei ole.';
 
   @override
   String adminTaskTriggerSystemEvent(String event) {
-    return 'After a system event ($event)';
+    return 'Järjestelmätapahtuman jälkeen ($event)';
   }
 
   @override
   String get adminPluginNeedsPremiere =>
-      'Needs Emby Premiere after a 14-day free trial';
+      'Vaatii Emby Premiere -sovelluksen 14 päivän ilmaisen kokeilujakson jälkeen';
 
   @override
   String get adminEmbyBackupsHelp =>
-      'Emby backs up through its Backup & Restore plugin.';
+      'Emby varmuuskopioi tiedot Backup & Restore -laajennuksen avulla.';
 
   @override
   String get adminEmbyBackupsNoPlugin =>
-      'The Backup & Restore plugin isn\'t installed. Install it from the plugin catalog to back up this server.';
+      'Backup & Restore -laajennusta ei ole asennettu. Asenna se laajennusvalikoimasta, jotta voit varmuuskopioida tämän palvelimen.';
 
   @override
-  String get adminEmbyBackupNow => 'Back up now';
+  String get adminEmbyBackupNow => 'Tee varmuuskopio nyt';
 
   @override
-  String get adminEmbyFullBackup => 'Full backup';
+  String get adminEmbyFullBackup => 'Täydellinen varmuuskopiointi';
 
   @override
-  String get adminEmbyLightBackups => 'Database backups';
+  String get adminEmbyLightBackups => 'Tietokannan varmuuskopiot';
 
   @override
   String adminEmbyBackupServerVersion(String version) {
@@ -6243,285 +6243,293 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String adminEmbyRestoreConfirm(String name) {
-    return 'Restore $name? It replaces this server\'s libraries, settings, users and passwords, and the server shuts down when it\'s done. You may need to start it again yourself.';
+    return 'Palautetaanko $name? Tämä korvaa tämän palvelimen kirjastot, asetukset, käyttäjät ja salasanat, ja palvelin sammuu, kun toimenpide on valmis. Saatat joutua käynnistämään sen uudelleen itse.';
   }
 
   @override
-  String get adminEmbyRestoreServerId => 'Restore the server ID';
+  String get adminEmbyRestoreServerId => 'Palauta palvelintunnus';
 
   @override
   String get adminEmbyRestoreServerIdHelp =>
-      'Turn this off when you restore the same backup onto more than one server.';
+      'Poista tämä valinta käytöstä, kun palautat saman varmuuskopion useammalle kuin yhdelle palvelimelle.';
 
   @override
   String get adminEmbyRestoreShuttingDown =>
-      'The restore is done and the server is shutting down. Start it again if it doesn\'t restart by itself.';
+      'Palautus on valmis ja palvelin sammuu. Käynnistä se uudelleen, jos se ei käynnisty itsestään.';
 
   @override
   String get adminHiddenRemotely =>
-      'Hide from login screens when connected remotely';
+      'Piilota kirjautumisnäytöt, kun olet yhteydessä etäyhteyden kautta';
 
   @override
   String get adminHiddenFromUnusedDevices =>
-      'Hide from login screens on devices they\'ve never signed in on';
+      'Piilota kirjautumissivut laitteilta, joilla käyttäjä ei ole koskaan kirjautunut sisään';
 
   @override
   String get adminSimultaneousStreamLimitHelp =>
-      'Limits how many videos this user can play at once.';
+      'Rajoittaa, kuinka monta videota tämä käyttäjä voi toistaa kerralla.';
 
   @override
-  String get adminUnlimited => 'Unlimited';
+  String get adminUnlimited => 'Rajoittamaton';
 
   @override
-  String get adminAutoRemoteQuality => 'Auto remote quality (Mbps)';
+  String get adminAutoRemoteQuality => 'Automaattisen etäyhteyden laatu (Mbps)';
 
   @override
   String get adminAutoRemoteQualityHelp =>
-      'Used remotely when the player is set to auto quality. Leave empty to detect it.';
+      'Käytetään etäohjauksella, kun soittimen laatu on asetettu automaattiseksi. Jätä kenttä tyhjäksi, jotta se tunnistetaan.';
 
   @override
-  String get adminAllowCameraUpload => 'Allow camera upload';
+  String get adminAllowCameraUpload => 'Salli kuvien lataaminen kamerasta';
 
   @override
-  String get adminAllowSubtitleDownloading => 'Allow subtitle downloading';
+  String get adminAllowSubtitleDownloading => 'Salli tekstityksen lataaminen';
 
   @override
-  String get adminAllowMediaConversion => 'Allow media conversion';
+  String get adminAllowMediaConversion => 'Salli tiedostomuodon muuntaminen';
 
   @override
   String get adminAllowSyncTranscoding =>
-      'Allow downloads that need transcoding';
+      'Salli lataukset, jotka vaativat transkoodausta';
 
   @override
   String get adminAllowSharingPersonalItems =>
-      'Allow sharing playlists with other users';
+      'Salli soittolistojen jakaminen muiden käyttäjien kanssa';
 
   @override
   String get adminAllowPreferenceAccess =>
-      'Allow changing their own password and profile image';
+      'Anna käyttäjille mahdollisuus muuttaa omaa salasanaansa ja profiilikuvaansa';
 
   @override
-  String get adminTagMode => 'Tag mode';
+  String get adminTagMode => 'Tunniste-tila';
 
   @override
   String get adminEmbyConnect => 'Emby Connect';
 
   @override
-  String get adminEmbyConnectUser => 'Emby Connect username or email';
+  String get adminEmbyConnectUser =>
+      'Emby Connectin käyttäjätunnus tai sähköpostiosoite';
 
   @override
   String get adminEmbyConnectHelp =>
-      'Lets this user sign in from any Emby app without knowing the server address.';
+      'Tämän ansiosta käyttäjä voi kirjautua sisään mistä tahansa Emby-sovelluksesta ilman, että hän tietää palvelimen osoitetta.';
 
   @override
-  String get adminEmbyConnectLink => 'Link';
+  String get adminEmbyConnectLink => 'Linkki';
 
   @override
-  String get adminEmbyConnectUnlink => 'Unlink';
+  String get adminEmbyConnectUnlink => 'Poista linkki';
 
   @override
-  String get adminEmbyConnectLinked => 'Linked to Emby Connect';
+  String get adminEmbyConnectLinked => 'Yhdistetty Emby Connectiin';
 
   @override
   String get adminEmbyConnectPending =>
-      'Invitation sent. The link is made once they accept it.';
+      'Kutsu on lähetetty. Yhteys muodostuu, kun he hyväksyvät kutsun.';
 
   @override
-  String get adminEmbyConnectUnlinked => 'Emby Connect link removed';
+  String get adminEmbyConnectUnlinked => 'Emby Connect -linkki poistettu';
 
   @override
   String get adminEmbyConnectNotFound =>
-      'No Emby Connect account has that username or email.';
+      'Yhdelläkään Emby Connect -tilillä ei ole kyseistä käyttäjätunnusta tai sähköpostiosoitetta.';
 
   @override
-  String get adminLibImportPlaylists => 'Import playlist files';
+  String get adminLibImportPlaylists => 'Tuo soittolistatiedostot';
 
   @override
-  String get adminLibExcludeFromSearch => 'Exclude from global search';
+  String get adminLibExcludeFromSearch => 'Jätä pois yleisestä hausta';
 
   @override
-  String get adminLibForcedSubtitlesOnly => 'Download forced subtitles only';
+  String get adminLibForcedSubtitlesOnly =>
+      'Lataa vain pakolliset tekstitykset';
 
   @override
   String get adminLibImportCollections =>
-      'Import collections from metadata downloaders';
+      'Tuo kokoelmia metatietojen latausohjelmista';
 
   @override
-  String get adminLibThumbnailInterval => 'Preview thumbnail interval';
+  String get adminLibThumbnailInterval => 'Esikatselupikkukuvien väli';
 
   @override
   String adminLibThumbnailEverySeconds(int count) {
-    return 'Every $count seconds';
+    return 'Joka $count sekunti';
   }
 
   @override
-  String get adminLibThumbnailAtChapters => 'At chapter markers';
+  String get adminLibThumbnailAtChapters => 'Lukuja merkitsevissä kohdissa';
 
   @override
   String get adminLibSaveThumbnailsWithMedia =>
-      'Save preview thumbnails into media folders';
+      'Tallenna esikatselupikkukuvat mediakansioihin';
 
   @override
-  String get adminLibrarySectionMarkers => 'Intro markers';
+  String get adminLibrarySectionMarkers => 'Intromerkit';
 
   @override
-  String get adminLibIntroDetection => 'Detect intros';
+  String get adminLibIntroDetection => 'Tunnista introt';
 
   @override
   String get adminLibIntroDetectionDuringScan =>
-      'Detect intros during the library scan';
+      'Tunnista intro-kohdat kirjaston skannauksen aikana';
 
   @override
-  String get adminProviderEmbyGuide => 'Emby Guide Data';
+  String get adminProviderEmbyGuide => 'Emby-oppaan tiedot';
 
   @override
   String get adminLiveTvEmbyGuideSelectLineup =>
-      'Select a lineup. If none are listed, check the postal code. Lineups need Emby Premiere.';
+      'Valitse ohjelmatarjonta. Jos luettelossa ei ole yhtään vaihtoehtoa, tarkista postinumero. Ohjelmatarjontaan tarvitaan Emby Premiere.';
 
   @override
-  String get adminLiveTvWakeServer => 'Wake the server for recordings';
+  String get adminLiveTvWakeServer => 'Herätä palvelin tallennuksia varten';
 
   @override
-  String get adminDrawerLiveTvChannels => 'Live TV Channels';
+  String get adminDrawerLiveTvChannels => 'Suorat TV-kanavat';
 
   @override
   String get adminPageDescLiveTvChannels =>
-      'Turn channels on and off and set their order';
+      'Kanavien kytkeminen päälle ja pois päältä sekä niiden järjestyksen määrittäminen';
 
   @override
   String get adminLiveTvChannelsEmpty =>
-      'No channels yet. They show up here once a tuner is set up and the server has imported its channels.';
+      'Kanavia ei ole vielä näkyvissä. Ne näkyvät tässä, kun viritin on asennettu ja palvelin on tuonut kanavansa.';
 
   @override
-  String get adminTranscodingHwaAdvanced => 'Advanced';
+  String get adminTranscodingHwaAdvanced => 'Edistynyt';
 
   @override
   String get adminTranscodingHwaHelp =>
-      'Advanced lets you pick and order the hardware codecs.';
+      '”Advanced”-asetuksissa voit valita ja järjestää laitteistokoodekit.';
 
   @override
-  String get adminTranscodingHwDecoders => 'Preferred hardware decoders';
+  String get adminTranscodingHwDecoders =>
+      'Suositellut laitteistopohjaiset dekooderit';
 
   @override
-  String get adminTranscodingHwEncoders => 'Preferred hardware encoders';
+  String get adminTranscodingHwEncoders =>
+      'Suositeltavat laitteistopohjaiset kooderit';
 
   @override
   String get adminTranscodingTempPathHelp =>
-      'Where the transcoder keeps its working files. Leave it empty to use the server\'s data folder.';
+      'Paikka, johon transkooderi tallentaa työtiedostonsa. Jätä kenttä tyhjäksi, jos haluat käyttää palvelimen datakansiota.';
 
   @override
   String get adminTranscodingThrottleHelp =>
-      'Slows transcoding down once enough is buffered, to lower CPU use.';
+      'Hidastaa transkoodausta, kun puskuriin on kertynyt riittävästi dataa, jotta prosessorin kuormitusta voidaan vähentää.';
 
   @override
   String get adminTranscodingDownmixHelp =>
-      'Raises the volume when audio is downmixed. 1 keeps the original volume.';
+      'Nostaa äänenvoimakkuutta, kun ääni miksataan alaspäin. Arvo 1 säilyttää alkuperäisen äänenvoimakkuuden.';
 
   @override
   String get adminTranscodingFontExtraction =>
-      'Allow font extraction on the fly';
+      'Salli fonttien poiminta lennossa';
 
   @override
-  String get adminTranscodingMaxResolution => 'Max transcoding resolution';
+  String get adminTranscodingMaxResolution =>
+      'Transkoodauksen enimmäistarkkuus';
 
   @override
   String get adminTranscodingMaxResolutionHelp =>
-      'A limit on every transcode, whatever quality the app asks for.';
+      'Jokaiselle transkoodaukselle asetetaan rajoitus riippumatta siitä, mitä laatua sovellus vaatii.';
 
   @override
   String get adminTranscodingToneMapSoftware =>
-      'Tone mapping in software transcodes';
+      'Tone mapping ohjelmistopohjaisissa transkoodauksissa';
 
   @override
   String get adminTranscodingToneMapHardware =>
-      'Tone mapping in hardware transcodes';
+      'Sävykartoitus laitteistopohjaisissa transkoodauksissa';
 
   @override
   String get adminTranscodingToneMapHelp =>
-      'Keeps HDR video from looking dim and washed out when it\'s transcoded.';
+      'Estää HDR-videon näyttämästä himmeältä ja haalistuneelta, kun se transkoodataan.';
 
   @override
-  String get adminNetworkingLocalAddress => 'Local IP address';
+  String get adminNetworkingLocalAddress => 'Paikallinen IP-osoite';
 
   @override
   String get adminNetworkingLocalAddressHelp =>
-      'The local address the server gives to apps. Leave it empty to detect it automatically.';
+      'Paikallinen osoite, jonka palvelin antaa sovelluksille. Jätä kenttä tyhjäksi, jotta osoite tunnistetaan automaattisesti.';
 
   @override
   String get adminNetworkingBehindProxy =>
-      'HTTPS is handled by a reverse proxy';
+      'HTTPS-liikennettä hoitaa käänteisvälityspalvelin';
 
   @override
-  String get adminNetworkingExternalDomain => 'External domain';
+  String get adminNetworkingExternalDomain => 'Ulkoinen verkkotunnus';
 
   @override
   String get adminNetworkingExternalDomainHelp =>
-      'A domain or dynamic DNS name for remote connections, without the protocol or port. A custom certificate needs it.';
+      'Etäyhteyksiä varten käytettävä verkkotunnus tai dynaaminen DNS-nimi ilman protokollaa tai porttia. Mukautettu varmenne tarvitsee tämän tiedon.';
 
   @override
-  String get adminNetworkingUpnp => 'Enable automatic port mapping';
+  String get adminNetworkingUpnp =>
+      'Ota automaattinen porttien kartoitus käyttöön';
 
   @override
   String get adminNetworkingUpnpHelp =>
-      'Tries to map the public port to the local port with UPnP. Some routers don\'t support it.';
+      'Yrittää yhdistää julkisen portin paikalliseen porttiin UPnP:n avulla. Jotkut reitittimet eivät tue tätä ominaisuutta.';
 
   @override
   String get adminNetworkingProxyHeaders =>
-      'Read proxy headers for client addresses';
+      'Lue välityspalvelimen otsikot asiakkaan osoitteiden selvittämiseksi';
 
   @override
   String get adminNetworkingProxyHeadersHelp =>
-      'Uses headers like X-Forwarded-For to find each client\'s address. Only turn this on behind a reverse proxy.';
+      'Käyttää X-Forwarded-For-kaltaisia otsikoita kunkin asiakkaan osoitteen selvittämiseen. Ota tämä käyttöön vain käänteisen välityspalvelimen takana.';
 
   @override
   String get adminNetworkingProxyHeadersRemote =>
-      'Only when they hold remote addresses';
+      'Vain silloin, kun niillä on etäosoitteita';
 
   @override
-  String get adminNetworkingIpv4Only => 'Use IPv4 for outgoing requests';
+  String get adminNetworkingIpv4Only =>
+      'Käytä IPv4-protokollaa lähtevissä pyynnöissä';
 
   @override
   String get adminNetworkingIpv4OnlyHelp =>
-      'For when metadata providers and other services can\'t be reached over IPv6.';
+      'Silloin, kun metatietojen tarjoajia ja muita palveluita ei voida tavoittaa IPv6-verkossa.';
 
   @override
-  String get adminOnePerLine => 'One per line';
+  String get adminOnePerLine => 'Yksi riviä kohden';
 
   @override
-  String get adminStreamingStreamLimit => 'Max simultaneous video streams';
+  String get adminStreamingStreamLimit =>
+      'Samanaikaisten videovirtojen enimmäismäärä';
 
   @override
   String get adminStreamingStreamLimitHelp =>
-      'How many videos can play at once across the server. 0 means no limit.';
+      'Kuinka monta videota voidaan toistaa samanaikaisesti palvelimella. Arvo 0 tarkoittaa, ettei rajoitusta ole.';
 
   @override
-  String get adminSyncJobsConversions => 'Conversion jobs';
+  String get adminSyncJobsConversions => 'Muuntotyöt';
 
   @override
-  String get adminSyncJobsDownloads => 'Download jobs';
+  String get adminSyncJobsDownloads => 'Lataa tehtävät';
 
   @override
-  String get adminSyncJobsEmpty => 'No jobs';
+  String get adminSyncJobsEmpty => 'Ei tehtäviä';
 
   @override
-  String get adminSyncJobCancel => 'Cancel job';
+  String get adminSyncJobCancel => 'Peruuta tehtävä';
 
   @override
   String adminSyncJobCancelConfirm(String name) {
-    return 'Cancel $name and remove it from the list?';
+    return 'Haluatko peruuttaa $name ja poistaa sen luettelosta?';
   }
 
   @override
-  String get adminSyncJobConverting => 'Converting';
+  String get adminSyncJobConverting => 'Muuntaminen';
 
   @override
-  String get adminSyncJobReady => 'Ready to transfer';
+  String get adminSyncJobReady => 'Valmis siirrettäväksi';
 
   @override
-  String get adminSyncJobTransferring => 'Transferring';
+  String get adminSyncJobTransferring => 'Siirtäminen';
 
   @override
-  String get adminSyncJobCompletedWithError => 'Completed with errors';
+  String get adminSyncJobCompletedWithError => 'Virheellisesti suoritettu';
 
   @override
   String adminSyncJobItemCount(int count) {
@@ -6535,238 +6543,246 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get adminDrawerDatabase => 'Database';
+  String get adminDrawerDatabase => 'Tietokanta';
 
   @override
-  String get adminPageDescDatabase => 'Cache size and upkeep';
+  String get adminPageDescDatabase => 'Välimuistin koko ja ylläpito';
 
   @override
   String get adminDatabaseWarning =>
-      'These are advanced options. Leave them at their defaults unless you have a reason to change them.';
+      'Nämä ovat lisäasetuksia. Jätä ne oletusasetuksiinsa, ellei sinulla ole syytä muuttaa niitä.';
 
   @override
-  String get adminDatabaseCacheSize => 'Database cache size (MB)';
+  String get adminDatabaseCacheSize => 'Tietokannan välimuistin koko (MB)';
 
   @override
   String get adminDatabaseCacheSizeHelp =>
-      'How much of each database file the server keeps in memory. More can make the server faster. Takes effect after a restart.';
+      'Kuinka suuren osan kustakin tietokantatiedostosta palvelin säilyttää muistissa. Suurempi arvo voi nopeuttaa palvelinta. Muutos astuu voimaan uudelleenkäynnistyksen jälkeen.';
 
   @override
   String get adminDatabaseOptimize =>
-      'Optimize the database when the server shuts down';
+      'Optimoi tietokanta palvelimen sammuttaessa';
 
   @override
   String get adminDatabaseOptimizeHelp =>
-      'Usually this does nothing, but now and then it runs an analysis that helps the server\'s queries. Shutdowns can take longer.';
+      'Yleensä tämä ei aiheuta mitään, mutta silloin tällöin se suorittaa analyysin, joka auttaa palvelimen kyselyjä. Sammuttaminen voi kestää kauemmin.';
 
   @override
-  String get adminDatabaseAnalysisLimit => 'Analysis row limit';
+  String get adminDatabaseAnalysisLimit => 'Analyysin riviraja';
 
   @override
   String get adminDatabaseAnalysisLimitHelp =>
-      'About how many rows of each index the optimize step reads. More rows work better but can slow shutdowns.';
+      'Kuinka monta riviä kustakin indeksistä optimointivaihe lukee. Suurempi rivimäärä parantaa suorituskykyä, mutta voi hidastaa järjestelmän sammuttamista.';
 
   @override
-  String get adminDatabaseVacuum => 'Vacuum the database on the next startup';
+  String get adminDatabaseVacuum =>
+      'Tyhjennä tietokanta seuraavalla käynnistyksellä';
 
   @override
   String get adminDatabaseVacuumHelp =>
-      'Rebuilds the database file so it takes up the least space, which can help performance. The server can\'t be used while it runs and shows no progress, so don\'t force it closed. It turns itself back off after that startup.';
+      'Rakentaa tietokantatiedoston uudelleen niin, että se vie mahdollisimman vähän tilaa, mikä voi parantaa suorituskykyä. Palvelinta ei voi käyttää tämän prosessin aikana, eikä sen etenemistä näy, joten älä sulje sitä väkisin. Se sammuu itsestään kyseisen käynnistyksen jälkeen.';
 
   @override
-  String get adminDrawerCinemaIntros => 'Cinema Intros';
+  String get adminDrawerCinemaIntros => 'Elokuvateatteri-introt';
 
   @override
-  String get adminPageDescCinemaIntros => 'Trailers and intros before playback';
+  String get adminPageDescCinemaIntros =>
+      'Trailerit ja johdanto-osuudet ennen toistoa';
 
   @override
-  String get adminCinemaIntrosPlayBefore => 'Play intros before';
+  String get adminCinemaIntrosPlayBefore => 'Toista introt ennen';
 
   @override
   String get adminCinemaIntrosUpcoming =>
-      'Include trailers from new and upcoming movies';
+      'Lisää uusien ja tulevien elokuvien traileri';
 
   @override
-  String get adminCinemaIntrosOlder => 'Include trailers from older movies';
+  String get adminCinemaIntrosOlder => 'Lisää vanhempien elokuvien traileri';
 
   @override
   String get adminCinemaIntrosLibrary =>
-      'Include trailers from movies in my libraries';
+      'Lisää elokuvien traileri kirjastoihini';
 
   @override
-  String get adminCinemaIntrosLibraryHelp => 'Needs local trailers set up.';
+  String get adminCinemaIntrosLibraryHelp =>
+      'Paikalliset trailerit on asetettava.';
 
   @override
-  String get adminCinemaIntrosCount => 'Number of trailers to play';
+  String get adminCinemaIntrosCount => 'Toistettavien trailerien lukumäärä';
 
   @override
-  String get adminCinemaIntrosParental => 'Smart parental control';
+  String get adminCinemaIntrosParental => 'Älykäs ikärajan valvonta';
 
   @override
   String get adminCinemaIntrosParentalHelp =>
-      'Only picks trailers rated the same as or lower than what\'s being watched.';
+      'Valitsee vain sellaisia trailereita, joiden luokitus on sama tai alempi kuin katsottavan elokuvan luokitus.';
 
   @override
   String get adminCinemaIntrosUnwatchedOnly =>
-      'Only play intros before unwatched content';
+      'Toista introja vain ennen katsomattomia sisältöjä';
 
   @override
   String get adminCinemaIntrosSimilarOnly =>
-      'Only play trailers similar to what\'s being watched';
+      'Näytä vain sellaisia trailereita, jotka ovat samantyyppisiä kuin parhaillaan katsottava video';
 
   @override
   String get adminCinemaIntrosSimilarOnlyHelp =>
-      'Based on shared genres, tags, studios and so on.';
+      'Perustuen yhteisiin genreihin, tunnisteisiin, tuotantoyhtiöihin ja niin edelleen..';
 
   @override
-  String get adminCinemaIntrosCustom => 'Custom intros';
+  String get adminCinemaIntrosCustom => 'Mukautetut introt';
 
   @override
-  String get adminCinemaIntrosCustomPath => 'Custom intros folder';
+  String get adminCinemaIntrosCustomPath =>
+      'Mukautetut intro-tiedostot -kansio';
 
   @override
   String get adminCinemaIntrosCustomPathHelp =>
-      'A folder of videos. One is picked at random and plays after the trailers.';
+      'Kansio, jossa on videoita. Yksi niistä valitaan satunnaisesti ja se toistetaan mainosten jälkeen.';
 
   @override
-  String get adminCinemaIntrosCodecPath => 'Codec intros folder';
+  String get adminCinemaIntrosCodecPath => 'Codec intro kansio';
 
   @override
   String get adminCinemaIntrosCodecPathHelp =>
-      'A folder of videos. One whose file name matches the video codec, audio codec, audio profile or a tag plays before the main feature.';
+      'Videokansio. Ennen pääelokuvaa toistetaan video, jonka tiedostonimi vastaa videokoodekkia, äänikoodekkia, ääniprofiilia tai tiettyä tunnistetta.';
 
   @override
   String get adminDrawerDlna => 'DLNA';
 
   @override
-  String get adminPageDescDlna => 'Play To and the DLNA server';
+  String get adminPageDescDlna => 'Play To ja DLNA-palvelin';
 
   @override
-  String get adminDlnaPlayTo => 'Enable DLNA Play To';
+  String get adminDlnaPlayTo => 'Ota DLNA Play To käyttöön';
 
   @override
   String get adminDlnaPlayToHelp =>
-      'Emby can find devices on your network and control them remotely.';
+      'Emby pystyy tunnistamaan verkossasi olevat laitteet ja ohjaamaan niitä etäyhteyden kautta.';
 
   @override
-  String get adminDlnaServer => 'Enable the DLNA server';
+  String get adminDlnaServer => 'Ota DLNA-palvelin käyttöön';
 
   @override
   String get adminDlnaServerHelp =>
-      'Lets the server stream media to DLNA devices.';
+      'Mahdollistaa palvelimen mediavirran lähettämisen DLNA-laitteisiin.';
 
   @override
-  String get adminDlnaDefaultUser => 'Default user';
+  String get adminDlnaDefaultUser => 'Oletuskäyttäjä';
 
   @override
   String get adminDlnaDefaultUserHelp =>
-      'Whose libraries connected devices see. A device profile can override it.';
+      'Kenen kirjastot laitteiden näkymässä näkyvät. Laiteprofiili voi ohittaa tämän asetuksen.';
 
   @override
-  String get adminDlnaDebugLog => 'Enable DLNA debug logging';
+  String get adminDlnaDebugLog => 'Ota DLNA-virheenkorjauslokitus käyttöön';
 
   @override
   String get adminDlnaDebugLogHelp =>
-      'Makes large log files. Only turn it on while troubleshooting.';
+      'Tuottaa suuria lokitiedostoja. Ota tämä käyttöön vain vianmäärityksen yhteydessä.';
 
   @override
-  String get adminDrawerCameraUpload => 'Camera Upload';
+  String get adminDrawerCameraUpload => 'Kameran lähetys';
 
   @override
-  String get adminPageDescCameraUpload => 'Where photos from phones are saved';
+  String get adminPageDescCameraUpload =>
+      'Mihin puhelimista otetut valokuvat tallennetaan';
 
   @override
-  String get adminCameraUploadPath => 'Camera upload folder';
+  String get adminCameraUploadPath => 'Kameran latauskansio';
 
   @override
   String get adminCameraUploadPathHelp =>
-      'Leave it blank to use the default folder. A custom folder also has to be added as a library.';
+      'Jätä kenttä tyhjäksi, jos haluat käyttää oletuskansiota. Mukautettu kansio on myös lisättävä kirjastoksi.';
 
   @override
-  String get adminCameraUploadSubfolders => 'Make a subfolder for each device';
+  String get adminCameraUploadSubfolders =>
+      'Luo jokaiselle laitteelle oma alikansio';
 
   @override
-  String get adminDrawerConversions => 'Conversions';
+  String get adminDrawerConversions => 'Muunnokset';
 
   @override
-  String get adminPageDescConversions => 'Converted media and downloads';
+  String get adminPageDescConversions =>
+      'Muunnetut mediatiedostot ja lataukset';
 
   @override
-  String get adminConversionsTempPath => 'Temporary file folder';
+  String get adminConversionsTempPath => 'Väliaikaisten tiedostojen kansio';
 
   @override
   String get adminConversionsTempPathHelp =>
-      'Where media is kept while it\'s being converted.';
+      'Missä tallennusvälineet säilytetään muuntamisen aikana.';
 
   @override
-  String get adminConversionsFullSpeed => 'Convert at full speed';
+  String get adminConversionsFullSpeed => 'Muunna täydellä nopeudella';
 
   @override
   String get adminConversionsFullSpeedHelp =>
-      'Conversions run slowly by default to keep the load down.';
+      'Muunnokset suoritetaan oletusarvoisesti hitaasti kuormituksen pitämiseksi alhaisena.';
 
   @override
   String get adminDrawerPremiere => 'Emby Premiere';
 
   @override
-  String get adminPageDescPremiere => 'License status and key';
+  String get adminPageDescPremiere => 'Lisenssin tila ja avain';
 
   @override
-  String get adminPremiereActive => 'Premiere is active on this server.';
+  String get adminPremiereActive => 'Premiere on käytössä tällä palvelimella.';
 
   @override
-  String get adminPremiereInactive => 'This server has no Premiere key.';
+  String get adminPremiereInactive =>
+      'Tällä palvelimella ei ole Premiere-avainta.';
 
   @override
   String get adminPremiereKeyInvalid =>
-      'A key is set but isn\'t active. It may be mistyped or expired.';
+      'Avain on määritetty, mutta se ei ole käytössä. Se on ehkä kirjoitettu väärin tai sen voimassaoloaika on päättynyt.';
 
   @override
-  String get adminPremiereCurrentKey => 'Current key';
+  String get adminPremiereCurrentKey => 'nykyinen avain';
 
   @override
-  String get adminPremiereNewKey => 'New key';
+  String get adminPremiereNewKey => 'Uusi avain';
 
   @override
   String get adminPremiereNewKeyHint =>
-      'Paste the key from your Emby Premiere email.';
+      'Liitä avain Emby Premiere -sähköpostistasi.';
 
   @override
-  String get adminPremiereSaveKey => 'Save key';
+  String get adminPremiereSaveKey => 'Tallenna-näppäin';
 
   @override
-  String get adminPremiereRemoveKey => 'Remove key';
+  String get adminPremiereRemoveKey => 'Poista avain';
 
   @override
   String get adminPremiereKeyRejected =>
-      'Emby saved the key but didn\'t accept it.';
+      'Emby tallensi avaimen, mutta ei hyväksynyt sitä.';
 
   @override
-  String get adminPremiereLoadFailed => 'Couldn\'t load the Premiere status';
+  String get adminPremiereLoadFailed => 'Premiere-tilaa ei voitu ladata';
 
   @override
-  String get embyPremiereRequiredTitle => 'Emby Premiere required';
+  String get embyPremiereRequiredTitle => 'Vaatii Emby Premieren';
 
   @override
   String get embyPremiereRequiredBody =>
-      'This needs an active Emby Premiere subscription on the server.';
+      'Tämä edellyttää, että palvelimella on voimassa oleva Emby Premiere -tilaus.';
 
   @override
   String get embyPremiereRequiredSaveBody =>
-      'This needs an active Emby Premiere subscription. Emby keeps the setting but won\'t use it until Premiere is active.';
+      'Tämä edellyttää voimassa olevaa Emby Premiere -tilausta. Emby tallentaa asetuksen, mutta ei ota sitä käyttöön, ennen kuin Premiere-tilaus on voimassa.';
 
   @override
-  String get embyPremiereLearnMore => 'Learn more';
+  String get embyPremiereLearnMore => 'Lue lisää';
 
   @override
-  String get embyPremiereSaveAnyway => 'Save anyway';
+  String get embyPremiereSaveAnyway => 'Tallenna silti';
 
   @override
-  String get embyPremiereEnterKey => 'Enter key';
+  String get embyPremiereEnterKey => 'Enter-näppäin';
 
   @override
   String get adminPremiereNote =>
-      'Needs Emby Premiere. The server keeps this setting but won\'t use it until Premiere is active.';
+      'Vaatii Emby Premiere -sovelluksen. Palvelin tallentaa tämän asetuksen, mutta ei ota sitä käyttöön, ennen kuin Premiere on aktiivinen.';
 
   @override
   String adminExternalIdLabel(String name) {
@@ -6902,287 +6918,296 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get adminMetadataNamesHelp =>
-      'Separate several names with a semicolon.';
+      'Erota useat nimet toisistaan puolipisteellä.';
 
   @override
-  String get adminMetadataSectionRatings => 'Ratings';
+  String get adminMetadataSectionRatings => 'Arvostelut';
 
   @override
   String get adminMetadataItemLocked =>
-      'This item\'s metadata is locked. Unlock it before you identify it.';
+      'Tämän kohteen metatiedot on lukittu. Avaa lukitus ennen kuin tunnistat kohteen.';
 
   @override
-  String get adminMetadataNameOrIdRequired => 'Enter a name or an external ID.';
+  String get adminMetadataNameOrIdRequired =>
+      'Kirjoita nimi tai ulkoinen tunniste.';
 
   @override
-  String get adminLibMetadataReaders => 'Metadata readers';
+  String get adminLibMetadataReaders => 'Metatietojen lukijat';
 
   @override
   String adminLibSimilarProvidersFor(String type) {
-    return 'Similar item providers: $type';
+    return 'Vastaavien kohteiden tarjoajat: $type';
   }
 
   @override
-  String get adminLibMediaSegmentProviders => 'Media segment providers';
+  String get adminLibMediaSegmentProviders =>
+      'Mediasegmentin palveluntarjoajat';
 
   @override
-  String get adminLibEnableLibrary => 'Enable the library';
+  String get adminLibEnableLibrary => 'Ota kirjasto käyttöön';
 
   @override
   String get adminLibEnableLibraryHelp =>
-      'Disabling the library hides it from all user views.';
+      'Kirjaston käytöstä poistaminen piilottaa sen kaikista käyttäjän näkymistä.';
 
   @override
-  String get adminLibSaveLyricsWithMedia => 'Save lyrics into media folders';
+  String get adminLibSaveLyricsWithMedia =>
+      'Tallenna sanoitukset mediakansioihin';
 
   @override
-  String get adminLibUseCustomTagDelimiters => 'Use custom tag delimiter';
+  String get adminLibUseCustomTagDelimiters =>
+      'Käytä mukautettua tunnisteen erottinta';
 
   @override
-  String get adminLibCustomTagDelimiters => 'Custom tag delimiter';
+  String get adminLibCustomTagDelimiters =>
+      'Mukautettu tunnisteen erotinmerkki';
 
   @override
   String get adminLibCustomTagDelimitersHelp =>
-      'Characters to treat as delimiters that separate tags.';
+      'Merkit, joita käsitellään tunnisteita erottavina erottimina.';
 
   @override
-  String get adminLibDelimiterWhitelist => 'Delimiter whitelist';
+  String get adminLibDelimiterWhitelist =>
+      'Erotusmerkkien sallittujen luettelo';
 
   @override
   String get adminLibDelimiterWhitelistHelp =>
-      'Items to leave out of tag splitting, one per line.';
+      'Kohteet, joita ei oteta huomioon tunnisteiden jakamisessa; yksi kohde riviä kohden.';
 
   @override
-  String get adminLibDownloadLanguages => 'Download languages';
+  String get adminLibDownloadLanguages => 'Lataa kieliversiot';
 
   @override
   String get adminLibraryFolderRequired =>
-      'Add at least one folder to this library.';
+      'Lisää tähän kirjastoon vähintään yksi kansio.';
 
   @override
   String get adminRenameLibraryWarning =>
-      'Renaming a library loses all of its metadata. Proceed with caution.';
+      'Kirjaston nimen muuttaminen johtaa sen kaikkien metatietojen menettämiseen. Toimi varovasti.';
 
   @override
   String adminDeleteLibraryConfirm(String name) {
-    return 'Remove the library \"$name\"? Files on disk are not deleted.';
+    return 'Poistetaanko kirjasto ”$name”? Levyllä olevia tiedostoja ei poisteta.';
   }
 
   @override
   String get adminDeleteLibraryLocations =>
-      'These media locations will be removed from the library:';
+      'Nämä mediatiedostot poistetaan kirjastosta:';
 
   @override
-  String get adminRefreshMode => 'Refresh mode';
+  String get adminRefreshMode => 'Päivitä-tila';
 
   @override
-  String get adminRefreshModeScan => 'Scan for new and updated files';
+  String get adminRefreshModeScan => 'Etsi uusia ja päivitettyjä tiedostoja';
 
   @override
-  String get adminRefreshModeMissing => 'Search for missing metadata';
+  String get adminRefreshModeMissing => 'Etsi puuttuvia metatietoja';
 
   @override
-  String get adminReplaceTrickplayImages => 'Replace existing trickplay images';
+  String get adminReplaceTrickplayImages => 'Korvaa nykyiset trickplay-kuvat';
 
   @override
   String get adminRefreshDialogHelp =>
-      'Metadata is refreshed based on the settings and internet services enabled in the dashboard.';
+      'Metatiedot päivitetään hallintapaneelissa määritettyjen asetusten ja käytössä olevien verkkopalvelujen perusteella.';
 
   @override
   String adminActivityCount(String shown, String total) {
-    return '$shown of $total';
+    return '$shown ... $total';
   }
 
   @override
-  String get adminLiveTvTabSources => 'Tuners and guide';
+  String get adminLiveTvTabSources => 'Viritimet ja opas';
 
   @override
-  String get adminLiveTvTabRecordings => 'Recordings';
+  String get adminLiveTvTabRecordings => 'Tallennukset';
 
   @override
-  String get adminLiveTvAddTuner => 'Add tuner device';
+  String get adminLiveTvAddTuner => 'Lisää viritinlaite';
 
   @override
-  String get adminLiveTvEditTuner => 'Edit tuner device';
+  String get adminLiveTvEditTuner => 'Muokkaa virityslaitetta';
 
   @override
-  String get adminLiveTvTunerType => 'Tuner type';
+  String get adminLiveTvTunerType => 'Viritintyyppi';
 
   @override
-  String get adminLiveTvDetectDevices => 'Detect my devices';
+  String get adminLiveTvDetectDevices => 'Tunnista laitteeni';
 
   @override
-  String get adminLiveTvNoNewDevices => 'No new devices found';
+  String get adminLiveTvNoNewDevices => 'Uusia laitteita ei löytynyt';
 
   @override
-  String get adminLiveTvDrmNote => 'Channels with DRM will not be imported.';
+  String get adminLiveTvDrmNote => 'DRM-suojattuja kanavia ei tuoda.';
 
   @override
-  String get adminLiveTvTunerSaved => 'Tuner saved';
+  String get adminLiveTvTunerSaved => 'Viritin tallennettu';
 
   @override
-  String get adminLiveTvDeleteTuner => 'Delete tuner device';
+  String get adminLiveTvDeleteTuner => 'Poista viritinlaite';
 
   @override
   String get adminLiveTvDeleteTunerConfirm =>
-      'Are you sure you want to delete this tuner device?';
+      'Haluatko varmasti poistaa tämän virittimen?';
 
   @override
-  String get adminLiveTvDeleteProvider => 'Delete guide provider';
+  String get adminLiveTvDeleteProvider => 'Poista opaspalveluntarjoaja';
 
   @override
   String get adminLiveTvDeleteProviderConfirm =>
-      'Are you sure you want to delete this guide provider?';
+      'Haluatko varmasti poistaa tämän opaspalveluntarjoajan?';
 
   @override
-  String get adminLiveTvProviderSaved => 'Guide provider saved';
+  String get adminLiveTvProviderSaved => 'Opaspalvelun tarjoaja tallennettu';
 
   @override
-  String get adminLiveTvAddProvider => 'Add provider';
+  String get adminLiveTvAddProvider => 'Lisää palveluntarjoaja';
 
   @override
-  String get adminLiveTvRefreshGuide => 'Refresh guide data';
+  String get adminLiveTvRefreshGuide => 'Päivitä oppaan tiedot';
 
   @override
-  String get adminLiveTvMapChannels => 'Map channels';
+  String get adminLiveTvMapChannels => 'Karttakanavat';
 
   @override
-  String get adminLiveTvNoTunerChannels => 'No tuner channels found';
+  String get adminLiveTvNoTunerChannels => 'Ei löytyneitä kanavia';
 
   @override
   String get adminLiveTvXmltvPathHelp =>
-      'A path or URL to an XMLTV file. The server reads it and checks it for updates. You are responsible for creating and updating the file.';
+      'XMLTV-tiedoston polku tai URL-osoite. Palvelin lukee tiedoston ja tarkistaa, onko siihen tullut päivityksiä. Tiedoston luominen ja päivittäminen on käyttäjän vastuulla.';
 
   @override
   String adminLiveTvSdCreateAccount(String url) {
-    return 'Create an account at $url';
+    return 'Luo tili osoitteessa $url';
   }
 
   @override
-  String get adminLiveTvSdSignIn => 'Sign in';
+  String get adminLiveTvSdSignIn => 'Kirjaudu sisään';
 
   @override
-  String get adminLiveTvSdLineup => 'Lineup';
+  String get adminLiveTvSdLineup => 'Kokoonpano';
 
   @override
   String get adminLiveTvSdSelectLineup =>
-      'Select a lineup. If none are listed, check your username, password and postal code.';
+      'Valitse ohjelmatarjonta. Jos luettelossa ei ole yhtään vaihtoehtoa, tarkista käyttäjätunnuksesi, salasanasi ja postinumerosi.';
 
   @override
-  String get adminLiveTvGuideDays => 'Number of days of guide data to download';
+  String get adminLiveTvGuideDays =>
+      'Ladattavien opastietojen päivien lukumäärä';
 
   @override
   String get adminLiveTvGuideDaysHelp =>
-      'More days let you schedule further ahead and see more listings, but the download takes longer. Automatic picks a value from the number of channels.';
+      'Mitä enemmän päiviä valitset, sitä pidemmälle eteenpäin voit suunnitella aikataulusi ja nähdä enemmän ohjelmaluetteloita, mutta lataaminen kestää kauemmin. Automaattinen valinta määrittää arvon kanavien lukumäärän perusteella.';
 
   @override
-  String get adminLiveTvRecordingPath => 'Default recording path';
+  String get adminLiveTvRecordingPath => 'Oletus tallennuspolku';
 
   @override
   String get adminLiveTvRecordingPathHelp =>
-      'Where recordings are saved. If empty, the server\'s program data folder is used.';
+      'Tallenteiden tallennuspaikka. Jos kenttä on tyhjä, käytetään palvelimen ohjelmatietokansiota.';
 
   @override
-  String get adminLiveTvStartWhenPossible => 'Start when possible';
+  String get adminLiveTvStartWhenPossible =>
+      'Aloita heti, kun se on mahdollista';
 
   @override
-  String get adminLiveTvStopWhenPossible => 'Stop when possible';
+  String get adminLiveTvStopWhenPossible => 'Pysähdy, kun se on mahdollista';
 
   @override
-  String get adminLiveTvMinutesBefore => 'minutes before';
+  String get adminLiveTvMinutesBefore => 'muutama minuutti ennen';
 
   @override
-  String get adminLiveTvMinutesAfter => 'minutes after';
+  String get adminLiveTvMinutesAfter => 'muutaman minuutin kuluttua';
 
   @override
-  String get adminLiveTvSectionGuide => 'Guide data';
+  String get adminLiveTvSectionGuide => 'Opas tiedot';
 
   @override
-  String get adminLiveTvSectionDefaultRecording => 'Default recording settings';
+  String get adminLiveTvSectionDefaultRecording => 'Oletustallennusasetukset';
 
   @override
-  String get adminLiveTvSectionMetadata => 'Recording metadata';
+  String get adminLiveTvSectionMetadata => 'Metatietojen tallentaminen';
 
   @override
   String adminUserLastActivity(String time) {
-    return 'Last activity $time';
+    return 'Viimeisin toiminta $time';
   }
 
   @override
-  String get adminCurrentPassword => 'Current password';
+  String get adminCurrentPassword => 'Nykyinen salasana';
 
   @override
-  String get adminChannelAccess => 'Channel access';
+  String get adminChannelAccess => 'Kanavan käyttöoikeus';
 
   @override
-  String get adminDeviceAccess => 'Device access';
+  String get adminDeviceAccess => 'Laitteiden käyttöoikeudet';
 
   @override
-  String get adminDeleteFromAllLibraries => 'All libraries';
+  String get adminDeleteFromAllLibraries => 'Kaikki kirjastot';
 
   @override
   String get adminUserDisabledBanner =>
-      'This user is disabled. Turn off Disabled under Permissions to let them sign in again.';
+      'Tämä käyttäjä on poistettu käytöstä. Poista ”Poistettu käytöstä” -valinta Oikeudet-kohdasta, jotta käyttäjä voi kirjautua sisään uudelleen.';
 
   @override
-  String get adminNewPasswordEmpty => 'New password cannot be empty';
+  String get adminNewPasswordEmpty => 'Uusi salasana ei saa olla tyhjä';
 
   @override
   String get adminScheduleStartBeforeEnd =>
-      'The start time must be before the end time';
+      'Aloitusaika on oltava ennen päättymisaikaa';
 
   @override
-  String get adminDashboardAlerts => 'Alerts';
+  String get adminDashboardAlerts => 'Hälytykset';
 
   @override
-  String get adminSessionGoHome => 'Go to home screen';
+  String get adminSessionGoHome => 'Siirry aloitusnäyttöön';
 
   @override
-  String get adminPlayMethodRemux => 'Remuxing';
+  String get adminPlayMethodRemux => 'Uudelleenpakkaus';
 
   @override
-  String get adminPlayMethodDirectStream => 'Direct streaming';
+  String get adminPlayMethodDirectStream => 'Suora streamaus';
 
   @override
-  String get adminPlayMethodDirectPlay => 'Direct playing';
+  String get adminPlayMethodDirectPlay => 'Suora toisto';
 
   @override
-  String get adminLogLevelTrace => 'Trace';
+  String get adminLogLevelTrace => 'Jälki';
 
   @override
-  String get adminLogLevelDebug => 'Debug';
+  String get adminLogLevelDebug => 'Virheenkorjaus';
 
   @override
-  String get adminLogLevelInformation => 'Information';
+  String get adminLogLevelInformation => 'Tiedot';
 
   @override
-  String get adminLogLevelWarning => 'Warning';
+  String get adminLogLevelWarning => 'Varoitus';
 
   @override
-  String get adminLogLevelError => 'Error';
+  String get adminLogLevelError => 'Virhe';
 
   @override
-  String get adminLogLevelCritical => 'Critical';
+  String get adminLogLevelCritical => 'Kriittinen';
 
   @override
-  String get adminLogLevelNone => 'None';
+  String get adminLogLevelNone => 'Ei mitään';
 
   @override
-  String get adminActivityAllUsers => 'All users';
+  String get adminActivityAllUsers => 'Kaikki käyttäjät';
 
   @override
   String adminTaskLastRan(String time, String duration) {
-    return 'Last ran $time, taking $duration.';
+    return 'Viimeisin ajo $time, kesto $duration.';
   }
 
   @override
-  String get adminTaskResultFailed => 'Failed';
+  String get adminTaskResultFailed => 'Epäonnistui';
 
   @override
-  String get adminTaskResultCancelled => 'Cancelled';
+  String get adminTaskResultCancelled => 'Peruutettu';
 
   @override
-  String get adminTaskResultAborted => 'Aborted by server shutdown';
+  String get adminTaskResultAborted =>
+      'Keskeytetty palvelimen sammutuksen vuoksi';
 
   @override
   String adminDurationSecondsShort(String seconds) {
@@ -7190,383 +7215,396 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get adminDeleteTaskTrigger => 'Delete task trigger';
+  String get adminDeleteTaskTrigger => 'Poista tehtävän laukaisija';
 
   @override
   String get adminDeleteTaskTriggerConfirm =>
-      'Are you sure you want to delete this task trigger?';
+      'Haluatko varmasti poistaa tämän tehtävän laukaisijan?';
 
   @override
   String adminTaskTriggerEveryMinutes(String minutes) {
-    return 'Every $minutes minutes';
+    return 'Joka $minutes minuuttia';
   }
 
   @override
   String adminTaskTriggerEveryHours(String hours) {
-    return 'Every $hours hours';
+    return 'Joka $hours tunti';
   }
 
   @override
   String adminTaskMinutesValue(String minutes) {
-    return '$minutes minutes';
+    return '$minutes minuuttia';
   }
 
   @override
   String adminTaskHoursValue(String hours) {
-    return '$hours hours';
+    return '$hours tuntia';
   }
 
   @override
-  String get adminTimeLimitHours => 'Time limit (hours)';
+  String get adminTimeLimitHours => 'Aikaraja (tuntia)';
 
   @override
-  String get adminTranscodingDecodingFor => 'Enable hardware decoding for';
+  String get adminTranscodingDecodingFor =>
+      'Ota laitteistopohjainen dekoodaus käyttöön seuraaville';
 
   @override
   String get adminTranscodingThreadCountHelp =>
-      'The most threads a transcode can use. Fewer threads lower CPU use but may be too slow for smooth playback.';
+      'Transkoodauksen enimmäissäikeiden määrä. Pienempi säikeiden määrä vähentää prosessorin kuormitusta, mutta voi hidastaa toistoa niin, ettei se suju jouhevasti.';
 
   @override
   String get adminTranscodingThreadMax => 'Max';
 
   @override
-  String get adminTranscodingFfmpegPath => 'FFmpeg path';
+  String get adminTranscodingFfmpegPath => 'FFmpeg-polku';
 
   @override
   String get adminTranscodingFfmpegPathHelp =>
-      'The FFmpeg the server runs. It is set on the server, not here.';
+      'FFmpeg, jota palvelin käyttää. Se määritetään palvelimella, ei täällä.';
 
   @override
-  String get adminTranscodingAudioSeek => 'Audio seek strategy';
+  String get adminTranscodingAudioSeek => 'Äänen hakustrategia';
 
   @override
   String get adminTranscodingAudioSeekHelp =>
-      'How the server handles audio when you seek in an HLS stream.';
+      'Miten palvelin käsittelee ääntä, kun siirryt HLS-virrassa eteenpäin tai taaksepäin.';
 
   @override
-  String get adminTranscodingTrimCopiedAudio => 'Trim copied audio';
+  String get adminTranscodingTrimCopiedAudio => 'Leikkaa kopioitu äänitiedosto';
 
   @override
-  String get adminTranscodingTranscodeAudio => 'Transcode audio';
+  String get adminTranscodingTranscodeAudio => 'Äänen transkoodaus';
 
   @override
   String get adminResumeMinAudiobookMinutes =>
-      'Minimum audiobook resume (minutes)';
+      'Äänikirjan jatkamisen vähimmäiskesto (minuuttia)';
 
   @override
   String get adminResumeMinAudiobookHelp =>
-      'Audiobooks stopped before this time count as unplayed.';
+      'Ennen tätä ajankohtaa keskeytetyt äänikirjat lasketaan kuuntelemattomiksi.';
 
   @override
   String get adminResumeAudiobookRemaining =>
-      'Audiobook remaining minutes to resume';
+      'Äänikirjan jäljellä olevat minuutit jatkamista varten';
 
   @override
   String get adminResumeAudiobookRemainingHelp =>
-      'Audiobooks stopped with less than this many minutes left count as played.';
+      'Äänikirjat, joiden kuuntelu keskeytetään, kun jäljellä on vähemmän kuin tämä määrä minuutteja, lasketaan kuunnelluiksi.';
 
   @override
-  String get adminBrandingSplashSection => 'Splash screen';
+  String get adminBrandingSplashSection => 'Alkukuva';
 
   @override
-  String get adminBrandingSectionWebClient => 'Web client';
+  String get adminBrandingSectionWebClient => 'Verkkosovellus';
 
   @override
   String get adminBrandingSplashSizeHint =>
-      'Custom images should be in a 16x9 aspect ratio at a minimum size of 1920x1080.';
+      'Mukautettujen kuvien kuvasuhteen tulee olla 16x9 ja vähimmäiskoko 1920x1080.';
 
   @override
-  String get adminNetworkingSectionServerAddress => 'Server address settings';
+  String get adminNetworkingSectionServerAddress =>
+      'Palvelimen osoiteasetukset';
 
   @override
-  String get adminNetworkingSectionHttps => 'HTTPS settings';
+  String get adminNetworkingSectionHttps => 'HTTPS-asetukset';
 
   @override
-  String get adminNetworkingSectionRemoteAccess => 'Remote access settings';
+  String get adminNetworkingSectionRemoteAccess => 'Etäkäyttöasetukset';
 
   @override
-  String get adminNetworkingSectionIpProtocols => 'IP protocols';
+  String get adminNetworkingSectionIpProtocols => 'IP-protokollat';
 
   @override
-  String get adminNetworkingSectionDiscovery => 'Network discovery';
+  String get adminNetworkingSectionDiscovery => 'Verkon tunnistus';
 
   @override
-  String get adminNetworkingSectionFirewall => 'Firewall and proxy settings';
+  String get adminNetworkingSectionFirewall =>
+      'Palomuurin ja välityspalvelimen asetukset';
 
   @override
-  String get adminNetworkingLocalHttpPort => 'Local HTTP port number';
+  String get adminNetworkingLocalHttpPort => 'Paikallinen HTTP-portin numero';
 
   @override
   String get adminNetworkingLocalHttpPortHelp =>
-      'The TCP port number for the HTTP server.';
+      'HTTP-palvelimen TCP-portin numero.';
 
   @override
   String get adminNetworkingEnableHttpsHelp =>
-      'Listen on the HTTPS port. A valid certificate must also be set for this to take effect.';
+      'Kuuntele HTTPS-porttia. Jotta tämä tulisi voimaan, on myös määritettävä kelvollinen varmenne.';
 
   @override
-  String get adminNetworkingLocalHttpsPort => 'Local HTTPS port number';
+  String get adminNetworkingLocalHttpsPort => 'Paikallinen HTTPS-portin numero';
 
   @override
   String get adminNetworkingLocalHttpsPortHelp =>
-      'The TCP port number for the HTTPS server.';
+      'HTTPS-palvelimen TCP-portin numero.';
 
   @override
   String get adminNetworkingBaseUrlHelp =>
-      'Adds a subdirectory to the server URL, for example https://example.com/jellyfin.';
+      'Lisää alihakemiston palvelimen URL-osoitteeseen, esimerkiksi https://example.com/jellyfin.';
 
   @override
-  String get adminNetworkingBindAddress => 'Bind to local network address';
+  String get adminNetworkingBindAddress =>
+      'Liitä paikalliseen verkko-osoitteeseen';
 
   @override
   String get adminNetworkingBindAddressHelp =>
-      'Overrides the local IP address of the HTTP server. Leave it empty to bind to all addresses. A change needs a restart.';
+      'Korvaa HTTP-palvelimen paikallisen IP-osoitteen. Jätä kenttä tyhjäksi, jos haluat, että palvelin sitoutuu kaikkiin osoitteisiin. Muutoksen voimaantulo edellyttää uudelleenkäynnistystä.';
 
   @override
   String get adminNetworkingLanNetworksHelp =>
-      'IP addresses or IP/netmask entries of networks treated as local for bandwidth and remote access limits. Leave it empty to treat all RFC1918 addresses as local.';
+      'IP-osoitteet tai IP- ja verkkonaamio-merkinnät verkoista, joita käsitellään paikallisina kaistanleveyden ja etäkäytön rajoitusten osalta. Jätä kenttä tyhjäksi, jos haluat, että kaikkia RFC1918-osoitteita käsitellään paikallisina.';
 
   @override
   String get adminNetworkingKnownProxiesHelp =>
-      'IP addresses or host names of the proxies in front of this server. Needed to read X-Forwarded-For headers. A change needs a restart.';
+      'Tämän palvelimen edessä olevien välityspalvelimien IP-osoitteet tai isäntänimet. Tarvitaan X-Forwarded-For-otsikoiden lukemiseen. Muutoksen jälkeen palvelin on käynnistettävä uudelleen.';
 
   @override
-  String get adminNetworkingCustomCertPath => 'Custom SSL certificate path';
+  String get adminNetworkingCustomCertPath => 'Mukautetun SSL-varmenteen polku';
 
   @override
   String get adminNetworkingCertPathHelp =>
-      'Path to a PKCS #12 file with a certificate and private key, for TLS on a custom domain.';
+      'Polku PKCS #12 -tiedostoon, joka sisältää varmenteen ja yksityisen avaimen, TLS:ää varten mukautetulla verkkotunnuksella.';
 
   @override
   String get adminNetworkingCertPasswordHelp =>
-      'Enter the password if your certificate needs one.';
+      'Syötä salasana, jos varmenteesi sitä vaatii.';
 
   @override
   String get adminNetworkingAllowRemote =>
-      'Allow remote connections to this server';
+      'Salli etäyhteydet tähän palvelimeen';
 
   @override
   String get adminNetworkingAllowRemoteHelp =>
-      'When off, all remote connections are blocked.';
+      'Kun toiminto on pois päältä, kaikki etäyhteydet estetään.';
 
   @override
   String get adminNetworkingRemoteIpFilterHelp =>
-      'IP addresses or IP/netmask entries of remote networks. Leave it empty to allow every remote address.';
+      'Etäverkkojen IP-osoitteet tai IP-osoite/verkon peite -merkinnät. Jätä kenttä tyhjäksi, jos haluat sallia kaikki etäosoitteet.';
 
   @override
   String get adminNetworkingRemoteIpFilterMode =>
-      'Remote IP address filter mode';
+      'Etä-IP-osoitteen suodatustila';
 
   @override
   String get adminNetworkingPublicHttpPortHelp =>
-      'The public port mapped to the local HTTP port.';
+      'Julkinen portti on liitetty paikalliseen HTTP-porttiin.';
 
   @override
   String get adminNetworkingPublicHttpsPortHelp =>
-      'The public port mapped to the local HTTPS port.';
+      'Julkinen portti on liitetty paikalliseen HTTPS-porttiin.';
 
   @override
-  String get adminNetworkingAutoDiscoveryLabel => 'Enable auto discovery';
+  String get adminNetworkingAutoDiscoveryLabel =>
+      'Ota automaattinen tunnistus käyttöön';
 
   @override
   String get adminNetworkingAutoDiscoveryHelp =>
-      'Lets apps find this server on UDP port 7359.';
+      'Sovellukset löytävät tämän palvelimen UDP-portista 7359.';
 
   @override
   String get adminNetworkingSamePublishedUri =>
-      'Use the same published server URI for internal and external access';
+      'Käytä samaa julkaistua palvelimen URI-osoitetta sekä sisäisessä että ulkoisessa käytössä';
 
   @override
-  String get adminNetworkingPublishedUri => 'Published server URI';
+  String get adminNetworkingPublishedUri => 'Julkaistu palvelimen URI';
 
   @override
   String get adminNetworkingPublishedUriHelp =>
-      'Overrides the URI the server gives out, based on the interface or the client IP address.';
+      'Korvaa palvelimen antaman URI-osoitteen käyttöliittymän tai asiakkaan IP-osoitteen perusteella.';
 
   @override
-  String get adminNetworkingInternalUri => 'Internal URI';
+  String get adminNetworkingInternalUri => 'Sisäinen URI';
 
   @override
   String get adminNetworkingInternalUriHelp =>
-      'Published server URI for internal access.';
+      'Julkaistu palvelimen URI sisäistä käyttöä varten.';
 
   @override
-  String get adminNetworkingExternalUri => 'External URI';
+  String get adminNetworkingExternalUri => 'Ulkoinen URI';
 
   @override
   String get adminNetworkingExternalUriHelp =>
-      'Published server URI for external access.';
+      'Julkaistu palvelimen URI ulkoista käyttöä varten.';
 
   @override
-  String get adminNetworkingOtherPublishedUris => 'Other published URIs';
+  String get adminNetworkingOtherPublishedUris => 'Muut julkaistut URI:t';
 
   @override
   String get adminNetworkingOtherPublishedUrisHelp =>
-      'URIs for one subnet or interface, written as subnet=URI.';
+      'Yhden aliverkon tai rajapinnan URI-tunnisteet, jotka kirjoitetaan muodossa subnet=URI.';
 
   @override
   String get adminBackupsHelp =>
-      'Create and restore snapshots of your server. They can include the database, metadata, subtitles and trickplay images.';
+      'Luo ja palauta palvelimesi tilannekuvia. Niihin voi sisältyä tietokanta, metatiedot, tekstitykset ja trickplay-kuvat.';
 
   @override
   String get adminBackupDisclaimer =>
-      'Depending on the size of your library, the backup can take a while.';
+      'Kirjastosi koosta riippuen varmuuskopiointi voi kestää jonkin aikaa.';
 
   @override
-  String get adminBackupTasksWarningTitle => 'Scheduled tasks are running';
+  String get adminBackupTasksWarningTitle =>
+      'Aikataulun mukaiset tehtävät ovat käynnissä';
 
   @override
   String get adminBackupTasksWarning =>
-      'Stop these tasks or wait for them to finish before you create a backup.';
+      'Keskeytä nämä tehtävät tai odota, että ne päättyvät, ennen kuin luot varmuuskopion.';
 
   @override
   String get adminBackupArchiveNotFound =>
-      'The server could not find this backup archive.';
+      'Palvelin ei löytänyt tätä varmuuskopioarkistoa';
 
   @override
-  String get adminRestoreInProgress => 'Restore in progress';
+  String get adminRestoreInProgress => 'Palautus on käynnissä';
 
   @override
   String get adminRestoreWaitingForServer =>
-      'Waiting for the server to come back.';
+      'Odotetaan, että palvelin palaa käyttöön.';
 
   @override
-  String get adminRestoreSucceeded => 'Restore completed';
+  String get adminRestoreSucceeded => 'Palautus on valmis';
 
   @override
-  String get adminLogWatch => 'Watch';
+  String get adminLogWatch => 'Katso';
 
   @override
-  String get adminLogStopWatching => 'Stop watching';
+  String get adminLogStopWatching => 'Lopeta katsominen';
 
   @override
-  String get adminPluginInstallConfirmTitle => 'Confirm plugin installation';
+  String get adminPluginInstallConfirmTitle => 'Vahvista laajennuksen asennus';
 
   @override
   String get adminPluginInstallDisclaimer =>
-      'Installing a third party plugin carries risks. It may contain unstable or malicious code, and it can change at any time. Only install plugins from authors you trust, and know what they can do, such as query outside services, slow down library scans or add background work.';
+      'Kolmannen osapuolen laajennuksen asentamiseen liittyy riskejä. Se voi sisältää epävakaata tai haitallista koodia, ja se voi muuttua milloin tahansa. Asenna vain sellaisten tekijöiden laajennuksia, joihin luotat, ja selvitä etukäteen, mitä ne voivat tehdä – esimerkiksi tehdä kyselyjä ulkoisiin palveluihin, hidastaa kirjastojen tarkistuksia tai lisätä taustatoimintoja.';
 
   @override
-  String get adminGroupOverview => 'Overview';
+  String get adminGroupOverview => 'Yleiskatsaus';
 
   @override
-  String get adminGroupLibrary => 'Library';
+  String get adminGroupLibrary => 'Kirjasto';
 
   @override
-  String get adminGroupPlayback => 'Playback';
+  String get adminGroupPlayback => 'Toisto';
 
   @override
-  String get adminGroupPeople => 'People';
+  String get adminGroupPeople => 'Ihmiset';
 
   @override
-  String get adminGroupSystem => 'System';
+  String get adminGroupSystem => 'Järjestelmä';
 
   @override
-  String get adminAreasLabel => 'Admin areas';
+  String get adminAreasLabel => 'Hallinta-alueet';
 
   @override
-  String get adminPagesLabel => 'Pages';
+  String get adminPagesLabel => 'Sivut';
 
   @override
   String get adminPageDescDashboard =>
-      'Server health, sessions and recent activity';
+      'Palvelimen tila, istunnot ja viimeaikainen toiminta';
 
   @override
-  String get adminPageDescAnalytics => 'Library sizes, codecs and formats';
+  String get adminPageDescAnalytics =>
+      'Kirjastojen koot, koodekit ja tiedostomuodot';
 
   @override
-  String get adminPageDescActivity => 'Everything that happened on the server';
+  String get adminPageDescActivity => 'Kaikki, mitä palvelimella tapahtui';
 
   @override
-  String get adminPageDescTasks => 'Scans, cleanups and their triggers';
+  String get adminPageDescTasks =>
+      'Skannaukset, puhdistukset ja niiden laukaisijat';
 
   @override
   String get adminPageDescLibraries =>
-      'Folders, scanners and metadata fetchers';
+      'Kansiot, skannerit ja metatietojen hakutyökalut';
 
   @override
-  String get adminPageDescDisplay => 'How libraries show to users';
+  String get adminPageDescDisplay => 'Miten kirjastot esittäytyvät käyttäjille';
 
   @override
-  String get adminPageDescMetadata => 'Default language, country and images';
+  String get adminPageDescMetadata => 'Oletuskieli, maa ja kuvat';
 
   @override
-  String get adminPageDescNfo => 'Kodi NFO reading and saving';
+  String get adminPageDescNfo =>
+      'Kodi NFO-tiedostojen lukeminen ja tallentaminen';
 
   @override
-  String get adminPageDescLiveTv => 'Tuners, guide data and recordings';
+  String get adminPageDescLiveTv => 'Viritimet, ohjelmatiedot ja tallenteet';
 
   @override
   String get adminPageDescTranscoding =>
-      'Hardware acceleration, encoders, tone mapping';
+      'Laitteistokiihdytys, kooderit, sävykartoitus';
 
   @override
-  String get adminPageDescResume => 'When items count as started or played';
+  String get adminPageDescResume =>
+      'Milloin kohteet katsotaan aloitetuiksi tai pelatuiksi';
 
   @override
-  String get adminPageDescStreaming => 'Remote bitrate limit';
+  String get adminPageDescStreaming => 'Etäyhteyden bittinopeuden rajoitus';
 
   @override
-  String get adminPageDescTrickplay => 'Seek preview thumbnails';
+  String get adminPageDescTrickplay => 'Hae esikatselupikkukuvia';
 
   @override
-  String get adminPageDescUsers => 'Accounts, access and parental control';
+  String get adminPageDescUsers =>
+      'Tilit, käyttöoikeudet ja vanhempien valvonta';
 
   @override
-  String get adminPageDescDevices => 'Signed in devices and their names';
+  String get adminPageDescDevices => 'Kirjautuneet laitteet ja niiden nimet';
 
   @override
-  String get adminPageDescApiKeys => 'Keys for apps and scripts';
+  String get adminPageDescApiKeys => 'Sovellusten ja skriptien avaimet';
 
   @override
   String get adminPageDescSettings =>
-      'Server name, language, paths, performance';
+      'Palvelimen nimi, kieli, polut, suorituskyky';
 
   @override
   String get adminPageDescBranding =>
-      'Login message, custom CSS, splash screen';
+      'Kirjautumisviesti, mukautettu CSS, aloitusnäyttö';
 
   @override
-  String get adminPageDescNetworking => 'Ports, HTTPS, LAN and remote access';
+  String get adminPageDescNetworking =>
+      'Portit, HTTPS, lähiverkko ja etäkäyttö';
 
   @override
-  String get adminPageDescPlugins => 'Installed plugins and the catalog';
+  String get adminPageDescPlugins => 'Asennetut laajennukset ja luettelo';
 
   @override
-  String get adminPageDescRepositories => 'Where plugins come from';
+  String get adminPageDescRepositories => 'Mistä laajennukset ovat peräisin';
 
   @override
-  String get adminPageDescBackups => 'Create and restore server backups';
+  String get adminPageDescBackups =>
+      'Palvelimen varmuuskopioiden luominen ja palauttaminen';
 
   @override
-  String get adminPageDescLogs => 'Server log files';
+  String get adminPageDescLogs => 'Palvelimen lokitiedostot';
 
   @override
   String adminSearchSettingsHint(int count) {
-    return 'Search $count settings';
+    return 'Hae $count asetusta';
   }
 
   @override
-  String get adminSearchNoResults => 'No settings match';
+  String get adminSearchNoResults => 'Asetuksia ei löytynyt';
 
   @override
-  String get adminSearchClear => 'Clear search';
+  String get adminSearchClear => 'Tyhjennä haku';
 
   @override
-  String get adminUnsavedChanges => 'Unsaved changes';
+  String get adminUnsavedChanges => 'Tallentamattomat muutokset';
 
   @override
-  String get adminDiscard => 'Discard';
+  String get adminDiscard => 'Hylkää';
 
   @override
-  String get adminLeaveTitle => 'Discard unsaved changes?';
+  String get adminLeaveTitle => 'Hylätäänkö tallentamattomat muutokset?';
 
   @override
   String get adminLeaveMessage =>
-      'The changes on this page haven\'t been saved yet.';
+      'Tämän sivun muutoksia ei ole vielä tallennettu.';
 
   @override
-  String get adminKeepEditing => 'Keep editing';
+  String get adminKeepEditing => 'Jatka muokkaamista';
 
   @override
   String get adminDashboardLoadFailed => 'Koontinäyttöä ei voitu ladata';
@@ -13392,17 +13430,17 @@ class AppLocalizationsFi extends AppLocalizations {
   String get analyticsNoLibrariesAvailable => 'Kirjastoja ei ole saatavilla.';
 
   @override
-  String get analyticsLibraryShare => 'Share of items by library';
+  String get analyticsLibraryShare => 'Kirjastokohtainen osuus aineistoista';
 
   @override
-  String get analyticsTopRating => 'Most common rating';
+  String get analyticsTopRating => 'Yleisin arvio';
 
   @override
-  String get analyticsTypicalRuntime => 'Typical runtime';
+  String get analyticsTypicalRuntime => 'Tyypillinen kesto';
 
   @override
   String analyticsShareOfItems(String percent) {
-    return '$percent% of items';
+    return '$percent % kohteista';
   }
 
   @override
@@ -15188,38 +15226,38 @@ class AppLocalizationsFi extends AppLocalizations {
       'Aktiivisten suodattimien mukaisia kappaleita ei löytynyt';
 
   @override
-  String get librarySortPlaylistOrder => 'Playlist Order';
+  String get librarySortPlaylistOrder => 'Soittolistan järjestys';
 
   @override
-  String get librarySortDateAdded => 'Date Added';
+  String get librarySortDateAdded => 'Lisäyspäivä';
 
   @override
-  String get librarySortDateEpisodeAdded => 'Date Episode Added';
+  String get librarySortDateEpisodeAdded => 'Jakson lisäyspäivämäärä';
 
   @override
-  String get librarySortParentalRating => 'Parental Rating';
+  String get librarySortParentalRating => 'Ikäraja luokitus';
 
   @override
-  String get librarySortMyRating => 'My Rating';
+  String get librarySortMyRating => 'Arvosteluni';
 
   @override
-  String get librarySortAlbumArtist => 'Album Artist';
+  String get librarySortAlbumArtist => 'Albumin Artisti';
 
   @override
-  String get librarySortAlbum => 'Album';
+  String get librarySortAlbum => 'Albumi';
 
   @override
-  String get librarySortArtist => 'Artist';
+  String get librarySortArtist => 'Artisti';
 
   @override
-  String get librarySortTrackNumber => 'Track Number';
+  String get librarySortTrackNumber => 'Kappaleen numero';
 
   @override
   String get librarySortGenre => 'Genre';
 
   @override
-  String get librarySortFoldersFirst => 'Folders First';
+  String get librarySortFoldersFirst => 'Kansiot ensin';
 
   @override
-  String get librarySortLength => 'Length';
+  String get librarySortLength => 'Pituus';
 }
