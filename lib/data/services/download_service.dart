@@ -279,11 +279,12 @@ class _NeverStartedException implements Exception {}
 enum _DownloadActivityPhase { start, progress, stop }
 
 class _QueuedDownload {
-  _QueuedDownload(this.item, this.quality, this.source);
+  _QueuedDownload(this.item, this.quality, this.source, this.mediaSourceId);
 
   final AggregatedItem item;
   final DownloadQuality quality;
   final DownloadSource source;
+  final String? mediaSourceId;
   final Completer<void> completer = Completer<void>();
 }
 
@@ -603,6 +604,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
         queued.item,
         quality: queued.quality,
         source: queued.source,
+        mediaSourceId: queued.mediaSourceId,
       );
       if (!queued.completer.isCompleted) queued.completer.complete();
     } catch (error, stackTrace) {
@@ -1073,12 +1075,19 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     return name.replaceAll(RegExp(r'[<>:"/\\|?*]'), '_').trim();
   }
 
+  // An unmatched movie is named after its folder, year included.
+  bool _nameEndsWithYear(AggregatedItem item) =>
+      item.productionYear != null &&
+      _sanitizePath(item.name).endsWith('(${item.productionYear})');
+
   String _buildSubFolder(AggregatedItem item) {
     switch (item.type) {
       case 'Movie':
         final year = item.productionYear;
         final title = _sanitizePath(item.name);
-        return year != null ? 'Movies/$title ($year)' : 'Movies/$title';
+        return year == null || _nameEndsWithYear(item)
+            ? 'Movies/$title'
+            : 'Movies/$title ($year)';
 
       case 'Audio':
         final artist = _sanitizePath(
@@ -1872,9 +1881,9 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     };
   }
 
-  String _buildDirectItemFileUrl(String itemId, AggregatedItem item) {
+  String _buildDirectItemFileUrl(AggregatedItem item) {
     final query = _encodeQuery(_baseDownloadParams(item));
-    return '${_client.baseUrl}/Items/$itemId/File${query.isEmpty ? '' : '?$query'}';
+    return '${_client.baseUrl}/Items/${mediaSourceItemId(item)}/File${query.isEmpty ? '' : '?$query'}';
   }
 
   String _buildStaticVideoStreamUrl(String itemId, AggregatedItem item) {
@@ -1895,8 +1904,8 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
       else ...[
         if (_usesAudioDownloadEndpoint(item))
           _buildAudioDownloadUrl(item.id, item),
-        _buildDirectItemDownloadUrl(item.id, item),
-        _buildDirectItemFileUrl(item.id, item),
+        _buildDirectItemDownloadUrl(item),
+        _buildDirectItemFileUrl(item),
         _buildStaticVideoStreamUrl(item.id, item),
       ],
     ];
@@ -2119,11 +2128,15 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     return '${_client.baseUrl}/Audio/$itemId/stream?$query';
   }
 
-  String _buildDirectItemDownloadUrl(String itemId, AggregatedItem item) {
+  String _buildDirectItemDownloadUrl(AggregatedItem item) {
+    // Emby picks the version from MediaSourceId, not from the path.
     final query = _encodeQuery(
-      _baseDownloadParams(item, includeMediaSourceId: false),
+      _baseDownloadParams(
+        item,
+        includeMediaSourceId: item.mediaSources.length > 1,
+      ),
     );
-    return '${_client.baseUrl}/Items/$itemId/Download${query.isEmpty ? '' : '?$query'}';
+    return '${_client.baseUrl}/Items/${mediaSourceItemId(item)}/Download${query.isEmpty ? '' : '?$query'}';
   }
 
   String _buildDownloadUrl(
@@ -2133,7 +2146,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     String? playSessionId,
   }) {
     if (!quality.isTranscoded || !_supportsTranscodedDownload(item.type)) {
-      return _buildDirectItemDownloadUrl(itemId, item);
+      return _buildDirectItemDownloadUrl(item);
     }
 
     final baseUrl = _client.baseUrl;
@@ -2185,15 +2198,23 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     }
   }
 
+  /// [mediaSourceId] picks one version of a multi-version item, the server's
+  /// default when null.
   Future<void> downloadItem(
     AggregatedItem item, {
     DownloadQuality quality = DownloadQuality.original,
     DownloadSource source = DownloadSource.manual,
+    String? mediaSourceId,
   }) {
     // Browser downloads are delegated to the platform and do not have a
     // process-owned transfer to schedule.
     if (PlatformDetection.isWeb) {
-      return _downloadItemNow(item, quality: quality, source: source);
+      return _downloadItemNow(
+        item,
+        quality: quality,
+        source: source,
+        mediaSourceId: mediaSourceId,
+      );
     }
 
     if (_cancelAllRequested) {
@@ -2210,7 +2231,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     final active = _activeDownloads[item.id];
     if (active != null && active.error == null) return Future.value();
 
-    final queued = _QueuedDownload(item, quality, source);
+    final queued = _QueuedDownload(item, quality, source, mediaSourceId);
     _sources[item.id] = source;
     _pendingDownloadByItemId[item.id] = queued;
     _pendingDownloads.addLast(queued);
@@ -2232,10 +2253,14 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     AggregatedItem item, {
     DownloadQuality quality = DownloadQuality.original,
     DownloadSource source = DownloadSource.manual,
+    String? mediaSourceId,
   }) async {
     if (PlatformDetection.isWeb) {
       try {
-        final fullItem = await _ensureFullItem(item);
+        final fullItem = withPreferredMediaSource(
+          await _ensureFullItem(item),
+          mediaSourceId,
+        );
         final url = _buildDownloadUrl(item.id, fullItem, quality);
         final fileName = _buildFileName(fullItem, quality);
         triggerBrowserDownload(url, fileName);
@@ -2321,7 +2346,10 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     if (preparationCancelled()) return;
 
     try {
-      final fullItem = await _ensureFullItem(item);
+      final fullItem = withPreferredMediaSource(
+        await _ensureFullItem(item),
+        mediaSourceId,
+      );
       if (preparationCancelled()) return;
       final estimatedSize = estimateDownloadSizeBytes(fullItem, quality);
       final refusal = await _storageRefusal(estimatedSize);
@@ -3071,6 +3099,15 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
       switch (item.type) {
         case 'Movie':
           if (await targetDir.exists()) await targetDir.delete(recursive: true);
+          // Older builds added the year to these names a second time.
+          if (_nameEndsWithYear(item)) {
+            final doubledYearDir = Directory(
+              '${targetDir.path} (${item.productionYear})',
+            );
+            if (await doubledYearDir.exists()) {
+              await doubledYearDir.delete(recursive: true);
+            }
+          }
           await _deleteItemImages(item.id, imageDir);
           await _offlineRepo.deleteItem(item.id);
           return true;
@@ -3125,6 +3162,9 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
       }
     } catch (_) {
       return false;
+    } finally {
+      // Download buttons only re-check their offline state on a notify.
+      notifyListeners();
     }
   }
 

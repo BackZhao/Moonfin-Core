@@ -94,6 +94,49 @@ int sourceSizeBytes(AggregatedItem item) {
   return sources.first['Size'] as int? ?? 0;
 }
 
+/// [item] with the media source [mediaSourceId] moved to the front, so every
+/// download step that reads the first source follows the picked version.
+/// The top level MediaStreams describe the item's own file, which on Emby
+/// isn't always the first source, so they're replaced with the picked
+/// source's streams. A single source or an unknown id leaves [item] as is.
+AggregatedItem withPreferredMediaSource(
+  AggregatedItem item,
+  String? mediaSourceId,
+) {
+  final sources = item.mediaSources;
+  if (mediaSourceId == null || sources.length < 2) return item;
+  final index = sources.indexWhere(
+    (source) => source['Id']?.toString() == mediaSourceId,
+  );
+  if (index < 0) return item;
+  final picked = sources[index];
+  return AggregatedItem(
+    id: item.id,
+    serverId: item.serverId,
+    rawData: {
+      ...item.rawData,
+      'MediaSources': [
+        picked,
+        ...sources.take(index),
+        ...sources.skip(index + 1),
+      ],
+      if (picked['MediaStreams'] is List)
+        'MediaStreams': picked['MediaStreams'],
+    },
+  );
+}
+
+/// The item id that serves the first media source of a multi-version [item].
+/// Jellyfin's /Items/{id}/Download and /File ignore MediaSourceId and serve
+/// a version only by its own item id, which is the source's Id there. On
+/// Emby it's the source's ItemId.
+String mediaSourceItemId(AggregatedItem item) {
+  final sources = item.mediaSources;
+  if (sources.length < 2) return item.id;
+  final source = sources.first;
+  return (source['ItemId'] ?? source['Id'])?.toString() ?? item.id;
+}
+
 Duration? runtimeForEstimate(AggregatedItem item) {
   final runtime = item.runtime;
   if (runtime != null && runtime.inMilliseconds > 0) {

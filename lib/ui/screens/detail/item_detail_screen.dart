@@ -7088,7 +7088,9 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
         ),
       if (canShowDownloadActions && shows(DetailButton.download))
         DetailButton.download: _DownloadButton(
-          item: item,
+          // Led by the picked version so the size estimate and the download
+          // follow it.
+          item: withPreferredMediaSource(item, widget.selectedMediaSourceId),
           viewModel: viewModel,
         ),
       if (canShowDownloadActions &&
@@ -11662,7 +11664,12 @@ class _DownloadButtonState extends State<_DownloadButton> {
       if (item.type == 'MusicAlbum') {
         service.downloadAlbum(item.id, quality: quality);
       } else {
-        service.downloadItem(item, quality: quality);
+        // The button's item leads with the picked version.
+        service.downloadItem(
+          item,
+          quality: quality,
+          mediaSourceId: item.mediaSources.firstOrNull?['Id']?.toString(),
+        );
       }
       message = l10n.downloadingItem(item.name, quality.label);
     }
