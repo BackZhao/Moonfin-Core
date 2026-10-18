@@ -23,6 +23,10 @@ class BookShelfRow extends StatelessWidget {
   final bool Function(bool isUp)? onVerticalNavigation;
   final VoidCallback? onLeftEdge;
   final void Function(AggregatedItem item) onItemTap;
+
+  /// The tile's play button, which touch and pointer can reach. The D-pad
+  /// select key goes to [onItemTap].
+  final void Function(AggregatedItem item) onItemPlay;
   final void Function(AggregatedItem item)? onItemLongPress;
 
   final String? Function(AggregatedItem item) imageUrlFor;
@@ -42,6 +46,7 @@ class BookShelfRow extends StatelessWidget {
     required this.hubKey,
     required this.rowKey,
     required this.onItemTap,
+    required this.onItemPlay,
     required this.imageUrlFor,
     this.containerKey,
     this.onVerticalNavigation,
@@ -113,6 +118,7 @@ class BookShelfRow extends StatelessWidget {
           ),
           focused: isFocused,
           onTap: () => onItemTap(item),
+          onPlay: () => onItemPlay(item),
           onLongPress: onItemLongPress == null
               ? null
               : () => onItemLongPress!(item),
@@ -131,6 +137,7 @@ class _ProgressTile extends StatelessWidget {
   final String? meta;
   final bool focused;
   final VoidCallback onTap;
+  final VoidCallback onPlay;
   final VoidCallback? onLongPress;
 
   const _ProgressTile({
@@ -142,11 +149,13 @@ class _ProgressTile extends StatelessWidget {
     required this.meta,
     required this.focused,
     required this.onTap,
+    required this.onPlay,
     this.onLongPress,
   });
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final onSurface = AppColorScheme.onSurface;
     final coverWidth = isAudio ? 72.0 : 56.0;
     final coverHeight = isAudio ? 72.0 : 84.0;
@@ -245,18 +254,24 @@ class _ProgressTile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                // The whole tile opens the title, so the circle is only a hint.
-                ExcludeSemantics(
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: AppColorScheme.accent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.play_arrow_rounded,
-                      color: AppColorScheme.onAccent,
+                Semantics(
+                  container: true,
+                  button: true,
+                  label: isAudio ? l10n.continueListening : l10n.continueReading,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: onPlay,
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: AppColorScheme.accent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.play_arrow_rounded,
+                        color: AppColorScheme.onAccent,
+                      ),
                     ),
                   ),
                 ),

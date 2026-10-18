@@ -199,11 +199,19 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
       context.push(Destinations.folder(item.id, serverId: item.serverId));
       return;
     }
-    if (type == 'Book' || item.isComic) {
-      context.push(Destinations.book(item.id, serverId: item.serverId));
+    context.push(Destinations.item(item.id, serverId: item.serverId));
+  }
+
+  /// Opens the reader for a book or comic, and resumes an audiobook through
+  /// its details screen, which owns playback.
+  void _readOrListen(AggregatedItem item) {
+    if (_vm.isAudiobookItem(item)) {
+      context.push(
+        Destinations.item(item.id, serverId: item.serverId, autoPlay: true),
+      );
       return;
     }
-    context.push(Destinations.item(item.id, serverId: item.serverId));
+    context.push(Destinations.book(item.id, serverId: item.serverId));
   }
 
   void _onItemLongPress(AggregatedItem item) {
@@ -776,6 +784,7 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
       onVerticalNavigation: (isUp) => _moveVertical(entryIndex, isUp),
       onLeftEdge: _wide ? _focusRail : _onRowLeftEdge,
       onItemTap: _openItem,
+      onItemPlay: _readOrListen,
       onItemLongPress: _onItemLongPress,
       imageUrlFor: _vm.bookImageUrl,
       subtitleFor: _vm.bookSubtitle,
@@ -941,12 +950,17 @@ class _BookBrowseScreenState extends State<BookBrowseScreen>
           builder: (context, constraints) {
             final width = constraints.crossAxisExtent;
             final target = pane == BookPane.genres ? 220.0 : 150.0;
-            final spacing = wide
-                ? math.max(20.0, MediaCard.focusGap(target))
-                : 12.0;
+            final gap = wide ? 20.0 : 12.0;
             final columns = wide
-                ? math.max(2, ((width + spacing) / (target + spacing)).floor())
+                ? math.max(2, ((width + gap) / (target + gap)).floor())
                 : (pane == BookPane.genres ? 2 : 3);
+            // A focused card grows past its cell, so the gap widens to fit it.
+            final spacing = wide
+                ? math.max(
+                    gap,
+                    MediaCard.focusGap((width - gap * (columns - 1)) / columns),
+                  )
+                : gap;
             final cellWidth = (width - spacing * (columns - 1)) / columns;
             final cellHeight = MediaCard.layoutHeight(
               context,
