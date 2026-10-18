@@ -138,6 +138,25 @@ void main() {
     }
   });
 
+  testWidgets(
+    'Seerr Browse and the Radarr and Sonarr calendars sit with Seerr',
+    (tester) async {
+      await pump(tester, InterfaceLayout.phone);
+      expect(find.text('Seerr Browse'), findsNothing);
+
+      await tester.tap(find.text('Seerr'));
+      await tester.pumpAndSettle();
+
+      for (final label in [
+        'Seerr Browse',
+        'Upcoming Movies (Radarr)',
+        'Upcoming TV Shows (Sonarr)',
+      ]) {
+        expect(top(tester, label), greaterThan(top(tester, 'Seerr')));
+      }
+    },
+  );
+
   testWidgets('ticking a grouped row moves it to Enabled and back', (
     tester,
   ) async {

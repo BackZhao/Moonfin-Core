@@ -522,7 +522,10 @@ class _HomeSectionsScreenState extends State<HomeSectionsScreen>
     if (section.type == HomeSectionType.playlists) {
       return 5;
     }
-    if (_isSeerrSectionType(section.type)) {
+    if (_isSeerrSectionType(section.type) ||
+        section.type == HomeSectionType.seerrShortcuts ||
+        section.type == HomeSectionType.radarrCalendar ||
+        section.type == HomeSectionType.sonarrCalendar) {
       return 6;
     }
     // general builtins (resume, nextUp, etc.)
