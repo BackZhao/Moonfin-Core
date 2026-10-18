@@ -8125,7 +8125,7 @@ abstract class AppLocalizations {
   /// Label for the setting that picks the library page header layout
   ///
   /// In en, this message translates to:
-  /// **'Main Library Style'**
+  /// **'Video Library Style'**
   String get libraryStyle;
 
   /// Explanation under the library style setting on TV and desktop
@@ -8187,6 +8187,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bookstore'**
   String get bookLibraryStyleBookstore;
+
+  /// Label for the setting that picks the music library layout
+  ///
+  /// In en, this message translates to:
+  /// **'Music Library Style'**
+  String get musicLibraryStyle;
+
+  /// Explanation under the music library style setting
+  ///
+  /// In en, this message translates to:
+  /// **'Classic is the original rows under a Jump Back In card. Quick Access starts with a grid of your recent albums and playlists. Immersive leads with the album you\'re listening to.'**
+  String get musicLibraryStyleDescription;
+
+  /// Music library style option: the original rows
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get musicLibraryStyleClassic;
+
+  /// Music library style option: a grid of recent albums and playlists over the rows
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Access'**
+  String get musicLibraryStyleQuickAccess;
+
+  /// Music library style option: a full-width album hero over the rows
+  ///
+  /// In en, this message translates to:
+  /// **'Immersive'**
+  String get musicLibraryStyleImmersive;
+
+  /// Heading over the albums and playlists the user played recently in a music library
+  ///
+  /// In en, this message translates to:
+  /// **'Jump Back In'**
+  String get jumpBackIn;
+
+  /// Heading over the user's playlists in a music library
+  ///
+  /// In en, this message translates to:
+  /// **'Your Playlists'**
+  String get yourPlaylists;
+
+  /// Heading over the track list of the album shown in the music library hero
+  ///
+  /// In en, this message translates to:
+  /// **'From This Album'**
+  String get fromThisAlbum;
+
+  /// Placeholder and label for the search control in a music library
+  ///
+  /// In en, this message translates to:
+  /// **'Search Music'**
+  String get searchMusic;
 
   /// How many series a book library holds
   ///

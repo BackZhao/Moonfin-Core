@@ -33,7 +33,7 @@ import '../screens/browse/library_genres_screen.dart';
 import '../screens/browse/library_letters_screen.dart';
 import '../screens/browse/library_suggestions_screen.dart';
 import '../screens/browse/book_library_screen.dart';
-import '../screens/browse/music_browse_screen.dart';
+import '../screens/browse/music_library_screen.dart';
 import '../../data/models/tmdb_item_ref.dart';
 import '../screens/detail/item_detail_screen.dart';
 import '../screens/games/game_library_screen.dart';
@@ -360,7 +360,7 @@ final appRouter = GoRouter(
       path: Destinations.musicBrowse,
       builder: (context, state) {
         final libraryId = state.pathParameters['libraryId']!;
-        return MusicBrowseScreen(libraryId: libraryId);
+        return MusicLibraryScreen(libraryId: libraryId);
       },
     ),
     GoRoute(

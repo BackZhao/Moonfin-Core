@@ -129,6 +129,7 @@ void main() {
     'libraryPosterSize',
     'libraryStyle',
     'bookLibraryStyle',
+    'musicLibraryStyle',
     'loadingAnimationImage',
     'loadingAnimationPosition',
     'loadingAnimationSize',

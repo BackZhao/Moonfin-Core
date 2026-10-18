@@ -1167,6 +1167,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'reading room',
       'bookstore',
     ]),
+    libraries.leaf('pref_music_library_style', l10n.musicLibraryStyle, keywords: [
+      'music',
+      'albums',
+      'classic',
+      'quick access',
+      'immersive',
+    ]),
     libraries.leaf(
       'pref_group_items_into_collections',
       l10n.groupItemsIntoCollections,

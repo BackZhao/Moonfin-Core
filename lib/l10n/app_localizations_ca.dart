@@ -4640,7 +4640,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get libraryView => 'Vista de la biblioteca';
 
   @override
-  String get libraryStyle => 'Main Library Style';
+  String get libraryStyle => 'Video Library Style';
 
   @override
   String get libraryStyleDescription =>
@@ -4674,6 +4674,34 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get bookLibraryStyleBookstore => 'Bookstore';
+
+  @override
+  String get musicLibraryStyle => 'Music Library Style';
+
+  @override
+  String get musicLibraryStyleDescription =>
+      'Classic is the original rows under a Jump Back In card. Quick Access starts with a grid of your recent albums and playlists. Immersive leads with the album you\'re listening to.';
+
+  @override
+  String get musicLibraryStyleClassic => 'Classic';
+
+  @override
+  String get musicLibraryStyleQuickAccess => 'Quick Access';
+
+  @override
+  String get musicLibraryStyleImmersive => 'Immersive';
+
+  @override
+  String get jumpBackIn => 'Jump Back In';
+
+  @override
+  String get yourPlaylists => 'Your Playlists';
+
+  @override
+  String get fromThisAlbum => 'From This Album';
+
+  @override
+  String get searchMusic => 'Search Music';
 
   @override
   String bookSeriesCount(int count) {

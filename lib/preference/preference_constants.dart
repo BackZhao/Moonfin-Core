@@ -379,6 +379,18 @@ enum BookLibraryStyle {
   bookstore;
 }
 
+/// Selectable layout for music libraries.
+///
+/// [classic] is the original rows under a Jump Back In card. [quickAccess]
+/// leads with a grid of recent albums and playlists. [immersive] is the
+/// default, the album being listened to on a full-width hero over the rest.
+/// Stored per server and user.
+enum MusicLibraryStyle {
+  classic,
+  quickAccess,
+  immersive;
+}
+
 /// Selectable algorithm source for similarity recommendation system.
 enum RecommendationSystemSource {
   local,

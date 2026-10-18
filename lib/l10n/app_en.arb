@@ -6061,7 +6061,7 @@
   "@libraryView": {
     "description": "Section title for library view settings"
   },
-  "libraryStyle": "Main Library Style",
+  "libraryStyle": "Video Library Style",
   "@libraryStyle": {
     "description": "Label for the setting that picks the library page header layout"
   },
@@ -6104,6 +6104,42 @@
   "bookLibraryStyleBookstore": "Bookstore",
   "@bookLibraryStyleBookstore": {
     "description": "Book library style option: browse entries over a title grid"
+  },
+  "musicLibraryStyle": "Music Library Style",
+  "@musicLibraryStyle": {
+    "description": "Label for the setting that picks the music library layout"
+  },
+  "musicLibraryStyleDescription": "Classic is the original rows under a Jump Back In card. Quick Access starts with a grid of your recent albums and playlists. Immersive leads with the album you're listening to.",
+  "@musicLibraryStyleDescription": {
+    "description": "Explanation under the music library style setting"
+  },
+  "musicLibraryStyleClassic": "Classic",
+  "@musicLibraryStyleClassic": {
+    "description": "Music library style option: the original rows"
+  },
+  "musicLibraryStyleQuickAccess": "Quick Access",
+  "@musicLibraryStyleQuickAccess": {
+    "description": "Music library style option: a grid of recent albums and playlists over the rows"
+  },
+  "musicLibraryStyleImmersive": "Immersive",
+  "@musicLibraryStyleImmersive": {
+    "description": "Music library style option: a full-width album hero over the rows"
+  },
+  "jumpBackIn": "Jump Back In",
+  "@jumpBackIn": {
+    "description": "Heading over the albums and playlists the user played recently in a music library"
+  },
+  "yourPlaylists": "Your Playlists",
+  "@yourPlaylists": {
+    "description": "Heading over the user's playlists in a music library"
+  },
+  "fromThisAlbum": "From This Album",
+  "@fromThisAlbum": {
+    "description": "Heading over the track list of the album shown in the music library hero"
+  },
+  "searchMusic": "Search Music",
+  "@searchMusic": {
+    "description": "Placeholder and label for the search control in a music library"
   },
   "bookSeriesCount": "{count, plural, =1{1 series} other{{count} series}}",
   "@bookSeriesCount": {

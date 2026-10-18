@@ -75,6 +75,20 @@ class _LibrariesCategoryScreen extends StatelessWidget {
                 },
                 onChanged: _pushPersonalizationSync,
               ),
+              EnumPreferenceTile<MusicLibraryStyle>(
+                key: const ValueKey('pref_music_library_style'),
+                preference: UserPreferences.musicLibraryStyle,
+                title: l10n.musicLibraryStyle,
+                description: l10n.musicLibraryStyleDescription,
+                icon: Icons.library_music_outlined,
+                labelOf: (v) => switch (v) {
+                  MusicLibraryStyle.classic => l10n.musicLibraryStyleClassic,
+                  MusicLibraryStyle.quickAccess =>
+                    l10n.musicLibraryStyleQuickAccess,
+                  MusicLibraryStyle.immersive => l10n.musicLibraryStyleImmersive,
+                },
+                onChanged: _pushPersonalizationSync,
+              ),
               SwitchPreferenceTile(
                 preference: UserPreferences.groupItemsIntoCollections,
                 title: l10n.groupItemsIntoCollections,

@@ -482,6 +482,7 @@ class UserPreferences extends ChangeNotifier {
     'pref_detail_screen_style',
     'pref_library_style',
     'pref_book_library_style',
+    'pref_music_library_style',
     'pref_detail_expanded_tabs',
     'pref_detail_show_technical_details',
     'pref_detail_trailers_external',
@@ -1940,6 +1941,13 @@ class UserPreferences extends ChangeNotifier {
     key: 'pref_book_library_style',
     defaultValue: BookLibraryStyle.bookstore,
     values: BookLibraryStyle.values,
+  );
+
+  /// Layout for music libraries, stored per server and user.
+  static final musicLibraryStyle = EnumPreference(
+    key: 'pref_music_library_style',
+    defaultValue: MusicLibraryStyle.immersive,
+    values: MusicLibraryStyle.values,
   );
 
   static final showMediaDetailsOnLibraryPage = Preference(
