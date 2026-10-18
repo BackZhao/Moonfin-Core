@@ -14002,7 +14002,7 @@
     "@subtitleDownloadLanguagesDescription": {
         "description": "Description for the subtitle download languages setting"
     },
-    "libraryStyle": "Kirjastotyyli",
+    "libraryStyle": "Pääkirjaston tyyli",
     "@libraryStyle": {
         "description": "Label for the setting that picks the library page header layout"
     },
@@ -14425,5 +14425,123 @@
     "librarySortLength": "Pituus",
     "@librarySortLength": {
         "description": "Sort option for music: by track or album length"
-    }
+    },
+    "bookLibraryStyle": "Kirjahyllyn Tyyli",
+    "@bookLibraryStyle": {
+        "description": "Label for the setting that picks the book and audiobook library layout"
+    },
+    "bookLibraryStyleDescription": "”Classic” on alkuperäinen hyllyvalikoima, joka sijaitsee esillä olevan teoksen alla. ”Reading Room” näyttää etusivulla suuria kortteja, joissa on tiedot parhaillaan lukemastasi teoksesta. ”Bookstore” esittelee koko kirjaston ruudukkomuodossa.",
+    "@bookLibraryStyleDescription": {
+        "description": "Explanation under the book library style setting"
+    },
+    "bookLibraryStyleClassic": "Classic",
+    "@bookLibraryStyleClassic": {
+        "description": "Book library style option: the original shelves"
+    },
+    "bookLibraryStyleReadingRoom": "Lukunurkka",
+    "@bookLibraryStyleReadingRoom": {
+        "description": "Book library style option: large Continue cards over a few shelves"
+    },
+    "bookLibraryStyleBookstore": "Kirjakauppa",
+    "@bookLibraryStyleBookstore": {
+        "description": "Book library style option: browse entries over a title grid"
+    },
+    "bookSeriesCount": "{count, plural, =1{1 series} other{{count} series}}",
+    "@bookSeriesCount": {
+        "description": "How many series a book library holds",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "bookInProgressCount": "{count} käynnissä",
+    "@bookInProgressCount": {
+        "description": "How many books or audiobooks are started but not finished",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "bookBrowseAllTitles": "{count, plural, =1{Browse 1 title} other{Browse all {count} titles}}",
+    "@bookBrowseAllTitles": {
+        "description": "Link from the book library to the full title grid",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "searchBooks": "Hae kirjoja",
+    "@searchBooks": {
+        "description": "Button in the book library that opens search within it"
+    },
+    "homeRowsGenresAndStudios": "Genret & Studiot",
+    "@homeRowsGenresAndStudios": {
+        "description": "Home Rows editor: heading of the group of disabled genre and studio rows"
+    },
+    "homeRowsExternalLists": "Ulkoiset listat",
+    "@homeRowsExternalLists": {
+        "description": "Home Rows editor: heading of the group of disabled rows from IMDb, TMDB, Letterboxd and MDBList lists"
+    },
+    "adminPremiereNoteLiveTv": "Suora TV-lähetys vaatii Emby Premiere -sovelluksen. Ilman sitä palvelin ei tuo kanavia eikä tallenna mitään",
+    "adminPremiereNoteBackups": "Varmuuskopiointi- ja palautustoiminnot edellyttävät Emby Premiere -ohjelmistoa kokeilujakson päätyttyä.",
+    "adminGeneralRunAtStartup": "Käynnistä palvelin järjestelmän käynnistyksen yhteydessä",
+    "adminGeneralLaunchWebApp": "Avaa verkkosovellus selaimessa, kun palvelin käynnistyy",
+    "adminGeneralBannerText": "Aloitusnäytön bannerin teksti",
+    "adminGeneralBannerTextHelp": "Näytetään jokaiselle käyttäjälle aloitusnäytöllä",
+    "adminGeneralSectionMaintenance": "Huoltotila",
+    "adminGeneralMaintenanceMode": "Aseta palvelin huoltotilaan",
+    "adminGeneralMaintenanceModeHelp": "Käyttäjille näkyy vain huoltoviesti.",
+    "adminGeneralMaintenanceMessage": "Huoltotiedote",
+    "adminGeneralMaintenanceMessageHelp": "Jätä kenttä tyhjäksi, jos haluat näyttää yleisen viestin kunkin käyttäjän kielellä.",
+    "adminGeneralSectionUpdates": "Automaattiset päivitykset",
+    "adminGeneralAutoUpdate": "Päivitä palvelin automaattisesti",
+    "adminGeneralAutoRestart": "Käynnistä tietokone uudelleen automaattisesti päivitysten asentamiseksi",
+    "adminGeneralAutoRestartHelp": "Palvelin käynnistyy uudelleen vain silloin, kun aktiivisia käyttäjiä ei ole.",
+    "adminTaskTriggerSystemEvent": "Järjestelmätapahtuman jälkeen ({event})",
+    "@adminTaskTriggerSystemEvent": {
+        "placeholders": {
+            "event": {
+                "type": "String"
+            }
+        }
+    },
+    "adminPluginNeedsPremiere": "Vaatii Emby Premiere -sovelluksen 14 päivän ilmaisen kokeilujakson jälkeen",
+    "adminEmbyBackupsHelp": "Emby varmuuskopioi tiedot Backup & Restore -laajennuksen avulla.",
+    "adminEmbyBackupsNoPlugin": "Backup & Restore -laajennusta ei ole asennettu. Asenna se laajennusvalikoimasta, jotta voit varmuuskopioida tämän palvelimen.",
+    "adminEmbyBackupNow": "Tee varmuuskopio nyt",
+    "adminEmbyFullBackup": "Täydellinen varmuuskopiointi",
+    "adminEmbyLightBackups": "Tietokannan varmuuskopiot",
+    "adminEmbyBackupServerVersion": "Emby {version}",
+    "@adminEmbyBackupServerVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "adminEmbyRestoreConfirm": "Palautetaanko {name}? Tämä korvaa tämän palvelimen kirjastot, asetukset, käyttäjät ja salasanat, ja palvelin sammuu, kun toimenpide on valmis. Saatat joutua käynnistämään sen uudelleen itse.",
+    "@adminEmbyRestoreConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminEmbyRestoreServerId": "Palauta palvelintunnus",
+    "adminEmbyRestoreServerIdHelp": "Poista tämä valinta käytöstä, kun palautat saman varmuuskopion useammalle kuin yhdelle palvelimelle.",
+    "adminEmbyRestoreShuttingDown": "Palautus on valmis ja palvelin sammuu. Käynnistä se uudelleen, jos se ei käynnisty itsestään.",
+    "adminHiddenRemotely": "Piilota kirjautumisnäytöt, kun olet yhteydessä etäyhteyden kautta",
+    "adminHiddenFromUnusedDevices": "Piilota kirjautumissivut laitteilta, joilla käyttäjä ei ole koskaan kirjautunut sisään",
+    "adminSimultaneousStreamLimitHelp": "Rajoittaa, kuinka monta videota tämä käyttäjä voi toistaa kerralla.",
+    "adminUnlimited": "Rajoittamaton",
+    "adminAutoRemoteQuality": "Automaattisen etäyhteyden laatu (Mbps)",
+    "adminAutoRemoteQualityHelp": "Käytetään etäohjauksella, kun soittimen laatu on asetettu automaattiseksi. Jätä kenttä tyhjäksi, jotta se tunnistetaan.",
+    "adminAllowCameraUpload": "Salli kuvien lataaminen kamerasta",
+    "adminAllowSubtitleDownloading": "Salli tekstityksen lataaminen",
+    "adminAllowMediaConversion": "Salli tiedostomuodon muuntaminen",
+    "adminAllowSyncTranscoding": "Salli lataukset, jotka vaativat transkoodausta",
+    "adminAllowSharingPersonalItems": "Salli soittolistojen jakaminen muiden käyttäjien kanssa"
 }
