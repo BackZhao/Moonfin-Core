@@ -1854,6 +1854,12 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: true,
   );
 
+  /// Lists the book library's titles in rows instead of a cover grid.
+  static final bookLibraryListView = Preference(
+    key: 'pref_book_library_list_view',
+    defaultValue: false,
+  );
+
   static final navbarPosition = EnumPreference(
     key: 'pref_navbar_position',
     defaultValue: NavbarPosition.top,

@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:moonfin_design/moonfin_design.dart';
 
 import '../../../data/viewmodels/book_browse_view_model.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../util/focus/dpad_keys.dart';
 import '../focus/glass_focus_halo.dart';
-import 'book_glass.dart';
+import 'book_segmented_control.dart';
 
-/// All / Books / Audiobooks scope filter for mixed libraries.
-///
-/// One universal design on every idiom and platform: the iOS-style pill with
-/// a sliding selected segment. Only the material adapts, using a glass tint
-/// on glass tiers and a solid theme surface with an accent thumb otherwise.
-/// The whole pill is a single focus stop; left/right move the selection
-/// while focused.
+/// The format filter for mixed libraries, drawn as the same pill as the
+/// Library/Discover tabs. The whole pill is one focus stop, and left and right
+/// move the selection while it's focused.
 class BookScopeFilter extends StatefulWidget {
   final BookScope value;
   final ValueChanged<BookScope> onChanged;
   final List<BookScope>? availableScopes;
   final FocusNode? focusNode;
 
-  /// Up/down D-pad from the pill; return true when handled.
+  /// Up and down D-pad presses from the pill. Returns true when handled.
   final bool Function(bool isUp)? onVerticalNavigation;
 
   const BookScopeFilter({
@@ -76,87 +71,11 @@ class _BookScopeFilterState extends State<BookScopeFilter> {
     return KeyEventResult.ignored;
   }
 
-  String _label(AppLocalizations l10n, BookScope scope) => switch (scope) {
-    BookScope.all => l10n.all,
-    BookScope.books => l10n.books,
-    BookScope.audiobooks => l10n.audiobooks,
-    BookScope.comics => l10n.comics,
-  };
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final glass = bookGlassEligible;
-    final onSurface = AppColorScheme.onSurface;
-    final accent = AppColorScheme.accent;
     final scopes = _scopes;
     final selectedIndex = scopes.indexOf(widget.value);
-    final effectiveIndex = selectedIndex >= 0 ? selectedIndex : 0;
-
-    final thumbColor = glass
-        ? onSurface.withValues(alpha: 0.22)
-        : accent;
-    final selectedTextColor = glass ? onSurface : AppColorScheme.onAccent;
-
-    final track = Stack(
-      children: [
-        AnimatedAlign(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOutCubic,
-          alignment: Alignment(
-            scopes.length <= 1
-                ? 0
-                : -1 + effectiveIndex * (2 / (scopes.length - 1)),
-            0,
-          ),
-          child: FractionallySizedBox(
-            widthFactor: scopes.isEmpty ? 1 : 1 / scopes.length,
-            heightFactor: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: thumbColor,
-                borderRadius: AppRadius.circular(999),
-                border: glass
-                    ? Border.all(
-                        color: onSurface.withValues(alpha: 0.25),
-                        width: 0.5,
-                      )
-                    : null,
-              ),
-            ),
-          ),
-        ),
-        Row(
-          children: [
-            for (final scope in scopes)
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => widget.onChanged(scope),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 7),
-                    child: Text(
-                      _label(l10n, scope),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: scope == widget.value
-                            ? FontWeight.w600
-                            : FontWeight.w500,
-                        color: scope == widget.value
-                            ? selectedTextColor
-                            : onSurface.withValues(alpha: 0.75),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ],
-    );
 
     return Focus(
       focusNode: _node,
@@ -166,14 +85,20 @@ class _BookScopeFilterState extends State<BookScopeFilter> {
         focused: _focused,
         scale: 1.0,
         borderRadius: BorderRadius.circular(999),
-        child: bookGlassOrSolid(
-          cornerRadius: 999,
-          blur: 12,
-          fallbackColor: onSurface.withValues(alpha: 0.08),
-          context: context,
-          child: SizedBox(height: 34, child: track),
+        child: BookSegmentedControl(
+          labels: [for (final scope in scopes) bookScopeLabel(l10n, scope)],
+          selectedIndex: selectedIndex >= 0 ? selectedIndex : 0,
+          onChanged: (i) => widget.onChanged(scopes[i]),
         ),
       ),
     );
   }
 }
+
+String bookScopeLabel(AppLocalizations l10n, BookScope scope) =>
+    switch (scope) {
+      BookScope.all => l10n.all,
+      BookScope.books => l10n.books,
+      BookScope.audiobooks => l10n.audiobooks,
+      BookScope.comics => l10n.comics,
+    };

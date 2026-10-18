@@ -17,6 +17,7 @@ import 'package:moonfin/preference/preference_constants.dart';
 import 'package:moonfin/preference/seerr_preferences.dart';
 import 'package:moonfin/preference/user_preferences.dart';
 import 'package:moonfin/ui/screens/browse/book_browse_screen.dart';
+import 'package:moonfin/ui/widgets/book/book_browse_nav.dart';
 import 'package:moonfin/ui/widgets/book/book_segmented_control.dart';
 import 'package:moonfin/ui/widgets/book/discover/book_discover_tab.dart';
 import 'package:moonfin/ui/widgets/left_sidebar.dart';
@@ -185,16 +186,38 @@ void main() {
     expect(find.byType(BookSegmentedControl), findsOneWidget);
   });
 
-  testWidgets('the sidebar moves the tab control past it on wide layouts',
+  testWidgets('the sidebar moves the rail past it on wide layouts',
       (tester) async {
     PlatformDetection.setInterfaceLayout(InterfaceLayout.desktop);
     await prefs.set(UserPreferences.navbarPosition, NavbarPosition.left);
     await pumpScreen(tester);
 
     expect(
-      tester.getTopLeft(find.byType(BookSegmentedControl)).dx,
-      closeTo(60, 1.0),
+      tester.getTopLeft(find.byType(BookLibraryRail)).dx,
+      closeTo(52, 1.0),
     );
+  });
+
+  testWidgets('wide layouts offer Discover in the rail, behind the setting',
+      (tester) async {
+    PlatformDetection.setInterfaceLayout(InterfaceLayout.desktop);
+    await pumpScreen(tester);
+
+    final discover = find.descendant(
+      of: find.byType(BookLibraryRail),
+      matching: find.text('Discover'),
+    );
+    expect(discover, findsOneWidget);
+    expect(find.byType(BookSegmentedControl), findsNothing);
+
+    await tester.tap(discover);
+    await tester.pumpAndSettle();
+    expect(find.byType(BookDiscoverTab), findsOneWidget);
+
+    await prefs.set(UserPreferences.showBookDiscoverTab, false);
+    await tester.pumpAndSettle();
+    expect(discover, findsNothing);
+    expect(find.byType(BookDiscoverTab), findsNothing);
   });
 
   testWidgets('phones keep the tab control at the edge with the sidebar on',
@@ -215,6 +238,7 @@ void main() {
     }
 
     String? focused() => FocusManager.instance.primaryFocus?.debugLabel;
+    const continueRow = 'LockedFocusRow:books_lib-1_resume';
 
     Future<void> somethingChanges(WidgetTester tester) async {
       await prefs.set(UserPreferences.osdLockEnabled, true);
@@ -226,7 +250,7 @@ void main() {
     ) async {
       await pumpWithBook(tester);
 
-      expect(focused(), 'bookHeroCta');
+      expect(focused(), continueRow);
       expect(LeftSidebar.isFocusedNotifier.value, isFalse);
     });
 
@@ -235,13 +259,13 @@ void main() {
     ) async {
       await pumpWithBook(tester);
       FocusManager.instance.rootScope.descendants
-          .firstWhere((node) => node.debugLabel == 'bookTabs')
+          .firstWhere((node) => node.debugLabel == 'bookRail:scope:all')
           .requestFocus();
       await tester.pump();
 
       await somethingChanges(tester);
 
-      expect(focused(), 'bookTabs');
+      expect(focused(), 'bookRail:scope:all');
     });
 
     testWidgets('focus that falls off the page comes back to the content', (
@@ -253,7 +277,7 @@ void main() {
 
       await somethingChanges(tester);
 
-      expect(focused(), 'bookHeroCta');
+      expect(focused(), continueRow);
     });
   });
 }
