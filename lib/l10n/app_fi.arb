@@ -341,11 +341,11 @@
     "@displaySettings": {
         "description": "Tooltip for display settings button"
     },
-    "allGenres": "Genret",
+    "allGenres": "Kaikki Genret",
     "@allGenres": {
         "description": "Title for the all genres screen"
     },
-    "noGenresFound": "Genrejä ei löytynyt",
+    "noGenresFound": "Tyylilajeja ei löytynyt",
     "@noGenresFound": {
         "description": "Empty state when no genres are available"
     },
@@ -13994,7 +13994,7 @@
     "@subtitleDownloadLanguagesDescription": {
         "description": "Description for the subtitle download languages setting"
     },
-    "libraryStyle": "Pääkirjaston tyyli",
+    "libraryStyle": "Videokirjaston tyyli",
     "@libraryStyle": {
         "description": "Label for the setting that picks the library page header layout"
     },
@@ -14702,5 +14702,73 @@
                 "type": "String"
             }
         }
+    },
+    "quickConnectScanHint": "Tai skannaa tämä puhelimella, joka on kirjautunut palvelimellesi",
+    "@quickConnectScanHint": {
+        "description": "Caption under the Quick Connect QR code that opens the server's web page with the code filled in"
+    },
+    "quickConnectTapOrScanHint": "Hyväksy napauttamalla selaimessasi tai skannaa tämä toisella laitteella",
+    "@quickConnectTapOrScanHint": {
+        "description": "Caption under the Quick Connect QR code on a phone or tablet, where tapping the code opens the server's web page with the code filled in"
+    },
+    "musicLibraryStyle": "Musiikkikirjaston tyyli",
+    "@musicLibraryStyle": {
+        "description": "Label for the setting that picks the music library layout"
+    },
+    "musicLibraryStyleDescription": "Classic-näkymässä näkyvät alkuperäiset rivit ”Jump Back In” -kortin alla. Quick Access -näkymä avautuu ruudukolla, jossa näkyvät viimeisimmät albumisi ja soittolistasi. Immersive-näkymä avautuu sillä albumilla, jota olet parhaillaan kuuntelemassa.",
+    "@musicLibraryStyleDescription": {
+        "description": "Explanation under the music library style setting"
+    },
+    "musicLibraryStyleClassic": "Classic",
+    "@musicLibraryStyleClassic": {
+        "description": "Music library style option: the original rows"
+    },
+    "musicLibraryStyleQuickAccess": "Pikavalikko",
+    "@musicLibraryStyleQuickAccess": {
+        "description": "Music library style option: a grid of recent albums and playlists over the rows"
+    },
+    "musicLibraryStyleImmersive": "Immersiivinen",
+    "@musicLibraryStyleImmersive": {
+        "description": "Music library style option: a full-width album hero over the rows"
+    },
+    "jumpBackIn": "Palaa takaisin",
+    "@jumpBackIn": {
+        "description": "Heading over the albums and playlists the user played recently in a music library"
+    },
+    "yourPlaylists": "Soittolistasi",
+    "@yourPlaylists": {
+        "description": "Heading over the user's playlists in a music library"
+    },
+    "fromThisAlbum": "Tältä albumilta",
+    "@fromThisAlbum": {
+        "description": "Heading over the track list of the album shown in the music library hero"
+    },
+    "searchMusic": "Etsi musiikkia",
+    "@searchMusic": {
+        "description": "Placeholder and label for the search control in a music library"
+    },
+    "smartDownloadsEnableDescription": "Kun olet katsonut jakson loppuun millä tahansa laitteella, Moonfin lataa seuraavat jaksot. Ladatut jaksot poistetaan, kun ne on katsottu.",
+    "@smartDownloadsEnableDescription": {
+        "description": "Explains the smart downloads switch, including that watched episodes are deleted"
+    },
+    "autoDownloadDeleteFollowedSubtitle": "Milloin kannattaa poistaa seuraamiesi sarjojen ladatut jaksot, kun olet katsonut ne",
+    "@autoDownloadDeleteFollowedSubtitle": {
+        "description": "Explains the delete-after-watching setting"
+    },
+    "removeWatchedDownloads": "Poista seurattavat lataukset",
+    "@removeWatchedDownloads": {
+        "description": "Storage setting that picks how soon an episode or movie the user downloaded themselves is removed after it was watched"
+    },
+    "removeWatchedDownloadsSubtitle": "Milloin itse ladatut jaksot ja elokuvat poistetaan. Vain ne, jotka katsot tämän toiminnon käyttöönoton jälkeen, poistetaan",
+    "@removeWatchedDownloadsSubtitle": {
+        "description": "Explains the remove-watched-downloads setting"
+    },
+    "keepDownloaded": "Tallenna ladatut tiedostot",
+    "@keepDownloaded": {
+        "description": "Toggle on the download sheet that stops watched downloads of this title from being removed automatically"
+    },
+    "keepDownloadedSubtitle": "Älä koskaan poista tätä automaattisesti katsomisen jälkeen",
+    "@keepDownloadedSubtitle": {
+        "description": "Explains the keep-downloaded toggle"
     }
 }
