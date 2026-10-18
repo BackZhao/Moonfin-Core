@@ -6015,6 +6015,7 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     if (button is _DownloadButton) {
       return _DownloadButton(
         item: button.item,
+        resolveAudioStreamIndex: button.resolveAudioStreamIndex,
         viewModel: button.viewModel,
         focusNode: focusNode,
         onFocused: onFocused,
@@ -6346,7 +6347,11 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
       return button;
     }
     if (button is _DownloadButton) {
-      return _buildDownloadDetailAction(context, button.item);
+      return _buildDownloadDetailAction(
+        context,
+        button.item,
+        button.resolveAudioStreamIndex,
+      );
     }
     if (button is _DeleteDownloadButton) {
       return _buildDeleteDetailAction(context, button.item);
@@ -6357,6 +6362,7 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
   _DetailActionButton _buildDownloadDetailAction(
     BuildContext context,
     AggregatedItem item,
+    int? Function()? resolveAudioStreamIndex,
   ) {
     final l10n = AppLocalizations.of(context);
     final downloadService = GetIt.instance.isRegistered<DownloadService>()
@@ -6402,7 +6408,12 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
         activeColor: const Color(0xFF4CAF50),
         onPressed: () {
           if (downloadService != null) {
-            _DownloadButton.showDownloadOptions(context, item, downloadService);
+            _DownloadButton.showDownloadOptions(
+              context,
+              item,
+              downloadService,
+              audioStreamIndex: resolveAudioStreamIndex?.call(),
+            );
           }
         },
       );
@@ -6413,7 +6424,12 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
       icon: Icons.download_for_offline,
       onPressed: () {
         if (downloadService != null) {
-          _DownloadButton.showDownloadOptions(context, item, downloadService);
+          _DownloadButton.showDownloadOptions(
+            context,
+            item,
+            downloadService,
+            audioStreamIndex: resolveAudioStreamIndex?.call(),
+          );
         }
       },
     );
@@ -7091,6 +7107,9 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
           // Led by the picked version so the size estimate and the download
           // follow it.
           item: withPreferredMediaSource(item, widget.selectedMediaSourceId),
+          resolveAudioStreamIndex: () => _effectiveAudioStreamIndex(
+            _mediaStreamsForCurrentSelection(item),
+          ),
           viewModel: viewModel,
         ),
       if (canShowDownloadActions &&
@@ -10873,6 +10892,10 @@ bool _isDownloadable(String? type) {
 
 class _DownloadButton extends StatefulWidget {
   final AggregatedItem item;
+
+  /// Reads the track the Audio button shows when Download is pressed, since a
+  /// transcode keeps only that one.
+  final int? Function()? resolveAudioStreamIndex;
   final ItemDetailViewModel viewModel;
   final FocusNode? focusNode;
   final VoidCallback? onFocused;
@@ -10884,6 +10907,7 @@ class _DownloadButton extends StatefulWidget {
 
   const _DownloadButton({
     required this.item,
+    this.resolveAudioStreamIndex,
     required this.viewModel,
     this.focusNode,
     this.onFocused,
@@ -10897,8 +10921,14 @@ class _DownloadButton extends StatefulWidget {
   static void showDownloadOptions(
     BuildContext context,
     AggregatedItem item,
-    DownloadService service,
-  ) => _DownloadButtonState._showDownloadOptionsFor(context, item, service);
+    DownloadService service, {
+    int? audioStreamIndex,
+  }) => _DownloadButtonState._showDownloadOptionsFor(
+    context,
+    item,
+    service,
+    audioStreamIndex: audioStreamIndex,
+  );
 
   @override
   State<_DownloadButton> createState() => _DownloadButtonState();
@@ -11186,7 +11216,12 @@ class _DownloadButtonState extends State<_DownloadButton> {
   );
 
   void _showDownloadOptions(BuildContext context, DownloadService service) {
-    _showDownloadOptionsFor(context, widget.item, service);
+    _showDownloadOptionsFor(
+      context,
+      widget.item,
+      service,
+      audioStreamIndex: widget.resolveAudioStreamIndex?.call(),
+    );
   }
 
   /// Entry point for the download button. Series, seasons and collections
@@ -11195,12 +11230,18 @@ class _DownloadButtonState extends State<_DownloadButton> {
   static void _showDownloadOptionsFor(
     BuildContext context,
     AggregatedItem item,
-    DownloadService service,
-  ) {
+    DownloadService service, {
+    int? audioStreamIndex,
+  }) {
     if (_isBatchType(item.type)) {
       _showScopePicker(context, item, service);
     } else {
-      _showQualityPicker(context, item, service);
+      _showQualityPicker(
+        context,
+        item,
+        service,
+        audioStreamIndex: audioStreamIndex,
+      );
     }
   }
 
@@ -11484,6 +11525,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
     AggregatedItem item,
     DownloadService service, {
     List<AggregatedItem>? items,
+    int? audioStreamIndex,
   }) async {
     final isMulti = _isBatchType(item.type);
     if (!isMulti && !_supportsTranscoding(item.type)) {
@@ -11499,7 +11541,14 @@ class _DownloadButtonState extends State<_DownloadButton> {
       items: items ?? const [],
     );
     if (quality == null || !context.mounted) return;
-    _startDownload(context, item, service, quality, items: items);
+    _startDownload(
+      context,
+      item,
+      service,
+      quality,
+      items: items,
+      audioStreamIndex: audioStreamIndex,
+    );
   }
 
   static bool _supportsTranscoding(String? type) =>
@@ -11648,6 +11697,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
     DownloadService service,
     DownloadQuality quality, {
     List<AggregatedItem>? items,
+    int? audioStreamIndex,
   }) {
     final l10n = AppLocalizations.of(context);
     final String message;
@@ -11669,6 +11719,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
           item,
           quality: quality,
           mediaSourceId: item.mediaSources.firstOrNull?['Id']?.toString(),
+          audioStreamIndex: audioStreamIndex,
         );
       }
       message = l10n.downloadingItem(item.name, quality.label);

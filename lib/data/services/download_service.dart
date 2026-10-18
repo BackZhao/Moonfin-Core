@@ -279,12 +279,19 @@ class _NeverStartedException implements Exception {}
 enum _DownloadActivityPhase { start, progress, stop }
 
 class _QueuedDownload {
-  _QueuedDownload(this.item, this.quality, this.source, this.mediaSourceId);
+  _QueuedDownload(
+    this.item,
+    this.quality,
+    this.source,
+    this.mediaSourceId,
+    this.audioStreamIndex,
+  );
 
   final AggregatedItem item;
   final DownloadQuality quality;
   final DownloadSource source;
   final String? mediaSourceId;
+  final int? audioStreamIndex;
   final Completer<void> completer = Completer<void>();
 }
 
@@ -605,6 +612,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
         quality: queued.quality,
         source: queued.source,
         mediaSourceId: queued.mediaSourceId,
+        audioStreamIndex: queued.audioStreamIndex,
       );
       if (!queued.completer.isCompleted) queued.completer.complete();
     } catch (error, stackTrace) {
@@ -2144,6 +2152,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     AggregatedItem item,
     DownloadQuality quality, {
     String? playSessionId,
+    int? audioStreamIndex,
   }) {
     if (!quality.isTranscoded || !_supportsTranscodedDownload(item.type)) {
       return _buildDirectItemDownloadUrl(item);
@@ -2168,6 +2177,12 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     if (quality.audioChannels != null) {
       params['audioChannels'] = quality.audioChannels.toString();
     }
+    final audioIndex = transcodeAudioStreamIndex(
+      item,
+      audioStreamIndex,
+      _prefs,
+    );
+    if (audioIndex != null) params['AudioStreamIndex'] = audioIndex.toString();
     if (playSessionId != null) {
       params['PlaySessionId'] = playSessionId;
       params['DeviceId'] = _client.deviceInfo.id;
@@ -2199,12 +2214,14 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
   }
 
   /// [mediaSourceId] picks one version of a multi-version item, the server's
-  /// default when null.
+  /// default when null. [audioStreamIndex] picks the audio track a transcode
+  /// keeps, the audio language settings' choice when null.
   Future<void> downloadItem(
     AggregatedItem item, {
     DownloadQuality quality = DownloadQuality.original,
     DownloadSource source = DownloadSource.manual,
     String? mediaSourceId,
+    int? audioStreamIndex,
   }) {
     // Browser downloads are delegated to the platform and do not have a
     // process-owned transfer to schedule.
@@ -2214,6 +2231,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
         quality: quality,
         source: source,
         mediaSourceId: mediaSourceId,
+        audioStreamIndex: audioStreamIndex,
       );
     }
 
@@ -2231,7 +2249,13 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     final active = _activeDownloads[item.id];
     if (active != null && active.error == null) return Future.value();
 
-    final queued = _QueuedDownload(item, quality, source, mediaSourceId);
+    final queued = _QueuedDownload(
+      item,
+      quality,
+      source,
+      mediaSourceId,
+      audioStreamIndex,
+    );
     _sources[item.id] = source;
     _pendingDownloadByItemId[item.id] = queued;
     _pendingDownloads.addLast(queued);
@@ -2254,6 +2278,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
     DownloadQuality quality = DownloadQuality.original,
     DownloadSource source = DownloadSource.manual,
     String? mediaSourceId,
+    int? audioStreamIndex,
   }) async {
     if (PlatformDetection.isWeb) {
       try {
@@ -2261,7 +2286,12 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
           await _ensureFullItem(item),
           mediaSourceId,
         );
-        final url = _buildDownloadUrl(item.id, fullItem, quality);
+        final url = _buildDownloadUrl(
+          item.id,
+          fullItem,
+          quality,
+          audioStreamIndex: audioStreamIndex,
+        );
         final fileName = _buildFileName(fullItem, quality);
         triggerBrowserDownload(url, fileName);
       } catch (e) {
@@ -2489,6 +2519,7 @@ class DownloadService extends ChangeNotifier implements AutoDownloadDownloader {
         fullItem,
         quality,
         playSessionId: transcodePlaySessionId,
+        audioStreamIndex: audioStreamIndex,
       );
       if (transcodePlaySessionId != null) {
         _startTranscodeStatusPolling(item.id, transcodePlaySessionId);

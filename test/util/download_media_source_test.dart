@@ -1,7 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:jellyfin_preference/jellyfin_preference.dart';
 import 'package:moonfin/data/models/aggregated_item.dart';
 import 'package:moonfin/data/models/download_quality.dart';
+import 'package:moonfin/preference/user_preferences.dart';
 import 'package:moonfin/util/download_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shaped like the server responses for a movie with a 1080p and a 720p
 /// version. Jellyfin's source Id is the version's own item id. Emby
@@ -158,6 +161,75 @@ void main() {
         ),
         'bare',
       );
+    });
+  });
+
+  group('transcodeAudioStreamIndex', () {
+    late UserPreferences prefs;
+
+    setUp(() async {
+      SharedPreferences.setMockInitialValues(const {});
+      final store = PreferenceStore();
+      await store.init();
+      prefs = UserPreferences(store);
+    });
+
+    List<Map<String, dynamic>> audioTracks() => [
+      {'Type': 'Video', 'Index': 0},
+      {'Type': 'Audio', 'Index': 1, 'Language': 'fre', 'IsDefault': true},
+      {'Type': 'Audio', 'Index': 2, 'Language': 'jpn'},
+    ];
+
+    final audioTest = _movie('audio', [
+      {'Id': 'audio', 'MediaStreams': audioTracks()},
+    ]);
+
+    test('keeps the track picked on the details page', () {
+      expect(transcodeAudioStreamIndex(audioTest, 2, prefs), 2);
+    });
+
+    test('follows the default audio language with no pick', () async {
+      await prefs.set(UserPreferences.defaultAudioLanguage, 'jpn');
+
+      expect(transcodeAudioStreamIndex(audioTest, null, prefs), 2);
+    });
+
+    test('takes the flagged default over the first track', () {
+      final item = _movie('show', [
+        {
+          'Id': 'show',
+          'MediaStreams': [
+            {'Type': 'Audio', 'Index': 1, 'Language': 'fre'},
+            {'Type': 'Audio', 'Index': 2, 'Language': 'jpn', 'IsDefault': true},
+          ],
+        },
+      ]);
+
+      expect(transcodeAudioStreamIndex(item, null, prefs), 2);
+    });
+
+    test("ignores a pick the version doesn't have", () async {
+      await prefs.set(UserPreferences.defaultAudioLanguage, 'jpn');
+
+      expect(transcodeAudioStreamIndex(audioTest, 5, prefs), 2);
+    });
+
+    test("reads the first source's tracks over the top level ones", () async {
+      await prefs.set(UserPreferences.defaultAudioLanguage, 'jpn');
+      final item = AggregatedItem(
+        id: 'other',
+        serverId: 's1',
+        rawData: {
+          'MediaSources': [
+            {'Id': 'first', 'MediaStreams': audioTracks()},
+          ],
+          'MediaStreams': [
+            {'Type': 'Audio', 'Index': 1, 'Language': 'jpn'},
+          ],
+        },
+      );
+
+      expect(transcodeAudioStreamIndex(item, null, prefs), 2);
     });
   });
 }

@@ -8,6 +8,7 @@ import '../auth/repositories/user_repository.dart';
 import '../data/models/aggregated_item.dart';
 import '../data/models/download_quality.dart';
 import '../preference/user_preferences.dart';
+import 'audio_track_logic.dart';
 import 'platform_detection.dart';
 
 /// Whether download actions may be offered on this device at all.
@@ -135,6 +136,30 @@ String mediaSourceItemId(AggregatedItem item) {
   if (sources.length < 2) return item.id;
   final source = sources.first;
   return (source['ItemId'] ?? source['Id'])?.toString() ?? item.id;
+}
+
+/// The one audio track a transcoded download of [item] keeps. [picked] wins
+/// when the first source has it, otherwise the audio language settings
+/// choose the way they do for playback.
+int? transcodeAudioStreamIndex(
+  AggregatedItem item,
+  int? picked,
+  UserPreferences prefs,
+) {
+  final sourceStreams = item.mediaSources.firstOrNull?['MediaStreams'];
+  return computeEffectiveAudioIndex(
+    audioStreams: sourceStreams is List
+        ? sourceStreams
+              .whereType<Map>()
+              .map((stream) => stream.cast<String, dynamic>())
+              .toList()
+        : item.mediaStreams,
+    preferredAudioLanguage: prefs.get(UserPreferences.defaultAudioLanguage),
+    fallbackAudioLanguage: prefs.get(UserPreferences.fallbackAudioLanguage),
+    preferDefaultAudioTrack: prefs.get(UserPreferences.preferDefaultAudioTrack),
+    preferAudioDescription: prefs.get(UserPreferences.preferAudioDescription),
+    explicitAudioIndex: picked,
+  );
 }
 
 Duration? runtimeForEstimate(AggregatedItem item) {
