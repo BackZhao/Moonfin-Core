@@ -442,6 +442,11 @@ class _LoginScreenState extends State<LoginScreen> {
           serverId: _server!.id,
           secret: secret,
         );
+        if (authResult is SignInForbidden && mounted) {
+          setState(
+            () => _errorMessage = AppLocalizations.of(context).loginForbidden,
+          );
+        }
         if (authResult is Authenticated && mounted) {
           await _sessionRepo.switchCurrentSession(
             serverId: authResult.serverId,
@@ -669,6 +674,8 @@ class _LoginScreenState extends State<LoginScreen> {
             return;
           }
           _finishLoginWithError(error);
+        case SignInForbidden():
+          _finishLoginWithError(l10n.loginForbidden);
         case ServerUnavailable():
           _finishLoginWithError(l10n.serverUnavailable);
         case UntrustedCertificate():
