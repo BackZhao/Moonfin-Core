@@ -341,11 +341,11 @@
     "@displaySettings": {
         "description": "Tooltip for display settings button"
     },
-    "allGenres": "Kaikki Genret",
+    "allGenres": "Genret",
     "@allGenres": {
         "description": "Title for the all genres screen"
     },
-    "noGenresFound": "Mitään genrejä ei löytynyt",
+    "noGenresFound": "Genrejä ei löytynyt",
     "@noGenresFound": {
         "description": "Empty state when no genres are available"
     },
@@ -7064,12 +7064,12 @@
     "displayCollectionsRowsSubtitle": "Näytä kokoelmarivit aloitusnäytön osioissa.",
     "collectionsRowSorting": "Kokoelmat rivien lajittelu",
     "collectionsRowSortingDescription": "Lajittele kokoelmien rivit lisäyspäivän, julkaisupäivän, aakkosjärjestyksen ja muiden mukaan.",
-    "displayGenresRows": "Näytä lajityypit rivit",
-    "displayGenresRowsSubtitle": "Näytä Genre rivit Kotiosioissa.",
+    "displayGenresRows": "Näytä Genrerivit",
+    "displayGenresRowsSubtitle": "Näytä Genrerivit Kotiosioissa.",
     "genresRowSorting": "Genret Rivilajittelu",
     "genresRowSortingDescription": "Lajittele Genres-rivit lisäyspäivän, julkaisupäivän, aakkosjärjestyksen ja muiden mukaan.",
     "genresRowItems": "Kohteet Genre rivillä",
-    "genresRowItemsDescription": "Näytä elokuvat, sarjat tai molemmat lajityypit-riveillä.",
+    "genresRowItemsDescription": "Näytä elokuvat, sarjat tai molemmat Genret riveillä.",
     "appearance": "Ulkoasu",
     "cardSize": "Kortin Koko",
     "externalPlayerApp": "Ulkoinen Toistosovellus",
@@ -9624,12 +9624,12 @@
             }
         }
     },
-    "displayStudiosRows": "Display Studio -rivi",
+    "displayStudiosRows": "Display Studiorivi",
     "displayStudiosRowsSubtitle": "Näytä Studiorivi Kotiosiossa.",
-    "studiosRowSorting": "Studio Row -lajittelu",
-    "studiosRowSortingDescription": "”Studio row” -nimiset, äskettäin lisätyt ja paljon muuta.",
+    "studiosRowSorting": "Studiorivi -lajittelu",
+    "studiosRowSortingDescription": "”Studiorivi” -nimiset, äskettäin lisätyt ja paljon muuta.",
     "studiosRowSortOrderDescription": "Valitse lajittelujärjestys: nouseva tai laskeva.",
-    "selectStudiosToInclude": "Valitse sisällytettävät studiot",
+    "selectStudiosToInclude": "Valitse sisällytettävät Studiot",
     "selectStudiosToIncludeDescription": "Valitse, mitkä studiot tulisi sisällyttää aloitusriville.",
     "selectAllStudios": "Valitse kaikki",
     "deselectAllStudios": "Poista kaikki valinnat",
@@ -13859,7 +13859,7 @@
     "@gameSavingBeforeExit": {
         "description": "Shown over the paused game while it saves on the way out"
     },
-    "gameSaveFailedStillPlaying": "Tilaa ei voitu tallentaa. Peli jatkuu.",
+    "gameSaveFailedStillPlaying": "Tilaa ei voitu tallentaa. Peli jatkuu edelleen.",
     "@gameSaveFailedStillPlaying": {
         "description": "Message shown when Save & exit could not save, so the game keeps running"
     },
