@@ -14543,5 +14543,106 @@
     "adminAllowSubtitleDownloading": "Salli tekstityksen lataaminen",
     "adminAllowMediaConversion": "Salli tiedostomuodon muuntaminen",
     "adminAllowSyncTranscoding": "Salli lataukset, jotka vaativat transkoodausta",
-    "adminAllowSharingPersonalItems": "Salli soittolistojen jakaminen muiden käyttäjien kanssa"
+    "adminAllowSharingPersonalItems": "Salli soittolistojen jakaminen muiden käyttäjien kanssa",
+    "adminAllowPreferenceAccess": "Anna käyttäjille mahdollisuus muuttaa omaa salasanaansa ja profiilikuvaansa",
+    "adminTagMode": "Tunniste-tila",
+    "adminEmbyConnect": "Emby Connect",
+    "adminEmbyConnectUser": "Emby Connectin käyttäjätunnus tai sähköpostiosoite",
+    "adminEmbyConnectHelp": "Tämän ansiosta käyttäjä voi kirjautua sisään mistä tahansa Emby-sovelluksesta ilman, että hän tietää palvelimen osoitetta.",
+    "adminEmbyConnectLink": "Linkki",
+    "adminEmbyConnectUnlink": "Poista linkki",
+    "adminEmbyConnectLinked": "Yhdistetty Emby Connectiin",
+    "adminEmbyConnectPending": "Kutsu on lähetetty. Yhteys muodostuu, kun he hyväksyvät kutsun.",
+    "adminEmbyConnectUnlinked": "Emby Connect -linkki poistettu",
+    "adminEmbyConnectNotFound": "Yhdelläkään Emby Connect -tilillä ei ole kyseistä käyttäjätunnusta tai sähköpostiosoitetta.",
+    "adminLibImportPlaylists": "Tuo soittolistatiedostot",
+    "adminLibExcludeFromSearch": "Jätä pois yleisestä hausta",
+    "adminLibForcedSubtitlesOnly": "Lataa vain pakolliset tekstitykset",
+    "adminLibImportCollections": "Tuo kokoelmia metatietojen latausohjelmista",
+    "adminLibThumbnailInterval": "Esikatselupikkukuvien väli",
+    "adminLibThumbnailEverySeconds": "Joka {count} sekunti",
+    "@adminLibThumbnailEverySeconds": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminLibThumbnailAtChapters": "Lukuja merkitsevissä kohdissa",
+    "adminLibSaveThumbnailsWithMedia": "Tallenna esikatselupikkukuvat mediakansioihin",
+    "adminLibrarySectionMarkers": "Intromerkit",
+    "adminLibIntroDetection": "Tunnista introt",
+    "adminLibIntroDetectionDuringScan": "Tunnista intro-kohdat kirjaston skannauksen aikana",
+    "adminProviderEmbyGuide": "Emby-oppaan tiedot",
+    "adminLiveTvEmbyGuideSelectLineup": "Valitse ohjelmatarjonta. Jos luettelossa ei ole yhtään vaihtoehtoa, tarkista postinumero. Ohjelmatarjontaan tarvitaan Emby Premiere.",
+    "adminLiveTvWakeServer": "Herätä palvelin tallennuksia varten",
+    "adminDrawerLiveTvChannels": "Suorat TV-kanavat",
+    "adminPageDescLiveTvChannels": "Kanavien kytkeminen päälle ja pois päältä sekä niiden järjestyksen määrittäminen",
+    "adminLiveTvChannelsEmpty": "Kanavia ei ole vielä näkyvissä. Ne näkyvät tässä, kun viritin on asennettu ja palvelin on tuonut kanavansa.",
+    "adminTranscodingHwaAdvanced": "Edistynyt",
+    "adminTranscodingHwaHelp": "”Advanced”-asetuksissa voit valita ja järjestää laitteistokoodekit.",
+    "adminTranscodingHwDecoders": "Suositellut laitteistopohjaiset dekooderit",
+    "adminTranscodingHwEncoders": "Suositeltavat laitteistopohjaiset kooderit",
+    "adminTranscodingTempPathHelp": "Paikka, johon transkooderi tallentaa työtiedostonsa. Jätä kenttä tyhjäksi, jos haluat käyttää palvelimen datakansiota.",
+    "adminTranscodingThrottleHelp": "Hidastaa transkoodausta, kun puskuriin on kertynyt riittävästi dataa, jotta prosessorin kuormitusta voidaan vähentää.",
+    "adminTranscodingDownmixHelp": "Nostaa äänenvoimakkuutta, kun ääni miksataan alaspäin. Arvo 1 säilyttää alkuperäisen äänenvoimakkuuden.",
+    "adminTranscodingFontExtraction": "Salli fonttien poiminta lennossa",
+    "adminTranscodingMaxResolution": "Transkoodauksen enimmäistarkkuus",
+    "adminTranscodingMaxResolutionHelp": "Jokaiselle transkoodaukselle asetetaan rajoitus riippumatta siitä, mitä laatua sovellus vaatii.",
+    "adminTranscodingToneMapSoftware": "Tone mapping ohjelmistopohjaisissa transkoodauksissa",
+    "adminTranscodingToneMapHardware": "Sävykartoitus laitteistopohjaisissa transkoodauksissa",
+    "adminTranscodingToneMapHelp": "Estää HDR-videon näyttämästä himmeältä ja haalistuneelta, kun se transkoodataan.",
+    "adminNetworkingLocalAddress": "Paikallinen IP-osoite",
+    "adminNetworkingLocalAddressHelp": "Paikallinen osoite, jonka palvelin antaa sovelluksille. Jätä kenttä tyhjäksi, jotta osoite tunnistetaan automaattisesti.",
+    "adminNetworkingBehindProxy": "HTTPS-liikennettä hoitaa käänteisvälityspalvelin",
+    "adminNetworkingExternalDomain": "Ulkoinen verkkotunnus",
+    "adminNetworkingExternalDomainHelp": "Etäyhteyksiä varten käytettävä verkkotunnus tai dynaaminen DNS-nimi ilman protokollaa tai porttia. Mukautettu varmenne tarvitsee tämän tiedon.",
+    "adminNetworkingUpnp": "Ota automaattinen porttien kartoitus käyttöön",
+    "adminNetworkingUpnpHelp": "Yrittää yhdistää julkisen portin paikalliseen porttiin UPnP:n avulla. Jotkut reitittimet eivät tue tätä ominaisuutta.",
+    "adminNetworkingProxyHeaders": "Lue välityspalvelimen otsikot asiakkaan osoitteiden selvittämiseksi",
+    "adminNetworkingProxyHeadersHelp": "Käyttää X-Forwarded-For-kaltaisia otsikoita kunkin asiakkaan osoitteen selvittämiseen. Ota tämä käyttöön vain käänteisen välityspalvelimen takana.",
+    "adminNetworkingProxyHeadersRemote": "Vain silloin, kun niillä on etäosoitteita",
+    "adminNetworkingIpv4Only": "Käytä IPv4-protokollaa lähtevissä pyynnöissä",
+    "adminNetworkingIpv4OnlyHelp": "Silloin, kun metatietojen tarjoajia ja muita palveluita ei voida tavoittaa IPv6-verkossa.",
+    "adminOnePerLine": "Yksi riviä kohden",
+    "adminStreamingStreamLimit": "Samanaikaisten videovirtojen enimmäismäärä",
+    "adminStreamingStreamLimitHelp": "Kuinka monta videota voidaan toistaa samanaikaisesti palvelimella. Arvo 0 tarkoittaa, ettei rajoitusta ole.",
+    "adminSyncJobsConversions": "Muuntotyöt",
+    "adminSyncJobsDownloads": "Lataa tehtävät",
+    "adminSyncJobsEmpty": "Ei tehtäviä",
+    "adminSyncJobCancel": "Peruuta tehtävä",
+    "adminSyncJobCancelConfirm": "Haluatko peruuttaa {name} ja poistaa sen luettelosta?",
+    "@adminSyncJobCancelConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminSyncJobConverting": "Muuntaminen",
+    "adminSyncJobReady": "Valmis siirrettäväksi",
+    "adminSyncJobTransferring": "Siirtäminen",
+    "adminSyncJobCompletedWithError": "Virheellisesti suoritettu",
+    "adminSyncJobItemCount": "{count, plural, =1{1 item} other{{count} items}}",
+    "@adminSyncJobItemCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminDrawerDatabase": "Tietokanta",
+    "adminPageDescDatabase": "Välimuistin koko ja ylläpito",
+    "adminDatabaseWarning": "Nämä ovat lisäasetuksia. Jätä ne oletusasetuksiinsa, ellei sinulla ole syytä muuttaa niitä.",
+    "adminDatabaseCacheSize": "Tietokannan välimuistin koko (MB)",
+    "adminDatabaseCacheSizeHelp": "Kuinka suuren osan kustakin tietokantatiedostosta palvelin säilyttää muistissa. Suurempi arvo voi nopeuttaa palvelinta. Muutos astuu voimaan uudelleenkäynnistyksen jälkeen.",
+    "adminDatabaseOptimize": "Optimoi tietokanta palvelimen sammuttaessa",
+    "adminDatabaseOptimizeHelp": "Yleensä tämä ei aiheuta mitään, mutta silloin tällöin se suorittaa analyysin, joka auttaa palvelimen kyselyjä. Sammuttaminen voi kestää kauemmin.",
+    "adminDatabaseAnalysisLimit": "Analyysin riviraja",
+    "adminDatabaseAnalysisLimitHelp": "Kuinka monta riviä kustakin indeksistä optimointivaihe lukee. Suurempi rivimäärä parantaa suorituskykyä, mutta voi hidastaa järjestelmän sammuttamista.",
+    "adminDatabaseVacuum": "Tyhjennä tietokanta seuraavalla käynnistyksellä",
+    "adminDatabaseVacuumHelp": "Rakentaa tietokantatiedoston uudelleen niin, että se vie mahdollisimman vähän tilaa, mikä voi parantaa suorituskykyä. Palvelinta ei voi käyttää tämän prosessin aikana, eikä sen etenemistä näy, joten älä sulje sitä väkisin. Se sammuu itsestään kyseisen käynnistyksen jälkeen.",
+    "adminDrawerCinemaIntros": "Elokuvateatteri-introt",
+    "adminPageDescCinemaIntros": "Trailerit ja johdanto-osuudet ennen toistoa",
+    "adminCinemaIntrosPlayBefore": "Toista introt ennen"
 }
