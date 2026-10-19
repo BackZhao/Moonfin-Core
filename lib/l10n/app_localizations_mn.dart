@@ -5041,6 +5041,9 @@ class AppLocalizationsMn extends AppLocalizations {
   String get enablePinCode => 'ПИН кодыг идэвхжүүлнэ үү';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Бүртгэлдээ нэвтрэхийн тулд ПИН код шаардана уу';
 

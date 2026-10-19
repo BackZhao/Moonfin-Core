@@ -211,7 +211,11 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
               children: [
                 SwitchListTile.adaptive(
                   title: Text(l10n.enablePinCode),
-                  subtitle: Text(l10n.requirePinToAccess),
+                  subtitle: Text(
+                    _pinUtil.isServerBacked
+                        ? l10n.pinSynced
+                        : l10n.requirePinToAccess,
+                  ),
                   secondary: const Icon(Icons.lock),
                   value: _pinEnabled,
                   onChanged: _togglePinEnabled,

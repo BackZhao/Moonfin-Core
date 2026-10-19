@@ -5230,6 +5230,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get enablePinCode => 'Włącz kod PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Wymagaj kodu PIN, aby uzyskać dostęp do konta';
 

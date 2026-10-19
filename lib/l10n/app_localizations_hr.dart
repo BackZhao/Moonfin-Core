@@ -5158,6 +5158,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get enablePinCode => 'Omogući PIN kod';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Zahtijevaj PIN za pristup svom računu';
 
   @override

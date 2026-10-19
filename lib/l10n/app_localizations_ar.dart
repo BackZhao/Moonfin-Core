@@ -5044,6 +5044,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enablePinCode => 'تمكين رمز PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'تتطلب رقم التعريف الشخصي للوصول إلى حسابك';
 
   @override

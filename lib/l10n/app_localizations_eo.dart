@@ -5034,6 +5034,9 @@ class AppLocalizationsEo extends AppLocalizations {
   String get enablePinCode => 'Ebligu PIN-kodon';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Postuli PIN por aliri vian konton';
 
   @override

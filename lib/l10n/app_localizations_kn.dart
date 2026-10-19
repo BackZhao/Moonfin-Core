@@ -5055,6 +5055,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get enablePinCode => 'ಪಿನ್ ಕೋಡ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರವೇಶಿಸಲು ಪಿನ್ ಅಗತ್ಯವಿದೆ';
 
   @override

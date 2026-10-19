@@ -5093,6 +5093,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get enablePinCode => 'Омогући ПИН код';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Захтевај ПИН за приступ налогу';
 
   @override

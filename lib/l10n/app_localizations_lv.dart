@@ -5053,6 +5053,9 @@ class AppLocalizationsLv extends AppLocalizations {
   String get enablePinCode => 'Iespējot PIN kodu';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Pieprasīt PIN, lai piekļūtu savam kontam';
 
   @override

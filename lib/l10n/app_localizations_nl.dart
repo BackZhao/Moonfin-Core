@@ -5054,6 +5054,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get enablePinCode => 'Pincode inschakelen';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Een pincode vereisen voor toegang tot uw account';
 

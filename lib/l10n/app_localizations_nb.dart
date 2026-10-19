@@ -5031,6 +5031,9 @@ class AppLocalizationsNb extends AppLocalizations {
   String get enablePinCode => 'Aktiver PIN-kode';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Krev en PIN-kode for å få tilgang til kontoen din';
 

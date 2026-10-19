@@ -5092,6 +5092,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get enablePinCode => 'Activează codul PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Cere un PIN pentru accesarea contului';
 
   @override

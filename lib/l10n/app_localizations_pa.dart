@@ -5028,6 +5028,9 @@ class AppLocalizationsPa extends AppLocalizations {
   String get enablePinCode => 'ਪਿੰਨ ਕੋਡ ਨੂੰ ਸਮਰੱਥ ਬਣਾਓ';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'ਤੁਹਾਡੇ ਖਾਤੇ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਲਈ ਇੱਕ ਪਿੰਨ ਦੀ ਲੋੜ ਹੈ';
 

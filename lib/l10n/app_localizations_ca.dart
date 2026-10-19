@@ -5094,6 +5094,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get enablePinCode => 'Activa el codi PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Requereix un PIN per accedir al teu compte';
 
   @override

@@ -5043,6 +5043,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get enablePinCode => 'PIN Kodunu Etkinleştir';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Hesabınıza erişmek için PIN isteyin';
 
   @override

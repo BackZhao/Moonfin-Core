@@ -5064,6 +5064,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get enablePinCode => 'Включить PIN-код';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Требовать PIN-код для доступа к вашей учетной записи';
 

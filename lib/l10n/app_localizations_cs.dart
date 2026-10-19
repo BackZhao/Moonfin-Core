@@ -5047,6 +5047,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get enablePinCode => 'Povolit PIN kód';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Vyžadovat PIN pro přístup k vašemu účtu';
 
   @override

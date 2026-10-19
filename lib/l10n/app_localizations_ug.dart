@@ -5042,6 +5042,9 @@ class AppLocalizationsUg extends AppLocalizations {
   String get enablePinCode => 'PIN كودىنى قوزغىتىڭ';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'ھېساباتىڭىزغا كىرىش ئۈچۈن PIN تەلەپ قىلىڭ';
 
   @override

@@ -5062,6 +5062,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get enablePinCode => 'Ota PIN-koodi käyttöön';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Vaadi PIN-koodi päästäksesi tilillesi';
 
   @override

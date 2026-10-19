@@ -5075,6 +5075,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get enablePinCode => 'Ενεργοποίηση κωδικού PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Απαιτείται PIN για πρόσβαση στον λογαριασμό σας';
 

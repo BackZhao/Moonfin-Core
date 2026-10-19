@@ -5090,6 +5090,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get enablePinCode => 'Activer le code PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Exiger un code PIN pour accéder à votre compte';
 

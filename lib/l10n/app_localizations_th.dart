@@ -5012,6 +5012,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get enablePinCode => 'เปิดใช้งานรหัส PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'ต้องใช้ PIN เพื่อเข้าถึงบัญชีของคุณ';
 
   @override

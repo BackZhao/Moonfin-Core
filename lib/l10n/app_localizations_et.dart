@@ -5039,6 +5039,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get enablePinCode => 'PIN-koodi lubamine';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Nõua oma kontole juurdepääsuks PIN-koodi';
 
   @override

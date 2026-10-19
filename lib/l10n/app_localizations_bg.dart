@@ -5055,6 +5055,9 @@ class AppLocalizationsBg extends AppLocalizations {
   String get enablePinCode => 'Активирайте PIN кода';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Изискване на ПИН за достъп до вашия акаунт';
 
   @override

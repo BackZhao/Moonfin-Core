@@ -5060,6 +5060,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get enablePinCode => 'பின் குறியீட்டை இயக்கவும்';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'உங்கள் கணக்கை அணுக பின் தேவை';
 
   @override

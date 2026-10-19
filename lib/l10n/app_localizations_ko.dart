@@ -4920,6 +4920,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get enablePinCode => 'PIN 코드 활성화';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => '계정에 액세스하려면 PIN이 필요합니다.';
 
   @override

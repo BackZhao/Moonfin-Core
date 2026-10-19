@@ -5052,6 +5052,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get enablePinCode => 'Įjungti PIN kodą';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Reikalauti PIN kodo, kad galėtumėte pasiekti paskyrą';
 

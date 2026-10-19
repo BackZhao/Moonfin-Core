@@ -5029,6 +5029,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get enablePinCode => 'পিন কোড সক্ষম করুন';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'আপনার অ্যাকাউন্ট অ্যাক্সেস করার জন্য একটি পিন প্রয়োজন৷';
 

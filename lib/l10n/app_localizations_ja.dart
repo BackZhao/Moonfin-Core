@@ -4958,6 +4958,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get enablePinCode => 'PINコードを有効にする';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'アカウントにアクセスするには PIN が必要です';
 
   @override

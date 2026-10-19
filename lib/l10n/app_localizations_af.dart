@@ -5039,6 +5039,9 @@ class AppLocalizationsAf extends AppLocalizations {
   String get enablePinCode => 'Aktiveer PIN-kode';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Vereis \'n PIN om toegang tot jou rekening te kry';
 

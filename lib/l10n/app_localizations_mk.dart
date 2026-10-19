@@ -5056,6 +5056,9 @@ class AppLocalizationsMk extends AppLocalizations {
   String get enablePinCode => 'Овозможи PIN код';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Потребен е PIN за пристап до вашата сметка';
 
   @override

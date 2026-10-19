@@ -5062,6 +5062,9 @@ class AppLocalizationsCy extends AppLocalizations {
   String get enablePinCode => 'Galluogi Cod PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Mae angen PIN i gael mynediad i\'ch cyfrif';
 
   @override

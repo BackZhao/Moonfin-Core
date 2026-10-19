@@ -5054,6 +5054,9 @@ class AppLocalizationsTe extends AppLocalizations {
   String get enablePinCode => 'పిన్ కోడ్‌ని ప్రారంభించండి';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'మీ ఖాతాను యాక్సెస్ చేయడానికి పిన్ అవసరం';
 
   @override

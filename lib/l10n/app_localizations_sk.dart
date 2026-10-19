@@ -5059,6 +5059,9 @@ class AppLocalizationsSk extends AppLocalizations {
   String get enablePinCode => 'Povoliť PIN kód';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess => 'Požadovať PIN na prístup k vášmu účtu';
 
   @override

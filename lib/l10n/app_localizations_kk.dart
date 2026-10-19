@@ -5048,6 +5048,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get enablePinCode => 'PIN кодын қосыңыз';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Тіркелгіңізге кіру үшін PIN кодын талап етіңіз';
 

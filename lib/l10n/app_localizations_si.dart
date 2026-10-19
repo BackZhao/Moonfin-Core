@@ -5033,6 +5033,9 @@ class AppLocalizationsSi extends AppLocalizations {
   String get enablePinCode => 'PIN කේතය සබල කරන්න';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'ඔබගේ ගිණුමට ප්‍රවේශ වීමට PIN එකක් අවශ්‍ය වේ';
 

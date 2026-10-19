@@ -5062,6 +5062,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get enablePinCode => 'Aktivizo kodin PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
   String get requirePinToAccess =>
       'Kërkoni një PIN për të hyrë në llogarinë tuaj';
 

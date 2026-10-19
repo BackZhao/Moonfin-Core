@@ -8908,6 +8908,12 @@ abstract class AppLocalizations {
   /// **'Enable PIN Code'**
   String get enablePinCode;
 
+  /// Shown under the PIN switch when the PIN is kept on the server, so it applies on every device
+  ///
+  /// In en, this message translates to:
+  /// **'PIN synced'**
+  String get pinSynced;
+
   /// Description for enable PIN code
   ///
   /// In en, this message translates to:
