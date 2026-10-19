@@ -111,7 +111,7 @@
     "@addServer": {
         "description": "Button to manually add a server address"
     },
-    "embyConnect": "Emby Connecta",
+    "embyConnect": "Emby Connect",
     "@embyConnect": {
         "description": "Emby Connect sign-in option label"
     },
@@ -4495,7 +4495,7 @@
     "@revenueLabel": {
         "description": "Stat label for revenue"
     },
-    "runtimeLabel": "Temps d'execució",
+    "runtimeLabel": "Duració",
     "@runtimeLabel": {
         "description": "Stat label for runtime"
     },
@@ -4631,7 +4631,7 @@
     "analyticsTopGenres": "Gèneres principals",
     "analyticsReleaseYears": "Anys de llançament",
     "analyticsContentRatings": "Classificacions de contingut",
-    "analyticsRuntimeBuckets": "Cubs de temps d'execució",
+    "analyticsRuntimeBuckets": "Franges de duració",
     "analyticsFileFormats": "Formats de fitxer",
     "analyticsNoData": "No hi ha dades disponibles.",
     "adminServerInfo": "Informació del servidor",
@@ -5365,7 +5365,7 @@
     "adminFallbackFontPath": "Ruta de la font alternativa",
     "adminAllowSegmentDeletion": "Permet la supressió de segments",
     "adminSegmentKeepSeconds": "Manteniment del segment (segons)",
-    "adminThrottleBuffering": "Amortiment de l'accelerador",
+    "adminThrottleBuffering": "Limita la memòria intermèdia",
     "adminTrickplaySaved": "S'ha desat la configuració de Trickplay",
     "adminTrickplayLoadFailed": "No s'ha pogut carregar la configuració de Trickplay",
     "adminEnableHardwareAcceleration": "Activa l'acceleració de maquinari",
@@ -6116,7 +6116,7 @@
     "adminPlaybackTranscodeTempPath": "Ruta temporal de transcodificació",
     "adminPlaybackSegmentDeletion": "Permet la supressió de segments",
     "adminPlaybackSegmentKeep": "Manteniment del segment (segons)",
-    "adminPlaybackThrottleBuffering": "Amortiment de l'accelerador",
+    "adminPlaybackThrottleBuffering": "Limita la memòria intermèdia",
     "adminResumeMinPct": "Percentatge mínim de currículum",
     "adminResumeMinPctSubtitle": "El contingut s'ha de reproduir més enllà d'aquest percentatge per desar el progrés",
     "adminResumeMaxPct": "Percentatge màxim de currículum",
@@ -13990,7 +13990,7 @@
     "@subtitleDownloadLanguagesDescription": {
         "description": "Description for the subtitle download languages setting"
     },
-    "libraryStyle": "Estil de la biblioteca principal",
+    "libraryStyle": "Estil de la biblioteca de vídeos",
     "@libraryStyle": {
         "description": "Label for the setting that picks the library page header layout"
     },
@@ -14689,7 +14689,7 @@
     "embyPremiereEnterKey": "Introdueix la clau",
     "adminPremiereNote": "Necessita Emby Premiere. El servidor conserva aquesta configuració, però no la farà servir fins que Premiere estigui actiu.",
     "analyticsLibraryShare": "Proporció d'elements per biblioteca",
-    "analyticsTopRating": "Classificació més habitual",
+    "analyticsTopRating": "Valoració més habitual",
     "analyticsTypicalRuntime": "Durada típica",
     "analyticsShareOfItems": "{percent}% dels elements",
     "@analyticsShareOfItems": {
@@ -14698,5 +14698,73 @@
                 "type": "String"
             }
         }
+    },
+    "quickConnectScanHint": "O escaneja-ho amb un telèfon que tingui la sessió iniciada al teu servidor",
+    "@quickConnectScanHint": {
+        "description": "Caption under the Quick Connect QR code that opens the server's web page with the code filled in"
+    },
+    "quickConnectTapOrScanHint": "Toca per aprovar-ho al navegador, o escaneja-ho amb un altre dispositiu",
+    "@quickConnectTapOrScanHint": {
+        "description": "Caption under the Quick Connect QR code on a phone or tablet, where tapping the code opens the server's web page with the code filled in"
+    },
+    "musicLibraryStyle": "Estil de la biblioteca de música",
+    "@musicLibraryStyle": {
+        "description": "Label for the setting that picks the music library layout"
+    },
+    "musicLibraryStyleDescription": "Clàssic són les files originals sota una targeta «Torna a escoltar». Accés ràpid comença amb una graella dels teus àlbums i llistes de reproducció recents. Immersiu comença amb l'àlbum que estàs escoltant.",
+    "@musicLibraryStyleDescription": {
+        "description": "Explanation under the music library style setting"
+    },
+    "musicLibraryStyleClassic": "Clàssic",
+    "@musicLibraryStyleClassic": {
+        "description": "Music library style option: the original rows"
+    },
+    "musicLibraryStyleQuickAccess": "Accés ràpid",
+    "@musicLibraryStyleQuickAccess": {
+        "description": "Music library style option: a grid of recent albums and playlists over the rows"
+    },
+    "musicLibraryStyleImmersive": "Immersiu",
+    "@musicLibraryStyleImmersive": {
+        "description": "Music library style option: a full-width album hero over the rows"
+    },
+    "jumpBackIn": "Torna a escoltar",
+    "@jumpBackIn": {
+        "description": "Heading over the albums and playlists the user played recently in a music library"
+    },
+    "yourPlaylists": "Les teves llistes de reproducció",
+    "@yourPlaylists": {
+        "description": "Heading over the user's playlists in a music library"
+    },
+    "fromThisAlbum": "D'aquest àlbum",
+    "@fromThisAlbum": {
+        "description": "Heading over the track list of the album shown in the music library hero"
+    },
+    "searchMusic": "Cerca música",
+    "@searchMusic": {
+        "description": "Placeholder and label for the search control in a music library"
+    },
+    "smartDownloadsEnableDescription": "Quan acabes un episodi en qualsevol dispositiu, Moonfin baixa els següents. Els episodis que baixa s'eliminen un cop vistos.",
+    "@smartDownloadsEnableDescription": {
+        "description": "Explains the smart downloads switch, including that watched episodes are deleted"
+    },
+    "autoDownloadDeleteFollowedSubtitle": "Quan s'han d'eliminar els episodis baixats de les sèries que segueixes, després de veure'ls",
+    "@autoDownloadDeleteFollowedSubtitle": {
+        "description": "Explains the delete-after-watching setting"
+    },
+    "removeWatchedDownloads": "Elimina les baixades vistes",
+    "@removeWatchedDownloads": {
+        "description": "Storage setting that picks how soon an episode or movie the user downloaded themselves is removed after it was watched"
+    },
+    "removeWatchedDownloadsSubtitle": "Quan s'han d'eliminar els episodis i les pel·lícules que has baixat tu mateix. Només s'eliminen els que vegis després d'activar aquesta opció",
+    "@removeWatchedDownloadsSubtitle": {
+        "description": "Explains the remove-watched-downloads setting"
+    },
+    "keepDownloaded": "Mantén baixat",
+    "@keepDownloaded": {
+        "description": "Toggle on the download sheet that stops watched downloads of this title from being removed automatically"
+    },
+    "keepDownloadedSubtitle": "No ho eliminis mai automàticament després de veure-ho",
+    "@keepDownloadedSubtitle": {
+        "description": "Explains the keep-downloaded toggle"
     }
 }
