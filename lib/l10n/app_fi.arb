@@ -14770,5 +14770,17 @@
     "keepDownloadedSubtitle": "Älä koskaan poista tätä automaattisesti katsomisen jälkeen",
     "@keepDownloadedSubtitle": {
         "description": "Explains the keep-downloaded toggle"
+    },
+    "loginForbidden": "Tällä tilillä ei voi kirjautua sisään tällä hetkellä. Se saattaa olla sallittujen käyttöaikojen ulkopuolella, lukittu tai poistettu käytöstä. Yritä myöhemmin uudelleen tai ota yhteyttä järjestelmänvalvojaan.",
+    "@loginForbidden": {
+        "description": "Sign in error when the server refuses the account with a 403, which Jellyfin does for an access schedule, a lockout or a disabled account without saying which"
+    },
+    "keyNameDelete": "Poista",
+    "@keyNameDelete": {
+        "description": "Key cap label for the Delete key"
+    },
+    "shortcutHideControls": "Piilota hallintapainikkeet",
+    "@shortcutHideControls": {
+        "description": "What Backspace and Delete do in the player: hide the controls or the panel on top of them"
     }
 }
