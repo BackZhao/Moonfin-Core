@@ -111,6 +111,7 @@ class _AccountDialogState extends State<_AccountDialog> {
     }
     return '$base&tag=$tag';
   }
+
   Future<void> _switchAccount(_StoredAccount account) async {
     if (_busy) return;
 
@@ -119,6 +120,17 @@ class _AccountDialogState extends State<_AccountDialog> {
       return;
     }
 
+    // Held through the PIN lookup and dialog too, or another account could be
+    // picked while this one is still being asked for.
+    setState(() => _busy = true);
+    try {
+      await _switchVerifiedAccount(account);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _switchVerifiedAccount(_StoredAccount account) async {
     final guard = PinGuard.forAccount(
       store: GetIt.instance<PreferenceStore>(),
       service: GetIt.instance<ServerPinService>(),
@@ -146,13 +158,11 @@ class _AccountDialogState extends State<_AccountDialog> {
       if (!verified) return;
     }
 
-    setState(() => _busy = true);
     final ok = await _sessionRepo.switchCurrentSession(
       serverId: account.server.id,
       userId: account.user.id,
     );
     if (!mounted) return;
-    setState(() => _busy = false);
     final router = GoRouter.of(context);
 
     if (ok) {

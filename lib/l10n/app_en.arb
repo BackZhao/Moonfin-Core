@@ -6644,6 +6644,10 @@
   "@pinSynced": {
     "description": "Shown under the PIN switch when the PIN is kept on the server, so it applies on every device"
   },
+  "pinResetFailed": "The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.",
+  "@pinResetFailed": {
+    "description": "Shown on sign in when Forgot PIN could not clear a PIN kept on the server"
+  },
   "requirePinToAccess": "Require a PIN to access your account",
   "@requirePinToAccess": {
     "description": "Description for enable PIN code"

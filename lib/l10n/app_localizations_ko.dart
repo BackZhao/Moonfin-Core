@@ -4944,6 +4944,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get pinSynced => 'PIN synced';
 
   @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
+
+  @override
   String get requirePinToAccess => '계정에 액세스하려면 PIN이 필요합니다.';
 
   @override

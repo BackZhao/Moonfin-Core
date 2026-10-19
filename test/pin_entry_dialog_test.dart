@@ -176,4 +176,89 @@ void main() {
       expect(asked, ['1234']);
     });
   });
+
+  group('setting a PIN the server may turn down', () {
+    Future<void> openSet(
+      WidgetTester tester,
+      Future<void> Function(String pin) onPinSet,
+      void Function(bool? result) done,
+    ) async {
+      tester.view.physicalSize = const Size(1200, 1600);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () async => done(
+                  await PinEntryDialog.show(
+                    context,
+                    mode: PinEntryMode.set,
+                    onPinSet: onPinSet,
+                  ),
+                ),
+                child: const Text('Show Dialog'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Show Dialog'));
+      await tester.pumpAndSettle();
+    }
+
+    Future<void> typeTwice(WidgetTester tester) async {
+      for (var round = 0; round < 2; round++) {
+        for (final key in [
+          LogicalKeyboardKey.digit1,
+          LogicalKeyboardKey.digit2,
+          LogicalKeyboardKey.digit3,
+          LogicalKeyboardKey.digit4,
+        ]) {
+          await tester.sendKeyEvent(key);
+          await tester.pump();
+        }
+        await tester.pumpAndSettle();
+      }
+    }
+
+    testWidgets('a refused PIN keeps the dialog open and says so', (
+      tester,
+    ) async {
+      bool? result;
+      await openSet(
+        tester,
+        (_) async => throw const PinChangeRefused(PinRejected()),
+        (r) => result = r,
+      );
+
+      await typeTwice(tester);
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(PinEntryDialog)),
+      );
+      expect(find.text(l10n.pinIncorrect), findsOneWidget);
+      expect(find.byType(PinEntryDialog), findsOneWidget);
+      expect(result, isNull);
+    });
+
+    testWidgets('a locked server says how long to wait', (tester) async {
+      await openSet(
+        tester,
+        (_) async =>
+            throw const PinChangeRefused(PinLockedOut(Duration(seconds: 45))),
+        (_) {},
+      );
+
+      await typeTwice(tester);
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(PinEntryDialog)),
+      );
+      expect(find.text(l10n.pinTryAgainIn('45s')), findsOneWidget);
+    });
+  });
 }

@@ -60,7 +60,7 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
     // The PIN may have been set or removed on another device since.
     _guard.refresh().then((_) {
       if (mounted) _refresh();
-    });
+    }).catchError((_) {});
   }
 
   /// Checks the current PIN, and keeps what was typed for the server, which
@@ -77,6 +77,32 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
     );
   }
 
+  /// Turns a verdict that refuses the change into [PinChangeRefused], so the
+  /// caller says so instead of going on as if it worked.
+  void _throwIfRefused(ServerPinVerdict verdict) {
+    if (verdict is ServerPinWrong) {
+      throw const PinChangeRefused(PinRejected());
+    }
+    if (verdict is ServerPinLocked) {
+      throw PinChangeRefused(PinLockedOut(verdict.retryAfter));
+    }
+  }
+
+  void _showRefusal(PinChangeRefused refused) {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    final outcome = refused.outcome;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          outcome is PinLockedOut
+              ? l10n.pinTryAgainIn(PinEntryDialog.formatWait(outcome.wait))
+              : l10n.pinIncorrect,
+        ),
+      ),
+    );
+  }
+
   /// Sets the PIN on the server when there is one to ask, and keeps a copy here
   /// either way, for when the server cannot be asked. A PIN the server turned
   /// down is not kept, or this device would hold one nobody else has.
@@ -88,7 +114,7 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
         pin,
         currentPin: currentPin,
       );
-      if (verdict is ServerPinWrong || verdict is ServerPinLocked) return;
+      _throwIfRefused(verdict);
       if (verdict is ServerPinValid) await _pinUtil.setServerBacked(true);
     }
     await _pinUtil.setPin(pin);
@@ -101,7 +127,7 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
         account,
         currentPin: currentPin,
       );
-      if (verdict is ServerPinWrong || verdict is ServerPinLocked) return;
+      _throwIfRefused(verdict);
     }
     await _pinUtil.removePin();
   }
@@ -154,7 +180,12 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
       final verified = await _verifyCurrent((pin) => current = pin);
       if (!verified || !mounted) return;
 
-      await _dropPin(current);
+      try {
+        await _dropPin(current);
+      } on PinChangeRefused catch (refused) {
+        _showRefusal(refused);
+        return;
+      }
       _suppressEnableUntil = DateTime.now().add(
         const Duration(milliseconds: 500),
       );
@@ -183,7 +214,12 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
         if (!verified || !mounted) return;
         if (_pinUtil.isServerBacked) {
           // A PIN on the server has no off switch, only removal.
-          await _dropPin(current);
+          try {
+            await _dropPin(current);
+          } on PinChangeRefused catch (refused) {
+            _showRefusal(refused);
+            return;
+          }
         } else {
           await _pinUtil.setPinEnabled(false);
         }

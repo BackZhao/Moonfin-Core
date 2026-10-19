@@ -118,6 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
   MediaServerClient? _client;
   bool _isLoading = false;
   String? _errorMessage;
+
+  /// Set when Forgot PIN could not clear the PIN on the server, which is not
+  /// the same as having typed it wrong.
+  bool _pinResetRefused = false;
   bool _untrustedCertificate = false;
   bool _clientCertificateRequired = false;
   List<String> _recentUsernames = const [];
@@ -459,6 +463,12 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           if (mounted) {
             if (!await _passesPinCheck(authResult.userId, canResetPin: true)) {
+              if (mounted && _pinResetRefused) {
+                _finishLoginWithError(
+                  AppLocalizations.of(context).pinResetFailed,
+                );
+                return;
+              }
               // A failed PIN goes back to sign in, where another account or
               // method can be tried.
               if (mounted) context.go('${Destinations.login}?serverId=${_server!.id}');
@@ -617,6 +627,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 .map((stored) => stored.accessToken)
                 .firstOrNull,
     );
+    _pinResetRefused = false;
     // A device that has not seen this user's PIN learns of it here.
     await guard.refresh();
     if (!mounted) return false;
@@ -624,7 +635,11 @@ class _LoginScreenState extends State<LoginScreen> {
       pinUtil: guard.pin,
       forgotPin: widget.resetPin,
       canResetPin: canResetPin,
-      resetPin: () => guard.resetForgotten(userId),
+      resetPin: () async {
+        final cleared = await guard.resetForgotten(userId);
+        if (!cleared) _pinResetRefused = true;
+        return cleared;
+      },
       askForPin: (onForgotPin) => PinEntryDialog.show(
         context,
         mode: PinEntryMode.verify,
@@ -675,6 +690,10 @@ class _LoginScreenState extends State<LoginScreen> {
               canResetPin: _passwordController.text.isNotEmpty,
             );
             if (!passed) {
+              if (mounted && _pinResetRefused) {
+                _finishLoginWithError(l10n.pinResetFailed);
+                return;
+              }
               // Lands back on a screen that has to take another attempt.
               if (mounted) {
                 setState(() => _isLoading = false);

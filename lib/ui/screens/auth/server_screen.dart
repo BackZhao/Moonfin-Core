@@ -139,7 +139,21 @@ class _ServerScreenState extends State<ServerScreen> {
     ).toString();
   }
 
+  /// Set while a tapped user is being handled, since the PIN lookup before the
+  /// dialog takes long enough that Select gets pressed again.
+  bool _handlingUserTap = false;
+
   Future<void> _onUserTap(_MergedUser user) async {
+    if (_handlingUserTap) return;
+    _handlingUserTap = true;
+    try {
+      await _handleUserTap(user);
+    } finally {
+      _handlingUserTap = false;
+    }
+  }
+
+  Future<void> _handleUserTap(_MergedUser user) async {
     final server = _server;
     if (server == null) return;
 

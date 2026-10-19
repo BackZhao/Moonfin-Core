@@ -5099,6 +5099,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get pinSynced => 'PIN synced';
 
   @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
+
+  @override
   String get requirePinToAccess =>
       'Απαιτείται PIN για πρόσβαση στον λογαριασμό σας';
 

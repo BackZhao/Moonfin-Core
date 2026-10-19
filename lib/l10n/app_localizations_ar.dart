@@ -5068,6 +5068,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pinSynced => 'PIN synced';
 
   @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
+
+  @override
   String get requirePinToAccess => 'تتطلب رقم التعريف الشخصي للوصول إلى حسابك';
 
   @override

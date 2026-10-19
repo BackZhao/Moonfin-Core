@@ -49,6 +49,12 @@ class PinEntryDialog extends StatefulWidget {
     this.lockoutRemaining,
   });
 
+  /// How long a wait is said to be in the dialog.
+  static String formatWait(Duration wait) {
+    if (wait.inSeconds < 60) return '${wait.inSeconds}s';
+    return '${wait.inMinutes}m';
+  }
+
   /// Show the PIN dialog and return true if verified/set, false otherwise.
   static Future<bool> show(
     BuildContext context, {
@@ -144,11 +150,6 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
     });
   }
 
-  static String _formatWait(Duration wait) {
-    if (wait.inSeconds < 60) return '${wait.inSeconds}s';
-    return '${wait.inMinutes}m';
-  }
-
   Future<void> _onPinComplete() async {
     if (widget.mode == PinEntryMode.verify && widget.onVerifyAsync != null) {
       setState(() => _isVerifying = true);
@@ -173,7 +174,7 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
       setState(() {
         _isVerifying = false;
         _errorText = outcome is PinLockedOut
-            ? l10n.pinTryAgainIn(_formatWait(outcome.wait))
+            ? l10n.pinTryAgainIn(PinEntryDialog.formatWait(outcome.wait))
             : l10n.pinIncorrect;
         _enteredPin = '';
       });
@@ -185,7 +186,7 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
       if (locked > Duration.zero) {
         final l10n = AppLocalizations.of(context);
         setState(() {
-          _errorText = l10n.pinTryAgainIn(_formatWait(locked));
+          _errorText = l10n.pinTryAgainIn(PinEntryDialog.formatWait(locked));
           _enteredPin = '';
         });
         return;
@@ -198,7 +199,7 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
         final l10n = AppLocalizations.of(context);
         setState(() {
           _errorText = wait > Duration.zero
-              ? l10n.pinTryAgainIn(_formatWait(wait))
+              ? l10n.pinTryAgainIn(PinEntryDialog.formatWait(wait))
               : l10n.pinIncorrect;
           _enteredPin = '';
         });
@@ -213,7 +214,22 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
       } else {
         if (_enteredPin == _firstPin) {
           if (widget.onPinSet != null) {
-            await widget.onPinSet!.call(_enteredPin);
+            try {
+              await widget.onPinSet!.call(_enteredPin);
+            } on PinChangeRefused catch (refused) {
+              if (!mounted) return;
+              final l10n = AppLocalizations.of(context);
+              final outcome = refused.outcome;
+              setState(() {
+                _errorText = outcome is PinLockedOut
+                    ? l10n.pinTryAgainIn(PinEntryDialog.formatWait(outcome.wait))
+                    : l10n.pinIncorrect;
+                _enteredPin = '';
+                _isConfirming = false;
+                _firstPin = null;
+              });
+              return;
+            }
           }
           if (!mounted) return;
           Navigator.of(context).pop(true);

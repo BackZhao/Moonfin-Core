@@ -8944,6 +8944,12 @@ abstract class AppLocalizations {
   /// **'PIN synced'**
   String get pinSynced;
 
+  /// Shown on sign in when Forgot PIN could not clear a PIN kept on the server
+  ///
+  /// In en, this message translates to:
+  /// **'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.'**
+  String get pinResetFailed;
+
   /// Description for enable PIN code
   ///
   /// In en, this message translates to:
