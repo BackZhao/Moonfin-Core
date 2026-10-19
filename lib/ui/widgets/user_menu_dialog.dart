@@ -15,8 +15,9 @@ import '../../auth/repositories/session_repository.dart';
 import '../../auth/repositories/user_repository.dart';
 import '../../auth/store/authentication_store.dart';
 import '../../l10n/app_localizations.dart';
+import '../../data/services/pin_guard.dart';
+import '../../data/services/server_pin_service.dart';
 import '../../util/platform_detection.dart';
-import '../../util/pin_code_util.dart';
 import '../navigation/destinations.dart';
 import 'adaptive/adaptive_dialog.dart';
 import '../screens/settings/settings_side_panel.dart';
@@ -118,14 +119,21 @@ class _AccountDialogState extends State<_AccountDialog> {
       return;
     }
 
-    final store = GetIt.instance<PreferenceStore>();
-    final pinUtil = PinCodeUtil(store, account.user.id);
+    final guard = PinGuard.forAccount(
+      store: GetIt.instance<PreferenceStore>(),
+      service: GetIt.instance<ServerPinService>(),
+      userId: account.user.id,
+      serverAddress: account.server.address,
+      accessToken: account.user.accessToken,
+    );
+    await guard.refresh();
+    if (!mounted) return;
 
-    if (pinUtil.isPinEnabled) {
+    if (guard.pin.isPinEnabled) {
       final verified = await PinEntryDialog.show(
         context,
         mode: PinEntryMode.verify,
-        onVerify: pinUtil.verifyPin,
+        onVerifyAsync: guard.verify,
         onForgotPin: () {
           if (mounted) {
             Navigator.of(context).pop();

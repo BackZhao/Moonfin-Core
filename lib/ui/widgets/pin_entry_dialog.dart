@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moonfin_design/moonfin_design.dart';
 
+import '../../data/services/pin_guard.dart';
 import '../../l10n/app_localizations.dart';
 import '../../util/focus/dpad_keys.dart';
 import 'overlay_sheet.dart';
@@ -18,6 +19,11 @@ enum PinEntryMode { set, verify }
 class PinEntryDialog extends StatefulWidget {
   final PinEntryMode mode;
   final bool Function(String pin)? onVerify;
+
+  /// Checks a PIN that may have to ask the server, and says how long to wait
+  /// after too many wrong guesses. Used instead of [onVerify] when given, and
+  /// the one that counts the guesses, so [onFailedAttempt] is not needed with it.
+  final Future<PinOutcome> Function(String pin)? onVerifyAsync;
   final Future<void> Function(String pin)? onPinSet;
   final VoidCallback? onForgotPin;
   final int pinLength;
@@ -35,6 +41,7 @@ class PinEntryDialog extends StatefulWidget {
     super.key,
     required this.mode,
     this.onVerify,
+    this.onVerifyAsync,
     this.onPinSet,
     this.onForgotPin,
     this.pinLength = 4,
@@ -47,6 +54,7 @@ class PinEntryDialog extends StatefulWidget {
     BuildContext context, {
     required PinEntryMode mode,
     bool Function(String pin)? onVerify,
+    Future<PinOutcome> Function(String pin)? onVerifyAsync,
     Future<void> Function(String pin)? onPinSet,
     VoidCallback? onForgotPin,
     int pinLength = 4,
@@ -59,6 +67,7 @@ class PinEntryDialog extends StatefulWidget {
       builder: (_) => PinEntryDialog(
         mode: mode,
         onVerify: onVerify,
+        onVerifyAsync: onVerifyAsync,
         onPinSet: onPinSet,
         onForgotPin: onForgotPin,
         pinLength: pinLength,
@@ -78,6 +87,7 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
   String? _firstPin;
   String? _errorText;
   bool _isConfirming = false;
+  bool _isVerifying = false;
   DateTime? _lastButtonPressAt;
 
   bool _consumeButtonPress() {
@@ -107,7 +117,7 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
   }
 
   void _onDigitPressed(int digit) {
-    if (_enteredPin.length >= widget.pinLength) return;
+    if (_isVerifying || _enteredPin.length >= widget.pinLength) return;
     setState(() {
       _enteredPin += digit.toString();
       _errorText = null;
@@ -119,7 +129,7 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
   }
 
   void _onBackspace() {
-    if (_enteredPin.isEmpty) return;
+    if (_isVerifying || _enteredPin.isEmpty) return;
     setState(() {
       _enteredPin = _enteredPin.substring(0, _enteredPin.length - 1);
       _errorText = null;
@@ -127,6 +137,7 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
   }
 
   void _onClear() {
+    if (_isVerifying) return;
     setState(() {
       _enteredPin = '';
       _errorText = null;
@@ -139,6 +150,35 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
   }
 
   Future<void> _onPinComplete() async {
+    if (widget.mode == PinEntryMode.verify && widget.onVerifyAsync != null) {
+      setState(() => _isVerifying = true);
+      final PinOutcome outcome;
+      try {
+        outcome = await widget.onVerifyAsync!(_enteredPin);
+      } catch (_) {
+        if (!mounted) return;
+        setState(() {
+          _isVerifying = false;
+          _errorText = AppLocalizations.of(context).pinIncorrect;
+          _enteredPin = '';
+        });
+        return;
+      }
+      if (!mounted) return;
+      if (outcome is PinAccepted) {
+        Navigator.of(context).pop(true);
+        return;
+      }
+      final l10n = AppLocalizations.of(context);
+      setState(() {
+        _isVerifying = false;
+        _errorText = outcome is PinLockedOut
+            ? l10n.pinTryAgainIn(_formatWait(outcome.wait))
+            : l10n.pinIncorrect;
+        _enteredPin = '';
+      });
+      return;
+    }
     if (widget.mode == PinEntryMode.verify) {
       // Reopening the dialog must not hand back a fresh set of free guesses.
       final locked = widget.lockoutRemaining?.call() ?? Duration.zero;
