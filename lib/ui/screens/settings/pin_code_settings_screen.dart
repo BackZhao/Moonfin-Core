@@ -80,6 +80,11 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
   /// Turns a verdict that refuses the change into [PinChangeRefused], so the
   /// caller says so instead of going on as if it worked.
   void _throwIfRefused(ServerPinVerdict verdict) {
+    // A PIN the server holds is only changed once the server says so, or the
+    // copy here would differ from the one every other device is asked.
+    if (verdict is ServerPinUnavailable && _pinUtil.isServerBacked) {
+      throw const PinChangeRefused.unreachable();
+    }
     if (verdict is ServerPinWrong) {
       throw const PinChangeRefused(PinRejected());
     }
@@ -95,7 +100,9 @@ class _PinCodeSettingsScreenState extends State<PinCodeSettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          outcome is PinLockedOut
+          refused.unreachable
+              ? l10n.unableToConnectToServer
+              : outcome is PinLockedOut
               ? l10n.pinTryAgainIn(PinEntryDialog.formatWait(outcome.wait))
               : l10n.pinIncorrect,
         ),

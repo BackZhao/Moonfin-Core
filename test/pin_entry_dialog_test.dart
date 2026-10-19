@@ -245,6 +245,24 @@ void main() {
       expect(result, isNull);
     });
 
+    testWidgets('an unreachable server says so and keeps the dialog open', (
+      tester,
+    ) async {
+      await openSet(
+        tester,
+        (_) async => throw const PinChangeRefused.unreachable(),
+        (_) {},
+      );
+
+      await typeTwice(tester);
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(PinEntryDialog)),
+      );
+      expect(find.text(l10n.unableToConnectToServer), findsOneWidget);
+      expect(find.byType(PinEntryDialog), findsOneWidget);
+    });
+
     testWidgets('a locked server says how long to wait', (tester) async {
       await openSet(
         tester,

@@ -26,9 +26,16 @@ class PinLockedOut extends PinOutcome {
 /// The server turned down setting or removing a PIN, so the caller can say why
 /// instead of acting as if it worked.
 class PinChangeRefused implements Exception {
-  const PinChangeRefused(this.outcome);
+  const PinChangeRefused(this.outcome) : unreachable = false;
+
+  /// The server could not be asked, so a PIN it holds cannot be changed from
+  /// here without this device and the server disagreeing.
+  const PinChangeRefused.unreachable()
+    : outcome = const PinRejected(),
+      unreachable = true;
 
   final PinOutcome outcome;
+  final bool unreachable;
 }
 
 /// Checks a user's sign in PIN, asking the server when it can be reached and

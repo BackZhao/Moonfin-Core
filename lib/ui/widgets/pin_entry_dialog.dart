@@ -221,7 +221,9 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
               final l10n = AppLocalizations.of(context);
               final outcome = refused.outcome;
               setState(() {
-                _errorText = outcome is PinLockedOut
+                _errorText = refused.unreachable
+                    ? l10n.unableToConnectToServer
+                    : outcome is PinLockedOut
                     ? l10n.pinTryAgainIn(PinEntryDialog.formatWait(outcome.wait))
                     : l10n.pinIncorrect;
                 _enteredPin = '';
