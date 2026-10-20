@@ -1221,6 +1221,7 @@ final class AppleTvPlayerViewController: UIViewController {
             }
             if !channelList.isEmpty { ids.append(.channels) }
             ids.append(.guide)
+            if !subtitleTracks.isEmpty, osdShows(.subtitles) { ids.append(.subtitles) }
             if !streamInfoSections.isEmpty, osdShows(.info) { ids.append(.info) }
         } else {
             // Both always present, because they step chapters before they

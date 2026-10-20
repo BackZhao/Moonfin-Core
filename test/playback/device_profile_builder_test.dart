@@ -1792,6 +1792,15 @@ void main() {
 
       expect(videoDirectPlayProfile(profile)['Container'], 'mkv,mp4');
     });
+
+    test('names MPEG-TS the way Emby labels a live channel too', () {
+      final containers =
+          (videoDirectPlayProfile(DeviceProfileBuilder.build())['Container']
+                  as String)
+              .split(',');
+
+      expect(containers, containsAll(['ts', 'mpegts']));
+    });
   });
 
   group('DeviceProfileBuilder h264 codec profiles', () {

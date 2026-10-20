@@ -212,9 +212,9 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
       return (remotePath!, StreamPlayMethod.directPlay);
     }
 
-    // Live TV: play the source path directly instead of the HLS transcode.
-    // Server-served path is a remux -> directStream (keeps the live session);
-    // a remote upstream -> directPlay.
+    // Live TV: a remote upstream plays as is instead of the HLS transcode.
+    // Emby answers 404 when a client asks for its own LiveStreamFiles copy, so
+    // that one goes out through the DirectStreamUrl below.
     if (MediaStreamResolver.isLiveSourceDirectPlayEligible(
       enableDirectPlay: enableDirectPlay,
       isManagedLiveStream: isManagedLiveStream,
@@ -222,10 +222,9 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     )) {
       final resolvedPath =
           MediaStreamResolver.rebaseLiveServerPath(remotePath!, _client.baseUrl);
-      final method = resolvedPath.startsWith(_client.baseUrl)
-          ? StreamPlayMethod.directStream
-          : StreamPlayMethod.directPlay;
-      return (resolvedPath, method);
+      if (!resolvedPath.startsWith(_client.baseUrl)) {
+        return (resolvedPath, StreamPlayMethod.directPlay);
+      }
     }
 
     if (source.supportsDirectPlay) {

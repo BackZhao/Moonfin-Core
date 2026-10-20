@@ -1787,4 +1787,4 @@ enum Media3DoviCompatMode { native, convert, strip, off }
 /// (its Ogg support is audio only), so those route to a server remux here.
 /// AVI and FLV extractors exist in media3 and join in their place.
 const String media3DirectPlayVideoContainers =
-    'avi,dash,flv,hls,m4v,mkv,mov,mp4,ts,vob,webm,xvid';
+    'avi,dash,flv,hls,m4v,mkv,mov,mp4,mpegts,ts,vob,webm,xvid';

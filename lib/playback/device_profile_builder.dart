@@ -112,8 +112,10 @@ class DeviceProfileBuilder {
     'wma',
   ];
 
+  // Emby names a live channel's container mpegts and matches names exactly,
+  // so ts alone never lets it direct play one.
   static const String defaultDirectPlayVideoContainers =
-      'asf,dash,hls,m4v,mkv,mov,mp4,ogm,ogv,ts,vob,webm,wmv,xvid';
+      'asf,dash,hls,m4v,mkv,mov,mp4,mpegts,ogm,ogv,ts,vob,webm,wmv,xvid';
 
   static Map<String, dynamic> build({
     int? maxBitrateMbps,
