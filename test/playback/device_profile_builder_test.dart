@@ -979,8 +979,8 @@ void main() {
   });
 
   group('DeviceProfileBuilder HLS transcode video codec', () {
-    test('transcodes only to h264 when the server was not probed as allowing '
-        'HEVC encoding', () {
+    test('lists hevc after h264 when the server was not probed as allowing '
+        'HEVC encoding, so HEVC video can still be copied', () {
       final profile = DeviceProfileBuilder.build(
         supportsHevc: true,
         supportsHevcMain10: true,
@@ -990,7 +990,7 @@ void main() {
       final videoTargets = _videoTranscodingVideoCodecs(profile);
       expect(videoTargets, isNotEmpty);
       for (final codec in videoTargets) {
-        expect(codec, 'h264');
+        expect(codec, 'h264,hevc');
       }
 
       // Direct play still advertises hevc, so HEVC content plays without
@@ -1041,6 +1041,18 @@ void main() {
       expect(videoProfiles.first['VideoCodec'], 'hevc,h264');
       final ts = videoProfiles.firstWhere((p) => p['Container'] == 'ts');
       expect(ts['VideoCodec'], 'h264');
+    });
+
+    test('hevcRequiresFmp4Hls keeps both offers H264-only when the server '
+        'does not allow HEVC encoding', () {
+      final profile = DeviceProfileBuilder.build(
+        supportsHevc: true,
+        hevcRequiresFmp4Hls: true,
+      );
+
+      for (final entry in _hlsVideoTranscodingProfiles(profile)) {
+        expect(entry['VideoCodec'], 'h264');
+      }
     });
 
     test('without hevcRequiresFmp4Hls the TS offer keeps HEVC and stays '

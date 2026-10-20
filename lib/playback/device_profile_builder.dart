@@ -164,7 +164,7 @@ class DeviceProfileBuilder {
     bool supportsHevcMain10 = false,
     // Offers hevc ahead of h264 as the HLS transcode target. Only set from
     // the probed Jellyfin encoding options so servers that never enabled
-    // HEVC encoding keep receiving an H264-only offer.
+    // HEVC encoding keep encoding H264.
     bool transcodeHevcAllowed = false,
     // Keeps HEVC out of the MPEG-TS transcode offer and lists the fMP4
     // profile first so the server prefers it. The HLS spec only carries HEVC
@@ -355,9 +355,15 @@ class DeviceProfileBuilder {
     // libx265 re-encode on servers that never opted in. H264 always stays in
     // the list: the server demotes disallowed codecs instead of rejecting
     // them, and a single-codec HEVC list would be encoded unconditionally.
+    // A trailing hevc still lets the server copy HEVC video when only the
+    // audio needs work. AVFoundation sticks to H264 until that's verified.
     final hlsVideoCodecs = <String>[
       if (transcodeHevcAllowed && effectiveSupportsHevc) 'hevc',
       'h264',
+      if (!transcodeHevcAllowed &&
+          effectiveSupportsHevc &&
+          !hevcRequiresFmp4Hls)
+        'hevc',
     ].join(',');
 
     final hasKnownHevcDoviHdr10PlusBug =
