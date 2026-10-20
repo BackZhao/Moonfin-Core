@@ -115,7 +115,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get loginForbidden =>
-      'This account can\'t sign in right now. It may be outside its allowed hours, locked or disabled. Try again later or ask an administrator.';
+      'Tällä tilillä ei voi kirjautua sisään tällä hetkellä. Se saattaa olla sallittujen käyttöaikojen ulkopuolella, lukittu tai poistettu käytöstä. Yritä myöhemmin uudelleen tai ota yhteyttä järjestelmänvalvojaan.';
 
   @override
   String quickConnectUnavailable(String detail) {
@@ -2102,7 +2102,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get keyNameBackspace => 'Backspace';
 
   @override
-  String get keyNameDelete => 'Delete';
+  String get keyNameDelete => 'Poista';
 
   @override
   String get keyNamePageUp => 'Page Up';
@@ -2193,7 +2193,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Poistu koko näytön tilasta tai lopeta, jos koko näytön tila ei ole käytössä';
 
   @override
-  String get shortcutHideControls => 'Hide controls';
+  String get shortcutHideControls => 'Piilota hallintapainikkeet';
 
   @override
   String get shortcutStopPlayback => 'Pysäytä toisto';

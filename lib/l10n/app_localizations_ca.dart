@@ -74,11 +74,11 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get quickConnectScanHint =>
-      'Or scan this with a phone that\'s signed in to your server';
+      'O escaneja-ho amb un telèfon que tingui la sessió iniciada al teu servidor';
 
   @override
   String get quickConnectTapOrScanHint =>
-      'Tap to approve in your browser, or scan this with another device';
+      'Toca per aprovar-ho al navegador, o escaneja-ho amb un altre dispositiu';
 
   @override
   String get timesUpTitle => 'Time\'s up';
@@ -157,7 +157,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get addServer => 'Afegeix servidor';
 
   @override
-  String get embyConnect => 'Emby Connecta';
+  String get embyConnect => 'Emby Connect';
 
   @override
   String get removeServer => 'Elimina el servidor';
@@ -4680,7 +4680,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get libraryView => 'Vista de la biblioteca';
 
   @override
-  String get libraryStyle => 'Estil de la biblioteca principal';
+  String get libraryStyle => 'Estil de la biblioteca de vídeos';
 
   @override
   String get libraryStyleDescription =>
@@ -4716,32 +4716,32 @@ class AppLocalizationsCa extends AppLocalizations {
   String get bookLibraryStyleBookstore => 'Llibreria';
 
   @override
-  String get musicLibraryStyle => 'Music Library Style';
+  String get musicLibraryStyle => 'Estil de la biblioteca de música';
 
   @override
   String get musicLibraryStyleDescription =>
-      'Classic is the original rows under a Jump Back In card. Quick Access starts with a grid of your recent albums and playlists. Immersive leads with the album you\'re listening to.';
+      'Clàssic són les files originals sota una targeta «Torna a escoltar». Accés ràpid comença amb una graella dels teus àlbums i llistes de reproducció recents. Immersiu comença amb l\'àlbum que estàs escoltant.';
 
   @override
-  String get musicLibraryStyleClassic => 'Classic';
+  String get musicLibraryStyleClassic => 'Clàssic';
 
   @override
-  String get musicLibraryStyleQuickAccess => 'Quick Access';
+  String get musicLibraryStyleQuickAccess => 'Accés ràpid';
 
   @override
-  String get musicLibraryStyleImmersive => 'Immersive';
+  String get musicLibraryStyleImmersive => 'Immersiu';
 
   @override
-  String get jumpBackIn => 'Jump Back In';
+  String get jumpBackIn => 'Torna a escoltar';
 
   @override
-  String get yourPlaylists => 'Your Playlists';
+  String get yourPlaylists => 'Les teves llistes de reproducció';
 
   @override
-  String get fromThisAlbum => 'From This Album';
+  String get fromThisAlbum => 'D\'aquest àlbum';
 
   @override
-  String get searchMusic => 'Search Music';
+  String get searchMusic => 'Cerca música';
 
   @override
   String bookSeriesCount(int count) {
@@ -5996,7 +5996,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get revenueLabel => 'Ingressos';
 
   @override
-  String get runtimeLabel => 'Temps d\'execució';
+  String get runtimeLabel => 'Duració';
 
   @override
   String get budgetLabel => 'Pressupost';
@@ -7749,7 +7749,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get analyticsContentRatings => 'Classificacions de contingut';
 
   @override
-  String get analyticsRuntimeBuckets => 'Cubs de temps d\'execució';
+  String get analyticsRuntimeBuckets => 'Franges de duració';
 
   @override
   String get analyticsFileFormats => 'Formats de fitxer';
@@ -9135,7 +9135,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get adminSegmentKeepSeconds => 'Manteniment del segment (segons)';
 
   @override
-  String get adminThrottleBuffering => 'Amortiment de l\'accelerador';
+  String get adminThrottleBuffering => 'Limita la memòria intermèdia';
 
   @override
   String get adminTrickplayLoadFailed =>
@@ -10672,7 +10672,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get adminPlaybackSegmentKeep => 'Manteniment del segment (segons)';
 
   @override
-  String get adminPlaybackThrottleBuffering => 'Amortiment de l\'accelerador';
+  String get adminPlaybackThrottleBuffering => 'Limita la memòria intermèdia';
 
   @override
   String get adminPlaybackThrottleDelay => 'Retard de limitació (segons)';
@@ -13610,7 +13610,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get analyticsLibraryShare => 'Proporció d\'elements per biblioteca';
 
   @override
-  String get analyticsTopRating => 'Classificació més habitual';
+  String get analyticsTopRating => 'Valoració més habitual';
 
   @override
   String get analyticsTypicalRuntime => 'Durada típica';
@@ -14886,7 +14886,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get smartDownloadsEnableDescription =>
-      'When you finish an episode on any device, Moonfin downloads the next ones. Episodes it downloads are deleted once watched.';
+      'Quan acabes un episodi en qualsevol dispositiu, Moonfin baixa els següents. Els episodis que baixa s\'eliminen un cop vistos.';
 
   @override
   String get smartDownloadsKeepReady => 'Episodis que es mantenen baixats';
@@ -14927,21 +14927,21 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get autoDownloadDeleteFollowedSubtitle =>
-      'When to remove episodes downloaded for series you follow, after you watch them';
+      'Quan s\'han d\'eliminar els episodis baixats de les sèries que segueixes, després de veure\'ls';
 
   @override
-  String get removeWatchedDownloads => 'Remove Watched Downloads';
+  String get removeWatchedDownloads => 'Elimina les baixades vistes';
 
   @override
   String get removeWatchedDownloadsSubtitle =>
-      'When to remove episodes and movies you downloaded yourself. Only those you watch after turning this on are removed';
+      'Quan s\'han d\'eliminar els episodis i les pel·lícules que has baixat tu mateix. Només s\'eliminen els que vegis després d\'activar aquesta opció';
 
   @override
-  String get keepDownloaded => 'Keep Downloaded';
+  String get keepDownloaded => 'Mantén baixat';
 
   @override
   String get keepDownloadedSubtitle =>
-      'Never remove this automatically after watching';
+      'No ho eliminis mai automàticament després de veure-ho';
 
   @override
   String get autoDownloadDeleteNever => 'Mai';
