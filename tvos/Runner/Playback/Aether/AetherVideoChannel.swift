@@ -289,8 +289,8 @@ final class AetherVideoChannel: NSObject, FlutterStreamHandler {
 
 /// Device-profile capabilities for AetherEngine. HEVC and H.264 decode in
 /// hardware everywhere this builds. AV1 has hardware on the newest chips with
-/// software dav1d covering the rest at lower resolutions, and VP9, MPEG-2,
-/// VC-1 and interlaced H.264 route through the engine's software path.
+/// software dav1d covering the rest, and VP9, MPEG-2, VC-1 and interlaced
+/// H.264 route through the engine's software path.
 ///
 /// Every iOS device that reaches the deployment floor has an HDR capable
 /// screen. A Mac may be driving anything, so there HDR and Dolby Vision are
@@ -314,10 +314,21 @@ enum AetherVideoCapabilities {
         #endif
     }
 
+    // Even an M1 decodes heavy 4K HDR10 AV1 at about 2.9x real time, so only
+    // Intel Macs and iOS devices without AV1 hardware keep the 1080p SDR cap.
+    private static var softwareAv1HandlesUhd: Bool {
+        #if os(macOS) && arch(arm64)
+            return true
+        #else
+            return false
+        #endif
+    }
+
     static func deviceProfileCapabilities() -> [String: Any] {
         let hardwareAv1 = VTIsHardwareDecodeSupported(kCMVideoCodecType_AV1)
-        let av1Width = hardwareAv1 ? 3840 : 1920
-        let av1Height = hardwareAv1 ? 2160 : 1080
+        let fullAv1 = hardwareAv1 || softwareAv1HandlesUhd
+        let av1Width = fullAv1 ? 3840 : 1920
+        let av1Height = fullAv1 ? 2160 : 1080
         let hdr = displaySupportsHdr
         return [
             "supportsAvc": true,
@@ -339,7 +350,7 @@ enum AetherVideoCapabilities {
             "supportsVc1": true,
             "supportsAv1": true,
             "supportsAv1Main10": true,
-            "supportsAv1Hdr10": hardwareAv1 && hdr,
+            "supportsAv1Hdr10": fullAv1 && hdr,
             "supportsAv1Hdr10Plus": false,
             "supportsAv1DolbyVision": false,
             "maxResolutionAvc": ["width": 3840, "height": 2160],
