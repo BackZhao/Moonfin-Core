@@ -170,7 +170,8 @@ class DeviceProfileBuilder {
     // profile first so the server prefers it. The HLS spec only carries HEVC
     // in fMP4, and AVFoundation leaves an HEVC in TS transcode as a black
     // picture with working audio. Servers without fMP4 HLS fall through to
-    // the TS profile and encode H264, which renders.
+    // the TS profile and encode H264, which renders. It also limits HLS copies
+    // to what AVFoundation can decode.
     bool hevcRequiresFmp4Hls = false,
     // Keeps DTS and MP2 out of both HLS transcode offers, since AVFoundation
     // decodes neither. The server copies a source track straight through
@@ -356,14 +357,11 @@ class DeviceProfileBuilder {
     // the list: the server demotes disallowed codecs instead of rejecting
     // them, and a single-codec HEVC list would be encoded unconditionally.
     // A trailing hevc still lets the server copy HEVC video when only the
-    // audio needs work. AVFoundation sticks to H264 until that's verified.
+    // audio needs work. The TS offer leaves it out on AVFoundation.
     final hlsVideoCodecs = <String>[
       if (transcodeHevcAllowed && effectiveSupportsHevc) 'hevc',
       'h264',
-      if (!transcodeHevcAllowed &&
-          effectiveSupportsHevc &&
-          !hevcRequiresFmp4Hls)
-        'hevc',
+      if (!transcodeHevcAllowed && effectiveSupportsHevc) 'hevc',
     ].join(',');
 
     final hasKnownHevcDoviHdr10PlusBug =
@@ -497,6 +495,7 @@ class DeviceProfileBuilder {
       knownHevcDoviHdr10PlusBug: hasKnownHevcDoviHdr10PlusBug,
       allowDolbyVisionProfile7ElDirectPlay:
           allowDolbyVisionProfile7ElDirectPlay,
+      hevcRequiresFmp4Hls: hevcRequiresFmp4Hls,
       webCapabilities: webCapabilities,
     );
 
@@ -1116,6 +1115,7 @@ class DeviceProfileBuilder {
     required bool supportsDvProfile8,
     required bool knownHevcDoviHdr10PlusBug,
     required bool allowDolbyVisionProfile7ElDirectPlay,
+    required bool hevcRequiresFmp4Hls,
     required WebPlaybackCapabilities? webCapabilities,
   }) {
     final profiles = <Map<String, dynamic>>[];
@@ -1290,6 +1290,23 @@ class DeviceProfileBuilder {
               condition: 'EqualsAny',
               property: 'VideoProfile',
               value: 'main',
+            ),
+          ],
+        ),
+      );
+    } else if (hevcRequiresFmp4Hls) {
+      // Most Apple decoders only handle Main and Main 10, so Rext sources
+      // (4:2:2, 4:4:4 or 12 bit) get encoded instead of copied.
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          container: 'hls',
+          codec: 'hevc',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'EqualsAny',
+              property: 'VideoProfile',
+              value: 'main|main 10',
             ),
           ],
         ),
@@ -1506,6 +1523,50 @@ class DeviceProfileBuilder {
       codec: 'av1',
       rangeTypes: unsupportedRangeTypesAv1,
     );
+    // AVFoundation plays the HLS output itself. Listing what renders makes the
+    // server keep the Dolby Vision config on a copy, and leaving out the
+    // enhancement layer gets profile 7 stripped to its HDR10 base layer. This
+    // has to come before the general entry since the server takes the first
+    // match.
+    if (hevcRequiresFmp4Hls) {
+      final hlsRangeTypes = _expandVideoRangeTypeAliases(
+        _videoRangeTypes.difference(<String>{
+          ...unsupportedRangeTypesHevc,
+          'DOVI_WITH_EL',
+          'DOVI_WITH_ELHDR10_PLUS',
+        }),
+      ).toList()..sort();
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          container: 'hls',
+          codec: 'hevc',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'EqualsAny',
+              property: 'VideoRangeType',
+              value: hlsRangeTypes.join('|'),
+              isRequired: false,
+            ),
+          ],
+          // Servers before 10.11.6 tag a profile 8.4 copy dvh1, which Apple
+          // players refuse, and 8.2 gets dvh1 until 12.2, so both stay plain
+          // hvc1 copies.
+          applyConditions: <Map<String, dynamic>>[
+            for (final rangeType in const <String>[
+              'DOVIWithHLG',
+              'DOVIWithSDR',
+            ])
+              _condition(
+                condition: 'NotEquals',
+                property: 'VideoRangeType',
+                value: rangeType,
+                isRequired: false,
+              ),
+          ],
+        ),
+      );
+    }
     _addUnsupportedRangeProfiles(
       profiles: profiles,
       codec: 'hevc',
@@ -1696,6 +1757,14 @@ class DeviceProfileBuilder {
     }
     return expanded;
   }
+
+  static final Set<String> _videoRangeTypes = <String>{
+    'SDR',
+    'HDR10',
+    'HLG',
+    'DOVI',
+    ..._videoRangeTypeAliases.keys,
+  };
 
   static const Map<String, List<String>> _videoRangeTypeAliases =
       <String, List<String>>{
