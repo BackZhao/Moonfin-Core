@@ -26249,6 +26249,18 @@ abstract class AppLocalizations {
   /// **'You'**
   String get navYou;
 
+  /// No description provided for @cinemaSkipPrerolls.
+  ///
+  /// In en, this message translates to:
+  /// **'Cinema Mode Skip Button'**
+  String get cinemaSkipPrerolls;
+
+  /// No description provided for @cinemaSkipPrerollsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.'**
+  String get cinemaSkipPrerollsDescription;
+
   /// Settings entry and screen for options that shape the details page
   ///
   /// In en, this message translates to:

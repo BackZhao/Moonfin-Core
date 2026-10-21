@@ -116,7 +116,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get loginForbidden =>
-      'This account can\'t sign in right now. It may be outside its allowed hours, locked or disabled. Try again later or ask an administrator.';
+      'Impossible de se connecter avec ce compte pour le moment. Il est peut-être hors des horaires autorisés, verrouillé ou désactivé. Réessayez plus tard ou contactez un administrateur.';
 
   @override
   String quickConnectUnavailable(String detail) {
@@ -703,7 +703,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Orientation de l\'écran pendant les jeux';
 
   @override
-  String get landscape => 'Landscape';
+  String get landscape => 'Paysage';
 
   @override
   String get portrait => 'Portrait';
@@ -718,16 +718,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gameHoldToOpenMenu => 'Gardez appuyé pour ouvrir le menu';
 
   @override
-  String get gameKeepPlaying => 'Keep playing';
+  String get gameKeepPlaying => 'Continuer à jouer';
 
   @override
   String get gameSaveAndExit => 'Sauvegarder et quitter';
 
   @override
-  String get gameExitGame => 'Exit game';
+  String get gameExitGame => 'Quitter le jeu';
 
   @override
-  String get gameSavingBeforeExit => 'Saving…';
+  String get gameSavingBeforeExit => 'Sauvegarde…';
 
   @override
   String get gameSaveFailedStillPlaying =>
@@ -2116,7 +2116,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get keyNameBackspace => 'Retour arrière';
 
   @override
-  String get keyNameDelete => 'Delete';
+  String get keyNameDelete => 'Suppr';
 
   @override
   String get keyNamePageUp => 'Page Up';
@@ -2204,7 +2204,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Quitter le plein écran, ou arrêter la lecture si déjà quitté';
 
   @override
-  String get shortcutHideControls => 'Hide controls';
+  String get shortcutHideControls => 'Masquer les commandes';
 
   @override
   String get shortcutStopPlayback => 'Arrêter la lecture';
@@ -2216,7 +2216,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shortcutPreviousItem => 'Élément précédent';
 
   @override
-  String get shortcutSkipSegment => 'Skip intro or credits when offered';
+  String get shortcutSkipSegment =>
+      'Ignorer l\'intro ou le générique lorsque c\'est proposé';
 
   @override
   String get shortcutShowShortcuts => 'Afficher cette liste';
@@ -2547,7 +2548,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get liveBadge => 'EN DIRECT';
 
   @override
-  String get liveTvJumpToLive => 'Jump to Live';
+  String get liveTvJumpToLive => 'Revenir au direct';
 
   @override
   String guideNextProgram(String time, String title) {
@@ -2654,7 +2655,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playbackVideoUnsupported =>
-      'This device can\'t play this video\'s format. Try an external player.';
+      'Cet appareil ne peut pas lire le format de cette vidéo. Essayez un lecteur externe.';
 
   @override
   String liveReconnecting(int attempt, int total) {
@@ -3780,7 +3781,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get buttonShownInSyncPlayGroup =>
-      'Only shows while you\'re in a SyncPlay group';
+      'S\'affiche uniquement lorsque vous êtes dans un groupe SyncPlay';
 
   @override
   String get orientationLock => 'Verrouillage de l\'orientation';
@@ -4682,11 +4683,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get libraryStyleDescription =>
-      'Classique correspond à l\'en-tête d\'origine, avec des boutons en icônes. Moderne réunit la recherche et les boutons de tri, de regroupement et de filtre, avec leurs libellés, dans une seule barre. Ancré déplace les commandes et l\'index alphabétique dans un panneau latéral.';
+      'Classique correspond à l\'en-tête d\'origine, avec des boutons en icônes. Moderne réunit la recherche et les boutons de tri, de regroupement et de filtre, avec leurs libellés, dans une seule barre. Dock déplace les commandes et l\'index alphabétique dans un panneau latéral.';
 
   @override
   String get libraryStyleDescriptionPhone =>
-      'Classique correspond à l\'en-tête d\'origine, avec des boutons en icônes. Moderne ajoute sous la recherche des boutons de tri, de regroupement et de filtre, avec leurs libellés. Ancré garde les commandes dans une barre en bas de l\'écran.';
+      'Classique correspond à l\'en-tête d\'origine, avec des boutons en icônes. Moderne ajoute sous la recherche des boutons de tri, de regroupement et de filtre, avec leurs libellés. Dock garde les commandes dans une barre en bas de l\'écran.';
 
   @override
   String get libraryStyleClassic => 'Classique';
@@ -4695,7 +4696,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get libraryStyleModern => 'Moderne';
 
   @override
-  String get libraryStyleDocked => 'Ancré';
+  String get libraryStyleDocked => 'Dock';
 
   @override
   String get bookLibraryStyle => 'Style de la bibliothèque de livres';
@@ -4730,31 +4731,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get musicLibraryStyleImmersive => 'Immersif';
 
   @override
-  String get jumpBackIn => 'Jump Back In';
+  String get jumpBackIn => 'Reprendre l\'écoute';
 
   @override
-  String get yourPlaylists => 'Your Playlists';
+  String get yourPlaylists => 'Vos playlists';
 
   @override
-  String get fromThisAlbum => 'From This Album';
+  String get fromThisAlbum => 'De cet album';
 
   @override
-  String get searchMusic => 'Search Music';
+  String get searchMusic => 'Rechercher de la musique';
 
   @override
   String bookSeriesCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count series',
-      one: '1 series',
+      other: '$count séries',
+      one: '$count série',
     );
     return '$_temp0';
   }
 
   @override
   String bookInProgressCount(int count) {
-    return '$count in progress';
+    return '$count en cours';
   }
 
   @override
@@ -4762,23 +4763,23 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Browse all $count titles',
-      one: 'Browse 1 title',
+      other: 'Parcourir tous les $count titres',
+      one: 'Parcourir $count titre',
     );
     return '$_temp0';
   }
 
   @override
-  String get searchBooks => 'Search books';
+  String get searchBooks => 'Rechercher des livres';
 
   @override
-  String get libraryShowLabel => 'Show';
+  String get libraryShowLabel => 'Afficher';
 
   @override
-  String get libraryAToZ => 'A to Z';
+  String get libraryAToZ => 'A à Z';
 
   @override
-  String get libraryJumpToLetter => 'Jump to letter';
+  String get libraryJumpToLetter => 'Aller à une lettre';
 
   @override
   String get enableFolderView => 'Activer la vue dossiers';
@@ -4950,12 +4951,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Activer l\'audio des bandes-annonces dans la barre média';
 
   @override
-  @override
   String get trailerVolume => 'Trailer Volume';
 
   @override
   String get trailerVolumeDescription => 'How loud media bar trailers play';
 
+  @override
   String get trailerCaptions => 'Sous-titres des bandes-annonces';
 
   @override
@@ -4984,13 +4985,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Activer l\'audio pour les aperçus des médias';
 
   @override
-  @override
   String get previewVolume => 'Preview Volume';
 
   @override
   String get previewVolumeDescription =>
       'How loud media previews on cards play';
 
+  @override
   String get latestMedia => 'Médias récemment ajoutés';
 
   @override
@@ -11955,7 +11956,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get settingsLiveTvDirect => 'Télévision en direct en direct';
+  String get settingsLiveTvDirect => 'Lecture directe pour la TV en direct';
 
   @override
   String get settingsLiveTvDirectSubtitle =>
@@ -13582,17 +13583,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucune bibliothèque n\'est disponible.';
 
   @override
-  String get analyticsLibraryShare => 'Share of items by library';
+  String get analyticsLibraryShare =>
+      'Répartition des éléments par bibliothèque';
 
   @override
-  String get analyticsTopRating => 'Most common rating';
+  String get analyticsTopRating => 'Classification la plus fréquente';
 
   @override
-  String get analyticsTypicalRuntime => 'Typical runtime';
+  String get analyticsTypicalRuntime => 'Durée habituelle';
 
   @override
   String analyticsShareOfItems(String percent) {
-    return '$percent% of items';
+    return '$percent % des éléments';
   }
 
   @override
@@ -14864,7 +14866,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get smartDownloadsEnableDescription =>
-      'When you finish an episode on any device, Moonfin downloads the next ones. Episodes it downloads are deleted once watched.';
+      'Lorsque vous terminez un épisode sur n\'importe quel appareil, Moonfin télécharge les suivants. Les épisodes qu\'il télécharge sont supprimés une fois vus.';
 
   @override
   String get smartDownloadsKeepReady => 'Épisodes à garder téléchargés';
@@ -14905,7 +14907,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get autoDownloadDeleteFollowedSubtitle =>
-      'When to remove episodes downloaded for series you follow, after you watch them';
+      'Quand supprimer les épisodes téléchargés pour les séries que vous suivez, après les avoir vus';
 
   @override
   String get removeWatchedDownloads => 'Supprimer les téléchargements vus';
@@ -15230,6 +15232,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get navYou => 'Vous';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Page de détails';
