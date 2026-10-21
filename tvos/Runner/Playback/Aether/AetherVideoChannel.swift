@@ -42,6 +42,9 @@ final class AetherVideoChannel: NSObject, FlutterStreamHandler {
     private var lastClosedCaptionCount = -1
     private var didComplete = false
     private var didReportTerminalError = false
+    #if os(iOS)
+        private var volumeObservation: NSKeyValueObservation?
+    #endif
 
     init(messenger: FlutterBinaryMessenger) {
         control = FlutterMethodChannel(
@@ -58,6 +61,16 @@ final class AetherVideoChannel: NSObject, FlutterStreamHandler {
             Task { @MainActor in self?.handle(call) }
         }
         events.setStreamHandler(self)
+        #if os(iOS)
+            volumeObservation = AVAudioSession.sharedInstance().observe(
+                \.outputVolume, options: [.new]
+            ) { [weak self] _, change in
+                guard let volume = change.newValue else { return }
+                Task { @MainActor in
+                    self?.send(["event": "systemVolume", "value": Double(volume)])
+                }
+            }
+        #endif
     }
 
     nonisolated func onListen(withArguments arguments: Any?, eventSink: @escaping FlutterEventSink)

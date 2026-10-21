@@ -22,6 +22,7 @@ import '../../../data/utils/chapter_markers.dart';
 import '../../../data/utils/video_range_label.dart';
 import '../../../playback/subtitle_style.dart';
 import '../../../playback/subtitle_view_config.dart';
+import '../../../playback/system_volume.dart';
 import '../../../util/fullscreen_helper.dart';
 import '../../../util/scroll_sensitivity_binding.dart';
 import '../../widgets/image_source.dart';
@@ -6333,7 +6334,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     _playerVolume = 100.0;
     unawaited(_manager.backend?.setVolume(100.0));
 
-    _volumeListenerSub = vc.addListener((value) {
+    _volumeListenerSub = listenToSystemVolume((value) {
       if (mounted && (value - _systemVolume).abs() > 0.01) {
         setState(() => _systemVolume = value);
         _reportVolumeToManager();
@@ -6344,7 +6345,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
           _activeMedia3Backend != null) {
         unawaited(_setMedia3VolumeBoostLevel(0));
       }
-    }, fetchInitialVolume: true);
+    });
   }
 
   void _initDesktopVolume() {

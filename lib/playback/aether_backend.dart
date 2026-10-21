@@ -89,6 +89,7 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
   final _errorStream = StreamController<Map<String, dynamic>>.broadcast();
   final _remoteCommandStream =
       StreamController<Map<String, dynamic>>.broadcast();
+  final _systemVolumeStream = StreamController<double>.broadcast();
 
   @override
   Stream<Map<String, dynamic>> get errorStream => _errorStream.stream;
@@ -97,6 +98,9 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
   /// engine's own Now Playing session, which audio_service never sees.
   Stream<Map<String, dynamic>> get remoteCommandStream =>
       _remoteCommandStream.stream;
+
+  /// iOS device volume changes, read without touching the audio session.
+  Stream<double> get systemVolumeStream => _systemVolumeStream.stream;
 
   /// Fills that session in. iOS shows it in place of the audio_service entry
   /// while music plays, so without this the card has no title or artwork.
@@ -185,6 +189,9 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
       case 'next':
       case 'previous':
         _remoteCommandStream.add(map.cast<String, dynamic>());
+      case 'systemVolume':
+        final volume = map['value'];
+        if (volume is num) _systemVolumeStream.add(volume.toDouble());
       case 'playerError':
       case 'error':
         _logPlaybackError(map);
@@ -770,6 +777,7 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
     _completedStream.close();
     _errorStream.close();
     _remoteCommandStream.close();
+    _systemVolumeStream.close();
     _tracksChangedController.close();
     _subtitleLoadingStream.close();
   }
