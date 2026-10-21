@@ -2343,6 +2343,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'A renderização de EPUB no app ainda não está disponível nesta plataforma.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Este formato (.$extension) ainda não pode ser renderizado no aplicativo.';
   }

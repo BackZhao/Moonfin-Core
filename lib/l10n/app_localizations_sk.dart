@@ -2354,6 +2354,13 @@ class AppLocalizationsSk extends AppLocalizations {
       'Vykresľovanie EPUB v aplikácii zatiaľ nie je na tejto platforme dostupné.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Tento formát (.$extension) sa zatiaľ nedá zobraziť v aplikácii.';
   }

@@ -2295,6 +2295,13 @@ class AppLocalizationsYue extends AppLocalizations {
   String get epubUnavailableOnPlatform => '應用程式內 EPUB 渲染在此平台上尚不可用。';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return '呢個格式（.$extension）暫時仲未可以喺應用程式入面顯示。';
   }

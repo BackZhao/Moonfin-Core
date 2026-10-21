@@ -2357,6 +2357,13 @@ class AppLocalizationsCy extends AppLocalizations {
       'Nid yw mewn-app rendro EPUB ar gael ar y platfform hwn eto.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Ni all y fformat hwn (.$extension) gael ei rendro yn yr ap eto.';
   }

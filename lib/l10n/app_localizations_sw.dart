@@ -2348,6 +2348,13 @@ class AppLocalizationsSw extends AppLocalizations {
       'Utoaji wa EPUB ndani ya programu bado haupatikani kwenye mfumo huu.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Muundo huu (.$extension) hauwezi kuonyeshwa ndani ya programu bado.';
   }

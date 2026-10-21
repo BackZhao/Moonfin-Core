@@ -4072,6 +4072,18 @@ abstract class AppLocalizations {
   /// **'EPUB rendering in-app is not available on this platform yet.'**
   String get epubUnavailableOnPlatform;
 
+  /// Title of the dialog shown on Apple TV when the user tries to open a book or comic, which tvOS has no reader for
+  ///
+  /// In en, this message translates to:
+  /// **'Books can\'t be read on Apple TV'**
+  String get bookReadingUnavailableTitle;
+
+  /// Body of the dialog shown on Apple TV when the user tries to open a book or comic
+  ///
+  /// In en, this message translates to:
+  /// **'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.'**
+  String get bookReadingUnavailableMessage;
+
   /// Fallback message for unsupported document format
   ///
   /// In en, this message translates to:

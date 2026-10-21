@@ -3117,6 +3117,14 @@
   "@epubUnavailableOnPlatform": {
     "description": "Fallback message when EPUB cannot render on current platform"
   },
+  "bookReadingUnavailableTitle": "Books can't be read on Apple TV",
+  "@bookReadingUnavailableTitle": {
+    "description": "Title of the dialog shown on Apple TV when the user tries to open a book or comic, which tvOS has no reader for"
+  },
+  "bookReadingUnavailableMessage": "Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.",
+  "@bookReadingUnavailableMessage": {
+    "description": "Body of the dialog shown on Apple TV when the user tries to open a book or comic"
+  },
   "formatCannotRenderInApp": "This format (.{extension}) cannot be rendered in-app yet.",
   "@formatCannotRenderInApp": {
     "description": "Fallback message for unsupported document format",

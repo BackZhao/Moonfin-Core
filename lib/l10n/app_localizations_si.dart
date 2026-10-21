@@ -2332,6 +2332,13 @@ class AppLocalizationsSi extends AppLocalizations {
       'යෙදුම තුළ EPUB විදැහුම්කරණය තවමත් මෙම වේදිකාවේ නොමැත.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'මෙම ආකෘතිය (.$extension) තවම යෙදුම තුළ පෙන්විය නොහැක.';
   }

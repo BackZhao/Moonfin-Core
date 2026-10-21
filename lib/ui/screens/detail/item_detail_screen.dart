@@ -73,6 +73,7 @@ import '../../../util/seerr_credits.dart';
 import '../../navigation/destinations.dart';
 import '../../widgets/adaptive/adaptive_dialog.dart';
 import '../../widgets/adaptive/sf_symbol.dart';
+import '../../widgets/book/book_navigation.dart';
 import '../../widgets/settings/settings_panel.dart';
 import '../../widgets/add_to_playlist_dialog.dart';
 import '../../widgets/logo_view.dart';
@@ -9086,6 +9087,10 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     }
 
     if (_isReadableBookItem(item)) {
+      if (PlatformDetection.isAppleTV) {
+        await showBookReadingUnavailableDialog(context);
+        return;
+      }
       final extension = BookReaderService.detectExtension(item);
       if (extension != null &&
           !BookReaderService.isSupportedExtension(extension)) {

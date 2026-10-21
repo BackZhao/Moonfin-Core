@@ -2287,6 +2287,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get epubUnavailableOnPlatform => '应用内 EPUB 渲染在此平台上尚不可用。';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return '应用内暂时无法渲染此格式（.$extension）。';
   }
