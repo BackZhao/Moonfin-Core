@@ -27,6 +27,7 @@ import '../../../util/platform_detection.dart';
 import '../../../util/playback_time_label.dart';
 import '../../widgets/adaptive/sf_symbol.dart';
 import '../../widgets/add_to_playlist_dialog.dart';
+import '../../widgets/marquee_text.dart';
 import '../../widgets/overlay_sheet.dart';
 import '../../widgets/player_volume_control.dart';
 import '../../widgets/remote_play_to_session_dialog.dart';
@@ -1071,15 +1072,13 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          item?.name ?? '',
+        MarqueeText(
+          text: item?.name ?? '',
           style: TextStyle(
             fontSize: titleSize,
             fontWeight: FontWeight.w800,
             color: AppColorScheme.onSurface,
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
         Text(
           _artistLine(item),
@@ -1092,14 +1091,12 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         if (item?.album != null)
-          Text(
-            item!.album!,
+          MarqueeText(
+            text: item!.album!,
             style: TextStyle(
               fontSize: 16,
               color: AppColorScheme.onSurface.withValues(alpha: 0.5),
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
       ],
     );
@@ -1322,12 +1319,20 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                 ),
                 child: Row(
                   children: [
+                    // In a narrow window the side groups shrink to fit
+                    // instead of overflowing the dock.
                     Expanded(
-                      child: Row(
-                        children: slots([
-                          _DockAction.favorite,
-                          _DockAction.addToPlaylist,
-                        ]),
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            children: slots([
+                              _DockAction.favorite,
+                              _DockAction.addToPlaylist,
+                            ]),
+                          ),
+                        ),
                       ),
                     ),
                     Row(
@@ -1336,23 +1341,31 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                       children: slots(_transportActions),
                     ),
                     Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ...slots([
-                            _DockAction.lyrics,
-                            _DockAction.queue,
-                            _DockAction.cast,
-                          ]),
-                          if (_isWidePlayer && !isTv)
-                            PlayerVolumeControl(
-                              volume: _playerVolume / 100.0,
-                              onChanged: (v) => _setPlayerVolume(v * 100.0),
-                              onToggleMute: () => _setPlayerVolume(
-                                _playerVolume > 0 ? 0.0 : _volumeBeforeMute,
-                              ),
-                            ),
-                        ],
+                      child: Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            children: [
+                              ...slots([
+                                _DockAction.lyrics,
+                                _DockAction.queue,
+                                _DockAction.cast,
+                              ]),
+                              if (_isWidePlayer && !isTv)
+                                PlayerVolumeControl(
+                                  volume: _playerVolume / 100.0,
+                                  onChanged: (v) =>
+                                      _setPlayerVolume(v * 100.0),
+                                  onToggleMute: () => _setPlayerVolume(
+                                    _playerVolume > 0
+                                        ? 0.0
+                                        : _volumeBeforeMute,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -1973,6 +1986,13 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           index == _tvQueueFocusIndex &&
           keyboardFocus;
       final highlighted = isDpadFocused || index == _hoveredQueueIndex;
+      final title =
+          item?.name ?? AppLocalizations.of(context).trackNumber(index + 1);
+      final titleStyle = TextStyle(
+        fontSize: 18,
+        color: isCurrent ? AppColorScheme.accent : AppColorScheme.onSurface,
+        fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+      );
       final artUrl = item != null ? _getArtUrl(item) : null;
 
       return MouseRegion(
@@ -2023,18 +2043,15 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     : _queueArtPlaceholder(),
               ),
             ),
-            title: Text(
-              item?.name ?? AppLocalizations.of(context).trackNumber(index + 1),
-              style: TextStyle(
-                fontSize: 18,
-                color: isCurrent
-                    ? AppColorScheme.accent
-                    : AppColorScheme.onSurface,
-                fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            // The focused or hovered row scrolls a name too long to fit.
+            title: highlighted
+                ? MarqueeText(text: title, style: titleStyle)
+                : Text(
+                    title,
+                    style: titleStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
             subtitle: Text(
               _artistLine(item),
               style: TextStyle(
