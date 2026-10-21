@@ -483,6 +483,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         subtitle: l10n.settingsAllowSelfSignedCertsSubtitle,
         keywords: ['certificate', 'ssl', 'https', 'insecure'],
       ),
+      account.leaf(
+        'client_certificates',
+        l10n.settingsClientCertificates,
+        subtitle: l10n.settingsClientCertificatesSubtitle,
+        keywords: ['certificate', 'mtls', 'client certificate', 'p12', 'pfx'],
+      ),
     ],
     pin.screen(keywords: ['lock', 'passcode']),
     pin.leaf(
@@ -1147,6 +1153,27 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       subtitle: l10n.showBookDiscoverTabDescription,
       keywords: ['books', 'audiobooks', 'open library', 'librivox'],
     ),
+    libraries.leaf('pref_library_style', l10n.libraryStyle, keywords: [
+      'classic',
+      'modern',
+      'docked',
+      'header',
+      'toolbar',
+    ]),
+    libraries.leaf('pref_book_library_style', l10n.bookLibraryStyle, keywords: [
+      'books',
+      'audiobooks',
+      'classic',
+      'reading room',
+      'bookstore',
+    ]),
+    libraries.leaf('pref_music_library_style', l10n.musicLibraryStyle, keywords: [
+      'music',
+      'albums',
+      'classic',
+      'quick access',
+      'immersive',
+    ]),
     libraries.leaf(
       'pref_group_items_into_collections',
       l10n.groupItemsIntoCollections,
@@ -1263,7 +1290,7 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
     ),
     video.leaf('player_zoom_mode', l10n.playerZoomMode, keywords: [
       'aspect ratio',
-      'crop',
+      'fill',
       'stretch',
     ]),
     if (PlatformDetection.isIOS)
@@ -1451,10 +1478,18 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       quality.leaf('auto_hdr_switching_behavior', l10n.autoHdrSwitching),
     if (PlatformDetection.supportsNativeHdrWindow)
       quality.leaf(
-        'native_hdr_output',
-        l10n.nativeHdrOutput,
-        subtitle: l10n.nativeHdrOutputDescription,
-        keywords: ['hdr10', 'passthrough', 'tone mapping'],
+        'video_renderer',
+        l10n.videoRenderer,
+        subtitle: l10n.videoRendererDescription,
+        keywords: [
+          'native window',
+          'hdr10',
+          'passthrough',
+          'sdr',
+          'judder',
+          'stutter',
+          'compatibility',
+        ],
       ),
 
     audio.screen(keywords: ['sound', 'passthrough']),
@@ -1539,6 +1574,16 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
     ]),
     subtitles.leaf('pref_subtitle_language', l10n.defaultSubtitleLanguage),
     subtitles.leaf(
+      'pref_subtitle_download_languages',
+      l10n.subtitleDownloadLanguages,
+      keywords: ['download', 'opensubtitles'],
+    ),
+    if (PlatformDetection.isAndroid)
+      subtitles.leaf(
+        'pref_secondary_subtitle_language',
+        l10n.preferredSecondarySubtitleLanguage,
+      ),
+    subtitles.leaf(
       'pref_fallback_subtitle_language',
       l10n.fallbackSubtitleLanguage,
     ),
@@ -1605,6 +1650,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       l10n.settingsCinemaMode,
       subtitle: l10n.settingsCinemaModeSubtitle,
       keywords: ['trailers before movie'],
+    ),
+    automation.leaf(
+      'pref_cinema_mode_skip_enabled',
+      l10n.cinemaSkipPrerolls,
+      subtitle: l10n.cinemaSkipPrerollsDescription,
+      keywords: ['cinema mode trailer preroll pre-roll skip'],
     ),
     for (final type in configurableMediaSegmentTypes)
       automation.leaf(
@@ -1677,11 +1728,18 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         keywords: ['parallel', 'simultaneous'],
       ),
       downloads.leaf('download_storage_limit_mb', l10n.storageLimit),
+      downloads.leaf(
+        'download_remove_watched_after_hours',
+        l10n.removeWatchedDownloads,
+        subtitle: l10n.removeWatchedDownloadsSubtitle,
+        keywords: ['delete', 'watched', 'automatic', 'cleanup', 'space'],
+        header: l10n.storage,
+      ),
       if (AutoDownloadService.isSupportedPlatform) ...[
         downloads.leaf(
           'smart_downloads_enabled',
           l10n.smartDownloadsEnable,
-          subtitle: l10n.smartDownloadsEnableSubtitle,
+          subtitle: l10n.smartDownloadsEnableDescription,
           keywords: ['smart', 'next episode', 'series', 'automatic', 'delete'],
           header: l10n.smartDownloadsSection,
         ),
@@ -1707,7 +1765,7 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         downloads.leaf(
           'auto_download_delete_after_hours',
           l10n.autoDownloadDelete,
-          subtitle: l10n.autoDownloadDeleteSubtitle,
+          subtitle: l10n.autoDownloadDeleteFollowedSubtitle,
           keywords: ['watched', 'remove'],
           header: l10n.autoDownloadSection,
         ),
@@ -1736,6 +1794,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         l10n.useNativeEmulator,
         subtitle: l10n.useNativeEmulatorSubtitle,
         keywords: ['games', 'retroarch'],
+      ),
+    if (usesOnScreenControls)
+      playback.leaf(
+        'pref_game_playback_orientation',
+        l10n.gameOrientation,
+        subtitle: l10n.gameOrientationSubtitle,
+        keywords: ['rotate', 'landscape', 'portrait', 'games'],
       ),
     if (supportsCoreDownloads && usesNativeGameBackend)
       emulatorCores.screen(keywords: ['retroarch', 'games', 'systems']),

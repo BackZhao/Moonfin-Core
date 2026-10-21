@@ -71,20 +71,17 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     }
 
     // An id the item does not list passes through so the server can resolve
-    // drifted ids without discarding an explicit version pick. If the server
-    // cant resolve it either the id is just stale, so retry without it and
-    // play the server's default version instead of failing outright.
-    final staticIds = MediaStreamResolver.staticMediaSourceIds(mediaItem);
-    final isUnverifiedSourceId = resolvedMediaSourceId != null &&
-        resolvedMediaSourceId.isNotEmpty &&
-        staticIds.isNotEmpty &&
-        !staticIds.contains(resolvedMediaSourceId);
-
+    // drifted ids without discarding an explicit version pick.
     PlaybackInfoResult? info;
     try {
       info = await fetchPlaybackInfo(resolvedMediaSourceId);
     } catch (_) {
-      if (!isUnverifiedSourceId) rethrow;
+      if (!MediaStreamResolver.canRetryWithoutMediaSourceId(
+        mediaItem,
+        resolvedMediaSourceId,
+      )) {
+        rethrow;
+      }
     }
     var playbackInfo = info ?? await fetchPlaybackInfo(null);
 
@@ -97,7 +94,7 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     // have several versions is left alone, since the sources that come back
     // without the id would be its other versions.
     if (resolvedMediaSourceId != null &&
-        staticIds.length <= 1 &&
+        MediaStreamResolver.staticMediaSourceIds(mediaItem).length <= 1 &&
         _isUnprobedTranscodeOnly(source)) {
       try {
         final retry = await fetchPlaybackInfo(null);
@@ -127,6 +124,12 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     url = _appendAuth(url);
 
     final externalSubs = MediaStreamResolver.extractExternalSubtitles(source.mediaStreams, _client.baseUrl);
+    final embeddedTextSubs = MediaStreamResolver.extractEmbeddedTextSubtitles(
+      source.mediaStreams,
+      _client.baseUrl,
+      itemId: itemId,
+      mediaSourceId: source.id,
+    ).map((s) => s.withDeliveryUrl(_appendAuth(s.deliveryUrl))).toList();
     final authedSubs = externalSubs
         .map(
           (s) => ExternalSubtitle(
@@ -163,6 +166,7 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
       mediaType: mediaType,
       normalizationGainDb: normalizationGainDb,
       externalSubtitles: authedSubs,
+      embeddedTextSubtitles: embeddedTextSubs,
       mediaStreams: source.mediaStreams,
       selectedAudioStreamIndex: source.defaultAudioStreamIndex,
       selectedSubtitleStreamIndex: source.defaultSubtitleStreamIndex,
@@ -244,9 +248,9 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
       return (remotePath!, StreamPlayMethod.directPlay);
     }
 
-    // Live TV: play the source path directly instead of the HLS transcode.
-    // Server-served path is a remux -> directStream (keeps the live session);
-    // a remote upstream -> directPlay.
+    // Live TV: a remote upstream plays as is instead of the HLS transcode.
+    // Emby answers 404 when a client asks for its own LiveStreamFiles copy, so
+    // that one goes out through the DirectStreamUrl below.
     if (MediaStreamResolver.isLiveSourceDirectPlayEligible(
       enableDirectPlay: enableDirectPlay,
       isManagedLiveStream: isManagedLiveStream,
@@ -254,10 +258,9 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     )) {
       final resolvedPath =
           MediaStreamResolver.rebaseLiveServerPath(remotePath!, _client.baseUrl);
-      final method = resolvedPath.startsWith(_client.baseUrl)
-          ? StreamPlayMethod.directStream
-          : StreamPlayMethod.directPlay;
-      return (resolvedPath, method);
+      if (!resolvedPath.startsWith(_client.baseUrl)) {
+        return (resolvedPath, StreamPlayMethod.directPlay);
+      }
     }
 
     if (source.supportsDirectPlay) {

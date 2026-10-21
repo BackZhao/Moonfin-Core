@@ -20,6 +20,7 @@ import 'data/models/aggregated_item.dart';
 import 'data/services/achievements_service.dart';
 import 'data/services/cast/cast_service.dart';
 import 'data/services/connectivity_service.dart';
+import 'data/services/remove_watched_service.dart';
 import 'data/services/download_service.dart';
 import 'data/services/seerr_notification_service.dart';
 import 'data/services/plugin_sync_service.dart';
@@ -47,6 +48,7 @@ import 'ui/widgets/video_mini_player.dart';
 import 'ui/screens/settings/achievements_screen.dart';
 import 'ui/widgets/floating_notification.dart';
 import 'ui/widgets/offline_banner.dart';
+import 'ui/widgets/times_up_gate.dart';
 import 'ui/widgets/settings/settings_panel.dart';
 import 'ui/widgets/server_messages_dialog.dart';
 import 'ui/widgets/exit_confirmation_dialog.dart';
@@ -319,8 +321,11 @@ class _MoonfinAppState extends State<MoonfinApp> {
                                     : const SizedBox.shrink(),
                               ),
                             ),
-                            shell,
+                            TimesUpFocusGuard(child: shell),
                             if (PlatformDetection.isTV) const ScreensaverHost(),
+                            // Last, so nothing sits above it and nothing can be
+                            // reached through it while the schedule is closed.
+                            const TimesUpGate(),
                           ],
                         );
                         if (GlassSettings.usePackageRenderer) {
@@ -537,6 +542,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
   }
 
   bool _handleMouseBackNavigation() {
+    if (TimesUpGate.isShowing()) return true;
     if (_isPlayerRoute()) {
       return false;
     }
@@ -556,6 +562,8 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
       return true;
     }
 
+    if (_leaveAdminArea()) return true;
+
     if (!_exitDialogShowing) {
       _exitDialogShowing = true;
       unawaited(_showExitConfirmation());
@@ -563,6 +571,16 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
     }
 
     return false;
+  }
+
+  /// The admin area's group tabs replace the router's stack, so its top level
+  /// pages have nothing under them. Back there leaves the area for home
+  /// instead of offering to close the app.
+  bool _leaveAdminArea() {
+    final path = appRouter.routerDelegate.currentConfiguration.uri.path;
+    if (!path.startsWith(Destinations.admin)) return false;
+    appRouter.go(Destinations.home);
+    return true;
   }
 
   bool _handleMouseForwardNavigation() {
@@ -622,6 +640,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
 
   @override
   Future<bool> didPopRoute() async {
+    if (TimesUpGate.isShowing()) return true;
     if (PlatformDetection.isTV && _screensaverController.dismissIfVisible()) {
       return true;
     }
@@ -637,7 +656,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
       return true;
     }
     if (!appRouter.canPop()) {
-      if (!_exitDialogShowing) {
+      if (!_leaveAdminArea() && !_exitDialogShowing) {
         _exitDialogShowing = true;
         unawaited(_showExitConfirmation());
       }
@@ -724,6 +743,8 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
 
     final isBackspace = key == LogicalKeyboardKey.backspace;
     if (key.isBackKey) {
+      // Nothing to go back to while the schedule is closed.
+      if (TimesUpGate.isShowing()) return true;
       final fromRemote = GamepadKeySynthesizer.isRemote(event.physicalKey);
       if (isBackspace && _isEditingText()) {
         return false;
@@ -791,6 +812,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
         if (PlatformDetection.isAndroid && key == LogicalKeyboardKey.goBack) {
           return true;
         }
+        if (_leaveAdminArea()) return true;
         _exitDialogShowing = true;
         unawaited(_showExitConfirmation());
       }
@@ -1106,6 +1128,11 @@ class _ConnectivityListenerState extends ConsumerState<_ConnectivityListener>
       _backgroundAwareSession?.onAppResumed();
       if (GetIt.instance.isRegistered<ConnectivityService>()) {
         GetIt.instance<ConnectivityService>().onAppResumed();
+      }
+      if (GetIt.instance.isRegistered<RemoveWatchedService>()) {
+        unawaited(
+          GetIt.instance<RemoveWatchedService>().runForSignedInServer(),
+        );
       }
     }
   }

@@ -32,6 +32,7 @@ import '../../../data/services/media_server_client_factory.dart';
 import '../../../data/services/reader_settings_store.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/insecure_certificates.dart';
+import '../../../util/webview_client_cert.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../util/error_message.dart';
 import '../../../l10n/current_app_localizations.dart';
@@ -111,6 +112,7 @@ class _BookReaderScreenState extends State<BookReaderScreen>
   bool _epubScrollToBottomOnLoad = false;
   Timer? _comicStateSaveDebounce;
   Timer? _pdfPageSaveDebounce;
+  int? _reportedPageIndex;
   List<_BookmarkEntry> _bookmarks = const [];
   List<_HighlightEntry> _highlights = const [];
   List<({String title, int chapterIndex, int depth})> _epubTocEntries =
@@ -282,6 +284,10 @@ class _BookReaderScreenState extends State<BookReaderScreen>
     return 'book_reader_pdf_${item.serverId}_${item.id}_page';
   }
 
+  String get _pdfSavedAtPrefKey => '${_pdfProgressPrefKey}_saved_at';
+
+  String get _comicSavedAtPrefKey => '${_comicProgressKeyPrefix}_saved_at';
+
   String get _bookmarkPrefKey {
     final item = _item;
     if (item == null) return 'book_reader_bookmarks_unknown';
@@ -302,6 +308,18 @@ class _BookReaderScreenState extends State<BookReaderScreen>
 
     return factory.getClientIfExists(widget.serverId!) ??
         GetIt.instance<MediaServerClient>();
+  }
+
+  int? _newerServerPageIndex(SharedPreferences prefs, String savedAtKey) {
+    final item = _item;
+    if (item == null) return null;
+    final savedAtMs = prefs.getInt(savedAtKey);
+    return BookReaderService.newerServerPageIndex(
+      item,
+      localSavedAt: savedAtMs == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(savedAtMs),
+    );
   }
 
   @override
@@ -331,6 +349,39 @@ class _BookReaderScreenState extends State<BookReaderScreen>
     if (state == AppLifecycleState.resumed && !_loading && !_loadingContent) {
       _refreshItem();
     }
+  }
+
+  Future<void> _reportServerProgress() async {
+    final item = _item;
+    final (pageIndex, lastVisibleIndex, pageCount) = switch (_mode) {
+      _ReaderMode.pdf => (
+        _currentPdfPage - 1,
+        _currentPdfPage - 1,
+        _pdfPageCount,
+      ),
+      _ReaderMode.comic => (
+        _currentComicPage,
+        _currentComicPage + (_twoPageSpreadActive ? 1 : 0),
+        _comicPageCount,
+      ),
+      _ => (0, 0, 0),
+    };
+    if (item == null || pageCount <= 0 || pageIndex == _reportedPageIndex) {
+      return;
+    }
+    final api = _resolveClient().userLibraryApi;
+    try {
+      // The position goes first so it still saves offline, where markPlayed
+      // throws.
+      await api.updatePlayedPosition(
+        item.id,
+        positionTicks: pageIndex * BookReaderService.ticksPerPage,
+      );
+      if ((lastVisibleIndex + 1) / pageCount >= 0.98) {
+        await api.markPlayed(item.id);
+      }
+      _reportedPageIndex = pageIndex;
+    } catch (_) {}
   }
 
   Future<void> _loadAndPrepare() async {
@@ -1441,7 +1492,9 @@ class _BookReaderScreenState extends State<BookReaderScreen>
     final initialPage =
         (widget.initialMode == 'comic' && widget.initialPosition != null)
         ? widget.initialPosition!
-        : (prefs.getInt('${_comicProgressKeyPrefix}_page') ?? 0);
+        : _newerServerPageIndex(prefs, _comicSavedAtPrefKey) ??
+              prefs.getInt('${_comicProgressKeyPrefix}_page') ??
+              0;
     final savedPage = initialPage;
     final savedZoom = prefs.getDouble('${_comicProgressKeyPrefix}_zoom') ?? 1.0;
 
@@ -1454,6 +1507,7 @@ class _BookReaderScreenState extends State<BookReaderScreen>
     setState(() {
       _currentComicPage = clampedPage;
     });
+    _reportedPageIndex = clampedPage;
 
     _setComicZoom(savedZoom);
 
@@ -1474,8 +1528,19 @@ class _BookReaderScreenState extends State<BookReaderScreen>
     }
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('${_comicProgressKeyPrefix}_page', _currentComicPage);
+    final pageKey = '${_comicProgressKeyPrefix}_page';
+    // Only a page change updates the save time, so a zoom can't outrank a
+    // newer page from another device.
+    if (prefs.getInt(pageKey) != _currentComicPage) {
+      await prefs.setInt(
+        _comicSavedAtPrefKey,
+        DateTime.now().millisecondsSinceEpoch,
+      );
+    }
+    await prefs.setInt(pageKey, _currentComicPage);
     await prefs.setDouble('${_comicProgressKeyPrefix}_zoom', _comicZoom);
+
+    await _reportServerProgress();
   }
 
   void _scheduleComicStateSave() {
@@ -2854,12 +2919,19 @@ class _BookReaderScreenState extends State<BookReaderScreen>
                 }
                 final pageCount = controller.pageCount;
                 final prefs = await SharedPreferences.getInstance();
+                final serverPageIndex = _newerServerPageIndex(
+                  prefs,
+                  _pdfSavedAtPrefKey,
+                );
                 final initialPage =
                     (widget.initialMode == 'pdf' &&
                         widget.initialPosition != null)
                     ? widget.initialPosition!
+                    : serverPageIndex != null
+                    ? serverPageIndex + 1
                     : (prefs.getInt(_pdfProgressPrefKey) ?? 1);
                 final savedPage = initialPage.clamp(1, pageCount);
+                _reportedPageIndex = savedPage - 1;
                 final outline = await document.loadOutline();
                 if (mounted) {
                   final flat = _flattenPdfOutline(outline, 0);
@@ -2885,7 +2957,14 @@ class _BookReaderScreenState extends State<BookReaderScreen>
                   const Duration(milliseconds: 300),
                   () async {
                     final prefs = await SharedPreferences.getInstance();
+                    if (prefs.getInt(_pdfProgressPrefKey) != pageNumber) {
+                      await prefs.setInt(
+                        _pdfSavedAtPrefKey,
+                        DateTime.now().millisecondsSinceEpoch,
+                      );
+                    }
                     await prefs.setInt(_pdfProgressPrefKey, pageNumber);
+                    await _reportServerProgress();
                   },
                 );
               },
@@ -3063,6 +3142,7 @@ class _BookReaderScreenState extends State<BookReaderScreen>
               action: ServerTrustAuthResponseAction.PROCEED,
             )
           : null,
+      onReceivedClientCertRequest: clientCertificateResponse,
       onProgressChanged: (controller, progress) {
         if (!mounted) return;
         setState(() => _webLoadProgress = progress);

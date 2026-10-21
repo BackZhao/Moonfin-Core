@@ -42,6 +42,7 @@ import '../../playback/appletv_preview_player.dart';
 import '../../playback/html_video_backend_profile.dart';
 import '../../playback/inline_preview_engine.dart';
 import '../../playback/media3_player_backend.dart';
+import '../../playback/mpv_client_certificate.dart';
 import 'bounded_network_image.dart';
 import 'fullscreen_backdrop_switcher.dart';
 import 'navigation_layout.dart';
@@ -1210,6 +1211,7 @@ class _MediaBarState extends State<MediaBar>
           player,
           youTubeAudioLanguage,
         );
+        await applyMpvClientCertificate(player, streamUrl);
         await player.open(media).timeout(_openTimeout);
         if (resolveId != _trailerResolveId || !_trailerShouldBeActive()) {
           await player.stop();

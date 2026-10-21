@@ -512,6 +512,20 @@ Future<void> _detectAndSetSystemUptime() async {
   } catch (_) {}
 }
 
+/// The renderer is fixed before Dart runs, so the diagnostic report asks the
+/// platform side what it chose.
+Future<void> _detectAndSetRenderer() async {
+  if (!PlatformDetection.isAndroid) return;
+  try {
+    const channel = MethodChannel('org.moonfin.androidtv/platform');
+    PlatformDetection.setRenderer(
+      await channel
+          .invokeMethod<String>('renderer')
+          .timeout(const Duration(seconds: 2)),
+    );
+  } catch (_) {}
+}
+
 Future<void> _detectAndSetCodecCapabilities() async {
   if (!PlatformDetection.isAndroid) return;
   const channel = MethodChannel('org.moonfin.androidtv/platform');
@@ -848,7 +862,14 @@ void main() async {
       final appDataDir = await getApplicationSupportDirectory();
       final customPath = '${appDataDir.path}\\WebView2Data';
       gWebViewEnvironment = await WebViewEnvironment.create(
-        settings: WebViewEnvironmentSettings(userDataFolder: customPath),
+        settings: WebViewEnvironmentSettings(
+          userDataFolder: customPath,
+          // mediaPlaybackRequiresUserGesture doesn't lift WebView2's audio
+          // block, so N64 in EmulatorJS sits on a black screen until a click,
+          // which a controller never sends.
+          additionalBrowserArguments:
+              '--autoplay-policy=no-user-gesture-required',
+        ),
       );
     } catch (_) {}
   }
@@ -897,6 +918,7 @@ void main() async {
     _detectAndSetCodecCapabilities(),
     _detectAndSetDeviceMemory(),
     _detectAndSetSystemUptime(),
+    _detectAndSetRenderer(),
   ]);
 
   if (PlatformDetection.isAppleTV) {
@@ -1017,6 +1039,7 @@ void main() async {
 /// the Android audio session configuration must follow initAudioService.
 Future<void> _initDeferredStartupServices(UserPreferences prefs) async {
   if (PlatformDetection.isMobile ||
+      PlatformDetection.isMacOS ||
       (PlatformDetection.isAndroid && PlatformDetection.isTV)) {
     try {
       await initAudioService(

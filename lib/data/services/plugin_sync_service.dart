@@ -1412,6 +1412,7 @@ class PluginSyncService extends ChangeNotifier {
     _applySinceYouWatchedNumRows(resolved);
     _applyMediaBarMode(resolved);
     _applyMediaBarContentType(resolved);
+    _applyHomeRowImageTypes(resolved);
     if (resolved['mdblistRatingSources'] is List) {
       final sources = (resolved['mdblistRatingSources'] as List)
           .cast<String>()
@@ -1813,6 +1814,20 @@ class PluginSyncService extends ChangeNotifier {
     );
   }
 
+  // Rows the list leaves out keep their local value, since it only names rows someone
+  // picked a type for.
+  void _applyHomeRowImageTypes(Map<String, dynamic> data) {
+    final value = _readString(data, 'homeRowImageTypes');
+    if (value == null) return;
+
+    decodeHomeRowImageTypes(value).forEach((type, imageType) {
+      _store.set(
+        _prefs.getEffectivePreference(UserPreferences.homeRowImageType(type)),
+        imageType,
+      );
+    });
+  }
+
   void _applyBool(
     Map<String, dynamic> data,
     String serverKey,
@@ -2032,6 +2047,17 @@ class PluginSyncService extends ChangeNotifier {
     final tmdbKey = _prefs.get(UserPreferences.tmdbApiKey);
     if (tmdbKey.isNotEmpty && tmdbKey != 'null') {
       payload['tmdbApiKey'] = tmdbKey;
+    }
+
+    // Only the rows the user picked a type for, so someone who never picked one keeps
+    // getting the admin defaults.
+    final homeRowImageTypes = encodeHomeRowImageTypes({
+      for (final type in prefs.HomeSectionType.values)
+        if (_prefs.containsPreference(UserPreferences.homeRowImageType(type)))
+          type: _prefs.get(UserPreferences.homeRowImageType(type)),
+    });
+    if (homeRowImageTypes != null) {
+      payload['homeRowImageTypes'] = homeRowImageTypes;
     }
 
     return payload;

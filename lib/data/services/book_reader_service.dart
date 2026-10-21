@@ -16,16 +16,25 @@ class BookReaderService {
     'zip',
   };
 
-  static String? detectExtension(AggregatedItem item) {
-    final directCandidates = <Object?>[
-      item.rawData['Path'],
-      item.rawData['FileName'],
-      item.rawData['FilePath'],
-      item.rawData['Name'],
-      item.name,
-    ];
+  static List<Object?> _directCandidates(AggregatedItem item) => [
+        item.rawData['Path'],
+        item.rawData['FileName'],
+        item.rawData['FilePath'],
+        item.rawData['Name'],
+        item.name,
+      ];
 
-    for (final candidate in directCandidates) {
+  /// The file name from the first of the same fields [detectExtension] reads.
+  static String fileName(AggregatedItem item) {
+    final path = _directCandidates(item).whereType<String>().firstWhere(
+          (value) => value.trim().isNotEmpty,
+          orElse: () => '',
+        );
+    return path.split('/').last.split('\\').last;
+  }
+
+  static String? detectExtension(AggregatedItem item) {
+    for (final candidate in _directCandidates(item)) {
       final value = _extractExtension(candidate);
       if (value != null) {
         return value;
@@ -63,6 +72,26 @@ class BookReaderService {
 
   static bool isSupportedExtension(String? extension) {
     return extension != null && supportedExtensions.contains(extension);
+  }
+
+  /// Comic and PDF positions on the server are the zero-based page index
+  /// times this, the same scale jellyfin-web uses.
+  static const int ticksPerPage = 10000;
+
+  /// The zero-based page [item]'s server position points at, or null when it
+  /// has none or this device saved its own page more recently.
+  static int? newerServerPageIndex(
+    AggregatedItem item, {
+    DateTime? localSavedAt,
+  }) {
+    final ticks = item.playbackPositionTicks ?? 0;
+    if (ticks <= 0) return null;
+    final serverSavedAt = item.lastPlayedDate;
+    if (localSavedAt != null &&
+        (serverSavedAt == null || !serverSavedAt.isAfter(localSavedAt))) {
+      return null;
+    }
+    return (ticks / ticksPerPage).round();
   }
 
   static List<Uri> buildDownloadUris(MediaServerClient client, AggregatedItem item) {
@@ -122,14 +151,9 @@ class BookReaderService {
       return null;
     }
 
-    final clean = _stripUriSuffix(raw);
-    if (clean.isEmpty) {
-      return null;
-    }
-
-    final slash = clean.lastIndexOf('/');
+    final slash = raw.lastIndexOf('/');
     final start = slash >= 0 ? slash + 1 : 0;
-    final filePart = clean.substring(start);
+    final filePart = raw.substring(start);
     final dot = filePart.lastIndexOf('.');
     if (dot < 0 || dot == filePart.length - 1) {
       return null;

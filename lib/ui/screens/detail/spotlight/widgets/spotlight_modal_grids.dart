@@ -202,6 +202,7 @@ class SpotlightMediaGridSection extends StatelessWidget {
                     return MediaCard(
                       key: ValueKey(cellKeys[i]),
                       title: entry.name,
+                      subtitle: entry.personRole,
                       titleColor: titleColor,
                       imageUrl: spotlightItemImageUrl(imageApi, entry),
                       width: metrics.cellWidth,
