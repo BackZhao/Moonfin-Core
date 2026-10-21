@@ -1521,6 +1521,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
                 imageApi: _vm.imageApi,
                 onChanged: () => _vm.load(),
                 isActive: _vm.episodes[i].id == nextUpId,
+                isOnScreen: _vm.episodes[i].id == _vm.item?.id,
                 contextSeasonId: _vm.effectiveSeasonId,
                 focusNode: i == 0 ? _episodesFirstFocusNode : null,
                 onKeyEvent: i == 0
