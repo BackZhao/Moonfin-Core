@@ -4770,6 +4770,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get enableTrailerAudio => '媒体栏预告片开启音效';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => '预告片字幕';
 
   @override
@@ -4792,6 +4798,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => '为预告片和剧集预览启用音频';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => '最新媒体';
@@ -4915,6 +4928,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get enablePinCode => '启用 PIN 码';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => '需要 PIN 码才能访问你的账号';
@@ -14555,6 +14575,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

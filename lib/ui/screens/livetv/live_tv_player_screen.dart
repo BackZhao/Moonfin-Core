@@ -15,6 +15,7 @@ import '../../../data/services/log_service.dart';
 import '../../../data/utils/video_range_label.dart';
 import '../../../playback/subtitle_style.dart';
 import '../../../playback/subtitle_view_config.dart';
+import '../../../playback/system_volume.dart';
 import '../../../data/models/aggregated_item.dart';
 import '../../../data/models/live_tv_recording_state.dart';
 import '../../../data/viewmodels/live_tv_guide_view_model.dart';
@@ -489,7 +490,7 @@ class _LiveTvPlayerScreenState extends State<LiveTvPlayerScreen>
     final vc = VolumeController.instance;
     vc.showSystemUI = false;
     unawaited(_manager.backend?.setVolume(100.0));
-    _volumeListenerSub = vc.addListener((value) {
+    _volumeListenerSub = listenToSystemVolume((value) {
       if (mounted && (value - _systemVolume).abs() > 0.01) {
         setState(() => _systemVolume = value);
       }
@@ -498,7 +499,7 @@ class _LiveTvPlayerScreenState extends State<LiveTvPlayerScreen>
           _activeMedia3Backend != null) {
         unawaited(_setMedia3VolumeBoostLevel(0));
       }
-    }, fetchInitialVolume: true);
+    });
   }
 
   Future<void> _setMobileSystemVolume(

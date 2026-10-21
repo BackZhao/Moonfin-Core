@@ -4914,6 +4914,12 @@ class AppLocalizationsBg extends AppLocalizations {
       'Включване на звука за трейлърите в медийната лента';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4940,6 +4946,13 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Активирайте аудио за визуализации на трейлъри и епизоди';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Най-новите медии';
@@ -5074,6 +5087,13 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get enablePinCode => 'Активирайте PIN кода';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'Изискване на ПИН за достъп до вашия акаунт';
@@ -15100,6 +15120,13 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

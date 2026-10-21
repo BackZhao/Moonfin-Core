@@ -19,10 +19,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get animeMarkerMixed => 'Vegyes';
 
   @override
-  String get animeMarkerAnimeCanon => 'Anime Kánon';
+  String get animeMarkerAnimeCanon => 'Anime kánon';
 
   @override
-  String get animeMarkerMangaCanon => 'Manga Kánon';
+  String get animeMarkerMangaCanon => 'Manga kánon';
 
   @override
   String get animeMarkerSubbed => 'Feliratos';
@@ -4929,6 +4929,12 @@ class AppLocalizationsHu extends AppLocalizations {
       'Előzetesek hangjának engedélyezése a médiasávban';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4955,6 +4961,13 @@ class AppLocalizationsHu extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Hang engedélyezése az előzetes és az epizód előnézetéhez';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Legutóbb hozzáadott média';
@@ -5089,6 +5102,13 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get enablePinCode => 'PIN-kód engedélyezése';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'A fiók eléréséhez PIN-kód szükséges';
@@ -15108,6 +15128,13 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

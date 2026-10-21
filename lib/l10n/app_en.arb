@@ -6445,6 +6445,14 @@
   "@enableTrailerAudio": {
     "description": "Description for trailer audio"
   },
+  "trailerVolume": "Trailer Volume",
+  "@trailerVolume": {
+    "description": "Setting for how loud media bar trailers play"
+  },
+  "trailerVolumeDescription": "How loud media bar trailers play",
+  "@trailerVolumeDescription": {
+    "description": "Description for the trailer volume slider"
+  },
   "trailerCaptions": "Trailer Captions",
   "@trailerCaptions": {
     "description": "Setting for YouTube trailer captions"
@@ -6476,6 +6484,14 @@
   "enablePreviewAudio": "Enable audio for media previews",
   "@enablePreviewAudio": {
     "description": "Description for preview audio"
+  },
+  "previewVolume": "Preview Volume",
+  "@previewVolume": {
+    "description": "Setting for how loud media previews on cards play"
+  },
+  "previewVolumeDescription": "How loud media previews on cards play",
+  "@previewVolumeDescription": {
+    "description": "Description for the preview volume slider"
   },
   "latestMedia": "Recently Added Media",
   "@latestMedia": {
@@ -6639,6 +6655,14 @@
   "enablePinCode": "Enable PIN Code",
   "@enablePinCode": {
     "description": "Setting for enabling PIN code"
+  },
+  "pinSynced": "PIN synced",
+  "@pinSynced": {
+    "description": "Shown under the PIN switch when the PIN is kept on the server, so it applies on every device"
+  },
+  "pinResetFailed": "The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.",
+  "@pinResetFailed": {
+    "description": "Shown on sign in when Forgot PIN could not clear a PIN kept on the server"
   },
   "requirePinToAccess": "Require a PIN to access your account",
   "@requirePinToAccess": {
@@ -8495,7 +8519,7 @@
   "adminDeleteDevice": "Delete Device",
   "adminDeviceDeleted": "Device deleted",
   "adminDeviceDeleteFailed": "Failed to delete device: {error}",
-  "adminRemoveDeviceConfirm": "Remove device '{name}'? The user will need to sign in again on this device.",
+  "adminRemoveDeviceConfirm": "Remove device \"{name}\"? The user will need to sign in again on this device.",
   "@adminRemoveDeviceConfirm": {
     "placeholders": {
       "name": {
@@ -12459,7 +12483,7 @@
   "@dismiss": {
     "description": "Dismiss button text"
   },
-  "libraryWriteAccessProactiveBody": "Your '{libraryName}' library is configured to save artwork directly into the media folders ('Save artwork into media folders' is enabled). However, Jellyfin has tested write access and does not have permission to write files into this directory:\n\n{failedPath}",
+  "libraryWriteAccessProactiveBody": "Your \"{libraryName}\" library is configured to save artwork directly into the media folders ('Save artwork into media folders' is enabled). However, Jellyfin has tested write access and does not have permission to write files into this directory:\n\n{failedPath}",
   "@libraryWriteAccessProactiveBody": {
     "description": "Proactive warning message about server write access",
     "placeholders": {
@@ -13695,6 +13719,8 @@
   "@navYou": {
     "description": "Bottom bar tab that opens the user's own menu with their profile, extra destinations and settings"
   },
+  "cinemaSkipPrerolls": "Cinema Mode Skip Button",
+  "cinemaSkipPrerollsDescription": "Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.",
   "detailsPage": "Details Page",
   "@detailsPage": {
     "description": "Settings entry and screen for options that shape the details page"

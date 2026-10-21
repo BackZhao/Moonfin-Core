@@ -4914,6 +4914,12 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಮೀಡಿಯಾ ಬಾರ್‌ನಲ್ಲಿ ಟ್ರೇಲರ್‌ಗಳಿಗೆ ಆಡಿಯೋ ಸಕ್ರಿಯಗೊಳಿಸಿ';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4940,6 +4946,13 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'ಟ್ರೈಲರ್ ಮತ್ತು ಎಪಿಸೋಡ್ ಪೂರ್ವವೀಕ್ಷಣೆಗಳಿಗಾಗಿ ಆಡಿಯೊವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'ಇತ್ತೀಚಿನ ಮಾಧ್ಯಮ';
@@ -5074,6 +5087,13 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get enablePinCode => 'ಪಿನ್ ಕೋಡ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರವೇಶಿಸಲು ಪಿನ್ ಅಗತ್ಯವಿದೆ';
@@ -15069,6 +15089,13 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

@@ -4918,6 +4918,12 @@ class AppLocalizationsSw extends AppLocalizations {
       'Washa sauti ya trela kwenye upau wa maudhui';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4944,6 +4950,13 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Washa sauti kwa maonyesho ya trela na vipindi';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Vyombo vya Habari vya Hivi Punde';
@@ -5078,6 +5091,13 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get enablePinCode => 'Washa Msimbo wa PIN';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'Inahitaji PIN ili kufikia akaunti yako';
@@ -15076,6 +15096,13 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

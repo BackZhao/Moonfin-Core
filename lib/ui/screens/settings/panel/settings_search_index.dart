@@ -939,6 +939,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       subtitle: l10n.enablePreviewAudio,
       keywords: ['mute'],
     ),
+    home.leaf(
+      'previewVolume',
+      l10n.previewVolume,
+      subtitle: l10n.previewVolumeDescription,
+      keywords: ['loud', 'quiet'],
+    ),
     home.leaf('home_rows_padding', l10n.homeRowsPadding, keywords: [
       'spacing',
       'gap',
@@ -1229,6 +1235,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       l10n.trailerAudio,
       subtitle: l10n.enableTrailerAudio,
       keywords: ['mute'],
+    ),
+    mediaBar.leaf(
+      'trailerVolume',
+      l10n.trailerVolume,
+      subtitle: l10n.trailerVolumeDescription,
+      keywords: ['loud', 'quiet'],
     ),
     mediaBar.leaf(
       'mediaBarTrailerCaptions',
@@ -1650,6 +1662,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       l10n.settingsCinemaMode,
       subtitle: l10n.settingsCinemaModeSubtitle,
       keywords: ['trailers before movie'],
+    ),
+    automation.leaf(
+      'pref_cinema_mode_skip_enabled',
+      l10n.cinemaSkipPrerolls,
+      subtitle: l10n.cinemaSkipPrerollsDescription,
+      keywords: ['cinema mode trailer preroll pre-roll skip'],
     ),
     for (final type in configurableMediaSegmentTypes)
       automation.leaf(

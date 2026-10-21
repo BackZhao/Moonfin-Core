@@ -4898,6 +4898,12 @@ class AppLocalizationsVi extends AppLocalizations {
       'Bật âm thanh cho trailer trong thanh phương tiện';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4924,6 +4930,13 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Bật âm thanh để xem trước đoạn giới thiệu và tập';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Phương tiện truyền thông mới nhất';
@@ -5058,6 +5071,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get enablePinCode => 'Kích hoạt mã PIN';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess =>
@@ -15009,6 +15029,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

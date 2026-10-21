@@ -4789,6 +4789,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get enableTrailerAudio => '미디어 바의 예고편에서 소리를 재생합니다';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => '예고편 자막';
 
   @override
@@ -4813,6 +4819,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => '예고편 및 에피소드 미리보기에 오디오 활성화';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => '최근 추가된 미디어';
@@ -4939,6 +4952,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get enablePinCode => 'PIN 코드 활성화';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => '계정에 액세스하려면 PIN이 필요합니다.';
@@ -14536,6 +14556,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get navYou => '나';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => '상세 페이지';

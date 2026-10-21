@@ -8650,6 +8650,18 @@ abstract class AppLocalizations {
   /// **'Enable audio for trailers in media bar'**
   String get enableTrailerAudio;
 
+  /// Setting for how loud media bar trailers play
+  ///
+  /// In en, this message translates to:
+  /// **'Trailer Volume'**
+  String get trailerVolume;
+
+  /// Description for the trailer volume slider
+  ///
+  /// In en, this message translates to:
+  /// **'How loud media bar trailers play'**
+  String get trailerVolumeDescription;
+
   /// Setting for YouTube trailer captions
   ///
   /// In en, this message translates to:
@@ -8697,6 +8709,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable audio for media previews'**
   String get enablePreviewAudio;
+
+  /// Setting for how loud media previews on cards play
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Volume'**
+  String get previewVolume;
+
+  /// Description for the preview volume slider
+  ///
+  /// In en, this message translates to:
+  /// **'How loud media previews on cards play'**
+  String get previewVolumeDescription;
 
   /// Home section: recently added media
   ///
@@ -8937,6 +8961,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable PIN Code'**
   String get enablePinCode;
+
+  /// Shown under the PIN switch when the PIN is kept on the server, so it applies on every device
+  ///
+  /// In en, this message translates to:
+  /// **'PIN synced'**
+  String get pinSynced;
+
+  /// Shown on sign in when Forgot PIN could not clear a PIN kept on the server
+  ///
+  /// In en, this message translates to:
+  /// **'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.'**
+  String get pinResetFailed;
 
   /// Description for enable PIN code
   ///
@@ -13789,7 +13825,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminRemoveDeviceConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Remove device \'{name}\'? The user will need to sign in again on this device.'**
+  /// **'Remove device \"{name}\"? The user will need to sign in again on this device.'**
   String adminRemoveDeviceConfirm(String name);
 
   /// No description provided for @adminDeleteAllDevices.
@@ -24301,7 +24337,7 @@ abstract class AppLocalizations {
   /// Proactive warning message about server write access
   ///
   /// In en, this message translates to:
-  /// **'Your \'{libraryName}\' library is configured to save artwork directly into the media folders (\'Save artwork into media folders\' is enabled). However, Jellyfin has tested write access and does not have permission to write files into this directory:\n\n{failedPath}'**
+  /// **'Your \"{libraryName}\" library is configured to save artwork directly into the media folders (\'Save artwork into media folders\' is enabled). However, Jellyfin has tested write access and does not have permission to write files into this directory:\n\n{failedPath}'**
   String libraryWriteAccessProactiveBody(String libraryName, String failedPath);
 
   /// Reactive error warning message when artwork update fails
@@ -26212,6 +26248,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You'**
   String get navYou;
+
+  /// No description provided for @cinemaSkipPrerolls.
+  ///
+  /// In en, this message translates to:
+  /// **'Cinema Mode Skip Button'**
+  String get cinemaSkipPrerolls;
+
+  /// No description provided for @cinemaSkipPrerollsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.'**
+  String get cinemaSkipPrerollsDescription;
 
   /// Settings entry and screen for options that shape the details page
   ///

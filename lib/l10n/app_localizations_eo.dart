@@ -4894,6 +4894,12 @@ class AppLocalizationsEo extends AppLocalizations {
       'Ebligi aŭdion por antaŭfilmoj en la aŭdvida breto';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4920,6 +4926,13 @@ class AppLocalizationsEo extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Ebligu aŭdion por antaŭprezentoj de antaŭfilmoj kaj epizodoj';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Plej novaj Amaskomunikiloj';
@@ -5053,6 +5066,13 @@ class AppLocalizationsEo extends AppLocalizations {
 
   @override
   String get enablePinCode => 'Ebligu PIN-kodon';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'Postuli PIN por aliri vian konton';
@@ -14995,6 +15015,13 @@ class AppLocalizationsEo extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

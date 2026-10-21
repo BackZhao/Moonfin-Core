@@ -4879,6 +4879,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enableTrailerAudio => 'Enable audio for trailers in media bar';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4904,6 +4910,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Enable audio for media previews';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Recently Added Media';
@@ -5037,6 +5050,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enablePinCode => 'Enable PIN Code';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'Require a PIN to access your account';
@@ -7761,7 +7781,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String adminRemoveDeviceConfirm(String name) {
-    return 'Remove device \'$name\'? The user will need to sign in again on this device.';
+    return 'Remove device \"$name\"? The user will need to sign in again on this device.';
   }
 
   @override
@@ -13773,7 +13793,7 @@ class AppLocalizationsEn extends AppLocalizations {
     String libraryName,
     String failedPath,
   ) {
-    return 'Your \'$libraryName\' library is configured to save artwork directly into the media folders (\'Save artwork into media folders\' is enabled). However, Jellyfin has tested write access and does not have permission to write files into this directory:\n\n$failedPath';
+    return 'Your \"$libraryName\" library is configured to save artwork directly into the media folders (\'Save artwork into media folders\' is enabled). However, Jellyfin has tested write access and does not have permission to write files into this directory:\n\n$failedPath';
   }
 
   @override
@@ -14922,6 +14942,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

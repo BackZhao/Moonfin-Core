@@ -4918,6 +4918,12 @@ class AppLocalizationsTa extends AppLocalizations {
       'மீடியா பட்டியில் டிரெய்லர்களுக்கு ஆடியோவை இயக்கும்';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4944,6 +4950,13 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'டிரெய்லர் மற்றும் எபிசோட் மாதிரிக்காட்சிகளுக்கு ஆடியோவை இயக்கவும்';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'சமீபத்திய மீடியா';
@@ -5079,6 +5092,13 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get enablePinCode => 'பின் குறியீட்டை இயக்கவும்';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'உங்கள் கணக்கை அணுக பின் தேவை';
@@ -15080,6 +15100,13 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';

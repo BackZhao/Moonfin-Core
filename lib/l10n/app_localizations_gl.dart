@@ -4933,6 +4933,12 @@ class AppLocalizationsGl extends AppLocalizations {
       'Activar o audio dos tráilers na barra multimedia';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4959,6 +4965,13 @@ class AppLocalizationsGl extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Activa o audio para as vistas previas do tráiler e dos episodios';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Últimos Medios';
@@ -5094,6 +5107,13 @@ class AppLocalizationsGl extends AppLocalizations {
 
   @override
   String get enablePinCode => 'Activa o código PIN';
+
+  @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
 
   @override
   String get requirePinToAccess => 'Solicita un PIN para acceder á túa conta';
@@ -15138,6 +15158,13 @@ class AppLocalizationsGl extends AppLocalizations {
 
   @override
   String get navYou => 'You';
+
+  @override
+  String get cinemaSkipPrerolls => 'Cinema Mode Skip Button';
+
+  @override
+  String get cinemaSkipPrerollsDescription =>
+      'Show a Skip button during Cinema Mode trailers, commercials, and other pre-rolls.';
 
   @override
   String get detailsPage => 'Details Page';
