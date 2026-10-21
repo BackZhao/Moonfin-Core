@@ -148,11 +148,18 @@ abstract class MediaStreamResolver {
   /// only the placeholder, which the server can do nothing with but transcode,
   /// and that transcode fails. With a single version there is no pick to keep,
   /// so the id is better left off for the server to answer with its default.
+  /// A live TV channel's source has no streams until it's tuned, and an item
+  /// that lists its own streams was probed, so both keep their id.
   static bool isStreamlessStaticSource(
     dynamic mediaItem,
     String? mediaSourceId,
   ) {
-    if (mediaSourceId == null || mediaSourceId.isEmpty) return false;
+    if (mediaSourceId == null ||
+        mediaSourceId.isEmpty ||
+        isLiveTvItem(mediaItem) ||
+        (_itemMediaStreams(mediaItem)?.isNotEmpty ?? false)) {
+      return false;
+    }
     final sources = _staticMediaSources(mediaItem);
     if (sources == null || sources.length != 1) return false;
     final source = sources.first;
@@ -171,6 +178,15 @@ abstract class MediaStreamResolver {
     if (mediaItem is Map) return mediaItem['MediaSources'] as List<dynamic>?;
     try {
       return mediaItem.mediaSources as List<dynamic>?;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static List<dynamic>? _itemMediaStreams(dynamic mediaItem) {
+    if (mediaItem is Map) return mediaItem['MediaStreams'] as List<dynamic>?;
+    try {
+      return mediaItem.mediaStreams as List<dynamic>?;
     } catch (_) {
       return null;
     }

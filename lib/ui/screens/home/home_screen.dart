@@ -2047,8 +2047,8 @@ class _ContentRowsState extends State<_ContentRows>
     final firstSourceId = item.mediaSources.isNotEmpty
         ? item.mediaSources.first['Id']?.toString()
         : null;
-    // A channel item's lone placeholder source can't be transcoded by id; left
-    // off, the server picks the file it probes.
+    // A channel item's lone placeholder source can't be transcoded by id, so
+    // it's left off and the server picks the file it probes.
     final mediaSourceId =
         MediaStreamResolver.isStreamlessStaticSource(item.rawData, firstSourceId)
         ? null

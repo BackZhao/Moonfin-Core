@@ -101,6 +101,37 @@ void main() {
       expect(MediaStreamResolver.isStreamlessStaticSource(item, 'a'), isFalse);
     });
 
+    test('is false for a live TV channel', () {
+      final channel = {
+        'Type': 'TvChannel',
+        ..._item([
+          {'Id': 'mediasource_94399', 'MediaStreams': <dynamic>[]},
+        ]),
+      };
+      expect(
+        MediaStreamResolver.isStreamlessStaticSource(
+          channel,
+          'mediasource_94399',
+        ),
+        isFalse,
+      );
+    });
+
+    test('is false when the item lists its own streams', () {
+      final item = {
+        ..._item([
+          {'Id': 'source-1'},
+        ]),
+        'MediaStreams': [
+          {'Type': 'Subtitle', 'Index': 2, 'Codec': 'srt'},
+        ],
+      };
+      expect(
+        MediaStreamResolver.isStreamlessStaticSource(item, 'source-1'),
+        isFalse,
+      );
+    });
+
     test('is false when the item has several versions', () {
       // The id is the caller's pick between versions, so it has to be sent.
       final item = _item([
