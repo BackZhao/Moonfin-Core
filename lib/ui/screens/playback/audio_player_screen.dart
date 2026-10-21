@@ -36,13 +36,6 @@ import '../../../l10n/app_localizations.dart';
 import '../../util/error_message.dart';
 import 'audiobook_player_view.dart';
 
-/// First queue index the Up Next panel lists. Tracks that have played drop off
-/// the top, and stepping back to an earlier one brings it into the list again.
-int upNextStartIndex(int queueLength, int currentIndex) {
-  if (queueLength <= 0 || currentIndex <= 0) return 0;
-  return currentIndex >= queueLength ? queueLength - 1 : currentIndex;
-}
-
 class AudioPlayerScreen extends StatefulWidget {
   const AudioPlayerScreen({super.key});
 
@@ -120,7 +113,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _tvQueueFocusIndex = _queueStartIndex;
+    _tvQueueFocusIndex = _queueCurrentRow;
     _subs.addAll([
       _manager.backendChangedStream.listen((_) {
         _applyPlayerVolume();
@@ -155,7 +148,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         _tvOverlayFocus.requestFocus();
-        _scrollTvQueueIntoView(_tvQueueFocusIndex, animate: false);
       });
     }
     _loadLyricsIfNeeded();
@@ -191,8 +183,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     if (item != null) _DockAction.favorite,
     if (item != null && !_manager.isOfflinePlayback) _DockAction.addToPlaylist,
     ..._transportActions,
-    if (_tvLyricsAvailable) _DockAction.lyrics,
-    _DockAction.queue,
+    // Without lyrics Up Next is the only panel, so there's nothing to toggle.
+    if (_tvLyricsAvailable) ...[_DockAction.lyrics, _DockAction.queue],
     if (item != null && !PlatformDetection.isTV) _DockAction.cast,
   ];
 
@@ -259,7 +251,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       if (_tvPanelIsLyrics) {
         _tvLyricCursor = _currentLyricLineIndex();
       } else {
-        _tvQueueFocusIndex = _queueStartIndex;
+        _tvQueueFocusIndex = _queueCurrentRow;
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -388,8 +380,9 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     );
   }
 
-  int get _queueStartIndex =>
-      upNextStartIndex(_queue.length, _queue.currentIndex);
+  // The whole queue stays listed, and it opens on the playing track.
+  int get _queueCurrentRow =>
+      math.max(0, math.min(_queue.currentIndex, _queue.items.length - 1));
 
   void _syncTvQueueFocusIndex() {
     if (!_isWidePlayer || _tvPanelIsLyrics) return;
@@ -401,11 +394,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       return;
     }
 
-    // The list starts at the current track, so a track change shifts every
-    // row. Outside the panel it follows playback back to the top.
+    // Outside the panel the list follows playback to the new track.
     final target = _tvFocusArea == _TvAudioFocusArea.panelBody
-        ? _tvQueueFocusIndex.clamp(_queueStartIndex, count - 1)
-        : _queueStartIndex;
+        ? _tvQueueFocusIndex.clamp(0, count - 1)
+        : _queueCurrentRow;
     if (target != _tvQueueFocusIndex) {
       setState(() => _tvQueueFocusIndex = target);
     }
@@ -424,7 +416,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       return;
     }
 
-    final clamped = index.clamp(_queueStartIndex, count - 1);
+    final clamped = index.clamp(0, count - 1);
     if (clamped == _tvQueueFocusIndex) return;
 
     setState(() => _tvQueueFocusIndex = clamped);
@@ -433,9 +425,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   void _scrollTvQueueIntoView(int index, {bool animate = true}) {
     if (!_queueScrollController.hasClients) return;
-    final row = index - _queueStartIndex;
     // A two-line ListTile is 72 high, plus the tile's margin and border.
-    final targetOffset = (row * 82.0).clamp(
+    final targetOffset = (index * 82.0).clamp(
       _queueScrollController.position.minScrollExtent,
       _queueScrollController.position.maxScrollExtent,
     );
@@ -1951,7 +1942,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   Widget _buildQueueList() {
     final items = _queue.items;
     final currentIdx = _queue.currentIndex;
-    final start = upNextStartIndex(items.length, currentIdx);
     final isWide = _isWidePlayer;
     final keyboardFocus = InputModeTracker.showFocusVisuals(context, true);
 
@@ -1964,6 +1954,13 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           ),
         ),
       );
+    }
+
+    // A list that's about to appear opens on the playing track.
+    if (!_queueScrollController.hasClients) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _scrollTvQueueIntoView(_queueCurrentRow, animate: false);
+      });
     }
 
     Widget buildTile(int index) {
@@ -2069,19 +2066,20 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       return ListView.builder(
         controller: _queueScrollController,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.spaceLg),
-        itemCount: items.length - start,
-        itemBuilder: (context, row) => buildTile(start + row),
+        itemCount: items.length,
+        itemBuilder: (context, index) => buildTile(index),
       );
     }
 
     // Mobile / desktop: drag to reorder the queue.
     return ReorderableListView.builder(
+      scrollController: _queueScrollController,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.spaceLg),
-      itemCount: items.length - start,
-      onReorder: (oldRow, newRow) {
-        setState(() => _queue.reorder(start + oldRow, start + newRow));
+      itemCount: items.length,
+      onReorder: (oldIndex, newIndex) {
+        setState(() => _queue.reorder(oldIndex, newIndex));
       },
-      itemBuilder: (context, row) => buildTile(start + row),
+      itemBuilder: (context, index) => buildTile(index),
     );
   }
 }

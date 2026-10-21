@@ -1901,60 +1901,86 @@ class _SidebarMusicCardState extends State<SidebarMusicCard> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
-            onTap: () => appRouter.push(Destinations.audioPlayer),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: AppRadius.circular(8),
-                  child: SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: artUrl != null
-                        ? OfflineAwareImage(
-                            imageUrl: artUrl,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(
-                            color: AppColorScheme.onSurface.withValues(alpha: 0.1),
-                            child: Icon(
-                              Icons.music_note,
-                              color: AppColorScheme.onSurface.withValues(alpha: 0.6),
-                            ),
+          // The rail opens as it takes focus, so this row is the D-pad's way
+          // into the full player.
+          Focus(
+            onKeyEvent: (node, event) {
+              if (isActivateKey(event)) {
+                appRouter.push(Destinations.audioPlayer);
+                return KeyEventResult.handled;
+              }
+              return KeyEventResult.ignored;
+            },
+            child: Builder(
+              builder: (context) {
+                final focused = Focus.of(context).hasFocus;
+                return GestureDetector(
+                  onTap: () => appRouter.push(Destinations.audioPlayer),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 90),
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      borderRadius: AppRadius.circular(10),
+                      color: focused
+                          ? AppColorScheme.onSurface.withValues(alpha: 0.15)
+                          : Colors.transparent,
+                    ),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: AppRadius.circular(8),
+                          child: SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: artUrl != null
+                                ? OfflineAwareImage(
+                                    imageUrl: artUrl,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(
+                                    color: AppColorScheme.onSurface.withValues(alpha: 0.1),
+                                    child: Icon(
+                                      Icons.music_note,
+                                      color: AppColorScheme.onSurface.withValues(alpha: 0.6),
+                                    ),
+                                  ),
                           ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.name,
-                        style: TextStyle(
-                          color: AppColorScheme.onSurface,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (artist.isNotEmpty) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          artist,
-                          style: TextStyle(
-                            color: AppColorScheme.onSurface.withValues(alpha: 0.6),
-                            fontSize: 11,
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.name,
+                                style: TextStyle(
+                                  color: AppColorScheme.onSurface,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (artist.isNotEmpty) ...[
+                                const SizedBox(height: 2),
+                                Text(
+                                  artist,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onSurface.withValues(alpha: 0.6),
+                                    fontSize: 11,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ],
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
           const SizedBox(height: 12),

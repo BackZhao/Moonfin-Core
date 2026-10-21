@@ -101,13 +101,14 @@ void main() {
     await press(tester, LogicalKeyboardKey.select);
     expect(manager.transport.last, 'repeat');
 
-    // Select on Up Next while it already shows moves into the panel, and Left
-    // leaves it for the progress bar without moving along the dock.
+    // Left inside the panel leaves it for the progress bar without moving
+    // along the dock. With no lyrics there's no toggle past Repeat.
     await press(tester, LogicalKeyboardKey.arrowRight);
-    await press(tester, LogicalKeyboardKey.select);
+    await press(tester, LogicalKeyboardKey.arrowUp);
+    await press(tester, LogicalKeyboardKey.arrowUp);
     await press(tester, LogicalKeyboardKey.arrowLeft);
     await press(tester, LogicalKeyboardKey.arrowDown);
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 2; i++) {
       await press(tester, LogicalKeyboardKey.arrowLeft);
     }
     await press(tester, LogicalKeyboardKey.select);
