@@ -5145,8 +5145,8 @@
             }
         }
     },
-    "adminLastExecution": "Viimeinen teloitus",
-    "adminTriggers": "Liipaisimet",
+    "adminLastExecution": "Viimeisin Suoritus",
+    "adminTriggers": "Ajastimet",
     "adminAddTrigger": "Lisää triggeri",
     "adminNoTriggers": "Liipaimia ei ole määritetty",
     "adminTriggerType": "Liipaisimen tyyppi",
@@ -5383,14 +5383,14 @@
     "adminResumeSaved": "Jatka asetukset tallennettu",
     "adminResumeLoadFailed": "Jatkamisasetusten lataaminen epäonnistui",
     "adminResumeDescription": "Määritä, milloin sisältö merkitään osittain tai kokonaan toistetuksi.",
-    "adminMinResumePercentage": "Minimi jatkamisprosentti",
+    "adminMinResumePercentage": "Pienin jatkamisprosentti",
     "adminMinResumeSubtitle": "Sisältöä on toistettava tämän prosenttiosuuden yli, jotta edistyminen tallentuu",
-    "adminMaxResumePercentage": "Maksimi jatkamisprosentti",
+    "adminMaxResumePercentage": "Suurin jatkamisprosentti",
     "adminMaxResumeSubtitle": "Sisältö katsotaan kokonaan toistetuksi tämän prosenttiosuuden jälkeen",
     "adminMinResumeDuration": "Ansioluettelon vähimmäiskesto (sekuntia)",
     "adminMinResumeDurationSubtitle": "Tätä lyhyempiä tuotteita ei voida jatkaa",
-    "adminMinAudiobookResume": "Äänikirjan ansioluettelon vähimmäisprosentti",
-    "adminMaxAudiobookResume": "Äänikirjan ansioluettelon enimmäisprosentti",
+    "adminMinAudiobookResume": "Äänikirjan jatkamisen vähimmäisprosenttiosuus",
+    "adminMaxAudiobookResume": "Äänikirjan jatkamisen enimmäisprosenttiosuus",
     "adminNetworkingSaved": "Verkkoasetukset tallennettu. Palvelin voi olla tarpeen käynnistää uudelleen.",
     "adminNetworkingLoadFailed": "Verkkoasetusten lataaminen epäonnistui",
     "adminNetworkingWarning": "Verkkoasetusten muutokset voivat vaatia palvelimen uudelleenkäynnistyksen.",
@@ -5399,13 +5399,13 @@
     "adminHttpPort": "HTTP-portti",
     "adminHttpsPort": "HTTPS-portti",
     "adminPublicHttpsPort": "Julkinen HTTPS-portti",
-    "adminBaseUrl": "Perus-URL-osoite",
+    "adminBaseUrl": "Perus-URL",
     "adminBaseUrlHint": "esim. /jellyfin",
     "https": "HTTPS",
     "adminEnableHttps": "Ota HTTPS käyttöön",
-    "adminLocalNetwork": "Paikallinen verkko",
-    "adminLocalNetworkAddresses": "Paikalliset verkko-osoitteet",
-    "adminKnownProxies": "Tunnetut välityspalvelimet",
+    "adminLocalNetwork": "Lähiverkko",
+    "adminLocalNetworkAddresses": "Lähiverkko osoitteet",
+    "adminKnownProxies": "Ehdotetut proxyt",
     "adminRemoteIpFilter": "Etä-IP-suodatin",
     "adminRemoteIpFilterEntries": "Etä-IP-suodatin",
     "adminCertificatePath": "Varmenteen polku",
@@ -5956,7 +5956,7 @@
     "adminResumeAudiobooks": "Äänikirjat",
     "adminResumeMinAudiobookPct": "Äänikirjan ansioluettelon vähimmäisprosentti",
     "adminResumeMaxAudiobookPct": "Äänikirjan ansioluettelon enimmäisprosentti",
-    "adminStreamingBitrateLimit": "Etäasiakkaan bittinopeusrajoitus (Mbps)",
+    "adminStreamingBitrateLimit": "Etäasiakkaan bittinopeus rajoitin (Mbps)",
     "adminStreamingBitrateLimitHint": "Jätä tyhjäksi tai 0 rajattomasti",
     "adminTrickplayHwAccel": "Ota käyttöön laitteistokiihdytys",
     "adminTrickplayHwEncoding": "Ota käyttöön laitteistokoodaus",
@@ -5985,7 +5985,7 @@
     "adminTaskNeverRun": "Älä koskaan suorita",
     "adminTaskStop": "Pysäytä",
     "adminTaskRun": "Suorita",
-    "adminTaskDetailLastExecution": "Viimeinen teloitus",
+    "adminTaskDetailLastExecution": "Viimeisin Suoritus",
     "adminTaskDetailStarted": "Aloitettu",
     "adminTaskDetailEnded": "Päättyi",
     "adminTaskDetailDuration": "Kesto",
@@ -7141,17 +7141,17 @@
     "webDiagnosticsCorsChecklistItem4": "• Palauta numero 204 OPTIONS-esitarkastuspyyntöihin.",
     "webDiagnosticsHeaderSnippetTitle": "Esimerkki otsikkokatkelmasta (nginx-tyylinen)",
     "note": "Huom",
-    "webDiagnosticsNonWebNote": "Tämä diagnostiikkareitti on tarkoitettu verkkorakennuksiin. Jos näet tämän toisella alustalla, nämä tarkistukset eivät välttämättä päde.",
-    "backToServerSelect": "Takaisin palvelimeen Valitse",
-    "signOutAllUsers": "Kirjaudu ulos kaikista käyttäjistä",
-    "voiceSearchPermissionPermanentlyDenied": "Mikrofonin käyttöoikeus evätään pysyvästi. Ota se käyttöön järjestelmäasetuksissa.",
-    "voiceSearchPermissionRequired": "Äänihaku vaatii mikrofonin luvan.",
-    "voiceSearchNoMatch": "Ei saanut kiinni siitä. Yritä uudelleen.",
+    "webDiagnosticsNonWebNote": "Tämä vianmääritysohje on tarkoitettu verkkosovelluksille. Jos näet tämän viestin jollain muulla alustalla, nämä tarkistukset eivät välttämättä koske sitä.",
+    "backToServerSelect": "Takaisin palvelinvalintaan",
+    "signOutAllUsers": "Kirjaa kaikki käyttäjät ulos",
+    "voiceSearchPermissionPermanentlyDenied": "Mikrofonin käyttöoikeus on kielletty pysyvästi. Ota se käyttöön järjestelmäasetuksissa.",
+    "voiceSearchPermissionRequired": "Äänihaku edellyttää mikrofonin käyttöoikeutta.",
+    "voiceSearchNoMatch": "En saanut selvää. Yritä uudestaan.",
     "voiceSearchNoSpeechDetected": "Puhetta ei havaittu.",
-    "voiceSearchMicrophoneError": "Mikrofonivirhe.",
-    "voiceSearchNeedsInternet": "Äänihaku vaatii Internetiä.",
+    "voiceSearchMicrophoneError": "Mikrofonivika.",
+    "voiceSearchNeedsInternet": "Äänihaku edellyttää internetyhteyttä.",
     "voiceSearchServiceBusy": "Puhepalvelu on varattu. Yritä uudelleen.",
-    "microphonePermissionPermanentlyDenied": "Mikrofonin käyttöoikeus evätään pysyvästi.",
+    "microphonePermissionPermanentlyDenied": "Mikrofonin käyttöoikeus on evätty pysyvästi.",
     "microphonePermissionDenied": "Mikrofonin käyttöoikeus on evätty.",
     "speechRecognitionUnavailable": "Puheentunnistus ei ole käytettävissä tällä laitteella.",
     "openIosRoutePicker": "Avaa iOS-reitinvalitsin",
@@ -7337,7 +7337,7 @@
     "@detailScreenStyleMoonfin": {
         "description": "Detail screen style option: the classic centered layout"
     },
-    "detailScreenStyleModern": "Modern",
+    "detailScreenStyleModern": "Moderni",
     "@detailScreenStyleModern": {
         "description": "Detail screen style option: the responsive cinematic layout"
     },
@@ -11611,7 +11611,7 @@
     "@animeMarkerMixed": {
         "description": "Badge on an anime episode that mixes source material with filler, so it still contains story"
     },
-    "animeMarkerAnimeCanon": "Animen kaanon",
+    "animeMarkerAnimeCanon": "Animen Kaanon",
     "@animeMarkerAnimeCanon": {
         "description": "Badge on an anime episode that is not in the source manga but is part of the anime's own continuity"
     },
@@ -13407,7 +13407,7 @@
     "@topShelfAppBanner": {
         "description": "Top Shelf option that shows only the static Moonfin logo banner, nothing from the library"
     },
-    "spotlightFileDetails": "Tiedoston tiedot",
+    "spotlightFileDetails": "Tiedoston Tiedot",
     "@spotlightFileDetails": {
         "description": "Title of the spotlight summary card that opens the file details modal"
     },
@@ -14782,5 +14782,43 @@
     "shortcutHideControls": "Piilota hallintapainikkeet",
     "@shortcutHideControls": {
         "description": "What Backspace and Delete do in the player: hide the controls or the panel on top of them"
+    },
+    "timesUpTitle": "Aika loppui",
+    "@timesUpTitle": {
+        "description": "Title of the screen that covers the app when the user's access schedule doesn't allow the current time"
+    },
+    "timesUpMessage": "Tätä tiliä ei ole tällä hetkellä käytettävissä.",
+    "@timesUpMessage": {
+        "description": "Explanation on the Time's up screen"
+    },
+    "timesUpResumesToday": "Voit käyttää sitä uudelleen tänään klo {time}.",
+    "@timesUpResumesToday": {
+        "description": "When access returns, on the Time's up screen, for a time later today",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "timesUpResumesTomorrow": "Voit käyttää sitä uudelleen huomenna klo {time}.",
+    "@timesUpResumesTomorrow": {
+        "description": "When access returns, on the Time's up screen, for a time tomorrow",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "timesUpResumesOn": "Voit käyttää sitä uudelleen {day} klo {time}.",
+    "@timesUpResumesOn": {
+        "description": "When access returns, on the Time's up screen, for a time on a later day",
+        "placeholders": {
+            "day": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
     }
 }
