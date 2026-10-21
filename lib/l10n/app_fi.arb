@@ -8202,7 +8202,7 @@
     "adminDrawerNfo": "NFO-asetukset",
     "adminActivitySeverityAll": "Kaikki vakavuusasteet",
     "adminActivityDateRange": "Aikaväli",
-    "adminRemoveDeviceConfirm": "Poistetaanko laite '{name}'? Käyttäjän on kirjauduttava tällä laitteella uudelleen sisään.",
+    "adminRemoveDeviceConfirm": "Poistetaanko laite \"{name}\"? Käyttäjän on kirjauduttava tällä laitteella uudelleen sisään.",
     "@adminRemoveDeviceConfirm": {
         "placeholders": {
             "name": {
@@ -8851,7 +8851,7 @@
     "@dismiss": {
         "description": "Dismiss button text"
     },
-    "libraryWriteAccessProactiveBody": "Kirjastosi '{libraryName}' on määritetty tallentamaan kuvitus suoraan mediakansioihin ('Tallenna kuvitus mediakansioihin' on käytössä). Jellyfin on kuitenkin testannut kirjoitusoikeudet, eikä sillä ole oikeutta kirjoittaa tiedostoja tähän hakemistoon:\n\n{failedPath}",
+    "libraryWriteAccessProactiveBody": "Kirjastosi \"{libraryName}\" on määritetty tallentamaan kuvitus suoraan mediakansioihin ('Tallenna kuvitus mediakansioihin' on käytössä). Jellyfin on kuitenkin testannut kirjoitusoikeudet, eikä sillä ole oikeutta kirjoittaa tiedostoja tähän hakemistoon:\n\n{failedPath}",
     "@libraryWriteAccessProactiveBody": {
         "description": "Proactive warning message about server write access",
         "placeholders": {
@@ -14820,5 +14820,15 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "pinSynced": "PIN-koodi synkronoitu",
+    "@pinSynced": {
+        "description": "Shown under the PIN switch when the PIN is kept on the server, so it applies on every device"
+    },
+    "pinResetFailed": "Palvelimen PIN-koodia ei voitu poistaa. Jos se on edelleen asetettuna, pyydä palvelimen järjestelmänvalvojaa poistamaan se.",
+    "@pinResetFailed": {
+        "description": "Shown on sign in when Forgot PIN could not clear a PIN kept on the server"
+    },
+    "cinemaSkipPrerolls": "Elokuvamoodin ohituspainike",
+    "cinemaSkipPrerollsDescription": "Näytä Ohita-painike Cinema-tilan elokuvatrailereiden, mainosten ja muiden esittelyvideoiden aikana."
 }
