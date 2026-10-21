@@ -255,6 +255,7 @@ class _MinimalistEpisodesSectionState extends State<MinimalistEpisodesSection> {
                     episode: episode,
                     width: cardWidth,
                     isFocused: isFocused,
+                    isCurrent: _isEpisode && episode.id == _vm.item?.id,
                     imageUrl: minimalistEpisodeImageUrl(
                       episode,
                       _vm,
