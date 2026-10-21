@@ -192,6 +192,7 @@ final class AetherVideoChannel: NSObject, FlutterStreamHandler {
                 audioStreamIndex: (args["audioStreamIndex"] as? NSNumber).flatMap {
                     $0.intValue >= 0 ? Int32($0.intValue) : nil
                 },
+                audioBridgeLossless: (args["audioBridgeLossless"] as? Bool) ?? false,
                 dolbyVisionBaseLayerOnly: (args["dolbyVisionBaseLayerOnly"] as? Bool) ?? false,
                 externalSubtitles: AetherPlayerWrapper.externalSubtitleTracks(
                     from: args["externalSubtitles"])))

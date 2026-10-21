@@ -17,6 +17,7 @@ import 'dolby_vision_av1.dart';
 import 'engine_trust.dart';
 import 'known_defects.dart';
 import 'letterbox_croppers.dart';
+import 'lossless_audio_bridge.dart';
 import 'server_transcode_capabilities.dart';
 
 /// Playback backend driving the native AetherEngine wrapper over a method
@@ -299,6 +300,11 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
       'autoPlay': autoPlay,
       'startPositionMs': startPosition.inMilliseconds,
       'audioStreamIndex': (payload['audioStreamIndex'] as num?)?.toInt() ?? -1,
+      'audioBridgeLossless': usesLosslessAudioBridge(
+        _prefs.detectedAudioCapabilities,
+        maxAudioChannels: _prefs.resolveMaxAudioChannels(),
+        downmixToStereo: _prefs.get(UserPreferences.downmixToStereo),
+      ),
       'isLive': payload['isLive'] == true,
       'mediaType': payload['mediaType']?.toString() ?? 'video',
       'normalizationGainDb':
@@ -452,6 +458,7 @@ class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
       dtsCorePassthroughEnabled: _prefs.resolveDtsCorePassthroughEnabled(),
       trueHdPassthroughEnabled: _prefs.resolveTrueHdPassthroughEnabled(),
       downmixToStereo: _prefs.get(UserPreferences.downmixToStereo),
+      maxAudioChannels: _prefs.resolveMaxAudioChannels(),
       // AetherEngine plays every advertised audio codec: AAC/AC3/EAC3(+JOC
       // Atmos)/FLAC/ALAC are stream-copied intact, and TrueHD/DTS/MP3/Opus/
       // Vorbis/PCM are bridged to EAC3 or FLAC on-device.
