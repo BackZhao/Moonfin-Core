@@ -2191,6 +2191,7 @@ class _DetailContentState extends State<_DetailContent> {
     required AggregatedItem? episode,
     required String title,
     required FocusNode node,
+    bool replacePage = false,
   }) {
     if (episode == null || !_visibility.shows(DetailSection.upNext)) {
       return null;
@@ -2212,6 +2213,7 @@ class _DetailContentState extends State<_DetailContent> {
             episode: episode,
             imageApi: viewModel.imageApi,
             contextSeasonId: viewModel.effectiveSeasonId,
+            replacePage: replacePage,
             focusNode: node,
             onKeyEvent: (event) {
               if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
@@ -2502,6 +2504,7 @@ class _DetailContentState extends State<_DetailContent> {
         episode: nextEpisode,
         title: l10n.nextEpisode,
         node: _nextEpisodeFocusNode,
+        replacePage: true,
       ),
       if (viewModel.episodes.isNotEmpty &&
           _visibility.shows(DetailSection.moreEpisodes))
@@ -14534,16 +14537,13 @@ class _EpisodeListCardState extends State<_EpisodeListCard>
     showContextMenu(context, widget.episode, onChanged: widget.onChanged);
   }
 
+  // The row only shows on an episode, so the one picked takes this page's place.
   void _open() {
-    context.push(
-      Destinations.item(
-        widget.episode.id,
-        serverId: widget.episode.serverId,
-        seasonContext: seasonContextParam(
-          contextSeasonId: widget.contextSeasonId,
-          episodeSeasonId: widget.episode.seasonId,
-        ),
-      ),
+    _openEpisodeDetails(
+      context,
+      widget.episode,
+      contextSeasonId: widget.contextSeasonId,
+      replacePage: true,
     );
   }
 
@@ -14752,6 +14752,25 @@ class _EpisodeListCardState extends State<_EpisodeListCard>
   }
 }
 
+/// With [replacePage] the episode takes the current page's place, so Back
+/// leaves the run of episodes in one press.
+void _openEpisodeDetails(
+  BuildContext context,
+  AggregatedItem episode, {
+  String? contextSeasonId,
+  bool replacePage = false,
+}) {
+  final location = Destinations.item(
+    episode.id,
+    serverId: episode.serverId,
+    seasonContext: seasonContextParam(
+      contextSeasonId: contextSeasonId,
+      episodeSeasonId: episode.seasonId,
+    ),
+  );
+  replacePage ? context.pushReplacement(location) : context.push(location);
+}
+
 class DetailNextUpCard extends StatefulWidget {
   final AggregatedItem episode;
   final ImageApi imageApi;
@@ -14762,12 +14781,16 @@ class DetailNextUpCard extends StatefulWidget {
   /// [DetailEpisodeCard.contextSeasonId].
   final String? contextSeasonId;
 
+  /// See [DetailEpisodeCard.replacePage].
+  final bool replacePage;
+
   const DetailNextUpCard({
     required this.episode,
     required this.imageApi,
     this.focusNode,
     this.onKeyEvent,
     this.contextSeasonId,
+    this.replacePage = false,
   });
 
   @override
@@ -14777,15 +14800,11 @@ class DetailNextUpCard extends StatefulWidget {
 class DetailNextUpCardState extends State<DetailNextUpCard>
     with FocusStateMixin {
   void _open() {
-    context.push(
-      Destinations.item(
-        widget.episode.id,
-        serverId: widget.episode.serverId,
-        seasonContext: seasonContextParam(
-          contextSeasonId: widget.contextSeasonId,
-          episodeSeasonId: widget.episode.seasonId,
-        ),
-      ),
+    _openEpisodeDetails(
+      context,
+      widget.episode,
+      contextSeasonId: widget.contextSeasonId,
+      replacePage: widget.replacePage,
     );
   }
 
@@ -14988,6 +15007,9 @@ class DetailEpisodeCard extends StatefulWidget {
 
   final bool isActive;
 
+  /// Set on an episode's own page, so the episode picked takes that page's place.
+  final bool replacePage;
+
   const DetailEpisodeCard({
     required this.episode,
     required this.imageApi,
@@ -14996,6 +15018,7 @@ class DetailEpisodeCard extends StatefulWidget {
     this.onKeyEvent,
     this.contextSeasonId,
     this.isActive = false,
+    this.replacePage = false,
   });
 
   @override
@@ -15017,15 +15040,11 @@ class DetailEpisodeCardState extends State<DetailEpisodeCard>
   }
 
   void _open() {
-    context.push(
-      Destinations.item(
-        widget.episode.id,
-        serverId: widget.episode.serverId,
-        seasonContext: seasonContextParam(
-          contextSeasonId: widget.contextSeasonId,
-          episodeSeasonId: widget.episode.seasonId,
-        ),
-      ),
+    _openEpisodeDetails(
+      context,
+      widget.episode,
+      contextSeasonId: widget.contextSeasonId,
+      replacePage: widget.replacePage,
     );
   }
 

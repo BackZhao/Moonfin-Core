@@ -1530,6 +1530,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
                 onChanged: () => _vm.load(),
                 isActive: _vm.episodes[i].id == activeId,
                 contextSeasonId: _vm.effectiveSeasonId,
+                replacePage: item.type == 'Episode',
                 focusNode: i == 0
                     ? _episodesFirstFocusNode
                     : _vm.episodes[i].id == item.id
