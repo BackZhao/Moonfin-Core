@@ -4797,6 +4797,12 @@ class AppLocalizationsYue extends AppLocalizations {
   String get enableTrailerAudio => '喺媒體列嘅預告片開聲';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4820,6 +4826,13 @@ class AppLocalizationsYue extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => '為預告片和劇集預覽啟用音訊';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => '最新媒體';

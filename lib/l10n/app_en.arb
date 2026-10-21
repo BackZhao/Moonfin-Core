@@ -6445,6 +6445,14 @@
   "@enableTrailerAudio": {
     "description": "Description for trailer audio"
   },
+  "trailerVolume": "Trailer Volume",
+  "@trailerVolume": {
+    "description": "Setting for how loud media bar trailers play"
+  },
+  "trailerVolumeDescription": "How loud media bar trailers play",
+  "@trailerVolumeDescription": {
+    "description": "Description for the trailer volume slider"
+  },
   "trailerCaptions": "Trailer Captions",
   "@trailerCaptions": {
     "description": "Setting for YouTube trailer captions"
@@ -6476,6 +6484,14 @@
   "enablePreviewAudio": "Enable audio for media previews",
   "@enablePreviewAudio": {
     "description": "Description for preview audio"
+  },
+  "previewVolume": "Preview Volume",
+  "@previewVolume": {
+    "description": "Setting for how loud media previews on cards play"
+  },
+  "previewVolumeDescription": "How loud media previews on cards play",
+  "@previewVolumeDescription": {
+    "description": "Description for the preview volume slider"
   },
   "latestMedia": "Recently Added Media",
   "@latestMedia": {

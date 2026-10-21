@@ -4951,6 +4951,12 @@ class AppLocalizationsSr extends AppLocalizations {
   String get enableTrailerAudio => 'Омогући звук трејлера у медијској траци';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Титлови трејлера';
 
   @override
@@ -4976,6 +4982,13 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Омогући звук у прегледима медија';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Недавно додати медији';

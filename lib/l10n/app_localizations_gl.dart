@@ -4933,6 +4933,12 @@ class AppLocalizationsGl extends AppLocalizations {
       'Activar o audio dos tráilers na barra multimedia';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4959,6 +4965,13 @@ class AppLocalizationsGl extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Activa o audio para as vistas previas do tráiler e dos episodios';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Últimos Medios';

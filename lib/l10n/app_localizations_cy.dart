@@ -4923,6 +4923,12 @@ class AppLocalizationsCy extends AppLocalizations {
       'Galluogi sain ar gyfer rhaghysbysebion yn y bar cyfryngau';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4949,6 +4955,13 @@ class AppLocalizationsCy extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Galluogi sain ar gyfer rhagolygiadau rhaghysbysebion a rhaghysbysebion';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Cyfryngau Diweddaraf';

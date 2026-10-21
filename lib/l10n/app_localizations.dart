@@ -8650,6 +8650,18 @@ abstract class AppLocalizations {
   /// **'Enable audio for trailers in media bar'**
   String get enableTrailerAudio;
 
+  /// Setting for how loud media bar trailers play
+  ///
+  /// In en, this message translates to:
+  /// **'Trailer Volume'**
+  String get trailerVolume;
+
+  /// Description for the trailer volume slider
+  ///
+  /// In en, this message translates to:
+  /// **'How loud media bar trailers play'**
+  String get trailerVolumeDescription;
+
   /// Setting for YouTube trailer captions
   ///
   /// In en, this message translates to:
@@ -8697,6 +8709,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable audio for media previews'**
   String get enablePreviewAudio;
+
+  /// Setting for how loud media previews on cards play
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Volume'**
+  String get previewVolume;
+
+  /// Description for the preview volume slider
+  ///
+  /// In en, this message translates to:
+  /// **'How loud media previews on cards play'**
+  String get previewVolumeDescription;
 
   /// Home section: recently added media
   ///

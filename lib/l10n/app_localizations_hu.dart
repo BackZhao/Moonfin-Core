@@ -4929,6 +4929,12 @@ class AppLocalizationsHu extends AppLocalizations {
       'Előzetesek hangjának engedélyezése a médiasávban';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4955,6 +4961,13 @@ class AppLocalizationsHu extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Hang engedélyezése az előzetes és az epizód előnézetéhez';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Legutóbb hozzáadott média';

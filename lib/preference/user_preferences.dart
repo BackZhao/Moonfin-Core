@@ -629,9 +629,11 @@ class UserPreferences extends ChangeNotifier {
     'mediaBarIntervalMs',
     'mediaBarTrailerPreview',
     'mediaBarTrailerAudio',
+    'trailerVolume',
     'mediaBarTrailerCaptions',
     'episodePreviewEnabled',
     'previewAudioEnabled',
+    'previewVolume',
     'mediaBarLibraryIds',
     'mediaBarCollectionIds',
     'mediaBarExcludedGenres',
@@ -2799,6 +2801,12 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: false,
   );
 
+  /// How loud media bar trailers play, 0 to 100.
+  static final trailerVolume = Preference(
+    key: 'trailerVolume',
+    defaultValue: 100,
+  );
+
   static final mediaBarTrailerCaptions = Preference(
     key: 'mediaBarTrailerCaptions',
     defaultValue: false,
@@ -2827,6 +2835,12 @@ class UserPreferences extends ChangeNotifier {
   static final previewAudioEnabled = Preference(
     key: 'previewAudioEnabled',
     defaultValue: true,
+  );
+
+  /// How loud media previews on cards play, 0 to 100.
+  static final previewVolume = Preference(
+    key: 'previewVolume',
+    defaultValue: 100,
   );
   static final homeRowsUniversalOverride = Preference(
     key: 'homeRowsUniversalOverride',

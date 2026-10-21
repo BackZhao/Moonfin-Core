@@ -4907,6 +4907,12 @@ class AppLocalizationsKk extends AppLocalizations {
       'Медиажолақтағы трейлерлер үшін дыбысты қосу';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4933,6 +4939,13 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Трейлер мен эпизодты алдын ала қарау үшін дыбысты қосыңыз';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Соңғы БАҚ';

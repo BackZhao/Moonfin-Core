@@ -4868,6 +4868,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get enableTrailerAudio => 'הפעל אודיו לטריילרים בסרגל המדיה';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4894,6 +4900,13 @@ class AppLocalizationsHe extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'אפשר אודיו עבור תצוגות מקדימות של טריילר ופרק';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'המדיה האחרונה';

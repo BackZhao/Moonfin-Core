@@ -4899,6 +4899,12 @@ class AppLocalizationsMn extends AppLocalizations {
       'Медиа самбар дахь трейлерийн дууг идэвхжүүлэх';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4925,6 +4931,13 @@ class AppLocalizationsMn extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Чиргүүл болон ангиудыг урьдчилан үзэхийн тулд аудиог идэвхжүүлнэ үү';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Хамгийн сүүлийн үеийн хэвлэл мэдээллийн хэрэгсэл';

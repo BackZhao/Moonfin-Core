@@ -4933,6 +4933,12 @@ class AppLocalizationsEl extends AppLocalizations {
       'Ενεργοποίηση ήχου για τα τρέιλερ στη γραμμή πολυμέσων';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Υπότιτλοι Τρέιλερ';
 
   @override
@@ -4959,6 +4965,13 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Ενεργοποίηση ήχου για προεπισκοπήσεις πολυμέσων';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Πρόσφατα Προστεθέντα Πολυμέσα';

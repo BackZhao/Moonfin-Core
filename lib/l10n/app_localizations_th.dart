@@ -4874,6 +4874,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get enableTrailerAudio => 'เปิดเสียงสำหรับตัวอย่างในแถบสื่อ';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4900,6 +4906,13 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'เปิดใช้งานเสียงสำหรับตัวอย่างและตัวอย่างตอน';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'สื่อล่าสุด';

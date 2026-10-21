@@ -4888,6 +4888,12 @@ class AppLocalizationsBn extends AppLocalizations {
   String get enableTrailerAudio => 'মিডিয়া বারে ট্রেলারের অডিও চালু করুন';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4914,6 +4920,13 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'ট্রেলার এবং পর্বের পূর্বরূপের জন্য অডিও সক্ষম করুন৷';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'সর্বশেষ মিডিয়া';

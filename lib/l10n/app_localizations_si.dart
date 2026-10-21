@@ -4892,6 +4892,12 @@ class AppLocalizationsSi extends AppLocalizations {
       'මාධ්‍ය තීරුවේ ට්‍රේලර සඳහා ශ්‍රව්‍යය සබල කරන්න';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4918,6 +4924,13 @@ class AppLocalizationsSi extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'ට්‍රේලරය සහ කථාංග පෙරදසුන් සඳහා ශ්‍රව්‍ය සබල කරන්න';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'නවතම මාධ්‍ය';

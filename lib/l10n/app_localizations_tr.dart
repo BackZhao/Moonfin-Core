@@ -4904,6 +4904,12 @@ class AppLocalizationsTr extends AppLocalizations {
       'Medya çubuğundaki fragmanlar için sesi etkinleştir';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Fragman Altyazıları';
 
   @override
@@ -4929,6 +4935,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Medya önizlemeleri için sesi aç';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'En Son Eklenen Medya';

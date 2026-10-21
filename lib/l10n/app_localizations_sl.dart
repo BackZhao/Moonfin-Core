@@ -4922,6 +4922,12 @@ class AppLocalizationsSl extends AppLocalizations {
       'Omogoči zvok napovednikov v predstavnostni vrstici';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4948,6 +4954,13 @@ class AppLocalizationsSl extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Omogoči zvok za napovednike in predoglede epizod';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Najnovejši mediji';

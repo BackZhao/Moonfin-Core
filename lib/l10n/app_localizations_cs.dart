@@ -4909,6 +4909,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get enableTrailerAudio => 'Zapnout zvuk upoutávek v mediální liště';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4934,6 +4940,13 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Povolit zvuk pro ukázky upoutávek a epizod';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Nejnovější média';

@@ -4901,6 +4901,12 @@ class AppLocalizationsEt extends AppLocalizations {
   String get enableTrailerAudio => 'Luba treilerite heli meediaribal';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4926,6 +4932,13 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Lubage treileri ja jao eelvaate jaoks heli';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Uusim meedia';

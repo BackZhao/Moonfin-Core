@@ -4770,6 +4770,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get enableTrailerAudio => '媒体栏预告片开启音效';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => '预告片字幕';
 
   @override
@@ -4792,6 +4798,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => '为预告片和剧集预览启用音频';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => '最新媒体';

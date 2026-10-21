@@ -4912,6 +4912,12 @@ class AppLocalizationsLt extends AppLocalizations {
   String get enableTrailerAudio => 'Įjungti anonsų garsą medijos juostoje';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4937,6 +4943,13 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Įgalinti anonso ir serijos peržiūrų garsą';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Naujausia žiniasklaida';

@@ -4894,6 +4894,12 @@ class AppLocalizationsEo extends AppLocalizations {
       'Ebligi aŭdion por antaŭfilmoj en la aŭdvida breto';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4920,6 +4926,13 @@ class AppLocalizationsEo extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Ebligu aŭdion por antaŭprezentoj de antaŭfilmoj kaj epizodoj';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Plej novaj Amaskomunikiloj';

@@ -4913,6 +4913,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Audio inschakelen voor trailers in de mediabalk';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailerondertitels';
 
   @override
@@ -4938,6 +4944,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Schakel audio in voor previews van media';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Recent toegevoegde media';

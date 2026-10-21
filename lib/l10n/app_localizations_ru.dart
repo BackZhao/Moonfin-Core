@@ -4923,6 +4923,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get enableTrailerAudio => 'Включить звук трейлеров в медиапанели';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Trailer Captions';
 
   @override
@@ -4949,6 +4955,13 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Включить звук для превью трейлеров и эпизодов';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Последние СМИ';

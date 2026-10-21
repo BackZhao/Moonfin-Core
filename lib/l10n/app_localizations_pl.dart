@@ -5088,6 +5088,12 @@ class AppLocalizationsPl extends AppLocalizations {
       'Włącz dźwięk w zwiastunach na pasku multimediów';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Napisy w zwiastunach';
 
   @override
@@ -5113,6 +5119,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => 'Włącz dźwięk w podglądach materiałów';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Ostatnio dodane';

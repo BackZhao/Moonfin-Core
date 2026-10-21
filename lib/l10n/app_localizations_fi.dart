@@ -4921,6 +4921,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get enableTrailerAudio => 'Ota trailerien ääni käyttöön mediapalkissa';
 
   @override
+  @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
   String get trailerCaptions => 'Trailerin tekstitykset';
 
   @override
@@ -4948,6 +4954,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get enablePreviewAudio => 'Ota ääni käyttöön mediaesikatseluissa';
 
   @override
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
+
   String get latestMedia => 'Äskettäin lisätty media';
 
   @override

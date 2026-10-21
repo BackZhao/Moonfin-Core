@@ -4949,6 +4949,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Activează sunetul pentru trailerele din bara media';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => 'Subtitrări pentru trailere';
 
   @override
@@ -4975,6 +4981,13 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get enablePreviewAudio =>
       'Activează sunetul pentru previzualizările media';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => 'Conținut media adăugat recent';

@@ -4789,6 +4789,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get enableTrailerAudio => '미디어 바의 예고편에서 소리를 재생합니다';
 
   @override
+  String get trailerVolume => 'Trailer Volume';
+
+  @override
+  String get trailerVolumeDescription => 'How loud media bar trailers play';
+
+  @override
   String get trailerCaptions => '예고편 자막';
 
   @override
@@ -4813,6 +4819,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get enablePreviewAudio => '예고편 및 에피소드 미리보기에 오디오 활성화';
+
+  @override
+  String get previewVolume => 'Preview Volume';
+
+  @override
+  String get previewVolumeDescription =>
+      'How loud media previews on cards play';
 
   @override
   String get latestMedia => '최근 추가된 미디어';
