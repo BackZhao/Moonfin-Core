@@ -13897,11 +13897,11 @@
     "@libraryStyle": {
         "description": "Label for the setting that picks the library page header layout"
     },
-    "libraryStyleDescription": "Classique correspond à l'en-tête d'origine, avec des boutons en icônes. Moderne réunit la recherche et les boutons de tri, de regroupement et de filtre, avec leurs libellés, dans une seule barre. Ancré déplace les commandes et l'index alphabétique dans un panneau latéral.",
+    "libraryStyleDescription": "Classique correspond à l'en-tête d'origine, avec des boutons en icônes. Moderne réunit la recherche et les boutons de tri, de regroupement et de filtre, avec leurs libellés, dans une seule barre. Dock déplace les commandes et l'index alphabétique dans un panneau latéral.",
     "@libraryStyleDescription": {
         "description": "Explanation under the library style setting on TV and desktop"
     },
-    "libraryStyleDescriptionPhone": "Classique correspond à l'en-tête d'origine, avec des boutons en icônes. Moderne ajoute sous la recherche des boutons de tri, de regroupement et de filtre, avec leurs libellés. Ancré garde les commandes dans une barre en bas de l'écran.",
+    "libraryStyleDescriptionPhone": "Classique correspond à l'en-tête d'origine, avec des boutons en icônes. Moderne ajoute sous la recherche des boutons de tri, de regroupement et de filtre, avec leurs libellés. Dock garde les commandes dans une barre en bas de l'écran.",
     "@libraryStyleDescriptionPhone": {
         "description": "Explanation under the library style setting on phones"
     },
@@ -13913,7 +13913,7 @@
     "@libraryStyleModern": {
         "description": "Library style option: one bar with labeled buttons"
     },
-    "libraryStyleDocked": "Ancré",
+    "libraryStyleDocked": "Dock",
     "@libraryStyleDocked": {
         "description": "Library style option: a side panel on TV and desktop, a bottom bar on phones"
     },
