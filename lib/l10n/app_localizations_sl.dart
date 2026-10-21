@@ -5083,6 +5083,13 @@ class AppLocalizationsSl extends AppLocalizations {
   String get enablePinCode => 'Omogoči kodo PIN';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
+
+  @override
   String get requirePinToAccess => 'Za dostop do računa zahtevajte PIN';
 
   @override

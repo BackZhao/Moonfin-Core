@@ -4917,6 +4917,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get enablePinCode => '启用 PIN 码';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
+
+  @override
   String get requirePinToAccess => '需要 PIN 码才能访问你的账号';
 
   @override

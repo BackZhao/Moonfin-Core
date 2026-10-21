@@ -5050,6 +5050,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get enablePinCode => 'পিন কোড সক্ষম করুন';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
+
+  @override
   String get requirePinToAccess =>
       'আপনার অ্যাকাউন্ট অ্যাক্সেস করার জন্য একটি পিন প্রয়োজন৷';
 

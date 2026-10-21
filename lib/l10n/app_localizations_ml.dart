@@ -5080,6 +5080,13 @@ class AppLocalizationsMl extends AppLocalizations {
   String get enablePinCode => 'പിൻ കോഡ് പ്രവർത്തനക്ഷമമാക്കുക';
 
   @override
+  String get pinSynced => 'PIN synced';
+
+  @override
+  String get pinResetFailed =>
+      'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.';
+
+  @override
   String get requirePinToAccess =>
       'നിങ്ങളുടെ അക്കൗണ്ട് ആക്‌സസ് ചെയ്യാൻ ഒരു പിൻ ആവശ്യമാണ്';
 

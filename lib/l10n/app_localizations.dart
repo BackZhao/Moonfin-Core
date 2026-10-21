@@ -8938,6 +8938,18 @@ abstract class AppLocalizations {
   /// **'Enable PIN Code'**
   String get enablePinCode;
 
+  /// Shown under the PIN switch when the PIN is kept on the server, so it applies on every device
+  ///
+  /// In en, this message translates to:
+  /// **'PIN synced'**
+  String get pinSynced;
+
+  /// Shown on sign in when Forgot PIN could not clear a PIN kept on the server
+  ///
+  /// In en, this message translates to:
+  /// **'The PIN on the server could not be cleared. If it is still set, ask a server administrator to remove it.'**
+  String get pinResetFailed;
+
   /// Description for enable PIN code
   ///
   /// In en, this message translates to:
