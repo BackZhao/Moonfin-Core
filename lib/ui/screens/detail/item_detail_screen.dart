@@ -14727,8 +14727,11 @@ class _EpisodeListCardState extends State<_EpisodeListCard>
                               : Border.fromBorderSide(
                                   ThemeRegistry.active.borders.focusBorder
                                       .copyWith(
-                                        color: AppColorScheme.onSurface,
-                                        width: 2.5,
+                                        color: isNeon
+                                            ? const Color(0xFF00FFFF)
+                                            : AppColorScheme.accent
+                                                  .withValues(alpha: 0.7),
+                                        width: 1.5,
                                       ),
                                 ),
                         ),
