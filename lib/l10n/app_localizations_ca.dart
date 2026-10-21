@@ -81,24 +81,24 @@ class AppLocalizationsCa extends AppLocalizations {
       'Toca per aprovar-ho al navegador, o escaneja-ho amb un altre dispositiu';
 
   @override
-  String get timesUpTitle => 'Time\'s up';
+  String get timesUpTitle => 'S\'ha acabat el temps';
 
   @override
-  String get timesUpMessage => 'This account isn\'t available right now.';
+  String get timesUpMessage => 'Aquest compte no està disponible ara mateix.';
 
   @override
   String timesUpResumesToday(String time) {
-    return 'You can use it again today at $time.';
+    return 'El podràs tornar a fer servir avui a les $time.';
   }
 
   @override
   String timesUpResumesTomorrow(String time) {
-    return 'You can use it again tomorrow at $time.';
+    return 'El podràs tornar a fer servir demà a les $time.';
   }
 
   @override
   String timesUpResumesOn(String day, String time) {
-    return 'You can use it again on $day at $time.';
+    return 'El podràs tornar a fer servir el $day a les $time.';
   }
 
   @override
@@ -115,7 +115,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get loginForbidden =>
-      'This account can\'t sign in right now. It may be outside its allowed hours, locked or disabled. Try again later or ask an administrator.';
+      'Aquest compte no pot iniciar sessió ara mateix. Pot ser que sigui fora del seu horari permès, o que estigui bloquejat o desactivat. Torna-ho a provar més tard o demana-ho a un administrador.';
 
   @override
   String quickConnectUnavailable(String detail) {
@@ -2205,7 +2205,7 @@ class AppLocalizationsCa extends AppLocalizations {
       'Surt de la pantalla completa; si no hi ets, atura la reproducció';
 
   @override
-  String get shortcutHideControls => 'Hide controls';
+  String get shortcutHideControls => 'Amaga els controls';
 
   @override
   String get shortcutStopPlayback => 'Atura la reproducció';
