@@ -14192,5 +14192,9 @@
   "playbackInfoDroppedFrames": "Dropped Frames",
   "@playbackInfoDroppedFrames": {
     "description": "Playback information row label: how many video frames the player skipped"
+  },
+  "playFromServer": "Play from Server",
+  "@playFromServer": {
+    "description": "Long-press menu action on a downloaded video: play it by streaming from the server instead of the downloaded copy, for example to get a higher quality than the download"
   }
 }

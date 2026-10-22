@@ -15450,6 +15450,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get playbackInfoDroppedFrames => 'Dropped Frames';
+
+  @override
+  String get playFromServer => 'Play from Server';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).

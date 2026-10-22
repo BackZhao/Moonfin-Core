@@ -26810,6 +26810,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dropped Frames'**
   String get playbackInfoDroppedFrames;
+
+  /// Long-press menu action on a downloaded video: play it by streaming from the server instead of the downloaded copy, for example to get a higher quality than the download
+  ///
+  /// In en, this message translates to:
+  /// **'Play from Server'**
+  String get playFromServer;
 }
 
 class _AppLocalizationsDelegate

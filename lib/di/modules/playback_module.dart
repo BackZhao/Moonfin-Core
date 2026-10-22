@@ -790,6 +790,7 @@ void setActiveStreamResolver(MediaServerClient client) {
   final resolver = LocalFirstMediaStreamResolver(
     inner: serverResolver,
     offline: _getIt<OfflineStreamResolver>(),
+    streamFromServer: () => _getIt<PlaybackManager>().streamsFromServer,
     restoreSubtitles: (itemId) async {
       if (_getIt.isRegistered<DownloadService>()) {
         await _getIt<DownloadService>().restoreMissingSubtitles(itemId);

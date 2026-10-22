@@ -14929,6 +14929,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get playbackInfoDroppedFrames => 'Dropped Frames';
+
+  @override
+  String get playFromServer => 'Play from Server';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).

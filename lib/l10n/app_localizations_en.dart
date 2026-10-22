@@ -15289,6 +15289,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playbackInfoDroppedFrames => 'Dropped Frames';
+
+  @override
+  String get playFromServer => 'Play from Server';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

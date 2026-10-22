@@ -15444,4 +15444,7 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get playbackInfoDroppedFrames => 'Dropped Frames';
+
+  @override
+  String get playFromServer => 'Play from Server';
 }
