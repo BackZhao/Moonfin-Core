@@ -14854,5 +14854,9 @@
     "trailerVolumeDescription": "Kuinka kovaa äänenvoimakkuudella media-baarin mainosvideot toistetaan",
     "@trailerVolumeDescription": {
         "description": "Description for the trailer volume slider"
+    },
+    "previewVolume": "Äänenvoimakkuuden esikatselu",
+    "@previewVolume": {
+        "description": "Setting for how loud media previews on cards play"
     }
 }
