@@ -713,6 +713,10 @@ class PlaybackManager implements AudioOwnable {
   }
 
   int? get maxBitrateOverrideMbps => _maxBitrateOverrideMbps;
+
+  /// True when this queue was started with direct play and direct stream both
+  /// turned off.
+  bool get isTranscodeForced => _forceTranscodeForQueue;
   bool get isOfflinePlayback => _isOfflinePlayback;
 
   /// Completes when any in-flight stop operation (including the offline
