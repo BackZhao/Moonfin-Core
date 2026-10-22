@@ -700,6 +700,7 @@ class UserPreferences extends ChangeNotifier {
     'loading_animation_position',
     'loading_animation_speed',
     'show_loading_animation_text',
+    'pref_continue_watching_default_action',
   };
 
   bool _isScopedPreference<T>(Preference<T> pref) {
@@ -1490,6 +1491,12 @@ class UserPreferences extends ChangeNotifier {
   static final mergeContinueWatchingNextUp = Preference(
     key: 'pref_merge_continue_watching_next_up',
     defaultValue: true,
+  );
+
+  static final continueWatchingDefaultAction = EnumPreference(
+    key: 'pref_continue_watching_default_action',
+    defaultValue: ContinueWatchingDefaultAction.details,
+    values: ContinueWatchingDefaultAction.values,
   );
 
   // Zero means no limit. The 365 days match what the other Moonfin clients and
