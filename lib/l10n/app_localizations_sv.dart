@@ -2339,6 +2339,13 @@ class AppLocalizationsSv extends AppLocalizations {
       'EPUB-rendering i appen är inte tillgänglig på den här plattformen ännu.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Det här formatet (.$extension) kan inte visas i appen än.';
   }
@@ -3092,12 +3099,6 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get scaleFocusedCards =>
       'Skala fokuserade eller svävade kort och brickor';
-
-  @override
-  String get backgroundBackdrops => 'Bakgrund Bakgrunder';
-
-  @override
-  String get showBackdropImages => 'Visa bakgrundsbilder bakom innehåll';
 
   @override
   String get seriesThumbnails => 'Serieminiatyrer';
@@ -3874,6 +3875,13 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       'Välj målformatet för omkodning av flerkanaligt ljud när källströmmen inte kan direktspelas eller skickas vidare.';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto =>
@@ -11957,10 +11965,6 @@ class AppLocalizationsSv extends AppLocalizations {
       'Visa detaljer om det valda objektet högst upp på bibliotekssidorna.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Dölj bakgrundsbilder när du bläddrar?';
-
-  @override
   String get useDetailedSubHeadings => 'Använd detaljerade underrubriker';
 
   @override
@@ -15238,4 +15242,13 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

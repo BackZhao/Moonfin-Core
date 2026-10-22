@@ -3117,6 +3117,14 @@
   "@epubUnavailableOnPlatform": {
     "description": "Fallback message when EPUB cannot render on current platform"
   },
+  "bookReadingUnavailableTitle": "Books can't be read on Apple TV",
+  "@bookReadingUnavailableTitle": {
+    "description": "Title of the dialog shown on Apple TV when the user tries to open a book or comic, which tvOS has no reader for"
+  },
+  "bookReadingUnavailableMessage": "Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.",
+  "@bookReadingUnavailableMessage": {
+    "description": "Body of the dialog shown on Apple TV when the user tries to open a book or comic"
+  },
   "formatCannotRenderInApp": "This format (.{extension}) cannot be rendered in-app yet.",
   "@formatCannotRenderInApp": {
     "description": "Fallback message for unsupported document format",
@@ -4187,14 +4195,6 @@
   "@scaleFocusedCards": {
     "description": "Description for focus expansion animation"
   },
-  "backgroundBackdrops": "Background Backdrops",
-  "@backgroundBackdrops": {
-    "description": "Setting for background backdrops"
-  },
-  "showBackdropImages": "Show backdrop images behind content",
-  "@showBackdropImages": {
-    "description": "Description for background backdrops"
-  },
   "seriesThumbnails": "Display Series Thumbnails",
   "@seriesThumbnails": {
     "description": "Setting for series thumbnails"
@@ -5185,6 +5185,14 @@
   "settingsAudioFallbackCodecDescription": "Select the target format to transcode multi-channel audio when the source stream cannot be direct-played or passed through.",
   "@settingsAudioFallbackCodecDescription": {
     "description": "Description for audio fallback codec setting"
+  },
+  "transcodeAudioCodecs": "Transcode Audio Codecs",
+  "@transcodeAudioCodecs": {
+    "description": "Setting that lists the audio codecs the server converts instead of the device playing them"
+  },
+  "transcodeAudioCodecsDescription": "The server converts audio in these formats instead of sending it as is.",
+  "@transcodeAudioCodecsDescription": {
+    "description": "Description for the transcode audio codecs setting"
   },
   "settingsAudioFallbackCodecAuto": "Auto Detect\n(Recommended)",
   "@settingsAudioFallbackCodecAuto": {
@@ -10874,10 +10882,6 @@
   "@showMediaDetailsOnLibraryPageDescription": {
     "description": "Setting description to show/hide focused media details at the top of the library page"
   },
-  "hideBackdropsInLibraries": "Hide Backdrops While Browsing",
-  "@hideBackdropsInLibraries": {
-    "description": "Setting title to show/hide backdrops when browsing library pages"
-  },
   "useDetailedSubHeadings": "Use Detailed Sub-Headings",
   "@useDetailedSubHeadings": {
     "description": "Label for setting to toggle detailed or minimal subrow on library pages"
@@ -13961,5 +13965,17 @@
   "librarySortLength": "Length",
   "@librarySortLength": {
     "description": "Sort option for music: by track or album length"
+  },
+  "homeScreenBackdrop": "Home Screen Backdrop",
+  "@homeScreenBackdrop": {
+    "description": "Setting to show or hide the backdrop image behind the home screen"
+  },
+  "detailsScreenBackdrop": "Details Screen Backdrop",
+  "@detailsScreenBackdrop": {
+    "description": "Setting to show or hide the backdrop image behind the item details screen"
+  },
+  "libraryBackdrops": "Library Backdrops",
+  "@libraryBackdrops": {
+    "description": "Setting to show or hide backdrop images while browsing library pages"
   }
 }

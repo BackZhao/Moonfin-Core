@@ -2342,6 +2342,13 @@ class AppLocalizationsVi extends AppLocalizations {
       'Kết xuất trong ứng dụng EPUB chưa khả dụng trên nền tảng này.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Định dạng này (.$extension) chưa thể hiển thị trong ứng dụng.';
   }
@@ -3088,13 +3095,6 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get scaleFocusedCards =>
       'Chia tỷ lệ thẻ và ô xếp tập trung hoặc di chuột';
-
-  @override
-  String get backgroundBackdrops => 'Phông Nền Nền';
-
-  @override
-  String get showBackdropImages =>
-      'Hiển thị hình ảnh phông nền phía sau nội dung';
 
   @override
   String get seriesThumbnails => 'Hình thu nhỏ của loạt phim';
@@ -3871,6 +3871,13 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       'Chọn định dạng đích để chuyển mã âm thanh đa kênh khi luồng gốc không thể phát trực tiếp hoặc truyền thẳng.';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto =>
@@ -11942,9 +11949,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Hiển thị chi tiết của mục đang chọn ở đầu trang Thư viện.';
 
   @override
-  String get hideBackdropsInLibraries => 'Ẩn ảnh nền khi duyệt?';
-
-  @override
   String get useDetailedSubHeadings => 'Sử dụng các tiêu đề phụ chi tiết';
 
   @override
@@ -15233,4 +15237,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

@@ -523,7 +523,7 @@ class _HomeShellState extends State<_HomeShell>
 
   @override
   Widget build(BuildContext context) {
-    final backdropEnabled = _userPrefs.get(UserPreferences.backdropEnabled);
+    final backdropEnabled = _userPrefs.get(UserPreferences.homeBackdropEnabled);
     final blurAmount = _userPrefs
         .get(UserPreferences.browsingBackgroundBlurAmount)
         .toDouble();

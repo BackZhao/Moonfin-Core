@@ -2349,6 +2349,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'La visualización de EPUB en la app aún no está disponible en esta plataforma.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Este formato (.$extension) aún no se puede representar en la aplicación.';
   }
@@ -3099,12 +3106,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get scaleFocusedCards => 'Escalar tarjetas enfocadas';
-
-  @override
-  String get backgroundBackdrops => 'Fondos de pantalla';
-
-  @override
-  String get showBackdropImages => 'Mostrar imágenes de fondo';
 
   @override
   String get seriesThumbnails => 'Miniaturas de series';
@@ -3883,6 +3884,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       'Selecciona el formato de destino para transcodificar el audio multicanal cuando el flujo de origen no admite reproducción directa ni paso directo.';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto =>
@@ -12040,10 +12048,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mostrar los detalles del elemento seleccionado en la parte superior de las páginas de biblioteca.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      '¿Ocultar las imágenes de fondo al explorar?';
-
-  @override
   String get useDetailedSubHeadings => 'Utilice subtítulos detallados';
 
   @override
@@ -15340,6 +15344,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -17383,13 +17396,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get scaleFocusedCards =>
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
-
-  @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
 
   @override
   String get seriesThumbnails => 'Mostrar miniaturas de series';
@@ -24782,13 +24788,6 @@ class AppLocalizationsEsAr extends AppLocalizationsEs {
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
 
   @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
-
-  @override
   String get seriesThumbnails => 'Miniaturas de series';
 
   @override
@@ -32075,13 +32074,6 @@ class AppLocalizationsEsDo extends AppLocalizationsEs {
   @override
   String get scaleFocusedCards =>
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
-
-  @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
 
   @override
   String get seriesThumbnails => 'Miniaturas de series';
@@ -39420,13 +39412,6 @@ class AppLocalizationsEsMx extends AppLocalizationsEs {
   @override
   String get scaleFocusedCards =>
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
-
-  @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
 
   @override
   String get seriesThumbnails => 'Miniaturas de series';

@@ -2342,6 +2342,13 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಅಪ್ಲಿಕೇಶನ್‌ನಲ್ಲಿ EPUB ರೆಂಡರಿಂಗ್ ಇನ್ನೂ ಈ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'ಈ ಸ್ವರೂಪವನ್ನು (.$extension) ಇನ್ನೂ ಆ್ಯಪ್‌ನಲ್ಲಿ ತೋರಿಸಲಾಗುವುದಿಲ್ಲ.';
   }
@@ -3095,13 +3102,6 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get scaleFocusedCards =>
       'ಸ್ಕೇಲ್ ಫೋಕಸ್ಡ್ ಅಥವಾ ಹೋವರ್ಡ್ ಕಾರ್ಡ್‌ಗಳು ಮತ್ತು ಟೈಲ್ಸ್';
-
-  @override
-  String get backgroundBackdrops => 'ಹಿನ್ನೆಲೆ ಹಿನ್ನೆಲೆಗಳು';
-
-  @override
-  String get showBackdropImages =>
-      'ವಿಷಯದ ಹಿಂದೆ ಬ್ಯಾಕ್‌ಡ್ರಾಪ್ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಿ';
 
   @override
   String get seriesThumbnails => 'ಸರಣಿ ಥಂಬ್‌ನೇಲ್‌ಗಳು';
@@ -3882,6 +3882,13 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       'ಮೂಲ ಸ್ಟ್ರೀಮ್ ಅನ್ನು ನೇರವಾಗಿ ಪ್ಲೇ ಮಾಡಲು ಅಥವಾ ಪಾಸ್‌ಥ್ರೂ ಮಾಡಲು ಸಾಧ್ಯವಾಗದಿದ್ದಾಗ ಬಹು-ಚಾನೆಲ್ ಆಡಿಯೋವನ್ನು ಟ್ರಾನ್ಸ್‌ಕೋಡ್ ಮಾಡಲು ಗುರಿ ಸ್ವರೂಪವನ್ನು ಆಯ್ಕೆಮಾಡಿ.';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto =>
@@ -12002,10 +12009,6 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಲೈಬ್ರರಿ ಪುಟಗಳ ಮೇಲ್ಭಾಗದಲ್ಲಿ ಆಯ್ಕೆಮಾಡಿದ ಐಟಂನ ವಿವರಗಳನ್ನು ತೋರಿಸಿ.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'ಬ್ರೌಸ್ ಮಾಡುವಾಗ ಬ್ಯಾಕ್‌ಡ್ರಾಪ್‌ಗಳನ್ನು ಮರೆಮಾಡುವುದೇ?';
-
-  @override
   String get useDetailedSubHeadings => 'ವಿವರವಾದ ಉಪ-ಶೀರ್ಷಿಕೆಗಳನ್ನು ಬಳಸಿ';
 
   @override
@@ -15293,4 +15296,13 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

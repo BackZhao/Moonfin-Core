@@ -608,10 +608,19 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'scaling',
     ]),
     style.leaf(
-      'pref_show_backdrop',
-      l10n.backgroundBackdrops,
-      subtitle: l10n.showBackdropImages,
+      'pref_show_home_backdrop',
+      l10n.homeScreenBackdrop,
       keywords: ['background images'],
+    ),
+    style.leaf(
+      'pref_show_details_backdrop',
+      l10n.detailsScreenBackdrop,
+      keywords: ['background images'],
+    ),
+    style.leaf(
+      'pref_hide_backdrops_in_libraries',
+      l10n.libraryBackdrops,
+      keywords: ['background images', 'browsing'],
     ),
     style.leaf(
       'pref_oled_mode',
@@ -1196,11 +1205,6 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       l10n.useDetailedSubHeadings,
       subtitle: l10n.useDetailedSubHeadingsDescription,
     ),
-    libraries.leaf(
-      'pref_hide_backdrops_in_libraries',
-      l10n.hideBackdropsInLibraries,
-      keywords: ['background'],
-    ),
 
     mediaBar.screen(keywords: ['featured', 'carousel', 'banner', 'hero']),
     mediaBar.leaf('mediaBarMode', l10n.mediaBarMode),
@@ -1551,6 +1555,11 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         keywords: ['5.1', '7.1', 'stereo'],
       ),
       audio.leaf('audio_fallback_codec', l10n.settingsAudioFallbackCodec),
+      audio.leaf(
+        'pref_transcode_audio_codecs',
+        l10n.transcodeAudioCodecs,
+        keywords: ['transcode', 'convert', 'aac', 'opus', 'pcm', 'direct play'],
+      ),
       audio.leaf(
         'pref_passthrough_ac3',
         l10n.ac3Passthrough,

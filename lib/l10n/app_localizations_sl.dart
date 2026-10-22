@@ -2354,6 +2354,13 @@ class AppLocalizationsSl extends AppLocalizations {
       'Upodabljanje EPUB v aplikaciji še ni na voljo na tej platformi.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Te oblike (.$extension) še ni mogoče prikazati v aplikaciji.';
   }
@@ -3107,12 +3114,6 @@ class AppLocalizationsSl extends AppLocalizations {
   @override
   String get scaleFocusedCards =>
       'Prilagodite fokusirane ali lebdeče kartice in ploščice';
-
-  @override
-  String get backgroundBackdrops => 'Ozadja za ozadje';
-
-  @override
-  String get showBackdropImages => 'Pokaži slike ozadja za vsebino';
 
   @override
   String get seriesThumbnails => 'Sličice serije';
@@ -3892,6 +3893,13 @@ class AppLocalizationsSl extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       'Izberite ciljno obliko za prekodiranje večkanalnega zvoka, kadar izvornega pretoka ni mogoče predvajati neposredno ali posredovati naprej.';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto =>
@@ -11994,9 +12002,6 @@ class AppLocalizationsSl extends AppLocalizations {
       'Prikaži podrobnosti izbranega elementa na vrhu strani knjižnice.';
 
   @override
-  String get hideBackdropsInLibraries => 'Skrij ozadja med brskanjem?';
-
-  @override
   String get useDetailedSubHeadings => 'Uporabi podrobne podnaslove';
 
   @override
@@ -15287,4 +15292,13 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

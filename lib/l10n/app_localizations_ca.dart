@@ -2360,6 +2360,13 @@ class AppLocalizationsCa extends AppLocalizations {
       'La representació d\'EPUB a l\'aplicació encara no està disponible en aquesta plataforma.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'Aquest format (.$extension) encara no es pot representar a l\'aplicació.';
   }
@@ -3119,13 +3126,6 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get scaleFocusedCards =>
       'Escala targetes i fitxes enfocades o posades';
-
-  @override
-  String get backgroundBackdrops => 'Fons de fons';
-
-  @override
-  String get showBackdropImages =>
-      'Mostra imatges de fons darrere del contingut';
 
   @override
   String get seriesThumbnails => 'Miniatures de la sèrie';
@@ -3911,6 +3911,13 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       'Tria el format de destinació per transcodificar l\'àudio multicanal quan el flux d\'origen no es pot reproduir de manera nativa ni transmetre directament.';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto =>
@@ -12153,10 +12160,6 @@ class AppLocalizationsCa extends AppLocalizations {
       'Mostra els detalls de l\'item seleccionat a dalt la pàgina de Biblioteca.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Amaga els telons de fons mentre navegues';
-
-  @override
   String get useDetailedSubHeadings => 'Utilitzeu subtítols detallats';
 
   @override
@@ -15478,4 +15481,13 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Durada';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

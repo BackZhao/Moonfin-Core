@@ -2295,6 +2295,13 @@ class AppLocalizationsYue extends AppLocalizations {
   String get epubUnavailableOnPlatform => '應用程式內 EPUB 渲染在此平台上尚不可用。';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return '呢個格式（.$extension）暫時仲未可以喺應用程式入面顯示。';
   }
@@ -3032,12 +3039,6 @@ class AppLocalizationsYue extends AppLocalizations {
 
   @override
   String get scaleFocusedCards => '縮放聚焦或懸停的卡片和圖塊';
-
-  @override
-  String get backgroundBackdrops => '背景背景';
-
-  @override
-  String get showBackdropImages => '顯示內容後面的背景影像';
 
   @override
   String get seriesThumbnails => '系列縮圖';
@@ -3801,6 +3802,13 @@ class AppLocalizationsYue extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       '揀當來源串流冇辦法直接播放或者直通嗰陣，多聲道音訊要轉碼成咩格式。';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto => '自動偵測\n（建議）';
@@ -11630,9 +11638,6 @@ class AppLocalizationsYue extends AppLocalizations {
   String get showMediaDetailsOnLibraryPageDescription => '喺媒體庫頁面頂部顯示已揀項目嘅詳情。';
 
   @override
-  String get hideBackdropsInLibraries => '瀏覽嗰陣隱藏背景圖？';
-
-  @override
   String get useDetailedSubHeadings => '用詳細副標題';
 
   @override
@@ -14852,6 +14857,15 @@ class AppLocalizationsYue extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
 
 /// The translations for Yue Chinese Cantonese, as used in China (`yue_CN`).
@@ -16758,12 +16772,6 @@ class AppLocalizationsYueCn extends AppLocalizationsYue {
 
   @override
   String get scaleFocusedCards => '缩放聚焦或悬停的卡片和图块';
-
-  @override
-  String get backgroundBackdrops => '背景背景';
-
-  @override
-  String get showBackdropImages => '显示内容后面的背景图像';
 
   @override
   String get seriesThumbnails => '系列缩略图';
@@ -23746,12 +23754,6 @@ class AppLocalizationsYueHk extends AppLocalizationsYue {
 
   @override
   String get scaleFocusedCards => '縮放聚焦或懸停的卡片和圖塊';
-
-  @override
-  String get backgroundBackdrops => '背景背景';
-
-  @override
-  String get showBackdropImages => '顯示內容後面的背景影像';
 
   @override
   String get seriesThumbnails => '系列縮圖';

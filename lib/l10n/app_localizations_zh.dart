@@ -2287,6 +2287,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get epubUnavailableOnPlatform => '应用内 EPUB 渲染在此平台上尚不可用。';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return '应用内暂时无法渲染此格式（.$extension）。';
   }
@@ -3023,12 +3030,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get scaleFocusedCards => '缩放聚焦或悬停的卡片和图块';
-
-  @override
-  String get backgroundBackdrops => '背景图';
-
-  @override
-  String get showBackdropImages => '在内容后方显示背景图';
 
   @override
   String get seriesThumbnails => '显示剧集缩略图';
@@ -3786,6 +3787,13 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       '选择多声道源音频无法直接播放或直通时的转码目标格式。';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto => '自动检测\n（推荐）';
@@ -11586,9 +11594,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get showMediaDetailsOnLibraryPageDescription => '在媒体库页面顶部显示所选媒体项的详情。';
 
   @override
-  String get hideBackdropsInLibraries => '浏览库时隐藏背景海报？';
-
-  @override
   String get useDetailedSubHeadings => '使用详细的副标题';
 
   @override
@@ -14779,6 +14784,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -16942,12 +16956,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get scaleFocusedCards => '縮放聚焦或懸停的卡片和圖塊';
-
-  @override
-  String get backgroundBackdrops => '背景背景';
-
-  @override
-  String get showBackdropImages => '顯示內容後面的背景影像';
 
   @override
   String get seriesThumbnails => '顯示劇集縮圖';
@@ -22664,9 +22672,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get showMediaDetailsOnLibraryPageDescription => '在媒體庫頁面頂端顯示所選項目的詳細資訊。';
-
-  @override
-  String get hideBackdropsInLibraries => '瀏覽時隱藏背景圖？';
 
   @override
   String get useDetailedSubHeadings => '使用詳細副標題';

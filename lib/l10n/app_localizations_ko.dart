@@ -2293,6 +2293,13 @@ class AppLocalizationsKo extends AppLocalizations {
       '이 플랫폼에서는 아직 앱 내 EPUB 렌더링을 사용할 수 없습니다.';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return '이 형식(.$extension)은 아직 앱에서 표시할 수 없습니다.';
   }
@@ -3028,12 +3035,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get scaleFocusedCards => '포커스되거나 마우스를 올린 카드 및 타일 크기 조정';
-
-  @override
-  String get backgroundBackdrops => '배경 이미지';
-
-  @override
-  String get showBackdropImages => '콘텐츠 뒤에 배경 이미지 표시';
 
   @override
   String get seriesThumbnails => '시리즈 썸네일 표시';
@@ -3791,6 +3792,13 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       '원본 스트림을 다이렉트 재생하거나 패스스루할 수 없을 때 멀티채널 오디오를 트랜스코딩할 대상 형식을 선택하세요.';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto => '자동 감지\n(권장)';
@@ -11572,9 +11580,6 @@ class AppLocalizationsKo extends AppLocalizations {
       '라이브러리 페이지 상단에 선택한 항목의 정보를 표시합니다.';
 
   @override
-  String get hideBackdropsInLibraries => '탐색 중 배경 이미지 숨기기';
-
-  @override
   String get useDetailedSubHeadings => '상세 소제목 사용';
 
   @override
@@ -14749,4 +14754,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get librarySortLength => '길이';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

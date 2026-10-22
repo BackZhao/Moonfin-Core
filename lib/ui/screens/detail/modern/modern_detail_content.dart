@@ -1531,6 +1531,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
                 isActive: _vm.episodes[i].id == activeId,
                 isOnScreen: _vm.episodes[i].id == item.id,
                 contextSeasonId: _vm.effectiveSeasonId,
+                replacePage: item.type == 'Episode',
                 focusNode: i == 0
                     ? _episodesFirstFocusNode
                     : _vm.episodes[i].id == item.id

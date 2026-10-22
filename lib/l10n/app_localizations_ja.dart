@@ -2303,6 +2303,13 @@ class AppLocalizationsJa extends AppLocalizations {
       'アプリ内 EPUB レンダリングは、このプラットフォームではまだ利用できません。';
 
   @override
+  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+
+  @override
+  String get bookReadingUnavailableMessage =>
+      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+
+  @override
   String formatCannotRenderInApp(String extension) {
     return 'この形式 (.$extension) はまだアプリ内で表示できません。';
   }
@@ -3044,12 +3051,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get scaleFocusedCards => 'フォーカスまたはホバーされたカードとタイルを拡大縮小する';
-
-  @override
-  String get backgroundBackdrops => '背景の背景';
-
-  @override
-  String get showBackdropImages => 'コンテンツの後ろに背景画像を表示する';
 
   @override
   String get seriesThumbnails => 'シリーズのサムネイル';
@@ -3817,6 +3818,13 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get settingsAudioFallbackCodecDescription =>
       '元のストリームをダイレクト再生もパススルーもできない場合に、マルチチャンネルオーディオを変換する形式を選択します。';
+
+  @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
 
   @override
   String get settingsAudioFallbackCodecAuto => '自動検出\n(推奨)';
@@ -11694,9 +11702,6 @@ class AppLocalizationsJa extends AppLocalizations {
       'ライブラリページの上部に、選択中のアイテムの詳細を表示します。';
 
   @override
-  String get hideBackdropsInLibraries => '閲覧中は背景画像を非表示にしますか?';
-
-  @override
   String get useDetailedSubHeadings => '詳細な小見出しを使用';
 
   @override
@@ -14934,4 +14939,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
