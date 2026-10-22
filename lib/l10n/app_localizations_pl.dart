@@ -4061,6 +4061,13 @@ class AppLocalizationsPl extends AppLocalizations {
       'Wybierz format docelowy transkodowania dźwięku wielokanałowego, gdy strumienia źródłowego nie można odtworzyć bezpośrednio ani przekazać bez dekodowania.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Wykryj automatycznie\n(Zalecane)';
 

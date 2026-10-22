@@ -1552,6 +1552,11 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       ),
       audio.leaf('audio_fallback_codec', l10n.settingsAudioFallbackCodec),
       audio.leaf(
+        'pref_transcode_audio_codecs',
+        l10n.transcodeAudioCodecs,
+        keywords: ['transcode', 'convert', 'aac', 'opus', 'pcm', 'direct play'],
+      ),
+      audio.leaf(
         'pref_passthrough_ac3',
         l10n.ac3Passthrough,
         keywords: ['dolby digital', 'bitstream'],

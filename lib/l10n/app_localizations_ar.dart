@@ -3890,6 +3890,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'حدّد التنسيق الهدف لإعادة ترميز الصوت متعدد القنوات عندما يتعذّر تشغيل تدفق المصدر مباشرةً أو تمريره.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto => 'اكتشاف تلقائي\n(موصى به)';
 
   @override

@@ -3871,6 +3871,13 @@ class AppLocalizationsHi extends AppLocalizations {
       'जब सोर्स स्ट्रीम डायरेक्ट-प्ले या पासथ्रू न हो सके, तो मल्टी-चैनल ऑडियो को ट्रांसकोड करने का लक्ष्य फ़ॉर्मैट चुनें।';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto => 'ऑटो डिटेक्ट\n(अनुशंसित)';
 
   @override

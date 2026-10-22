@@ -3992,6 +3992,13 @@ class AppLocalizationsHr extends AppLocalizations {
       'Odaberite ciljni format za transkodiranje višekanalnog zvuka kada se izvorni stream ne može izravno reproducirati ni proslijediti.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Automatsko otkrivanje\n(preporučeno)';
 

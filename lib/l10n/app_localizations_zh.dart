@@ -3795,6 +3795,13 @@ class AppLocalizationsZh extends AppLocalizations {
       '选择多声道源音频无法直接播放或直通时的转码目标格式。';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto => '自动检测\n（推荐）';
 
   @override

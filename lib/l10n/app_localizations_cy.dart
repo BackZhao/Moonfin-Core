@@ -3902,6 +3902,13 @@ class AppLocalizationsCy extends AppLocalizations {
       'Dewiswch y fformat targed ar gyfer trawsgodio sain aml-sianel pan na ellir chwarae\'r ffrwd ffynhonnell yn uniongyrchol na\'i throsglwyddo.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Canfod yn Awtomatig\n(Argymhellir)';
 

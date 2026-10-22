@@ -3873,6 +3873,13 @@ class AppLocalizationsPa extends AppLocalizations {
       'ਜਦੋਂ ਸਰੋਤ ਸਟ੍ਰੀਮ ਸਿੱਧੀ-ਚਲਾਈ ਜਾਂ ਪਾਸ ਨਹੀਂ ਹੋ ਸਕਦੀ, ਤਾਂ ਮਲਟੀ-ਚੈਨਲ ਆਡੀਓ ਟ੍ਰਾਂਸਕੋਡ ਕਰਨ ਲਈ ਟਾਰਗੇਟ ਫਾਰਮੈਟ ਚੁਣੋ।';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto => 'ਆਟੋ ਖੋਜ\n(ਸਿਫਾਰਸ਼ੀ)';
 
   @override

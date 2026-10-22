@@ -3894,6 +3894,13 @@ class AppLocalizationsSq extends AppLocalizations {
       'Zgjidh formatin e synuar për të transkoduar audion shumëkanalëshe kur transmetimi burimor nuk mund të luhet drejtpërdrejt ose të kalojë i papërpunuar.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Zbulim automatik\n(Rekomandohet)';
 

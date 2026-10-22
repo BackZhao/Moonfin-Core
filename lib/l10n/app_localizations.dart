@@ -6826,6 +6826,18 @@ abstract class AppLocalizations {
   /// **'Select the target format to transcode multi-channel audio when the source stream cannot be direct-played or passed through.'**
   String get settingsAudioFallbackCodecDescription;
 
+  /// Setting that lists the audio codecs the server converts instead of the device playing them
+  ///
+  /// In en, this message translates to:
+  /// **'Transcode Audio Codecs'**
+  String get transcodeAudioCodecs;
+
+  /// Description for the transcode audio codecs setting
+  ///
+  /// In en, this message translates to:
+  /// **'The server converts audio in these formats instead of sending it as is.'**
+  String get transcodeAudioCodecsDescription;
+
   /// Fallback codec option: Auto
   ///
   /// In en, this message translates to:

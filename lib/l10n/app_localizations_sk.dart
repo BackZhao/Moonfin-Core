@@ -3897,6 +3897,13 @@ class AppLocalizationsSk extends AppLocalizations {
       'Vyberte cieľový formát na prekódovanie viackanálového zvuku, keď zdrojový stream nie je možné priamo prehrať ani preposlať.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Automaticky zistiť\n(odporúčané)';
 

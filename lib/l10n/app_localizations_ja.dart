@@ -3826,6 +3826,13 @@ class AppLocalizationsJa extends AppLocalizations {
       '元のストリームをダイレクト再生もパススルーもできない場合に、マルチチャンネルオーディオを変換する形式を選択します。';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto => '自動検出\n(推奨)';
 
   @override

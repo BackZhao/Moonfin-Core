@@ -3865,6 +3865,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select the target format to transcode multi-channel audio when the source stream cannot be direct-played or passed through.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto => 'Auto Detect\n(Recommended)';
 
   @override

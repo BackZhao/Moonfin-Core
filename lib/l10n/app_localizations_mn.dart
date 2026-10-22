@@ -3877,6 +3877,13 @@ class AppLocalizationsMn extends AppLocalizations {
       'Эх урсгалыг шууд тоглуулах буюу дамжуулах боломжгүй үед олон сувгийн аудиог хөрвүүлэх зорилтот форматыг сонгоно уу.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Автоматаар илрүүлэх\n(Зөвлөмжтэй)';
 

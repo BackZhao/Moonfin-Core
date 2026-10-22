@@ -5194,6 +5194,14 @@
   "@settingsAudioFallbackCodecDescription": {
     "description": "Description for audio fallback codec setting"
   },
+  "transcodeAudioCodecs": "Transcode Audio Codecs",
+  "@transcodeAudioCodecs": {
+    "description": "Setting that lists the audio codecs the server converts instead of the device playing them"
+  },
+  "transcodeAudioCodecsDescription": "The server converts audio in these formats instead of sending it as is.",
+  "@transcodeAudioCodecsDescription": {
+    "description": "Description for the transcode audio codecs setting"
+  },
   "settingsAudioFallbackCodecAuto": "Auto Detect\n(Recommended)",
   "@settingsAudioFallbackCodecAuto": {
     "description": "Fallback codec option: Auto"

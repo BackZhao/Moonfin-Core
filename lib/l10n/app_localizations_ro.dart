@@ -3921,6 +3921,13 @@ class AppLocalizationsRo extends AppLocalizations {
       'Selectează formatul țintă pentru transcodarea sunetului multicanal când fluxul sursă nu poate fi redat direct sau transmis direct (passthrough).';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Detectare automată\n(Recomandat)';
 

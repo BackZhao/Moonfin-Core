@@ -3878,6 +3878,13 @@ class AppLocalizationsId extends AppLocalizations {
       'Pilih format target untuk transcode audio multi-kanal saat stream sumber tidak dapat di-direct play atau di-passthrough.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto => 'Deteksi Otomatis\n(Disarankan)';
 
   @override

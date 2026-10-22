@@ -3891,6 +3891,13 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಮೂಲ ಸ್ಟ್ರೀಮ್ ಅನ್ನು ನೇರವಾಗಿ ಪ್ಲೇ ಮಾಡಲು ಅಥವಾ ಪಾಸ್‌ಥ್ರೂ ಮಾಡಲು ಸಾಧ್ಯವಾಗದಿದ್ದಾಗ ಬಹು-ಚಾನೆಲ್ ಆಡಿಯೋವನ್ನು ಟ್ರಾನ್ಸ್‌ಕೋಡ್ ಮಾಡಲು ಗುರಿ ಸ್ವರೂಪವನ್ನು ಆಯ್ಕೆಮಾಡಿ.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'ಸ್ವಯಂ ಪತ್ತೆ\n(ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)';
 

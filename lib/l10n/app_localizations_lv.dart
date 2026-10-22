@@ -3892,6 +3892,13 @@ class AppLocalizationsLv extends AppLocalizations {
       'Izvēlieties formātu, uz kuru pārkodēt daudzkanālu audio, ja avota straumi nevar atskaņot tieši vai pārraidīt bez izmaiņām.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Automātiska noteikšana\n(ieteicams)';
 

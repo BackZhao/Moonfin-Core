@@ -3889,6 +3889,13 @@ class AppLocalizationsNl extends AppLocalizations {
       'Selecteer het doelformaat waarnaar meerkanaalsaudio wordt getranscodeerd wanneer de bronstream niet direct kan worden afgespeeld of doorgegeven.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Automatisch detecteren\n(Aanbevolen)';
 

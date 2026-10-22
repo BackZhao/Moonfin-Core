@@ -3876,6 +3876,13 @@ class AppLocalizationsDa extends AppLocalizations {
       'Vælg det format, flerkanalslyd skal transkodes til, når kildestrømmen hverken kan afspilles direkte eller sendes igennem.';
 
   @override
+  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+
+  @override
+  String get transcodeAudioCodecsDescription =>
+      'The server converts audio in these formats instead of sending it as is.';
+
+  @override
   String get settingsAudioFallbackCodecAuto =>
       'Registrér automatisk\n(anbefales)';
 
