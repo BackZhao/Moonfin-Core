@@ -12220,6 +12220,13 @@ class AppLocalizationsBn extends AppLocalizations {
       'Android TV-তে আপনার নির্বাচিত বাহ্যিক অ্যাপে ভিডিও প্লেব্যাক খুলুন।';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'স্বয়ংক্রিয় সারিবদ্ধ';
 
   @override

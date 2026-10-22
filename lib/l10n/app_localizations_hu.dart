@@ -12334,6 +12334,13 @@ class AppLocalizationsHu extends AppLocalizations {
       'Nyisd meg a videólejátszást a kiválasztott külső alkalmazásban Android TV-n.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Automatikus sorba állítás';
 
   @override

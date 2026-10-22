@@ -2133,6 +2133,13 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: false,
   );
 
+  /// Narrows [useExternalPlayer] to Live TV, so everything else stays in the
+  /// built-in player.
+  static final externalPlayerLiveTvOnly = Preference(
+    key: 'external_player_live_tv_only',
+    defaultValue: false,
+  );
+
   static final externalPlayerComponentName = Preference(
     key: 'external_player_component',
     defaultValue: '',

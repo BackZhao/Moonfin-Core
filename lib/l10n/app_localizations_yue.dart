@@ -11907,6 +11907,13 @@ class AppLocalizationsYue extends AppLocalizations {
   String get useExternalPlayerSubtitle => '喺 Android TV 度用你揀咗嘅外部應用程式播片。';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => '自動排隊';
 
   @override

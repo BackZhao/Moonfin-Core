@@ -12224,6 +12224,13 @@ class AppLocalizationsSi extends AppLocalizations {
       'Android TV හි ඔබ තෝරාගත් බාහිර යෙදුමේ වීඩියෝ ධාවනය විවෘත කරන්න.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'ස්වයංක්‍රීය පෝලිම් කිරීම';
 
   @override

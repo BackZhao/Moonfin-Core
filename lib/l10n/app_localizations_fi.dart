@@ -12320,6 +12320,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Avaa videon toisto valitsemallasi ulkoisella sovelluksella Android TV:ssä.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Automaattinen jonotus';
 
   @override

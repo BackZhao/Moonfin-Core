@@ -11854,6 +11854,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get useExternalPlayerSubtitle => 'Android TV에서 선택한 외부 앱으로 영상을 재생합니다.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => '자동 대기열 추가';
 
   @override

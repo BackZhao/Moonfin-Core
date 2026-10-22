@@ -12196,6 +12196,13 @@ class AppLocalizationsPa extends AppLocalizations {
       'Android TV \'ਤੇ ਆਪਣੀ ਚੁਣੀ ਬਾਹਰੀ ਐਪ ਵਿੱਚ ਵੀਡੀਓ ਪਲੇਬੈਕ ਖੋਲ੍ਹੋ।';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'ਆਟੋਮੈਟਿਕ ਕਤਾਰਬੰਦੀ';
 
   @override

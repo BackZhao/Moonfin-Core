@@ -12212,6 +12212,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'افتح تشغيل الفيديو في تطبيقك الخارجي المحدد على Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'قائمة الانتظار التلقائية';
 
   @override

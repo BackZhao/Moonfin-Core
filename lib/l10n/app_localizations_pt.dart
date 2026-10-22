@@ -12305,6 +12305,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'Abra a reprodução de vídeo no aplicativo externo selecionado na Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Enfileiramento Automático';
 
   @override

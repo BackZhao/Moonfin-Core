@@ -21556,6 +21556,18 @@ abstract class AppLocalizations {
   /// **'Open video playback in your selected external app on Android TV.'**
   String get useExternalPlayerSubtitle;
 
+  /// Setting that limits the external player to Live TV channels
+  ///
+  /// In en, this message translates to:
+  /// **'Live TV Only'**
+  String get externalPlayerLiveTvOnly;
+
+  /// Description for the Live TV Only external player setting
+  ///
+  /// In en, this message translates to:
+  /// **'Use the external player for Live TV and keep everything else in the built-in player.'**
+  String get externalPlayerLiveTvOnlySubtitle;
+
   /// No description provided for @automaticQueuing.
   ///
   /// In en, this message translates to:

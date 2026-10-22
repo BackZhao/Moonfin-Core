@@ -12303,6 +12303,13 @@ class AppLocalizationsTa extends AppLocalizations {
       'Android TV இல் தேர்ந்தெடுத்த வெளிப்புற ஆப்பில் வீடியோ இயக்கத்தைத் திறக்கும்.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'தானியங்கி வரிசைப்படுத்தல்';
 
   @override

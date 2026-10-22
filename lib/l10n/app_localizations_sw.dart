@@ -12300,6 +12300,13 @@ class AppLocalizationsSw extends AppLocalizations {
       'Fungua uchezaji wa video katika programu ya nje uliyochagua kwenye Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Upangaji Foleni wa Kiotomatiki';
 
   @override

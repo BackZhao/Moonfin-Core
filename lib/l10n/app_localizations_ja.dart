@@ -11974,6 +11974,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get useExternalPlayerSubtitle => 'Android TV で、選択した外部アプリを使って動画を再生します。';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => '自動キュー追加';
 
   @override

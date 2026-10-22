@@ -12313,6 +12313,13 @@ class AppLocalizationsSq extends AppLocalizations {
       'Hap luajtjen e videos në aplikacionin e jashtëm të zgjedhur në Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Radhitja automatike';
 
   @override

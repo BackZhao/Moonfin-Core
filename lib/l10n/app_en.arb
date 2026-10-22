@@ -10921,6 +10921,14 @@
   "preferSoftwareDecodersSubtitle": "Use FFmpeg (audio) and libgav1 (AV1) before hardware decoders. Disable if HDMI audio passthrough breaks.",
   "useExternalPlayer": "Always Use External Player",
   "useExternalPlayerSubtitle": "Open video playback in your selected external app on Android TV.",
+  "externalPlayerLiveTvOnly": "Live TV Only",
+  "@externalPlayerLiveTvOnly": {
+    "description": "Setting that limits the external player to Live TV channels"
+  },
+  "externalPlayerLiveTvOnlySubtitle": "Use the external player for Live TV and keep everything else in the built-in player.",
+  "@externalPlayerLiveTvOnlySubtitle": {
+    "description": "Description for the Live TV Only external player setting"
+  },
   "automaticQueuing": "Automatic Queuing",
   "preferSdhSubtitles": "Prefer SDH Subtitles",
   "preferSdhSubtitlesSubtitle": "Prioritize SDH/CC subtitle tracks when auto-selecting.",

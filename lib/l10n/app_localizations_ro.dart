@@ -12355,6 +12355,13 @@ class AppLocalizationsRo extends AppLocalizations {
       'Deschide redarea video în aplicația externă selectată, pe Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Adăugare automată în coadă';
 
   @override

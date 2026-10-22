@@ -109,6 +109,7 @@ import '../../widgets/focus/dpad_list_tile.dart';
 import '../../widgets/focus/focusable_button.dart';
 import '../../widgets/focus/request_initial_focus.dart';
 import '../../widgets/overlay_sheet.dart';
+import '../../../playback/external_player_policy.dart';
 import '../../../playback/hdr_stream_capability.dart';
 import '../../../playback/known_defects.dart';
 import '../../../syncplay/syncplay_manager.dart';
@@ -8483,11 +8484,8 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
         forceTranscode: forceTranscode,
         useExternalPlayer:
             openInExternalPlayer ||
-            (PlatformDetection.isAndroid &&
-                PlatformDetection.isTV &&
-                GetIt.instance<UserPreferences>().get(
-                  UserPreferences.useExternalPlayer,
-                )),
+            (PlatformDetection.isTV &&
+                ExternalPlayerPolicy.coversQueue([item])),
       );
     } finally {
       _playLaunchInFlight = false;

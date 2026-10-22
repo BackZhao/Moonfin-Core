@@ -12234,6 +12234,13 @@ class AppLocalizationsVi extends AppLocalizations {
       'Mở tính năng phát lại video trong ứng dụng bên ngoài đã chọn của bạn trên Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Xếp hàng tự động';
 
   @override

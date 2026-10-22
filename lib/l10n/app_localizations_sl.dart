@@ -12292,6 +12292,13 @@ class AppLocalizationsSl extends AppLocalizations {
       'Predvajanje videa odpri v izbrani zunanji aplikaciji na Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Samodejno uvrščanje v vrsto';
 
   @override

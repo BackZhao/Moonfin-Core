@@ -12387,6 +12387,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Öffnen Sie die Videowiedergabe in Ihrer ausgewählten externen App auf Android TV.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'Automatische Warteschlange';
 
   @override

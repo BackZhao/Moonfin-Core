@@ -1854,6 +1854,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         subtitle: l10n.useExternalPlayerSubtitle,
         keywords: ['vlc', 'just player'],
       ),
+      advanced.leaf(
+        'external_player_live_tv_only',
+        l10n.externalPlayerLiveTvOnly,
+        subtitle: l10n.externalPlayerLiveTvOnlySubtitle,
+        keywords: ['vlc', 'channel'],
+      ),
     ],
     if (!PlatformDetection.isTV &&
         !PlatformDetection.isIOS &&

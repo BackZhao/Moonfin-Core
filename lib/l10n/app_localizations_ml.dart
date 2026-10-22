@@ -12345,6 +12345,13 @@ class AppLocalizationsMl extends AppLocalizations {
       'Android TV-യിൽ നിങ്ങൾ തിരഞ്ഞെടുത്ത ബാഹ്യ ആപ്പിൽ വീഡിയോ പ്ലേബാക്ക് തുറക്കുക.';
 
   @override
+  String get externalPlayerLiveTvOnly => 'Live TV Only';
+
+  @override
+  String get externalPlayerLiveTvOnlySubtitle =>
+      'Use the external player for Live TV and keep everything else in the built-in player.';
+
+  @override
   String get automaticQueuing => 'ഓട്ടോമാറ്റിക് ക്യൂയിംഗ്';
 
   @override
