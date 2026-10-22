@@ -3180,13 +3180,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fokussierte oder überfahrene Karten und Kacheln vergrößern.';
 
   @override
-  String get backgroundBackdrops => 'Hintergrundbilder';
-
-  @override
-  String get showBackdropImages =>
-      'Hintergrundbilder hinter Inhalten anzeigen.';
-
-  @override
   String get seriesThumbnails => 'Serien-Miniaturbilder';
 
   @override
@@ -12109,10 +12102,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Details des ausgewählten Elements oben auf Bibliotheksseiten anzeigen.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Hintergrundbilder beim Durchsuchen ausblenden?';
-
-  @override
   String get useDetailedSubHeadings =>
       'Verwenden Sie detaillierte Unterüberschriften';
 
@@ -15423,4 +15412,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

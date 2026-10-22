@@ -3114,12 +3114,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Масштабування сфокусованих або наведених карток і плиток';
 
   @override
-  String get backgroundBackdrops => 'Фонові фони';
-
-  @override
-  String get showBackdropImages => 'Показувати зображення фону за вмістом';
-
-  @override
   String get seriesThumbnails => 'Мініатюри серії';
 
   @override
@@ -12030,9 +12024,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Показувати деталі вибраного елемента вгорі сторінок бібліотеки.';
 
   @override
-  String get hideBackdropsInLibraries => 'Приховувати тла під час перегляду?';
-
-  @override
   String get useDetailedSubHeadings => 'Використовуйте детальні підзаголовки';
 
   @override
@@ -15323,4 +15314,13 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

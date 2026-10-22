@@ -3037,12 +3037,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get scaleFocusedCards => '포커스되거나 마우스를 올린 카드 및 타일 크기 조정';
 
   @override
-  String get backgroundBackdrops => '배경 이미지';
-
-  @override
-  String get showBackdropImages => '콘텐츠 뒤에 배경 이미지 표시';
-
-  @override
   String get seriesThumbnails => '시리즈 썸네일 표시';
 
   @override
@@ -11586,9 +11580,6 @@ class AppLocalizationsKo extends AppLocalizations {
       '라이브러리 페이지 상단에 선택한 항목의 정보를 표시합니다.';
 
   @override
-  String get hideBackdropsInLibraries => '탐색 중 배경 이미지 숨기기';
-
-  @override
   String get useDetailedSubHeadings => '상세 소제목 사용';
 
   @override
@@ -14763,4 +14754,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get librarySortLength => '길이';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

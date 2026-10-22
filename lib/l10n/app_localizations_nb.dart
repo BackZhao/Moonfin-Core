@@ -3092,12 +3092,6 @@ class AppLocalizationsNb extends AppLocalizations {
       'Skaler fokuserte eller svevende kort og fliser';
 
   @override
-  String get backgroundBackdrops => 'Bakgrunn Bakgrunner';
-
-  @override
-  String get showBackdropImages => 'Vis bakteppebilder bak innhold';
-
-  @override
   String get seriesThumbnails => 'Serieminiatyrbilder';
 
   @override
@@ -11949,9 +11943,6 @@ class AppLocalizationsNb extends AppLocalizations {
       'Vis detaljer om det valgte elementet øverst på bibliotekssidene.';
 
   @override
-  String get hideBackdropsInLibraries => 'Skjul bakgrunnsbilder mens du blar?';
-
-  @override
   String get useDetailedSubHeadings => 'Bruk detaljerte underoverskrifter';
 
   @override
@@ -15231,4 +15222,13 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

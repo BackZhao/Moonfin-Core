@@ -3093,13 +3093,6 @@ class AppLocalizationsMn extends AppLocalizations {
       'Төвлөрсөн эсвэл дээш өргөгдсөн картууд болон хавтангуудыг масштабаар тохируулна уу';
 
   @override
-  String get backgroundBackdrops => 'Арын дэвсгэр';
-
-  @override
-  String get showBackdropImages =>
-      'Агуулгын ард байгаа дэвсгэр зургийг харуулах';
-
-  @override
   String get seriesThumbnails => 'Цуврал өнгөц зураг';
 
   @override
@@ -11976,9 +11969,6 @@ class AppLocalizationsMn extends AppLocalizations {
       'Сангийн хуудасны дээд хэсэгт сонгосон зүйлийн дэлгэрэнгүйг харуулна.';
 
   @override
-  String get hideBackdropsInLibraries => 'Үзэж байхад дэвсгэр зургийг нуух уу?';
-
-  @override
   String get useDetailedSubHeadings => 'Нарийвчилсан дэд гарчгийг ашиглана уу';
 
   @override
@@ -15258,4 +15248,13 @@ class AppLocalizationsMn extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

@@ -3107,12 +3107,6 @@ class AppLocalizationsBe extends AppLocalizations {
       'Маштабуйце сфакусаваныя або наведзеныя карты і пліткі';
 
   @override
-  String get backgroundBackdrops => 'Фонавыя застаўкі';
-
-  @override
-  String get showBackdropImages => 'Паказваць выявы фону за змесцівам';
-
-  @override
   String get seriesThumbnails => 'Эскізы серыі';
 
   @override
@@ -12011,10 +12005,6 @@ class AppLocalizationsBe extends AppLocalizations {
       'Паказваць звесткі пра выбраны элемент угары старонак бібліятэкі.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Хаваць фонавыя відарысы пры праглядзе?';
-
-  @override
   String get useDetailedSubHeadings =>
       'Выкарыстоўвайце падрабязныя падзагалоўкі';
 
@@ -15307,4 +15297,13 @@ class AppLocalizationsBe extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

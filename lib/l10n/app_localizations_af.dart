@@ -3099,12 +3099,6 @@ class AppLocalizationsAf extends AppLocalizations {
       'Skaal gefokusde of gesweefde kaarte en teëls';
 
   @override
-  String get backgroundBackdrops => 'Agtergrond agtergronde';
-
-  @override
-  String get showBackdropImages => 'Wys agtergrondprente agter inhoud';
-
-  @override
   String get seriesThumbnails => 'Reeks-kleinkiekies';
 
   @override
@@ -11955,9 +11949,6 @@ class AppLocalizationsAf extends AppLocalizations {
       'Wys besonderhede van die gekose item boaan biblioteekbladsye.';
 
   @override
-  String get hideBackdropsInLibraries => 'Versteek agtergronde tydens blaai?';
-
-  @override
   String get useDetailedSubHeadings => 'Gebruik gedetailleerde subopskrifte';
 
   @override
@@ -15242,4 +15233,13 @@ class AppLocalizationsAf extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

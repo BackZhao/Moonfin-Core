@@ -3101,12 +3101,6 @@ class AppLocalizationsEt extends AppLocalizations {
       'Skaalake fokuseeritud või hõljutatud kaarte ja paanid';
 
   @override
-  String get backgroundBackdrops => 'Tausta taustad';
-
-  @override
-  String get showBackdropImages => 'Kuva sisu taga taustapildid';
-
-  @override
   String get seriesThumbnails => 'Sarja pisipildid';
 
   @override
@@ -11965,9 +11959,6 @@ class AppLocalizationsEt extends AppLocalizations {
       'Näita valitud üksuse üksikasju kogulehtede ülaosas.';
 
   @override
-  String get hideBackdropsInLibraries => 'Kas peita taustapildid sirvimisel?';
-
-  @override
   String get useDetailedSubHeadings => 'Kasutage üksikasjalikke alapealkirju';
 
   @override
@@ -15247,4 +15238,13 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

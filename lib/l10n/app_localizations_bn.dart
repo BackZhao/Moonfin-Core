@@ -3088,12 +3088,6 @@ class AppLocalizationsBn extends AppLocalizations {
   String get scaleFocusedCards => 'স্কেল ফোকাসড বা হোভার্ড কার্ড এবং টাইলস';
 
   @override
-  String get backgroundBackdrops => 'ব্যাকগ্রাউন্ড ব্যাকড্রপ';
-
-  @override
-  String get showBackdropImages => 'বিষয়বস্তুর পিছনে ব্যাকড্রপ ছবি দেখান';
-
-  @override
   String get seriesThumbnails => 'সিরিজ থাম্বনেল';
 
   @override
@@ -11944,9 +11938,6 @@ class AppLocalizationsBn extends AppLocalizations {
       'লাইব্রেরি পেজের উপরে নির্বাচিত আইটেমের বিস্তারিত দেখান।';
 
   @override
-  String get hideBackdropsInLibraries => 'ব্রাউজ করার সময় ব্যাকড্রপ লুকাবেন?';
-
-  @override
   String get useDetailedSubHeadings => 'বিস্তারিত উপ-শিরোনাম ব্যবহার করুন';
 
   @override
@@ -15223,4 +15214,13 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

@@ -3115,13 +3115,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Масштабируйте сфокусированные или наведенные карты и плитки';
 
   @override
-  String get backgroundBackdrops => 'Фоновые изображения';
-
-  @override
-  String get showBackdropImages =>
-      'Показывать фоновые изображения позади контента';
-
-  @override
   String get seriesThumbnails => 'Миниатюры серий';
 
   @override
@@ -12027,9 +12020,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Показывать сведения о выбранном элементе вверху страниц библиотеки.';
 
   @override
-  String get hideBackdropsInLibraries => 'Скрывать фоны при просмотре?';
-
-  @override
   String get useDetailedSubHeadings => 'Подробные подзаголовки';
 
   @override
@@ -15311,4 +15301,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

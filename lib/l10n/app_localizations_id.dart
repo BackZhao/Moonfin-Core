@@ -3095,13 +3095,6 @@ class AppLocalizationsId extends AppLocalizations {
       'Perbesar kartu dan ubin yang difokuskan atau diarahkan kursor';
 
   @override
-  String get backgroundBackdrops => 'Backdrop Latar Belakang';
-
-  @override
-  String get showBackdropImages =>
-      'Tampilkan gambar backdrop di belakang konten';
-
-  @override
   String get seriesThumbnails => 'Tampilkan Thumbnail Serial';
 
   @override
@@ -11953,10 +11946,6 @@ class AppLocalizationsId extends AppLocalizations {
       'Tampilkan detail item yang dipilih di bagian atas halaman Pustaka.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Sembunyikan Backdrop saat Menjelajah?';
-
-  @override
   String get useDetailedSubHeadings => 'Gunakan Subjudul Terperinci';
 
   @override
@@ -15237,4 +15226,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

@@ -3109,12 +3109,6 @@ class AppLocalizationsCs extends AppLocalizations {
       'Měřítko zaměřené nebo vznášené karty a dlaždice';
 
   @override
-  String get backgroundBackdrops => 'Pozadí pozadí';
-
-  @override
-  String get showBackdropImages => 'Zobrazit obrázky pozadí za obsahem';
-
-  @override
   String get seriesThumbnails => 'Miniatury seriálu';
 
   @override
@@ -11984,9 +11978,6 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zobrazovat detaily vybrané položky v horní části stránek knihovny.';
 
   @override
-  String get hideBackdropsInLibraries => 'Skrýt pozadí při procházení?';
-
-  @override
   String get useDetailedSubHeadings => 'Použijte podrobné podnadpisy';
 
   @override
@@ -15278,4 +15269,13 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

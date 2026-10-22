@@ -3097,13 +3097,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chia tỷ lệ thẻ và ô xếp tập trung hoặc di chuột';
 
   @override
-  String get backgroundBackdrops => 'Phông Nền Nền';
-
-  @override
-  String get showBackdropImages =>
-      'Hiển thị hình ảnh phông nền phía sau nội dung';
-
-  @override
   String get seriesThumbnails => 'Hình thu nhỏ của loạt phim';
 
   @override
@@ -11956,9 +11949,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Hiển thị chi tiết của mục đang chọn ở đầu trang Thư viện.';
 
   @override
-  String get hideBackdropsInLibraries => 'Ẩn ảnh nền khi duyệt?';
-
-  @override
   String get useDetailedSubHeadings => 'Sử dụng các tiêu đề phụ chi tiết';
 
   @override
@@ -15247,4 +15237,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

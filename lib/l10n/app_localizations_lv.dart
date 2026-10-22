@@ -3109,12 +3109,6 @@ class AppLocalizationsLv extends AppLocalizations {
       'Mērogojiet fokusētas vai kursora kārtis un flīzes';
 
   @override
-  String get backgroundBackdrops => 'Fona foni';
-
-  @override
-  String get showBackdropImages => 'Rādīt fona kolāžas attēlus aiz satura';
-
-  @override
   String get seriesThumbnails => 'Sērijas sīktēli';
 
   @override
@@ -12002,10 +11996,6 @@ class AppLocalizationsLv extends AppLocalizations {
       'Rādīt izvēlētā vienuma informāciju bibliotēkas lapu augšdaļā.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Slēpt fona attēlus pārlūkošanas laikā?';
-
-  @override
   String get useDetailedSubHeadings =>
       'Izmantojiet detalizētus apakšvirsrakstus';
 
@@ -15299,4 +15289,13 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

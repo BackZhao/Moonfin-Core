@@ -3041,12 +3041,6 @@ class AppLocalizationsYue extends AppLocalizations {
   String get scaleFocusedCards => '縮放聚焦或懸停的卡片和圖塊';
 
   @override
-  String get backgroundBackdrops => '背景背景';
-
-  @override
-  String get showBackdropImages => '顯示內容後面的背景影像';
-
-  @override
   String get seriesThumbnails => '系列縮圖';
 
   @override
@@ -11644,9 +11638,6 @@ class AppLocalizationsYue extends AppLocalizations {
   String get showMediaDetailsOnLibraryPageDescription => '喺媒體庫頁面頂部顯示已揀項目嘅詳情。';
 
   @override
-  String get hideBackdropsInLibraries => '瀏覽嗰陣隱藏背景圖？';
-
-  @override
   String get useDetailedSubHeadings => '用詳細副標題';
 
   @override
@@ -14866,6 +14857,15 @@ class AppLocalizationsYue extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
 
 /// The translations for Yue Chinese Cantonese, as used in China (`yue_CN`).
@@ -16772,12 +16772,6 @@ class AppLocalizationsYueCn extends AppLocalizationsYue {
 
   @override
   String get scaleFocusedCards => '缩放聚焦或悬停的卡片和图块';
-
-  @override
-  String get backgroundBackdrops => '背景背景';
-
-  @override
-  String get showBackdropImages => '显示内容后面的背景图像';
 
   @override
   String get seriesThumbnails => '系列缩略图';
@@ -23760,12 +23754,6 @@ class AppLocalizationsYueHk extends AppLocalizationsYue {
 
   @override
   String get scaleFocusedCards => '縮放聚焦或懸停的卡片和圖塊';
-
-  @override
-  String get backgroundBackdrops => '背景背景';
-
-  @override
-  String get showBackdropImages => '顯示內容後面的背景影像';
 
   @override
   String get seriesThumbnails => '系列縮圖';

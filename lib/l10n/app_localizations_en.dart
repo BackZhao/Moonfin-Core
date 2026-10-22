@@ -3084,12 +3084,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scaleFocusedCards => 'Scale focused or hovered cards and tiles';
 
   @override
-  String get backgroundBackdrops => 'Background Backdrops';
-
-  @override
-  String get showBackdropImages => 'Show backdrop images behind content';
-
-  @override
   String get seriesThumbnails => 'Display Series Thumbnails';
 
   @override
@@ -11883,9 +11877,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Show details of the selected item at the top of Library pages.';
 
   @override
-  String get hideBackdropsInLibraries => 'Hide Backdrops While Browsing';
-
-  @override
   String get useDetailedSubHeadings => 'Use Detailed Sub-Headings';
 
   @override
@@ -15160,6 +15151,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -18083,12 +18083,6 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get scaleFocusedCards => 'Scale focused or hovered cards and tiles';
-
-  @override
-  String get backgroundBackdrops => 'Background Backdrops';
-
-  @override
-  String get showBackdropImages => 'Show backdrop images behind content';
 
   @override
   String get seriesThumbnails => 'Display Series Thumbnails';
@@ -24914,9 +24908,6 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   @override
   String get showMediaDetailsOnLibraryPageDescription =>
       'Show details of the selected item at the top of Library pages.';
-
-  @override
-  String get hideBackdropsInLibraries => 'Hide Backdrops while Browsing?';
 
   @override
   String get useDetailedSubHeadings => 'Use Detailed Sub-Headings';

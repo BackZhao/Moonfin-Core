@@ -3106,13 +3106,6 @@ class AppLocalizationsMl extends AppLocalizations {
       'സ്കെയിൽ ഫോക്കസ് ചെയ്‌തതോ ഹോവർ ചെയ്‌തതോ ആയ കാർഡുകളും ടൈലുകളും';
 
   @override
-  String get backgroundBackdrops => 'പശ്ചാത്തല പശ്ചാത്തലങ്ങൾ';
-
-  @override
-  String get showBackdropImages =>
-      'ഉള്ളടക്കത്തിന് പിന്നിലെ ബാക്ക്‌ഡ്രോപ്പ് ചിത്രങ്ങൾ കാണിക്കുക';
-
-  @override
   String get seriesThumbnails => 'സീരീസ് ലഘുചിത്രങ്ങൾ';
 
   @override
@@ -12064,10 +12057,6 @@ class AppLocalizationsMl extends AppLocalizations {
       'ലൈബ്രറി പേജുകളുടെ മുകളിൽ തിരഞ്ഞെടുത്ത ഇനത്തിന്റെ വിശദാംശങ്ങൾ കാണിക്കുക.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'ബ്രൗസ് ചെയ്യുമ്പോൾ ബാക്ക്‌ഡ്രോപ്പുകൾ മറയ്ക്കണോ?';
-
-  @override
   String get useDetailedSubHeadings => 'വിശദമായ ഉപതലക്കെട്ടുകൾ ഉപയോഗിക്കുക';
 
   @override
@@ -15358,4 +15347,13 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

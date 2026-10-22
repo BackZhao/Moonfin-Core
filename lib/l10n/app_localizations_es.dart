@@ -3108,12 +3108,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get scaleFocusedCards => 'Escalar tarjetas enfocadas';
 
   @override
-  String get backgroundBackdrops => 'Fondos de pantalla';
-
-  @override
-  String get showBackdropImages => 'Mostrar imágenes de fondo';
-
-  @override
   String get seriesThumbnails => 'Miniaturas de series';
 
   @override
@@ -12054,10 +12048,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mostrar los detalles del elemento seleccionado en la parte superior de las páginas de biblioteca.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      '¿Ocultar las imágenes de fondo al explorar?';
-
-  @override
   String get useDetailedSubHeadings => 'Utilice subtítulos detallados';
 
   @override
@@ -15354,6 +15344,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -17397,13 +17396,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get scaleFocusedCards =>
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
-
-  @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
 
   @override
   String get seriesThumbnails => 'Mostrar miniaturas de series';
@@ -24796,13 +24788,6 @@ class AppLocalizationsEsAr extends AppLocalizationsEs {
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
 
   @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
-
-  @override
   String get seriesThumbnails => 'Miniaturas de series';
 
   @override
@@ -32089,13 +32074,6 @@ class AppLocalizationsEsDo extends AppLocalizationsEs {
   @override
   String get scaleFocusedCards =>
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
-
-  @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
 
   @override
   String get seriesThumbnails => 'Miniaturas de series';
@@ -39434,13 +39412,6 @@ class AppLocalizationsEsMx extends AppLocalizationsEs {
   @override
   String get scaleFocusedCards =>
       'Escalar tarjetas y mosaicos enfocados o suspendidos';
-
-  @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imágenes de fondo detrás del contenido';
 
   @override
   String get seriesThumbnails => 'Miniaturas de series';

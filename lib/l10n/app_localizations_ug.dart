@@ -3096,13 +3096,6 @@ class AppLocalizationsUg extends AppLocalizations {
       'تارازا فوكۇسلانغان ياكى يانتۇ كارتا ۋە كاھىش';
 
   @override
-  String get backgroundBackdrops => 'تەگلىك ئارقا كۆرۈنۈش';
-
-  @override
-  String get showBackdropImages =>
-      'ئارقا كۆرۈنۈشتىكى رەسىملەرنى مەزمۇننىڭ ئارقىسىدا كۆرسىتىڭ';
-
-  @override
   String get seriesThumbnails => 'Series Thumbnails';
 
   @override
@@ -11984,10 +11977,6 @@ class AppLocalizationsUg extends AppLocalizations {
       'ئامبار بەتلىرىنىڭ ئۈستىدە تاللانغان تۈرنىڭ تەپسىلاتلىرىنى كۆرسىتىدۇ.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'كۆرگەندە تەگلىك رەسىملىرى يوشۇرۇلسۇنمۇ؟';
-
-  @override
   String get useDetailedSubHeadings => 'تەپسىلىي تارماق ماۋزۇلارنى ئىشلىتىش';
 
   @override
@@ -15271,4 +15260,13 @@ class AppLocalizationsUg extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

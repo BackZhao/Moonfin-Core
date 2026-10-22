@@ -3104,13 +3104,6 @@ class AppLocalizationsTe extends AppLocalizations {
       'స్కేల్ ఫోకస్డ్ లేదా హోవర్డ్ కార్డ్‌లు మరియు టైల్స్';
 
   @override
-  String get backgroundBackdrops => 'నేపథ్య నేపథ్యాలు';
-
-  @override
-  String get showBackdropImages =>
-      'కంటెంట్ వెనుక బ్యాక్‌డ్రాప్ చిత్రాలను చూపండి';
-
-  @override
   String get seriesThumbnails => 'సిరీస్ సూక్ష్మచిత్రాలు';
 
   @override
@@ -12021,10 +12014,6 @@ class AppLocalizationsTe extends AppLocalizations {
       'లైబ్రరీ పేజీల ఎగువన ఎంచుకున్న అంశం వివరాలను చూపుతుంది.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'బ్రౌజ్ చేస్తున్నప్పుడు బ్యాక్‌డ్రాప్‌లను దాచాలా?';
-
-  @override
   String get useDetailedSubHeadings => 'వివరణాత్మక ఉపశీర్షికలను ఉపయోగించండి';
 
   @override
@@ -15308,4 +15297,13 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

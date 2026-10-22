@@ -3103,12 +3103,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Redimensionar cards focados ou com cursor sobre eles';
 
   @override
-  String get backgroundBackdrops => 'Imagens de Fundo';
-
-  @override
-  String get showBackdropImages => 'Mostrar imagens de fundo atrás do conteúdo';
-
-  @override
   String get seriesThumbnails => 'Miniaturas de Séries';
 
   @override
@@ -12024,9 +12018,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Mostrar os detalhes do item selecionado no topo das páginas da Biblioteca.';
 
   @override
-  String get hideBackdropsInLibraries => 'Ocultar Panos de Fundo ao Navegar?';
-
-  @override
   String get useDetailedSubHeadings => 'Use subtítulos detalhados';
 
   @override
@@ -15321,6 +15312,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -18371,13 +18371,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get scaleFocusedCards =>
       'Dimensione cartões e blocos focados ou pairados';
-
-  @override
-  String get backgroundBackdrops => 'Cenários de fundo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imagens de fundo por trás do conteúdo';
 
   @override
   String get seriesThumbnails => 'Miniaturas de séries';
@@ -27264,10 +27257,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
       'Mostrar os detalhes do item selecionado no topo das páginas de biblioteca.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Ocultar imagens de fundo durante a navegação?';
-
-  @override
   String get useDetailedSubHeadings => 'Usar subtítulos detalhados';
 
   @override
@@ -33471,13 +33460,6 @@ class AppLocalizationsPtPt extends AppLocalizationsPt {
   @override
   String get scaleFocusedCards =>
       'Ampliar cartões e mosaicos em foco ou sob o cursor';
-
-  @override
-  String get backgroundBackdrops => 'Cenários de fundo';
-
-  @override
-  String get showBackdropImages =>
-      'Mostrar imagens de fundo por trás do conteúdo';
 
   @override
   String get seriesThumbnails => 'Mostrar miniaturas das séries';
@@ -40752,9 +40734,6 @@ class AppLocalizationsPtPt extends AppLocalizationsPt {
   @override
   String get showMediaDetailsOnLibraryPageDescription =>
       'Mostrar os detalhes do item selecionado no topo das páginas da Biblioteca.';
-
-  @override
-  String get hideBackdropsInLibraries => 'Ocultar imagens de fundo ao navegar';
 
   @override
   String get useDetailedSubHeadings => 'Utilizar subtítulos detalhados';

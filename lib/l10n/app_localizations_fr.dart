@@ -3124,13 +3124,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Agrandir les cartes et vignettes focalisées ou survolées';
 
   @override
-  String get backgroundBackdrops => 'Arrière-plans illustrés';
-
-  @override
-  String get showBackdropImages =>
-      'Afficher des images d’arrière-plan derrière le contenu';
-
-  @override
   String get seriesThumbnails => 'Afficher le visuel de la série';
 
   @override
@@ -12132,10 +12125,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Afficher les détails de l\'élément sélectionné en haut des pages de la bibliothèque.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Masquer les vignettes pendant la navigation';
-
-  @override
   String get useDetailedSubHeadings => 'Informations détaillées sous le titre';
 
   @override
@@ -15452,4 +15441,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Durée';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

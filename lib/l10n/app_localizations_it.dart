@@ -3103,13 +3103,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Ingrandisci le schede e i riquadri in focus o hover';
 
   @override
-  String get backgroundBackdrops => 'Sfondi';
-
-  @override
-  String get showBackdropImages =>
-      'Mostra immagini di sfondo dietro i contenuti';
-
-  @override
   String get seriesThumbnails => 'Miniature Serie';
 
   @override
@@ -12030,10 +12023,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Mostra i dettagli dell\'elemento selezionato in cima alle pagine della Libreria.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Nascondere gli Sfondi durante la Navigazione?';
-
-  @override
   String get useDetailedSubHeadings => 'Usa Sottotitoli Dettagliati';
 
   @override
@@ -15333,4 +15322,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

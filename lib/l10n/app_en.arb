@@ -4195,14 +4195,6 @@
   "@scaleFocusedCards": {
     "description": "Description for focus expansion animation"
   },
-  "backgroundBackdrops": "Background Backdrops",
-  "@backgroundBackdrops": {
-    "description": "Setting for background backdrops"
-  },
-  "showBackdropImages": "Show backdrop images behind content",
-  "@showBackdropImages": {
-    "description": "Description for background backdrops"
-  },
   "seriesThumbnails": "Display Series Thumbnails",
   "@seriesThumbnails": {
     "description": "Setting for series thumbnails"
@@ -10890,10 +10882,6 @@
   "@showMediaDetailsOnLibraryPageDescription": {
     "description": "Setting description to show/hide focused media details at the top of the library page"
   },
-  "hideBackdropsInLibraries": "Hide Backdrops While Browsing",
-  "@hideBackdropsInLibraries": {
-    "description": "Setting title to show/hide backdrops when browsing library pages"
-  },
   "useDetailedSubHeadings": "Use Detailed Sub-Headings",
   "@useDetailedSubHeadings": {
     "description": "Label for setting to toggle detailed or minimal subrow on library pages"
@@ -13977,5 +13965,17 @@
   "librarySortLength": "Length",
   "@librarySortLength": {
     "description": "Sort option for music: by track or album length"
+  },
+  "homeScreenBackdrop": "Home Screen Backdrop",
+  "@homeScreenBackdrop": {
+    "description": "Setting to show or hide the backdrop image behind the home screen"
+  },
+  "detailsScreenBackdrop": "Details Screen Backdrop",
+  "@detailsScreenBackdrop": {
+    "description": "Setting to show or hide the backdrop image behind the item details screen"
+  },
+  "libraryBackdrops": "Library Backdrops",
+  "@libraryBackdrops": {
+    "description": "Setting to show or hide backdrop images while browsing library pages"
   }
 }

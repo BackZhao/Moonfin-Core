@@ -3104,13 +3104,6 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಸ್ಕೇಲ್ ಫೋಕಸ್ಡ್ ಅಥವಾ ಹೋವರ್ಡ್ ಕಾರ್ಡ್‌ಗಳು ಮತ್ತು ಟೈಲ್ಸ್';
 
   @override
-  String get backgroundBackdrops => 'ಹಿನ್ನೆಲೆ ಹಿನ್ನೆಲೆಗಳು';
-
-  @override
-  String get showBackdropImages =>
-      'ವಿಷಯದ ಹಿಂದೆ ಬ್ಯಾಕ್‌ಡ್ರಾಪ್ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಿ';
-
-  @override
   String get seriesThumbnails => 'ಸರಣಿ ಥಂಬ್‌ನೇಲ್‌ಗಳು';
 
   @override
@@ -12016,10 +12009,6 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಲೈಬ್ರರಿ ಪುಟಗಳ ಮೇಲ್ಭಾಗದಲ್ಲಿ ಆಯ್ಕೆಮಾಡಿದ ಐಟಂನ ವಿವರಗಳನ್ನು ತೋರಿಸಿ.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'ಬ್ರೌಸ್ ಮಾಡುವಾಗ ಬ್ಯಾಕ್‌ಡ್ರಾಪ್‌ಗಳನ್ನು ಮರೆಮಾಡುವುದೇ?';
-
-  @override
   String get useDetailedSubHeadings => 'ವಿವರವಾದ ಉಪ-ಶೀರ್ಷಿಕೆಗಳನ್ನು ಬಳಸಿ';
 
   @override
@@ -15307,4 +15296,13 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

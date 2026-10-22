@@ -3091,12 +3091,6 @@ class AppLocalizationsSi extends AppLocalizations {
       'පරිමාණ නාභිගත කළ හෝ තබා ඇති කාඩ්පත් සහ ටයිල්';
 
   @override
-  String get backgroundBackdrops => 'පසුබිම් පසුබිම්';
-
-  @override
-  String get showBackdropImages => 'අන්තර්ගතය පිටුපස පසුබිම් රූප පෙන්වන්න';
-
-  @override
   String get seriesThumbnails => 'මාලාවේ සිඟිති රූ';
 
   @override
@@ -11946,9 +11940,6 @@ class AppLocalizationsSi extends AppLocalizations {
       'පුස්තකාල පිටුවල ඉහළින් තෝරාගත් අයිතමයේ විස්තර පෙන්වන්න.';
 
   @override
-  String get hideBackdropsInLibraries => 'පිරික්සන විට පසුබිම් සඟවන්නද?';
-
-  @override
   String get useDetailedSubHeadings => 'විස්තරාත්මක උප-මාතෘකා භාවිත කරන්න';
 
   @override
@@ -15230,4 +15221,13 @@ class AppLocalizationsSi extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

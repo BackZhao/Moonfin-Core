@@ -3109,12 +3109,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'قم بتوسيع نطاق البطاقات والبلاطات المركزة أو التي تم تمريرها';
 
   @override
-  String get backgroundBackdrops => 'الخلفيات الخلفية';
-
-  @override
-  String get showBackdropImages => 'إظهار الصور الخلفية خلف المحتوى';
-
-  @override
   String get seriesThumbnails => 'الصور المصغرة للسلسلة';
 
   @override
@@ -11935,9 +11929,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'إظهار تفاصيل العنصر المحدد في أعلى صفحات المكتبة.';
 
   @override
-  String get hideBackdropsInLibraries => 'إخفاء الخلفيات أثناء التصفح؟';
-
-  @override
   String get useDetailedSubHeadings => 'استخدم العناوين الفرعية التفصيلية';
 
   @override
@@ -15219,4 +15210,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

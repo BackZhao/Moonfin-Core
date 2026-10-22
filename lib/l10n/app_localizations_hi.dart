@@ -3090,12 +3090,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get scaleFocusedCards => 'स्केल केंद्रित या मँडरा कार्ड और टाइल्स';
 
   @override
-  String get backgroundBackdrops => 'पृष्ठभूमि पृष्ठभूमि';
-
-  @override
-  String get showBackdropImages => 'सामग्री के पीछे पृष्ठभूमि छवियाँ दिखाएँ';
-
-  @override
   String get seriesThumbnails => 'श्रृंखला थंबनेल';
 
   @override
@@ -11933,9 +11927,6 @@ class AppLocalizationsHi extends AppLocalizations {
       'लाइब्रेरी पेजों के शीर्ष पर चुने गए आइटम का विवरण दिखाएँ।';
 
   @override
-  String get hideBackdropsInLibraries => 'ब्राउज़ करते समय बैकड्रॉप छिपाएँ?';
-
-  @override
   String get useDetailedSubHeadings => 'विस्तृत उप-शीर्षक इस्तेमाल करें';
 
   @override
@@ -15215,4 +15206,13 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

@@ -3110,12 +3110,6 @@ class AppLocalizationsFi extends AppLocalizations {
       'Skaalaa kohdennettuja tai leijuvia kortteja ja laattoja';
 
   @override
-  String get backgroundBackdrops => 'Tausta taustat';
-
-  @override
-  String get showBackdropImages => 'Näytä taustakuvat sisällön takana';
-
-  @override
   String get seriesThumbnails => 'Sarjan pikkukuvat';
 
   @override
@@ -12042,10 +12036,6 @@ class AppLocalizationsFi extends AppLocalizations {
       'Näytä valitun kohteen tiedot kirjastosivujen yläosassa.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Piilota taustakuvat selaamisen aikana';
-
-  @override
   String get useDetailedSubHeadings => 'Käytä yksityiskohtaisia alaotsikoita';
 
   @override
@@ -15342,4 +15332,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Pituus';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

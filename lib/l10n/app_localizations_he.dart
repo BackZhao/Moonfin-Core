@@ -3080,12 +3080,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get scaleFocusedCards => 'קנה מידה של קלפים ואריחים ממוקדים או מרחפים';
 
   @override
-  String get backgroundBackdrops => 'רקע רקע';
-
-  @override
-  String get showBackdropImages => 'הצג תמונות רקע מאחורי תוכן';
-
-  @override
   String get seriesThumbnails => 'תמונות ממוזערות של סדרה';
 
   @override
@@ -11835,9 +11829,6 @@ class AppLocalizationsHe extends AppLocalizations {
       'הצג את פרטי הפריט הנבחר בראש דפי הספרייה.';
 
   @override
-  String get hideBackdropsInLibraries => 'להסתיר תמונות רקע בעת גלישה?';
-
-  @override
   String get useDetailedSubHeadings => 'השתמש בכותרות משנה מפורטות';
 
   @override
@@ -15105,4 +15096,13 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

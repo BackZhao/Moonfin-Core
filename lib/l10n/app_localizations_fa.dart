@@ -3083,12 +3083,6 @@ class AppLocalizationsFa extends AppLocalizations {
       'کارت‌ها و کاشی‌های متمرکز یا شناور شده را مقیاس کنید';
 
   @override
-  String get backgroundBackdrops => 'پس زمینه پس زمینه';
-
-  @override
-  String get showBackdropImages => 'نمایش تصاویر پس زمینه پشت محتوا';
-
-  @override
   String get seriesThumbnails => 'ریز عکسهای سری';
 
   @override
@@ -11898,9 +11892,6 @@ class AppLocalizationsFa extends AppLocalizations {
       'نمایش جزئیات مورد انتخاب‌شده در بالای صفحات کتابخانه.';
 
   @override
-  String get hideBackdropsInLibraries => 'پنهان کردن پس‌زمینه‌ها هنگام مرور؟';
-
-  @override
   String get useDetailedSubHeadings => 'از عناوین فرعی تفصیلی استفاده کنید';
 
   @override
@@ -15178,4 +15169,13 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

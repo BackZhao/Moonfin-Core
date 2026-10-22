@@ -3134,13 +3134,6 @@ class AppLocalizationsRo extends AppLocalizations {
       'Scalează cardurile și plăcile focalizate sau cu cursorul deasupra';
 
   @override
-  String get backgroundBackdrops => 'Imagini de fundal';
-
-  @override
-  String get showBackdropImages =>
-      'Afișează imagini de fundal în spatele conținutului';
-
-  @override
   String get seriesThumbnails => 'Afișează miniaturile serialului';
 
   @override
@@ -12072,10 +12065,6 @@ class AppLocalizationsRo extends AppLocalizations {
       'Afișează detaliile elementului selectat în partea de sus a paginilor de bibliotecă.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Ascunzi imaginile de fundal în timpul navigării?';
-
-  @override
   String get useDetailedSubHeadings => 'Folosește subtitluri detaliate';
 
   @override
@@ -15392,4 +15381,13 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

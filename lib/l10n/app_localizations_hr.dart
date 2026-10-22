@@ -3210,12 +3210,6 @@ class AppLocalizationsHr extends AppLocalizations {
       'Skalirajte fokusirane ili lebdeće kartice i pločice';
 
   @override
-  String get backgroundBackdrops => 'Pozadinske pozadine';
-
-  @override
-  String get showBackdropImages => 'Prikaži slike pozadine iza sadržaja';
-
-  @override
   String get seriesThumbnails => 'Sličice serije';
 
   @override
@@ -12163,10 +12157,6 @@ class AppLocalizationsHr extends AppLocalizations {
       'Prikaži detalje odabrane stavke na vrhu stranica biblioteke.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Sakriti pozadinske slike pri pregledavanju?';
-
-  @override
   String get useDetailedSubHeadings => 'Koristi detaljne podnaslove';
 
   @override
@@ -15454,4 +15444,13 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

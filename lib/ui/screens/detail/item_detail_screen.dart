@@ -1552,7 +1552,9 @@ class _DetailContentState extends State<_DetailContent> {
     final blurAmount = widget.prefs
         .get(UserPreferences.detailsBackgroundBlurAmount)
         .toDouble();
-    final backdropEnabled = widget.prefs.get(UserPreferences.backdropEnabled);
+    final backdropEnabled = widget.prefs.get(
+      UserPreferences.detailsBackdropEnabled,
+    );
     final useSplitLayout =
         item.type == 'Person' && _useDesktopDetailLayout(context);
     final isAlbumOrPlaylist =

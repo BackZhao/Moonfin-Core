@@ -3108,12 +3108,6 @@ class AppLocalizationsSw extends AppLocalizations {
   String get scaleFocusedCards => 'Kadi na vigae vilivyolengwa au kuelea juu';
 
   @override
-  String get backgroundBackdrops => 'Mandharinyuma';
-
-  @override
-  String get showBackdropImages => 'Onyesha picha za mandhari nyuma ya maudhui';
-
-  @override
   String get seriesThumbnails => 'Vijipicha vya mfululizo';
 
   @override
@@ -12021,9 +12015,6 @@ class AppLocalizationsSw extends AppLocalizations {
       'Onyesha maelezo ya kipengee kilichochaguliwa juu ya kurasa za Maktaba.';
 
   @override
-  String get hideBackdropsInLibraries => 'Ficha Mandharinyuma Unapovinjari?';
-
-  @override
   String get useDetailedSubHeadings => 'Tumia Vichwa Vidogo vya Kina';
 
   @override
@@ -15314,4 +15305,13 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

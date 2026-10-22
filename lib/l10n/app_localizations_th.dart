@@ -3080,12 +3080,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get scaleFocusedCards => 'ปรับขนาดการ์ดและไทล์ที่เน้นหรือโฮเวอร์';
 
   @override
-  String get backgroundBackdrops => 'ฉากหลัง';
-
-  @override
-  String get showBackdropImages => 'แสดงภาพฉากหลังเบื้องหลังเนื้อหา';
-
-  @override
   String get seriesThumbnails => 'ภาพขนาดย่อของซีรีส์';
 
   @override
@@ -11888,9 +11882,6 @@ class AppLocalizationsTh extends AppLocalizations {
       'แสดงรายละเอียดของรายการที่เลือกไว้ด้านบนของหน้าคลังสื่อ';
 
   @override
-  String get hideBackdropsInLibraries => 'ซ่อนภาพพื้นหลังขณะเรียกดูหรือไม่?';
-
-  @override
   String get useDetailedSubHeadings => 'ใช้หัวข้อย่อยโดยละเอียด';
 
   @override
@@ -15165,4 +15156,13 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

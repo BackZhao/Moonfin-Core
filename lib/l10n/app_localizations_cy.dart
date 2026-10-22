@@ -3119,13 +3119,6 @@ class AppLocalizationsCy extends AppLocalizations {
       'Cardiau a theils â ffocws ar raddfa neu hofran';
 
   @override
-  String get backgroundBackdrops => 'Cefndir Cefndir';
-
-  @override
-  String get showBackdropImages =>
-      'Dangos delweddau cefndir y tu ôl i\'r cynnwys';
-
-  @override
   String get seriesThumbnails => 'Mân-luniau Cyfres';
 
   @override
@@ -12005,9 +11998,6 @@ class AppLocalizationsCy extends AppLocalizations {
       'Dangos manylion yr eitem a ddewiswyd ar frig tudalennau\'r Llyfrgell.';
 
   @override
-  String get hideBackdropsInLibraries => 'Cuddio Cefndiroedd wrth Bori?';
-
-  @override
   String get useDetailedSubHeadings => 'Defnyddiwch Is-benawdau Manwl';
 
   @override
@@ -15297,4 +15287,13 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

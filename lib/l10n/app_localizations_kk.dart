@@ -3100,12 +3100,6 @@ class AppLocalizationsKk extends AppLocalizations {
       'Фокусталған немесе жылжытылған карталар мен тақтайшаларды масштабтаңыз';
 
   @override
-  String get backgroundBackdrops => 'Фондық фон';
-
-  @override
-  String get showBackdropImages => 'Мазмұнның артындағы фон суреттерін көрсету';
-
-  @override
   String get seriesThumbnails => 'Нобайлар сериясы';
 
   @override
@@ -11998,10 +11992,6 @@ class AppLocalizationsKk extends AppLocalizations {
       'Таңдалған элементтің мәліметтерін кітапхана беттерінің жоғарғы жағында көрсету.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Шолу кезінде фондық кескіндерді жасыру керек пе?';
-
-  @override
   String get useDetailedSubHeadings => 'Толық ішкі тақырыптарды пайдалану';
 
   @override
@@ -15284,4 +15274,13 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

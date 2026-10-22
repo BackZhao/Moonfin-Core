@@ -3107,12 +3107,6 @@ class AppLocalizationsMk extends AppLocalizations {
       'Размерете ги фокусираните или лебдените картички и плочки';
 
   @override
-  String get backgroundBackdrops => 'Позадини во заднина';
-
-  @override
-  String get showBackdropImages => 'Прикажи слики од позадина зад содржината';
-
-  @override
   String get seriesThumbnails => 'Сликички од серии';
 
   @override
@@ -12022,10 +12016,6 @@ class AppLocalizationsMk extends AppLocalizations {
       'Прикажувај детали за избраната ставка на врвот на страниците со библиотеки.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Скриј ги позадините при прегледување?';
-
-  @override
   String get useDetailedSubHeadings => 'Користи детални поднаслови';
 
   @override
@@ -15312,4 +15302,13 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

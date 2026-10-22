@@ -3089,13 +3089,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Ölçek odaklı veya fareyle üzerine gelinen kartlar ve kutucuklar';
 
   @override
-  String get backgroundBackdrops => 'Arka Plan Görselleri';
-
-  @override
-  String get showBackdropImages =>
-      'İçeriğin arkasındaki arka plan resimlerini göster';
-
-  @override
   String get seriesThumbnails => 'Dizi Küçük Resimlerini Göster';
 
   @override
@@ -11967,10 +11960,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Kütüphane sayfalarında, seçilen ögenin detaylarını üst kısımda göster.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Göz atarken arka plan resimleri gizlensin mi?';
-
-  @override
   String get useDetailedSubHeadings => 'Detaylı alt başlıklar kullan';
 
   @override
@@ -15259,4 +15248,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

@@ -3104,13 +3104,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'Schaal gefocuste of zwevende kaarten en tegels';
 
   @override
-  String get backgroundBackdrops => 'Achtergrond Achtergronden';
-
-  @override
-  String get showBackdropImages =>
-      'Toon achtergrondafbeeldingen achter de inhoud';
-
-  @override
   String get seriesThumbnails => 'Serieminiaturen';
 
   @override
@@ -12008,10 +12001,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'Toon details van het geselecteerde item bovenaan bibliotheekpagina\'s.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Achtergronden verbergen tijdens bladeren?';
-
-  @override
   String get useDetailedSubHeadings => 'Gedetailleerde subkoppen gebruiken';
 
   @override
@@ -15301,4 +15290,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

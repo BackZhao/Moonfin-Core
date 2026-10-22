@@ -5350,18 +5350,6 @@ abstract class AppLocalizations {
   /// **'Scale focused or hovered cards and tiles'**
   String get scaleFocusedCards;
 
-  /// Setting for background backdrops
-  ///
-  /// In en, this message translates to:
-  /// **'Background Backdrops'**
-  String get backgroundBackdrops;
-
-  /// Description for background backdrops
-  ///
-  /// In en, this message translates to:
-  /// **'Show backdrop images behind content'**
-  String get showBackdropImages;
-
   /// Setting for series thumbnails
   ///
   /// In en, this message translates to:
@@ -21064,12 +21052,6 @@ abstract class AppLocalizations {
   /// **'Show details of the selected item at the top of Library pages.'**
   String get showMediaDetailsOnLibraryPageDescription;
 
-  /// Setting title to show/hide backdrops when browsing library pages
-  ///
-  /// In en, this message translates to:
-  /// **'Hide Backdrops While Browsing'**
-  String get hideBackdropsInLibraries;
-
   /// Label for setting to toggle detailed or minimal subrow on library pages
   ///
   /// In en, this message translates to:
@@ -26638,6 +26620,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Length'**
   String get librarySortLength;
+
+  /// Setting to show or hide the backdrop image behind the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Home Screen Backdrop'**
+  String get homeScreenBackdrop;
+
+  /// Setting to show or hide the backdrop image behind the item details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Details Screen Backdrop'**
+  String get detailsScreenBackdrop;
+
+  /// Setting to show or hide backdrop images while browsing library pages
+  ///
+  /// In en, this message translates to:
+  /// **'Library Backdrops'**
+  String get libraryBackdrops;
 }
 
 class _AppLocalizationsDelegate

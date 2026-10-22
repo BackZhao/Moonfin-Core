@@ -3111,13 +3111,6 @@ class AppLocalizationsHu extends AppLocalizations {
       'Fókuszált vagy lebegtetett kártyák és lapkák skálázása';
 
   @override
-  String get backgroundBackdrops => 'Háttérképek';
-
-  @override
-  String get showBackdropImages =>
-      'Háttérképek megjelenítése a tartalom mögött';
-
-  @override
   String get seriesThumbnails => 'Sorozatminiatűrök';
 
   @override
@@ -12054,10 +12047,6 @@ class AppLocalizationsHu extends AppLocalizations {
       'A kijelölt elem részleteinek megjelenítése a könyvtároldalak tetején.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Háttérképek elrejtése böngészés közben';
-
-  @override
   String get useDetailedSubHeadings => 'Részletes alcímek használata';
 
   @override
@@ -15346,4 +15335,13 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

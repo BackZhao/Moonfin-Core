@@ -3104,12 +3104,6 @@ class AppLocalizationsLt extends AppLocalizations {
       'Pakeiskite sufokusuotų arba užvedančių kortelių ir plytelių mastelį';
 
   @override
-  String get backgroundBackdrops => 'Fono fonai';
-
-  @override
-  String get showBackdropImages => 'Rodyti fono vaizdus už turinio';
-
-  @override
   String get seriesThumbnails => 'Serijos miniatiūros';
 
   @override
@@ -12007,9 +12001,6 @@ class AppLocalizationsLt extends AppLocalizations {
       'Rodyti pasirinkto elemento informaciją bibliotekos puslapių viršuje.';
 
   @override
-  String get hideBackdropsInLibraries => 'Slėpti fono vaizdus naršant?';
-
-  @override
   String get useDetailedSubHeadings => 'Naudokite išsamias antraštes';
 
   @override
@@ -15296,4 +15287,13 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

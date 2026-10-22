@@ -3094,12 +3094,6 @@ class AppLocalizationsEo extends AppLocalizations {
       'Skalu fokusitajn aŭ ŝvebitajn kartojn kaj kahelojn';
 
   @override
-  String get backgroundBackdrops => 'Fonaj Fonoj';
-
-  @override
-  String get showBackdropImages => 'Montru fonbildojn malantaŭ enhavo';
-
-  @override
   String get seriesThumbnails => 'Seriobildetoj';
 
   @override
@@ -11945,9 +11939,6 @@ class AppLocalizationsEo extends AppLocalizations {
       'Montri detalojn de la elektita ero ĉe la supro de bibliotekaj paĝoj.';
 
   @override
-  String get hideBackdropsInLibraries => 'Ĉu kaŝi fonbildojn dum foliumado?';
-
-  @override
   String get useDetailedSubHeadings => 'Uzu Detalaj Sub-Titoloj';
 
   @override
@@ -15233,4 +15224,13 @@ class AppLocalizationsEo extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

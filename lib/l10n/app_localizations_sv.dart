@@ -3101,12 +3101,6 @@ class AppLocalizationsSv extends AppLocalizations {
       'Skala fokuserade eller svävade kort och brickor';
 
   @override
-  String get backgroundBackdrops => 'Bakgrund Bakgrunder';
-
-  @override
-  String get showBackdropImages => 'Visa bakgrundsbilder bakom innehåll';
-
-  @override
   String get seriesThumbnails => 'Serieminiatyrer';
 
   @override
@@ -11971,10 +11965,6 @@ class AppLocalizationsSv extends AppLocalizations {
       'Visa detaljer om det valda objektet högst upp på bibliotekssidorna.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Dölj bakgrundsbilder när du bläddrar?';
-
-  @override
   String get useDetailedSubHeadings => 'Använd detaljerade underrubriker';
 
   @override
@@ -15252,4 +15242,13 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

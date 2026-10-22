@@ -3119,13 +3119,6 @@ class AppLocalizationsEl extends AppLocalizations {
       'Κλίμακα εστιασμένες ή τοποθετημένες κάρτες και πλακίδια';
 
   @override
-  String get backgroundBackdrops => 'Φόντο φόντο';
-
-  @override
-  String get showBackdropImages =>
-      'Εμφάνιση εικόνων φόντου πίσω από το περιεχόμενο';
-
-  @override
   String get seriesThumbnails => 'Μικρογραφίες σειράς';
 
   @override
@@ -12091,10 +12084,6 @@ class AppLocalizationsEl extends AppLocalizations {
       'Εμφάνιση των λεπτομερειών του επιλεγμένου στοιχείου στο επάνω μέρος των σελίδων της Βιβλιοθήκης.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Απόκρυψη των εικόνων φόντου κατά την περιήγηση;';
-
-  @override
   String get useDetailedSubHeadings =>
       'Χρησιμοποιήστε λεπτομερείς υποεπικεφαλίδες';
 
@@ -15398,4 +15387,13 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

@@ -3128,13 +3128,6 @@ class AppLocalizationsCa extends AppLocalizations {
       'Escala targetes i fitxes enfocades o posades';
 
   @override
-  String get backgroundBackdrops => 'Fons de fons';
-
-  @override
-  String get showBackdropImages =>
-      'Mostra imatges de fons darrere del contingut';
-
-  @override
   String get seriesThumbnails => 'Miniatures de la sèrie';
 
   @override
@@ -12167,10 +12160,6 @@ class AppLocalizationsCa extends AppLocalizations {
       'Mostra els detalls de l\'item seleccionat a dalt la pàgina de Biblioteca.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Amaga els telons de fons mentre navegues';
-
-  @override
   String get useDetailedSubHeadings => 'Utilitzeu subtítols detallats';
 
   @override
@@ -15492,4 +15481,13 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Durada';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

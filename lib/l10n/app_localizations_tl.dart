@@ -3110,13 +3110,6 @@ class AppLocalizationsTl extends AppLocalizations {
       'I-scale ang nakatutok o naka-hover na mga card at tile';
 
   @override
-  String get backgroundBackdrops => 'Mga Background sa Background';
-
-  @override
-  String get showBackdropImages =>
-      'Ipakita ang mga larawan sa backdrop sa likod ng nilalaman';
-
-  @override
   String get seriesThumbnails => 'Mga Thumbnail ng Serye';
 
   @override
@@ -12051,10 +12044,6 @@ class AppLocalizationsTl extends AppLocalizations {
       'Ipakita ang mga detalye ng napiling item sa itaas ng mga Library page.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Itago ang Mga Backdrop habang Nagba-browse?';
-
-  @override
   String get useDetailedSubHeadings =>
       'Gamitin ang Mga Detalyadong Sub-Heading';
 
@@ -15347,4 +15336,13 @@ class AppLocalizationsTl extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

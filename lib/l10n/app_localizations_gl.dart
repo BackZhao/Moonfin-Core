@@ -3120,12 +3120,6 @@ class AppLocalizationsGl extends AppLocalizations {
       'Escala tarxetas e fichas enfocadas ou enfocadas';
 
   @override
-  String get backgroundBackdrops => 'Fondos de fondo';
-
-  @override
-  String get showBackdropImages => 'Mostra imaxes de fondo detrás do contido';
-
-  @override
   String get seriesThumbnails => 'Miniaturas da serie';
 
   @override
@@ -12076,10 +12070,6 @@ class AppLocalizationsGl extends AppLocalizations {
       'Mostra os detalles do elemento seleccionado na parte superior das páxinas de Biblioteca.';
 
   @override
-  String get hideBackdropsInLibraries =>
-      'Ocultar as imaxes de fondo mentres navegas?';
-
-  @override
   String get useDetailedSubHeadings => 'Usar subcabeceiras detalladas';
 
   @override
@@ -15376,4 +15366,13 @@ class AppLocalizationsGl extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }

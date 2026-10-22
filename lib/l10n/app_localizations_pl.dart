@@ -3273,12 +3273,6 @@ class AppLocalizationsPl extends AppLocalizations {
       'Skaluj karty i kafelki po najechaniu lub zaznaczeniu';
 
   @override
-  String get backgroundBackdrops => 'Grafiki tła';
-
-  @override
-  String get showBackdropImages => 'Pokazuj grafiki tła za treścią';
-
-  @override
   String get seriesThumbnails => 'Wyświetlaj miniatury seriali';
 
   @override
@@ -12273,9 +12267,6 @@ class AppLocalizationsPl extends AppLocalizations {
       'Pokazuj szczegóły wybranej pozycji u góry stron biblioteki.';
 
   @override
-  String get hideBackdropsInLibraries => 'Ukryj tła podczas przeglądania';
-
-  @override
   String get useDetailedSubHeadings =>
       'Używaj szczegółowych informacji pomocniczych';
 
@@ -15624,4 +15615,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get librarySortLength => 'Length';
+
+  @override
+  String get homeScreenBackdrop => 'Home Screen Backdrop';
+
+  @override
+  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+
+  @override
+  String get libraryBackdrops => 'Library Backdrops';
 }
