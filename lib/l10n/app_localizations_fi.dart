@@ -14089,6 +14089,9 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tämän mediaformaatin suoraa toistoa ei tueta.';
 
   @override
+  String get sortServerOrder => 'Server Order';
+
+  @override
   String get sortAlphabetical => 'Aakkosjärjestys';
 
   @override

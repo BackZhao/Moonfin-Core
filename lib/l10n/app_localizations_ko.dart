@@ -13559,6 +13559,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get transcodeDirectPlayError => '이 미디어 형식은 다이렉트 재생을 지원하지 않습니다.';
 
   @override
+  String get sortServerOrder => 'Server Order';
+
+  @override
   String get sortAlphabetical => '가나다순';
 
   @override

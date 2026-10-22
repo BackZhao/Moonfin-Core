@@ -14069,6 +14069,9 @@ class AppLocalizationsRu extends AppLocalizations {
       'Direct play is not supported for this media format.';
 
   @override
+  String get sortServerOrder => 'Server Order';
+
+  @override
   String get sortAlphabetical => 'По алфавиту';
 
   @override

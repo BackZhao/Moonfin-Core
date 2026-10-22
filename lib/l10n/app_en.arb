@@ -12469,6 +12469,7 @@
   "transcodeInterlacedVideoNotSupported": "Interlaced video is not supported.",
   "transcodeSecondaryAudioNotSupported": "Secondary audio stream requires transcoding.",
   "transcodeDirectPlayError": "Direct play is not supported for this media format.",
+  "sortServerOrder": "Server Order",
   "sortAlphabetical": "Alphabetical",
   "sortReleaseAscending": "Release Order (Ascending)",
   "sortReleaseDescending": "Release Order (Descending)",

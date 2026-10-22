@@ -4011,6 +4011,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
 
   String _getCollectionSortLabel(CollectionSortOption option, AppLocalizations l10n) {
     return switch (option) {
+      CollectionSortOption.server => l10n.sortServerOrder,
       CollectionSortOption.alphabetical => l10n.sortAlphabetical,
       CollectionSortOption.releaseAscending => l10n.sortReleaseAscending,
       CollectionSortOption.releaseDescending => l10n.sortReleaseDescending,

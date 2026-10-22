@@ -24499,6 +24499,12 @@ abstract class AppLocalizations {
   /// **'Direct play is not supported for this media format.'**
   String get transcodeDirectPlayError;
 
+  /// No description provided for @sortServerOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Server Order'**
+  String get sortServerOrder;
+
   /// No description provided for @sortAlphabetical.
   ///
   /// In en, this message translates to:

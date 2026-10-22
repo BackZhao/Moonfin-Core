@@ -14352,6 +14352,9 @@ class AppLocalizationsPl extends AppLocalizations {
       'Direct Play nie jest obsługiwane dla tego formatu materiału.';
 
   @override
+  String get sortServerOrder => 'Server Order';
+
+  @override
   String get sortAlphabetical => 'Alfabetycznie';
 
   @override

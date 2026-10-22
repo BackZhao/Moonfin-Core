@@ -14133,6 +14133,9 @@ class AppLocalizationsRo extends AppLocalizations {
       'Redarea directă nu este acceptată pentru acest format media.';
 
   @override
+  String get sortServerOrder => 'Server Order';
+
+  @override
   String get sortAlphabetical => 'Alfabetic';
 
   @override

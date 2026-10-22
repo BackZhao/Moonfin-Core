@@ -14124,6 +14124,9 @@ class AppLocalizationsSr extends AppLocalizations {
       'Непосредна репродукција овог медијског формата није подржана.';
 
   @override
+  String get sortServerOrder => 'Server Order';
+
+  @override
   String get sortAlphabetical => 'Азбучни редослед';
 
   @override
