@@ -14830,5 +14830,13 @@
         "description": "Shown on sign in when Forgot PIN could not clear a PIN kept on the server"
     },
     "cinemaSkipPrerolls": "Elokuvamoodin ohituspainike",
-    "cinemaSkipPrerollsDescription": "Näytä Ohita-painike Cinema-tilan elokuvatrailereiden, mainosten ja muiden esittelyvideoiden aikana."
+    "cinemaSkipPrerollsDescription": "Näytä Ohita-painike Cinema-tilan elokuvatrailereiden, mainosten ja muiden esittelyvideoiden aikana.",
+    "bookReadingUnavailableTitle": "Apple TV:llä ei voi lukea kirjoja",
+    "@bookReadingUnavailableTitle": {
+        "description": "Title of the dialog shown on Apple TV when the user tries to open a book or comic, which tvOS has no reader for"
+    },
+    "bookReadingUnavailableMessage": "Avaa se Moonfin-sovelluksessa puhelimella, tabletilla tai tietokoneella lukeaksesi sen. Äänikirjat toimivat edelleen tässä sovelluksessa.",
+    "@bookReadingUnavailableMessage": {
+        "description": "Body of the dialog shown on Apple TV when the user tries to open a book or comic"
+    }
 }
