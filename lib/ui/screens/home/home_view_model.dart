@@ -33,6 +33,7 @@ import '../../../data/services/plugin_sync_service.dart';
 import '../../../data/services/seerr/seerr_api_models.dart';
 import '../../../data/services/seerr/seerr_discover_sliders.dart';
 import '../../../data/utils/bounded_concurrency.dart';
+import '../../../util/game_library.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/server_url.dart';
 import '../../../preference/seerr_preferences.dart';
@@ -991,7 +992,17 @@ class HomeViewModel extends ChangeNotifier {
     bool newMediaBar = false,
     bool newSectionsOnly = false,
   }) async {
-    if (newMediaBar) unawaited(_mediaBarViewModel.load(force: true));
+    if (newMediaBar) {
+      unawaited(_mediaBarViewModel.load(force: true));
+      // The user asked for a fresh Home, so the libraries are read again too.
+      final getIt = GetIt.instance;
+      if (getIt.isRegistered<GameLibraryRegistry>()) {
+        getIt<GameLibraryRegistry>().invalidate();
+      }
+      if (getIt.isRegistered<UserViewsRepository>()) {
+        getIt<UserViewsRepository>().invalidateViews();
+      }
+    }
     await load(
       preserveExisting: preserveExisting,
       newSectionsOnly: newSectionsOnly,
