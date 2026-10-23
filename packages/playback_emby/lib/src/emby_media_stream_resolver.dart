@@ -95,7 +95,7 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     // without the id would be its other versions.
     if (resolvedMediaSourceId != null &&
         MediaStreamResolver.staticMediaSourceIds(mediaItem).length <= 1 &&
-        _isUnprobedTranscodeOnly(source)) {
+        source.isUnprobedPlaceholder) {
       try {
         final retry = await fetchPlaybackInfo(null);
         final probed = retry.mediaSources
@@ -203,12 +203,6 @@ class EmbyMediaStreamResolver implements MediaStreamResolver {
     final separator = url.contains('?') ? '&' : '?';
     return '$url${separator}api_key=${Uri.encodeComponent(token)}';
   }
-
-  bool _isUnprobedTranscodeOnly(PlaybackMediaSource source) =>
-      source.mediaStreams.isEmpty &&
-      !source.supportsDirectPlay &&
-      !source.supportsDirectStream &&
-      (source.liveStreamId == null || source.liveStreamId!.isEmpty);
 
   PlaybackMediaSource _selectBestSource(
     List<PlaybackMediaSource> sources, {

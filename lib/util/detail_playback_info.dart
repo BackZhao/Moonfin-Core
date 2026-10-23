@@ -45,7 +45,7 @@ Future<PlaybackInfoResult> fetchDetailPlaybackInfo({
   final result = await fetch(mediaSourceId);
   if (mediaSourceId == null ||
       hasOtherVersions ||
-      !result.mediaSources.every(_isPlaceholder)) {
+      !result.mediaSources.every((s) => s.isUnprobedPlaceholder)) {
     return result;
   }
 
@@ -68,8 +68,3 @@ Future<PlaybackInfoResult> fetchDetailPlaybackInfo({
     return result;
   }
 }
-
-bool _isPlaceholder(PlaybackMediaSource source) =>
-    source.mediaStreams.isEmpty &&
-    !source.supportsDirectPlay &&
-    !source.supportsDirectStream;
