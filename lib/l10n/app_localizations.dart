@@ -26864,6 +26864,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Play from Server'**
   String get playFromServer;
+
+  /// Settings label on iPhone and iPad for choosing which player plays video
+  ///
+  /// In en, this message translates to:
+  /// **'Video player'**
+  String get settingsApplePlayerUi;
+
+  /// Settings description for the video player choice, listing what the native Apple style player lacks
+  ///
+  /// In en, this message translates to:
+  /// **'The native Apple style player has no casting, swipe gestures, orientation lock, audio delay or PiP button'**
+  String get settingsApplePlayerUiDescription;
+
+  /// Option for the regular Moonfin video player on iPhone and iPad
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get settingsApplePlayerUiStandard;
+
+  /// Option for the native video player that the Apple TV app uses, offered on iPhone and iPad
+  ///
+  /// In en, this message translates to:
+  /// **'Native Apple style'**
+  String get settingsApplePlayerUiNative;
+
+  /// Settings label for where the play, skip and seek buttons sit in the video player
+  ///
+  /// In en, this message translates to:
+  /// **'Play buttons'**
+  String get playerTransportPosition;
+
+  /// Settings description for where the video player's play buttons sit
+  ///
+  /// In en, this message translates to:
+  /// **'Show play, skip and seek in the middle of the video or docked in the bottom bar'**
+  String get playerTransportPositionDescription;
+
+  /// Option that puts the play, skip and seek buttons in the middle of the video
+  ///
+  /// In en, this message translates to:
+  /// **'On screen'**
+  String get playerTransportOnScreen;
+
+  /// Option that puts the play, skip and seek buttons in the bottom bar with the other player buttons
+  ///
+  /// In en, this message translates to:
+  /// **'Docked'**
+  String get playerTransportDocked;
 }
 
 class _AppLocalizationsDelegate

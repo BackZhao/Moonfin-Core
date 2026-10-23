@@ -22,6 +22,7 @@ import 'package:moonfin/data/services/theme_music_service.dart';
 import 'package:moonfin/l10n/app_localizations.dart';
 import 'package:moonfin/platform/pip_service.dart';
 import 'package:moonfin/playback/playback_lifecycle_handler.dart';
+import 'package:moonfin/preference/preference_constants.dart';
 import 'package:moonfin/preference/user_preferences.dart';
 import 'package:moonfin/ui/screens/playback/video_player_screen.dart';
 import 'package:moonfin/ui/screensaver/screensaver_controller.dart';
@@ -623,6 +624,31 @@ void main() {
 
   // Issue #1305: off TV the transport sits where the paused description card
   // goes, so the card waits for the controls, which still hide while paused.
+  group('play buttons', () {
+    double playButtonY(WidgetTester tester) =>
+        tester.getCenter(find.byIcon(Icons.play_arrow_rounded)).dy;
+
+    testWidgets('sit in the middle of the video by default', (tester) async {
+      await mountPlayer(tester);
+      final height = tester.view.physicalSize.height / tester.view.devicePixelRatio;
+      expect(find.byIcon(Icons.play_arrow_rounded), findsOneWidget);
+      expect(playButtonY(tester), closeTo(height / 2, height * 0.1));
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('dock into the bottom bar when set to', (tester) async {
+      await GetIt.instance<UserPreferences>().set(
+        UserPreferences.playerTransportPosition,
+        PlayerTransportPosition.docked,
+      );
+      await mountPlayer(tester);
+      final height = tester.view.physicalSize.height / tester.view.devicePixelRatio;
+      expect(find.byIcon(Icons.play_arrow_rounded), findsOneWidget);
+      expect(playButtonY(tester), greaterThan(height * 0.75));
+      await tester.pumpWidget(const SizedBox());
+    });
+  });
+
   group('paused description card', () {
     Future<void> pumpPlayer(WidgetTester tester) async {
       await GetIt.instance<UserPreferences>().set(

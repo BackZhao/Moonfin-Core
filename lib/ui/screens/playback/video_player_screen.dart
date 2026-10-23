@@ -3916,7 +3916,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
                         // these widgets are still what gets hit-tested - only
                         // their pixels are re-sent by HdrOverlayCapture.
                         _buildTopOverlay(context),
-                        if (!PlatformDetection.useLeanbackUi)
+                        if (!PlatformDetection.useLeanbackUi &&
+                            !_transportDocked)
                           Positioned.fill(
                             child: Center(
                               child: _buildCenterTransportControls(),
@@ -4864,7 +4865,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
               children: [
                 _buildSeekbar(),
                 const SizedBox(height: AppSpacing.spaceXs),
-                _buildSecondaryControlsRow(),
+                if (_transportDocked)
+                  _buildDockedControlsRow()
+                else
+                  _buildSecondaryControlsRow(),
               ],
             ),
           ),
@@ -5443,7 +5447,35 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       ? 1.0
       : _prefs.get(UserPreferences.desktopUiScale).scaleFactor;
 
-  Widget _buildTvTransportRow() {
+  bool get _transportDocked =>
+      !PlatformDetection.isTV &&
+      _prefs.get(UserPreferences.playerTransportPosition) ==
+          PlayerTransportPosition.docked;
+
+  /// The transport leads the bottom row the way it does on TV. A phone held
+  /// upright hasn't the width for both, so there it sits on its own line.
+  Widget _buildDockedControlsRow() {
+    if (PlatformDetection.useMobileUi &&
+        MediaQuery.of(context).orientation == Orientation.portrait) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildDockedTransportRow(),
+          _buildSecondaryControlsRow(),
+        ],
+      );
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _buildDockedTransportRow(),
+        const SizedBox(width: AppSpacing.spaceXs),
+        Expanded(child: _buildSecondaryControlsRow()),
+      ],
+    );
+  }
+
+  Widget _buildDockedTransportRow() {
     final l10n = AppLocalizations.of(context);
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -5546,7 +5578,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildTvTransportRow(),
+          _buildDockedTransportRow(),
           const SizedBox(width: AppSpacing.spaceXs),
           Expanded(child: _buildSecondaryControlsRow()),
         ],

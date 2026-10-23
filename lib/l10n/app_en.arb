@@ -14228,5 +14228,37 @@
   "playFromServer": "Play from Server",
   "@playFromServer": {
     "description": "Long-press menu action on a downloaded video: play it by streaming from the server instead of the downloaded copy, for example to get a higher quality than the download"
+  },
+  "settingsApplePlayerUi": "Video player",
+  "@settingsApplePlayerUi": {
+    "description": "Settings label on iPhone and iPad for choosing which player plays video"
+  },
+  "settingsApplePlayerUiDescription": "The native Apple style player has no casting, swipe gestures, orientation lock, audio delay or PiP button",
+  "@settingsApplePlayerUiDescription": {
+    "description": "Settings description for the video player choice, listing what the native Apple style player lacks"
+  },
+  "settingsApplePlayerUiStandard": "Standard",
+  "@settingsApplePlayerUiStandard": {
+    "description": "Option for the regular Moonfin video player on iPhone and iPad"
+  },
+  "settingsApplePlayerUiNative": "Native Apple style",
+  "@settingsApplePlayerUiNative": {
+    "description": "Option for the native video player that the Apple TV app uses, offered on iPhone and iPad"
+  },
+  "playerTransportPosition": "Play buttons",
+  "@playerTransportPosition": {
+    "description": "Settings label for where the play, skip and seek buttons sit in the video player"
+  },
+  "playerTransportPositionDescription": "Show play, skip and seek in the middle of the video or docked in the bottom bar",
+  "@playerTransportPositionDescription": {
+    "description": "Settings description for where the video player's play buttons sit"
+  },
+  "playerTransportOnScreen": "On screen",
+  "@playerTransportOnScreen": {
+    "description": "Option that puts the play, skip and seek buttons in the middle of the video"
+  },
+  "playerTransportDocked": "Docked",
+  "@playerTransportDocked": {
+    "description": "Option that puts the play, skip and seek buttons in the bottom bar with the other player buttons"
   }
 }

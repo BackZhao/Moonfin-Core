@@ -66,6 +66,20 @@ enum PlaybackEnginePreference {
   mpv,
 }
 
+/// Which player plays video on iPhone and iPad. Native is the player the
+/// Apple TV app uses.
+enum ApplePlayerUi {
+  flutter,
+  native,
+}
+
+/// Where the play, skip and seek buttons sit on phones, tablets and desktop.
+/// TVs always dock them, since the remote walks the bottom row.
+enum PlayerTransportPosition {
+  onScreen,
+  docked,
+}
+
 enum DolbyVisionFallbackBehavior {
   ask,
   hdr10Fallback,

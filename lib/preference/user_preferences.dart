@@ -2427,6 +2427,21 @@ class UserPreferences extends ChangeNotifier {
     values: PlaybackEnginePreference.values,
   );
 
+  /// Which player iOS video plays through. Belongs to the device rather than
+  /// the account, so it isn't synced.
+  static final applePlayerUi = EnumPreference(
+    key: 'pref_apple_player_ui',
+    defaultValue: ApplePlayerUi.flutter,
+    values: ApplePlayerUi.values,
+  );
+
+  /// A phone and a desktop can each want their own, so it isn't synced.
+  static final playerTransportPosition = EnumPreference(
+    key: 'pref_player_transport_position',
+    defaultValue: PlayerTransportPosition.onScreen,
+    values: PlayerTransportPosition.values,
+  );
+
   static final dolbyVisionFallbackBehavior = EnumPreference(
     key: 'dolby_vision_fallback_behavior',
     defaultValue: DolbyVisionFallbackBehavior.ask,

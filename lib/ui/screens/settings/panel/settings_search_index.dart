@@ -1445,6 +1445,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'zoom',
       'speed',
     ]),
+    if (!PlatformDetection.isTV)
+      osdButtons.leaf(
+        'pref_player_transport_position',
+        l10n.playerTransportPosition,
+        subtitle: l10n.playerTransportPositionDescription,
+        keywords: ['docked', 'on screen', 'play button', 'center', 'controls'],
+      ),
     quality.screen(keywords: ['bitrate', 'resolution', 'hdr', 'decoder']),
     quality.leaf('pref_max_bitrate', l10n.maxStreamingBitrate, keywords: [
       'quality',
@@ -1467,6 +1474,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         'playback_engine_preference',
         l10n.settingsPlaybackEngineAndroidTv,
         keywords: ['exoplayer', 'mpv', 'media3', 'engine'],
+      ),
+    if (PlatformDetection.isIOS)
+      quality.leaf(
+        'pref_apple_player_ui',
+        l10n.settingsApplePlayerUi,
+        subtitle: l10n.settingsApplePlayerUiDescription,
+        keywords: ['native player', 'apple tv player', 'player'],
       ),
     if (!PlatformDetection.isWeb && !PlatformDetection.isAppleTV)
       quality.leaf(

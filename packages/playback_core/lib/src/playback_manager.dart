@@ -333,7 +333,7 @@ class PlaybackManager implements AudioOwnable {
   bool _liveStallWatchActive = false;
 
   /// Set by [pause], cleared by [resume], [playItems], [stop] and a fresh
-  /// live open. Backends that report no `playWhenReady` (AppleTvBackend,
+  /// live open. Backends that report no `playWhenReady` (NativeApplePlayerBackend,
   /// AetherBackend, the web video backend, MediaKitPlayerBackend) can't tell
   /// a viewer pause from a stall on their own, so the manager tracks the
   /// viewer's own last pause/resume call and falls back to it.

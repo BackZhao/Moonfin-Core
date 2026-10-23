@@ -15462,4 +15462,30 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get playFromServer => 'Play from Server';
+
+  @override
+  String get settingsApplePlayerUi => 'Video player';
+
+  @override
+  String get settingsApplePlayerUiDescription =>
+      'The native Apple style player has no casting, swipe gestures, orientation lock, audio delay or PiP button';
+
+  @override
+  String get settingsApplePlayerUiStandard => 'Standard';
+
+  @override
+  String get settingsApplePlayerUiNative => 'Native Apple style';
+
+  @override
+  String get playerTransportPosition => 'Play buttons';
+
+  @override
+  String get playerTransportPositionDescription =>
+      'Show play, skip and seek in the middle of the video or docked in the bottom bar';
+
+  @override
+  String get playerTransportOnScreen => 'On screen';
+
+  @override
+  String get playerTransportDocked => 'Docked';
 }
