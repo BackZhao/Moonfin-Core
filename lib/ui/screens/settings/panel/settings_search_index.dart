@@ -783,6 +783,7 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'media info',
       'seerr',
       'recommendations',
+      'streaming',
       'biography',
       'links',
       'social media',

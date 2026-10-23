@@ -92,6 +92,7 @@ import '../../widgets/seerr/seerr_report_issue_dialog.dart';
 import '../../widgets/seerr/seerr_request_action.dart';
 import '../../widgets/seerr/seerr_request_dialog.dart';
 import '../../widgets/seerr/seerr_stats_card.dart';
+import '../../widgets/seerr/seerr_streaming_row.dart';
 import '../../widgets/seerr/seerr_status_dot.dart';
 import '../../widgets/seerr/seerr_status_pill.dart';
 import '../../widgets/change_artwork_dialog.dart';
@@ -2366,6 +2367,11 @@ class _DetailContentState extends State<_DetailContent> {
         ),
       if (pieces.stats)
         _SectionSpec(gap: 24, build: (_) => SeerrStatsCard(state: state)),
+      if (pieces.streaming)
+        _SectionSpec(
+          gap: 24,
+          build: (_) => SeerrStreamingRow(providers: state.streamingProviders),
+        ),
       if (pieces.recommendations)
         row(
           l10n.recommendations,

@@ -3753,6 +3753,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get detailSectionSeerrStats => 'Statistiques';
 
   @override
+  String get detailSectionSeerrStreaming => 'Streaming services';
+
+  @override
+  String get seerrStreamingOn => 'Streaming on';
+
+  @override
   String get detailSectionSeerrRecommendations => 'Recommandations';
 
   @override

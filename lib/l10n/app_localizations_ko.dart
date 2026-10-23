@@ -3644,6 +3644,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get detailSectionSeerrStats => '통계';
 
   @override
+  String get detailSectionSeerrStreaming => 'Streaming services';
+
+  @override
+  String get seerrStreamingOn => 'Streaming on';
+
+  @override
   String get detailSectionSeerrRecommendations => '추천';
 
   @override

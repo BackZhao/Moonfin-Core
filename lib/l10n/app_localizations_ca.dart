@@ -3749,6 +3749,12 @@ class AppLocalizationsCa extends AppLocalizations {
   String get detailSectionSeerrStats => 'Estadístiques';
 
   @override
+  String get detailSectionSeerrStreaming => 'Streaming services';
+
+  @override
+  String get seerrStreamingOn => 'Streaming on';
+
+  @override
   String get detailSectionSeerrRecommendations => 'Recomanacions';
 
   @override

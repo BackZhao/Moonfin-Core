@@ -3756,6 +3756,12 @@ class AppLocalizationsSr extends AppLocalizations {
   String get detailSectionSeerrStats => 'Статистика';
 
   @override
+  String get detailSectionSeerrStreaming => 'Streaming services';
+
+  @override
+  String get seerrStreamingOn => 'Streaming on';
+
+  @override
   String get detailSectionSeerrRecommendations => 'Препоруке';
 
   @override

@@ -88,6 +88,7 @@ import '../../../widgets/seerr/seerr_request_dialog.dart';
 import '../../../widgets/seerr/seerr_item_status.dart';
 import '../../../widgets/seerr/seerr_status_pill.dart';
 import '../../../widgets/seerr/seerr_stats_card.dart';
+import '../../../widgets/seerr/seerr_streaming_row.dart';
 import '../../../widgets/seerr_icons.dart';
 
 double _desktopUiScale({UserPreferences? prefs}) {
@@ -2564,6 +2565,8 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
           onNavigateDown: below(_seerrChipsFocusNode),
         ),
       if (pieces.stats) SeerrStatsCard(state: state),
+      if (pieces.streaming)
+        SeerrStreamingRow(providers: state.streamingProviders),
       if (pieces.recommendations)
         _seerrTabRow(
           l10n.recommendations,

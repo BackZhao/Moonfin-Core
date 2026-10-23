@@ -3737,6 +3737,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get detailSectionSeerrStats => 'Statisztikák';
 
   @override
+  String get detailSectionSeerrStreaming => 'Streaming services';
+
+  @override
+  String get seerrStreamingOn => 'Streaming on';
+
+  @override
   String get detailSectionSeerrRecommendations => 'Ajánlások';
 
   @override

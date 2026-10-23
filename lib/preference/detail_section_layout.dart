@@ -115,6 +115,12 @@ enum DetailSection {
     _spotlight,
     _nouveau,
   }),
+  seerrStreaming(
+    'seerrStreaming',
+    Icons.live_tv_outlined,
+    DetailSectionGroup.seerr,
+    {_classic, _modern, _spotlight, _nouveau},
+  ),
   seerrRecommendations(
     'seerrRecommendations',
     Icons.auto_awesome_outlined,
@@ -232,6 +238,7 @@ enum DetailSection {
     DetailSection.mediaInfo => l10n.detailSectionMediaInfo,
     DetailSection.seerrGenresTags => l10n.detailSectionSeerrGenresTags,
     DetailSection.seerrStats => l10n.detailSectionSeerrStats,
+    DetailSection.seerrStreaming => l10n.detailSectionSeerrStreaming,
     DetailSection.seerrRecommendations =>
       l10n.detailSectionSeerrRecommendations,
     DetailSection.seerrSimilar => l10n.detailSectionSeerrSimilar,

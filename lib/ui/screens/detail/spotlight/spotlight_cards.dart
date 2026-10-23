@@ -16,6 +16,7 @@ import '../../../widgets/seerr/seerr_item_chips.dart';
 import '../../../widgets/seerr/seerr_item_status.dart'
     show SeerrDetailPieces, seerrItemSeasonStatus, seerrItemTabState;
 import '../../../widgets/seerr/seerr_stats_card.dart';
+import '../../../widgets/seerr/seerr_streaming_row.dart';
 import '../../../widgets/seerr/seerr_tags_dialog.dart' show SeerrTagsContent;
 import '../item_detail_screen.dart'
     show DetailTrackList, selectedMediaSourceForItem;
@@ -571,7 +572,12 @@ class _SpotlightCardsBuilder {
     final tagCount = pieces.chips ? SeerrTagsContent.chipCount(state) : 0;
     final factCount = pieces.stats ? SeerrStatsCard.factCount(state, l10n) : 0;
     final collection = pieces.collection ? state.movie?.collection : null;
-    if (tagCount == 0 && factCount == 0 && collection == null) return null;
+    if (tagCount == 0 &&
+        factCount == 0 &&
+        !pieces.streaming &&
+        collection == null) {
+      return null;
+    }
 
     final subtitle = [
       if (factCount > 0) l10n.spotlightFactsCount(factCount),
@@ -602,6 +608,12 @@ class _SpotlightCardsBuilder {
           SpotlightModalSection(
             focusable: false,
             builder: (context, _) => SeerrStatsCard(state: state),
+          ),
+        if (pieces.streaming)
+          SpotlightModalSection(
+            focusable: false,
+            builder: (context, _) =>
+                SeerrStreamingRow(providers: state.streamingProviders),
           ),
         if (collection != null)
           SpotlightModalSection(
@@ -678,6 +690,12 @@ class _SpotlightCardsBuilder {
             SpotlightModalSection(
               focusable: false,
               builder: (context, _) => SeerrStatsCard(state: seerrState),
+            ),
+          if (pieces.streaming)
+            SpotlightModalSection(
+              focusable: false,
+              builder: (context, _) =>
+                  SeerrStreamingRow(providers: seerrState.streamingProviders),
             ),
         ],
         if (similar.isNotEmpty) _mediaSection(librarySectionTitle, similar),

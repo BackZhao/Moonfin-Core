@@ -3891,6 +3891,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get detailSectionSeerrStats => 'Statystyki';
 
   @override
+  String get detailSectionSeerrStreaming => 'Streaming services';
+
+  @override
+  String get seerrStreamingOn => 'Streaming on';
+
+  @override
   String get detailSectionSeerrRecommendations => 'Rekomendacje';
 
   @override

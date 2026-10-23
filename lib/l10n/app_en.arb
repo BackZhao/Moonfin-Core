@@ -4971,6 +4971,14 @@
   "@detailSectionSeerrStats": {
     "description": "Details screen Seerr section: TMDB score, status, budget and revenue"
   },
+  "detailSectionSeerrStreaming": "Streaming services",
+  "@detailSectionSeerrStreaming": {
+    "description": "Details screen Seerr section: logos of the services streaming the title in the user's region"
+  },
+  "seerrStreamingOn": "Streaming on",
+  "@seerrStreamingOn": {
+    "description": "Heading over the logos of the services streaming a Seerr title"
+  },
   "detailSectionSeerrRecommendations": "Recommendations",
   "@detailSectionSeerrRecommendations": {
     "description": "Details screen Seerr section: recommended titles"

@@ -3715,6 +3715,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get detailSectionSeerrStats => 'Stats';
 
   @override
+  String get detailSectionSeerrStreaming => 'Streaming services';
+
+  @override
+  String get seerrStreamingOn => 'Streaming on';
+
+  @override
   String get detailSectionSeerrRecommendations => 'Recommendations';
 
   @override

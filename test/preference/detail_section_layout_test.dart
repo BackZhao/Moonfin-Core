@@ -25,6 +25,7 @@ void main() {
       containsAll([
         'seerrGenresTags',
         'seerrStats',
+        'seerrStreaming',
         'seerrRecommendations',
         'seerrSimilar',
         'seerrCollection',

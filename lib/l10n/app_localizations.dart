@@ -6514,6 +6514,18 @@ abstract class AppLocalizations {
   /// **'Stats'**
   String get detailSectionSeerrStats;
 
+  /// Details screen Seerr section: logos of the services streaming the title in the user's region
+  ///
+  /// In en, this message translates to:
+  /// **'Streaming services'**
+  String get detailSectionSeerrStreaming;
+
+  /// Heading over the logos of the services streaming a Seerr title
+  ///
+  /// In en, this message translates to:
+  /// **'Streaming on'**
+  String get seerrStreamingOn;
+
   /// Details screen Seerr section: recommended titles
   ///
   /// In en, this message translates to:
