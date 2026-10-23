@@ -56,6 +56,16 @@ void main() {
       expect(policy.canFetchRemoteSubtitles, isTrue);
     });
 
+    test('an administrator may fetch without either flag', () {
+      final policy = UserPolicy.fromJson({
+        'IsAdministrator': true,
+        'EnableSubtitleManagement': false,
+        'EnableSubtitleDownloading': false,
+      });
+
+      expect(policy.canFetchRemoteSubtitles, isTrue);
+    });
+
     test('an account granted neither may not', () {
       final policy = UserPolicy.fromJson({
         'EnableSubtitleManagement': false,

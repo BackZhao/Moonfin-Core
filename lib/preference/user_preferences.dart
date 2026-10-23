@@ -629,9 +629,11 @@ class UserPreferences extends ChangeNotifier {
     'mediaBarIntervalMs',
     'mediaBarTrailerPreview',
     'mediaBarTrailerAudio',
+    'trailerVolume',
     'mediaBarTrailerCaptions',
     'episodePreviewEnabled',
     'previewAudioEnabled',
+    'previewVolume',
     'mediaBarLibraryIds',
     'mediaBarCollectionIds',
     'mediaBarExcludedGenres',
@@ -643,7 +645,8 @@ class UserPreferences extends ChangeNotifier {
     'homeRowsUniversalImageType',
     'pref_enable_series_thumbnails',
     'pref_media_type_badge_behavior',
-    'pref_show_backdrop',
+    'pref_show_home_backdrop',
+    'pref_show_details_backdrop',
     'detailsBackgroundBlurAmount',
     'browsingBackgroundBlurAmount',
     'enableAdditionalRatings',
@@ -846,6 +849,13 @@ class UserPreferences extends ChangeNotifier {
   );
 
   AudioFallbackCodec resolveAudioFallbackCodec() => get(audioFallbackCodec);
+
+  Set<String> resolveTranscodeAudioCodecs() =>
+      get(transcodeAudioCodecs)
+          .split(',')
+          .map((codec) => codec.trim())
+          .where((codec) => codec.isNotEmpty)
+          .toSet();
 
   int resolveMaxAudioChannels() => get(maxAudioChannels);
 
@@ -1210,8 +1220,13 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: true,
   );
 
-  static final backdropEnabled = Preference(
-    key: 'pref_show_backdrop',
+  static final homeBackdropEnabled = Preference(
+    key: 'pref_show_home_backdrop',
+    defaultValue: true,
+  );
+
+  static final detailsBackdropEnabled = Preference(
+    key: 'pref_show_details_backdrop',
     defaultValue: true,
   );
 
@@ -2118,6 +2133,13 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: false,
   );
 
+  /// Narrows [useExternalPlayer] to Live TV, so everything else stays in the
+  /// built-in player.
+  static final externalPlayerLiveTvOnly = Preference(
+    key: 'external_player_live_tv_only',
+    defaultValue: false,
+  );
+
   static final externalPlayerComponentName = Preference(
     key: 'external_player_component',
     defaultValue: '',
@@ -2298,6 +2320,14 @@ class UserPreferences extends ChangeNotifier {
     key: 'audio_fallback_codec',
     defaultValue: AudioFallbackCodec.auto,
     values: AudioFallbackCodec.values,
+  );
+
+  /// Audio codecs the server converts in a video instead of the device
+  /// playing them, comma separated. Kept on the device, not synced, since it
+  /// describes this device's output chain.
+  static final transcodeAudioCodecs = Preference(
+    key: 'pref_transcode_audio_codecs',
+    defaultValue: '',
   );
 
   static final audioPassthroughMode = EnumPreference(
@@ -2799,6 +2829,12 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: false,
   );
 
+  /// How loud media bar trailers play, 0 to 100.
+  static final trailerVolume = Preference(
+    key: 'trailerVolume',
+    defaultValue: 100,
+  );
+
   static final mediaBarTrailerCaptions = Preference(
     key: 'mediaBarTrailerCaptions',
     defaultValue: false,
@@ -2827,6 +2863,12 @@ class UserPreferences extends ChangeNotifier {
   static final previewAudioEnabled = Preference(
     key: 'previewAudioEnabled',
     defaultValue: true,
+  );
+
+  /// How loud media previews on cards play, 0 to 100.
+  static final previewVolume = Preference(
+    key: 'previewVolume',
+    defaultValue: 100,
   );
   static final homeRowsUniversalOverride = Preference(
     key: 'homeRowsUniversalOverride',

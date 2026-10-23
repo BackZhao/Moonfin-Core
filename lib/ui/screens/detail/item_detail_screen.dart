@@ -73,6 +73,7 @@ import '../../../util/seerr_credits.dart';
 import '../../navigation/destinations.dart';
 import '../../widgets/adaptive/adaptive_dialog.dart';
 import '../../widgets/adaptive/sf_symbol.dart';
+import '../../widgets/book/book_navigation.dart';
 import '../../widgets/settings/settings_panel.dart';
 import '../../widgets/add_to_playlist_dialog.dart';
 import '../../widgets/logo_view.dart';
@@ -106,8 +107,10 @@ import '../../widgets/focus/context_action.dart';
 import '../../widgets/focus/context_menu_sheet.dart';
 import '../../widgets/focus/dpad_list_tile.dart';
 import '../../widgets/focus/focusable_button.dart';
+import '../../widgets/focus/menu_action_row.dart';
 import '../../widgets/focus/request_initial_focus.dart';
 import '../../widgets/overlay_sheet.dart';
+import '../../../playback/external_player_policy.dart';
 import '../../../playback/hdr_stream_capability.dart';
 import '../../../playback/known_defects.dart';
 import '../../../syncplay/syncplay_manager.dart';
@@ -1551,7 +1554,9 @@ class _DetailContentState extends State<_DetailContent> {
     final blurAmount = widget.prefs
         .get(UserPreferences.detailsBackgroundBlurAmount)
         .toDouble();
-    final backdropEnabled = widget.prefs.get(UserPreferences.backdropEnabled);
+    final backdropEnabled = widget.prefs.get(
+      UserPreferences.detailsBackdropEnabled,
+    );
     final useSplitLayout =
         item.type == 'Person' && _useDesktopDetailLayout(context);
     final isAlbumOrPlaylist =
@@ -2190,6 +2195,7 @@ class _DetailContentState extends State<_DetailContent> {
     required AggregatedItem? episode,
     required String title,
     required FocusNode node,
+    bool replacePage = false,
   }) {
     if (episode == null || !_visibility.shows(DetailSection.upNext)) {
       return null;
@@ -2211,6 +2217,7 @@ class _DetailContentState extends State<_DetailContent> {
             episode: episode,
             imageApi: viewModel.imageApi,
             contextSeasonId: viewModel.effectiveSeasonId,
+            replacePage: replacePage,
             focusNode: node,
             onKeyEvent: (event) {
               if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
@@ -2501,6 +2508,7 @@ class _DetailContentState extends State<_DetailContent> {
         episode: nextEpisode,
         title: l10n.nextEpisode,
         node: _nextEpisodeFocusNode,
+        replacePage: true,
       ),
       if (viewModel.episodes.isNotEmpty &&
           _visibility.shows(DetailSection.moreEpisodes))
@@ -8376,6 +8384,15 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
             _play(context, item, resume: resume, openInExternalPlayer: true);
           },
         ),
+      if (canPlayFromServer(item))
+        _AdvancedPlaybackOption(
+          label: l10n.playFromServer,
+          icon: Icons.cloud_outlined,
+          onTap: () {
+            GetIt.instance<PlaybackManager>().streamFromServerOnce(item.id);
+            _play(context, item, resume: resume);
+          },
+        ),
       _AdvancedPlaybackOption(
         label: 'Transcode Stream: High Quality (1080p)',
         icon: Icons.high_quality,
@@ -8423,31 +8440,21 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
       useRootNavigator: false,
       builder: (dialogContext) => SimpleDialog(
         title: const Text('Advanced Playback'),
+        // Lines the row icons up under the title.
+        contentPadding: const EdgeInsets.fromLTRB(4, 12, 4, 16),
         children: options.asMap().entries.map((entry) {
           final i = entry.key;
           final option = entry.value;
-          return FocusableButton(
+          return MenuActionRow(
+            icon: option.icon,
+            label: option.label,
             autofocus: i == 0,
-            borderRadius: 6,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
             onPressed: () {
               if (picked) return;
               picked = true;
               Navigator.of(dialogContext).pop();
               option.onTap();
             },
-            child: Row(
-              children: [
-                AdaptiveIcon(option.icon, size: 22),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    option.label,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-              ],
-            ),
           );
         }).toList(),
       ),
@@ -8477,11 +8484,8 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
         forceTranscode: forceTranscode,
         useExternalPlayer:
             openInExternalPlayer ||
-            (PlatformDetection.isAndroid &&
-                PlatformDetection.isTV &&
-                GetIt.instance<UserPreferences>().get(
-                  UserPreferences.useExternalPlayer,
-                )),
+            (PlatformDetection.isTV &&
+                ExternalPlayerPolicy.coversQueue([item])),
       );
     } finally {
       _playLaunchInFlight = false;
@@ -9086,6 +9090,10 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     }
 
     if (_isReadableBookItem(item)) {
+      if (PlatformDetection.isAppleTV) {
+        await showBookReadingUnavailableDialog(context);
+        return;
+      }
       final extension = BookReaderService.detectExtension(item);
       if (extension != null &&
           !BookReaderService.isSupportedExtension(extension)) {
@@ -14529,16 +14537,13 @@ class _EpisodeListCardState extends State<_EpisodeListCard>
     showContextMenu(context, widget.episode, onChanged: widget.onChanged);
   }
 
+  // The row only shows on an episode, so the one picked takes this page's place.
   void _open() {
-    context.push(
-      Destinations.item(
-        widget.episode.id,
-        serverId: widget.episode.serverId,
-        seasonContext: seasonContextParam(
-          contextSeasonId: widget.contextSeasonId,
-          episodeSeasonId: widget.episode.seasonId,
-        ),
-      ),
+    _openEpisodeDetails(
+      context,
+      widget.episode,
+      contextSeasonId: widget.contextSeasonId,
+      replacePage: true,
     );
   }
 
@@ -14727,8 +14732,11 @@ class _EpisodeListCardState extends State<_EpisodeListCard>
                               : Border.fromBorderSide(
                                   ThemeRegistry.active.borders.focusBorder
                                       .copyWith(
-                                        color: AppColorScheme.onSurface,
-                                        width: 2.5,
+                                        color: isNeon
+                                            ? const Color(0xFF00FFFF)
+                                            : AppColorScheme.accent
+                                                  .withValues(alpha: 0.7),
+                                        width: 1.5,
                                       ),
                                 ),
                         ),
@@ -14744,6 +14752,25 @@ class _EpisodeListCardState extends State<_EpisodeListCard>
   }
 }
 
+/// With [replacePage] the episode takes the current page's place, so Back
+/// leaves the run of episodes in one press.
+void _openEpisodeDetails(
+  BuildContext context,
+  AggregatedItem episode, {
+  String? contextSeasonId,
+  bool replacePage = false,
+}) {
+  final location = Destinations.item(
+    episode.id,
+    serverId: episode.serverId,
+    seasonContext: seasonContextParam(
+      contextSeasonId: contextSeasonId,
+      episodeSeasonId: episode.seasonId,
+    ),
+  );
+  replacePage ? context.pushReplacement(location) : context.push(location);
+}
+
 class DetailNextUpCard extends StatefulWidget {
   final AggregatedItem episode;
   final ImageApi imageApi;
@@ -14754,12 +14781,16 @@ class DetailNextUpCard extends StatefulWidget {
   /// [DetailEpisodeCard.contextSeasonId].
   final String? contextSeasonId;
 
+  /// See [DetailEpisodeCard.replacePage].
+  final bool replacePage;
+
   const DetailNextUpCard({
     required this.episode,
     required this.imageApi,
     this.focusNode,
     this.onKeyEvent,
     this.contextSeasonId,
+    this.replacePage = false,
   });
 
   @override
@@ -14769,15 +14800,11 @@ class DetailNextUpCard extends StatefulWidget {
 class DetailNextUpCardState extends State<DetailNextUpCard>
     with FocusStateMixin {
   void _open() {
-    context.push(
-      Destinations.item(
-        widget.episode.id,
-        serverId: widget.episode.serverId,
-        seasonContext: seasonContextParam(
-          contextSeasonId: widget.contextSeasonId,
-          episodeSeasonId: widget.episode.seasonId,
-        ),
-      ),
+    _openEpisodeDetails(
+      context,
+      widget.episode,
+      contextSeasonId: widget.contextSeasonId,
+      replacePage: widget.replacePage,
     );
   }
 
@@ -14980,6 +15007,9 @@ class DetailEpisodeCard extends StatefulWidget {
 
   final bool isActive;
 
+  /// Set on an episode's own page, so the episode picked takes that page's place.
+  final bool replacePage;
+
   const DetailEpisodeCard({
     required this.episode,
     required this.imageApi,
@@ -14988,6 +15018,7 @@ class DetailEpisodeCard extends StatefulWidget {
     this.onKeyEvent,
     this.contextSeasonId,
     this.isActive = false,
+    this.replacePage = false,
   });
 
   @override
@@ -15009,15 +15040,11 @@ class DetailEpisodeCardState extends State<DetailEpisodeCard>
   }
 
   void _open() {
-    context.push(
-      Destinations.item(
-        widget.episode.id,
-        serverId: widget.episode.serverId,
-        seasonContext: seasonContextParam(
-          contextSeasonId: widget.contextSeasonId,
-          episodeSeasonId: widget.episode.seasonId,
-        ),
-      ),
+    _openEpisodeDetails(
+      context,
+      widget.episode,
+      contextSeasonId: widget.contextSeasonId,
+      replacePage: widget.replacePage,
     );
   }
 

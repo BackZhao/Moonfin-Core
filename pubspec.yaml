@@ -224,7 +224,7 @@ dependency_overrides:
     git:
       url: https://github.com/RadicalMuffinMan/media-kit.git
       path: libs/windows/media_kit_libs_windows_video
-      ref: 43368ec394dcce7795707358b751a748c1fdc610
+      ref: 50013aee7429633ae2df656982167ca6d21237ce
   # Vendored 0.6.0 with a Windows texture_bridge.cc fix for scroll/resize and
   # tab-switch crashes (null-visual guard + WGC Recreate moved off the
   # capture-thread mutex). Both changed sites carry their reasoning inline in
@@ -264,7 +264,7 @@ dependency_overrides:
     git:
       url: https://github.com/RadicalMuffinMan/media-kit.git
       path: media_kit_video
-      ref: 43368ec394dcce7795707358b751a748c1fdc610
+      ref: 50013aee7429633ae2df656982167ca6d21237ce
   synchronized: 3.3.1
   wakelock_plus: 1.3.3
   screen_brightness_android: 2.1.3
@@ -289,6 +289,7 @@ flutter:
     - assets/fonts/
     - assets/subtitle_fonts/
     - assets/licenses/cores/
+    - assets/reader/
 
   fonts:
     # The web engine fetches Roboto from fonts.gstatic.com unless it finds a

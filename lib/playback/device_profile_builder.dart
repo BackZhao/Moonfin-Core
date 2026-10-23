@@ -60,6 +60,41 @@ class DeviceProfileBuilder {
     'vorbis',
   ];
 
+  /// The codecs a user can send to the server for conversion, keyed by the
+  /// name [build] takes. Each one covers every label the profile gives it.
+  static const Map<String, String> transcodableAudioCodecs = <String, String>{
+    'aac': 'AAC',
+    'ac3': 'AC3',
+    'eac3': 'EAC3',
+    'dts': 'DTS',
+    'truehd': 'TrueHD',
+    'flac': 'FLAC',
+    'alac': 'ALAC',
+    'mp3': 'MP3',
+    'mp2': 'MP2',
+    'opus': 'Opus',
+    'vorbis': 'Vorbis',
+    'pcm': 'PCM',
+  };
+
+  static String _transcodableAudioCodecOf(String codec) => switch (codec) {
+    'aac_latm' => 'aac',
+    'dca' => 'dts',
+    'mlp' => 'truehd',
+    _ when codec.startsWith('pcm_') => 'pcm',
+    _ => codec,
+  };
+
+  static List<String> _withoutTranscodedAudio(
+    List<String> codecs,
+    Set<String> transcodeAudioCodecs,
+  ) => codecs
+      .where(
+        (codec) =>
+            !transcodeAudioCodecs.contains(_transcodableAudioCodecOf(codec)),
+      )
+      .toList(growable: false);
+
   // What each HLS container can carry. A video transcode advertises every one
   // of these it also direct plays, so the server copies the audio stream and
   // only re-encodes a source codec that isn't listed. TrueHD and MLP are the
@@ -138,6 +173,10 @@ class DeviceProfileBuilder {
     // False for a universal-decode player that can't downmix on its own, so
     // downmixToStereo gets it the stereo offer and the server sends stereo.
     bool appliesDownmixToStereo = true,
+    // Codecs the user wants the server to convert in a video, for an output
+    // chain that mishandles one the player decodes fine. Keys of
+    // [transcodableAudioCodecs].
+    Set<String> transcodeAudioCodecs = const {},
     // The player re-encodes the codecs its container can't carry to EAC3 on
     // the device, and that encoder won't open above 48 kHz.
     bool bridgesAudioToEac3 = false,
@@ -343,11 +382,20 @@ class DeviceProfileBuilder {
         )
         .toSet();
 
+    // Only the video lists lose the user's picks, so music still direct
+    // plays. With a codec off both lists the server re-encodes it and copies
+    // the video.
+    final videoAudioCodecs = _withoutTranscodedAudio(
+      effectiveAllowedAudioCodecs,
+      transcodeAudioCodecs,
+    );
+
     final mpegTsAudioCodecs = _hlsAudioCodecsForFallback(
       effectiveAudioFallbackCodec: effectiveAudioFallbackCodec,
       allowedAudioCodecs: effectiveAllowedAudioCodecs,
       containerAudioCodecs: _hlsMpegTsAudioCodecs,
       forAvFoundation: hlsAudioForAvFoundation,
+      transcodeAudioCodecs: transcodeAudioCodecs,
     );
 
     // Offer HEVC as a transcode target only when the server's encoding options
@@ -383,12 +431,15 @@ class DeviceProfileBuilder {
 
     final directPlayProfiles = webCapabilities == null
         ? <Map<String, dynamic>>[
-            <String, dynamic>{
-              'Type': 'Video',
-              'Container': directPlayVideoContainers,
-              'VideoCodec': 'av1,h264,hevc,mpeg,mpeg2video,mpeg4,vc1,vp8,vp9',
-              'AudioCodec': effectiveAllowedAudioCodecs.join(','),
-            },
+            // An empty codec list reads as any codec, so with every one picked
+            // the entry goes and every video transcodes.
+            if (videoAudioCodecs.isNotEmpty)
+              <String, dynamic>{
+                'Type': 'Video',
+                'Container': directPlayVideoContainers,
+                'VideoCodec': 'av1,h264,hevc,mpeg,mpeg2video,mpeg4,vc1,vp8,vp9',
+                'AudioCodec': videoAudioCodecs.join(','),
+              },
             <String, dynamic>{
               'Type': 'Audio',
               'Container': _audioDirectPlayContainers.join(','),
@@ -424,6 +475,7 @@ class DeviceProfileBuilder {
           allowedAudioCodecs: effectiveAllowedAudioCodecs,
           containerAudioCodecs: _hlsFmp4AudioCodecs,
           forAvFoundation: hlsAudioForAvFoundation,
+          transcodeAudioCodecs: transcodeAudioCodecs,
         ).join(','),
         'CopyTimestamps': false,
         'EnableSubtitlesInManifest': true,
@@ -950,6 +1002,7 @@ class DeviceProfileBuilder {
     required List<String> allowedAudioCodecs,
     required List<String> containerAudioCodecs,
     required bool forAvFoundation,
+    Set<String> transcodeAudioCodecs = const {},
   }) {
     final carried = forAvFoundation
         ? containerAudioCodecs.where(
@@ -960,12 +1013,25 @@ class DeviceProfileBuilder {
       ..._fallbackTargetOrder(effectiveAudioFallbackCodec),
       ...carried,
     ];
-    final seen = <String>{};
-    return ordered
-        .where(carried.contains)
-        .where(allowedAudioCodecs.contains)
-        .where(seen.add)
-        .toList(growable: false);
+    List<String> offer(List<String> allowed) {
+      final seen = <String>{};
+      return ordered
+          .where(carried.contains)
+          .where(allowed.contains)
+          .where(seen.add)
+          .toList(growable: false);
+    }
+
+    // A transcode has to land on something, so an offer the picks would
+    // empty keeps its codecs and the server copies that audio instead.
+    // shortcut: the server prefers an offer that can copy the source audio,
+    // so a kept offer still copies a pick. Only picking every codec one
+    // container carries gets here, drop the kept offer for non-live items if
+    // that becomes a real setup.
+    final picked = offer(
+      _withoutTranscodedAudio(allowedAudioCodecs, transcodeAudioCodecs),
+    );
+    return picked.isEmpty ? offer(allowedAudioCodecs) : picked;
   }
 
   /// Every audio codec the HLS transcoding profiles offer the server, with the
@@ -974,6 +1040,7 @@ class DeviceProfileBuilder {
   static List<String> transcodeTargetAudioCodecs({
     required AudioFallbackCodec fallbackCodec,
     required bool forAvFoundation,
+    Set<String> transcodeAudioCodecs = const {},
   }) => _hlsAudioCodecsForFallback(
     effectiveAudioFallbackCodec: fallbackCodec,
     allowedAudioCodecs: _supportedAudioCodecs,
@@ -982,6 +1049,7 @@ class DeviceProfileBuilder {
       ..._hlsFmp4AudioCodecs,
     ],
     forAvFoundation: forAvFoundation,
+    transcodeAudioCodecs: transcodeAudioCodecs,
   );
 
   static bool _isAudioCodecAllowed({

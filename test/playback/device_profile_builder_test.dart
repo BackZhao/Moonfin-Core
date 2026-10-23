@@ -524,6 +524,93 @@ void main() {
     });
   });
 
+  group('DeviceProfileBuilder transcode audio codecs', () {
+    Set<String> audioDirectPlayCodecs(Map<String, dynamic> profile) {
+      final audio = (profile['DirectPlayProfiles'] as List<dynamic>)
+          .cast<Map<String, dynamic>>()
+          .firstWhere((entry) => entry['Type'] == 'Audio');
+      return (audio['AudioCodec'] as String).split(',').toSet();
+    }
+
+    List<String> hlsAudioCodecs(
+      Map<String, dynamic> profile,
+      String container,
+    ) =>
+        (_hlsVideoTranscodingProfiles(profile).firstWhere(
+                  (entry) => entry['Container'] == container,
+                )['AudioCodec']
+                as String)
+            .split(',');
+
+    test('a picked codec leaves video direct play under every label', () {
+      final profile = DeviceProfileBuilder.build(
+        universalAudioDecode: true,
+        transcodeAudioCodecs: {'aac', 'dts', 'pcm'},
+      );
+      final video = _videoDirectPlayAudioCodecs(profile);
+      for (final codec in [
+        'aac',
+        'aac_latm',
+        'dts',
+        'dca',
+        'pcm_s16le',
+        'pcm_s24le',
+        'pcm_alaw',
+      ]) {
+        expect(video, isNot(contains(codec)), reason: codec);
+      }
+      expect(video, containsAll(<String>['ac3', 'eac3', 'opus', 'flac']));
+      expect(
+        audioDirectPlayCodecs(profile),
+        containsAll(<String>['aac', 'dts']),
+      );
+    });
+
+    test('the transcode re-encodes it to the fallback instead of copying', () {
+      final profile = DeviceProfileBuilder.build(
+        universalAudioDecode: true,
+        audioFallbackCodec: AudioFallbackCodec.eac3,
+        transcodeAudioCodecs: {'aac', 'opus'},
+      );
+      for (final container in ['ts', 'mp4']) {
+        final codecs = hlsAudioCodecs(profile, container);
+        expect(codecs.first, 'eac3', reason: container);
+        expect(codecs, isNot(contains('aac')), reason: container);
+        expect(codecs, isNot(contains('opus')), reason: container);
+      }
+    });
+
+    test('picking everything never leaves an empty list, which means any', () {
+      final profile = DeviceProfileBuilder.build(
+        universalAudioDecode: true,
+        transcodeAudioCodecs: DeviceProfileBuilder.transcodableAudioCodecs.keys
+            .toSet(),
+      );
+      final directPlay = (profile['DirectPlayProfiles'] as List<dynamic>)
+          .cast<Map<String, dynamic>>();
+      expect(directPlay.where((entry) => entry['Type'] == 'Video'), isEmpty);
+      for (final entry
+          in (profile['TranscodingProfiles'] as List<dynamic>)
+              .cast<Map<String, dynamic>>()) {
+        expect(
+          entry['AudioCodec'],
+          isNotEmpty,
+          reason: '${entry['Container']}',
+        );
+      }
+    });
+
+    test('the settings readout drops the picks too', () {
+      final targets = DeviceProfileBuilder.transcodeTargetAudioCodecs(
+        fallbackCodec: AudioFallbackCodec.auto,
+        forAvFoundation: false,
+        transcodeAudioCodecs: {'aac'},
+      );
+      expect(targets, isNot(contains('aac')));
+      expect(targets, contains('ac3'));
+    });
+  });
+
   group('DeviceProfileBuilder bridged audio sample rate', () {
     test('a player that bridges audio caps the codecs it has to re-encode', () {
       final cap = _sampleRateCap(
