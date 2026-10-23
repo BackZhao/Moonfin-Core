@@ -2330,11 +2330,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'EPUB-renderöinti sovelluksen sisällä ei ole vielä saatavilla tällä alustalla.';
 
   @override
-  String get bookReadingUnavailableTitle => 'Books can\'t be read on Apple TV';
+  String get bookReadingUnavailableTitle => 'Apple TV:llä ei voi lukea kirjoja';
 
   @override
   String get bookReadingUnavailableMessage =>
-      'Open it in Moonfin on a phone, tablet or computer to read it. Audiobooks still play here.';
+      'Avaa se Moonfin-sovelluksessa puhelimella, tabletilla tai tietokoneella lukeaksesi sen. Äänikirjat toimivat edelleen tässä sovelluksessa.';
 
   @override
   String formatCannotRenderInApp(String extension) {
@@ -3906,11 +3906,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'Valitse kohdemuoto, johon monikanavaääni transkoodataan, kun lähdevirtaa ei voi toistaa suoraan tai viedä läpi.';
 
   @override
-  String get transcodeAudioCodecs => 'Transcode Audio Codecs';
+  String get transcodeAudioCodecs => 'Audiokoodekkien transkoodaus';
 
   @override
   String get transcodeAudioCodecsDescription =>
-      'The server converts audio in these formats instead of sending it as is.';
+      'Palvelin muuntaa näissä muodoissa olevan äänen sen sijaan, että lähettäisi sen sellaisenaan.';
 
   @override
   String get settingsAudioFallbackCodecAuto =>
@@ -4910,10 +4910,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get enableTrailerAudio => 'Ota trailerien ääni käyttöön mediapalkissa';
 
   @override
-  String get trailerVolume => 'Trailer Volume';
+  String get trailerVolume => 'Trailerin äänenvoimakkuus';
 
   @override
-  String get trailerVolumeDescription => 'How loud media bar trailers play';
+  String get trailerVolumeDescription =>
+      'Kuinka kovaa äänenvoimakkuudella media-baarin mainosvideot toistetaan';
 
   @override
   String get trailerCaptions => 'Trailerin tekstitykset';
@@ -4943,11 +4944,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get enablePreviewAudio => 'Ota ääni käyttöön mediaesikatseluissa';
 
   @override
-  String get previewVolume => 'Preview Volume';
+  String get previewVolume => 'Äänenvoimakkuuden esikatselu';
 
   @override
   String get previewVolumeDescription =>
-      'How loud media previews on cards play';
+      'Kuinka kovaa ääni kuuluu korttien esikatselussa';
 
   @override
   String get latestMedia => 'Äskettäin lisätty media';
@@ -12408,11 +12409,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'Avaa videon toisto valitsemallasi ulkoisella sovelluksella Android TV:ssä.';
 
   @override
-  String get externalPlayerLiveTvOnly => 'Live TV Only';
+  String get externalPlayerLiveTvOnly => 'Live TV ainoastaan';
 
   @override
   String get externalPlayerLiveTvOnlySubtitle =>
-      'Use the external player for Live TV and keep everything else in the built-in player.';
+      'Käytä ulkoista soittinta suorana lähetettävän television katseluun ja pidä kaikki muu sisäänrakennetussa soittimessa.';
 
   @override
   String get automaticQueuing => 'Automaattinen jonotus';
@@ -15340,43 +15341,43 @@ class AppLocalizationsFi extends AppLocalizations {
   String get librarySortLength => 'Pituus';
 
   @override
-  String get homeScreenBackdrop => 'Home Screen Backdrop';
+  String get homeScreenBackdrop => 'Aloitusnäytön taustakuva';
 
   @override
-  String get detailsScreenBackdrop => 'Details Screen Backdrop';
+  String get detailsScreenBackdrop => 'Tietonäytön taustakuva';
 
   @override
-  String get libraryBackdrops => 'Library Backdrops';
+  String get libraryBackdrops => 'Kirjaston taustakuvat';
 
   @override
-  String get playbackInfoChannel => 'Channel';
+  String get playbackInfoChannel => 'Kanava';
 
   @override
-  String get playbackInfoProgram => 'Program';
+  String get playbackInfoProgram => 'Ohjelma';
 
   @override
-  String get playbackInfoWhy => 'Why';
+  String get playbackInfoWhy => 'Miksi';
 
   @override
-  String get playbackInfoQualityLimit => 'Quality Limit';
+  String get playbackInfoQualityLimit => 'Laaturaja';
 
   @override
-  String get playbackInfoFrameRate => 'Frame Rate';
+  String get playbackInfoFrameRate => 'Kuvataajuus';
 
   @override
-  String get playbackInfoDelivery => 'Delivery';
+  String get playbackInfoDelivery => 'Toimitus';
 
   @override
-  String get playbackInfoFile => 'File';
+  String get playbackInfoFile => 'Tiedosto';
 
   @override
-  String get playbackInfoTechnical => 'Technical';
+  String get playbackInfoTechnical => 'Tekninen';
 
   @override
-  String get playbackInfoDevice => 'Device';
+  String get playbackInfoDevice => 'Laite';
 
   @override
-  String get playbackInfoAudioRoute => 'Audio Route';
+  String get playbackInfoAudioRoute => 'Audioreitti';
 
   @override
   String get playbackInfoSurround51 => '5.1 surround';
