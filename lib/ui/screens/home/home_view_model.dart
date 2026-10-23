@@ -1066,6 +1066,8 @@ class HomeViewModel extends ChangeNotifier {
     final index = _rows.indexWhere((r) => r.id == rowId);
     if (index < 0) return;
     final items = _filterEmptyElements(filter(fresh.items));
+    // The row is back to its first page, so paging starts over from there.
+    _rowOffsets.remove(rowId);
     _rows = List.of(_rows);
     if (items.isEmpty) {
       _emptySectionIds.add(rowId);
@@ -1110,9 +1112,15 @@ class HomeViewModel extends ChangeNotifier {
         return;
       }
 
-      final int currentOffset = _rowOffsets[row.id] ?? row.items.length;
+      final pagesAcrossServers =
+          _multiServerEnabled && !row.id.startsWith('pluginDynamic:');
+      final hide = pagesAcrossServers ? null : _hideFilterFor(row.id);
+      // Hidden items are dropped after the server answers, so the first page
+      // of these rows used up a full page of the server's list.
+      final int currentOffset =
+          _rowOffsets[row.id] ?? (hide == null ? row.items.length : _rowPageSize);
       final (List<AggregatedItem> items, int totalCount) result;
-      if (_multiServerEnabled && !row.id.startsWith('pluginDynamic:')) {
+      if (pagesAcrossServers) {
         result = await _multiServerRepo.loadMore(row: row);
       } else {
         final other = _otherServerRows[row.id];
@@ -1122,7 +1130,26 @@ class HomeViewModel extends ChangeNotifier {
           offset: currentOffset,
         );
       }
-      _rowOffsets[row.id] = currentOffset + _rowPageSize;
+      final nextOffset = currentOffset + _rowPageSize;
+      _rowOffsets[row.id] = nextOffset;
+
+      if (hide != null) {
+        final seen = <String>{};
+        final items = _filterEmptyElements(
+          hide(result.$1).where((item) => seen.add(item.id)).toList(),
+        );
+        // Counted from the server's list, so a page that held only hidden
+        // items still leads on to the next one. A page that brought nothing
+        // ends the row.
+        final unread =
+            result.$1.length > row.items.length && result.$2 > nextOffset
+            ? result.$2 - nextOffset
+            : 0;
+        _replaceRowById(
+          row.copyWith(items: items, totalCount: items.length + unread),
+        );
+        return;
+      }
 
       final filteredItems = _filterEmptyElements(result.$1);
       final newTotalCount = filteredItems.length <= row.items.length
@@ -1136,6 +1163,16 @@ class HomeViewModel extends ChangeNotifier {
       _inFlightPagingRowIds.remove(row.id);
     }
   }
+
+  /// The filter for what the user hid from the row with [rowId], or null when
+  /// that row can't hide anything.
+  List<AggregatedItem> Function(List<AggregatedItem>)? _hideFilterFor(
+    String rowId,
+  ) => switch (rowId) {
+    'nextUp' => _prefs.filterNextUp,
+    'resume' || 'resumeAudio' => _prefs.filterContinueWatching,
+    _ => null,
+  };
 
   /// Puts a paged [row] back wherever its id sits now. A section that
   /// finished loading during the page request can have moved it.
