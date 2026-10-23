@@ -62,6 +62,7 @@ import '../../../preference/preference_constants.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../util/episode_playability.dart';
 import '../../../util/player_edge_drag.dart';
+import '../../../util/player_surface_taps.dart';
 import '../../../playback/hdr_composition.dart';
 import '../../../playback/hdr_output_controller.dart';
 import '../../../playback/hdr_overlay_channel.dart';
@@ -426,7 +427,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
   double _verticalDragStartValue = 0.0;
   bool _verticalDragIsVolume = false;
   bool _verticalDragIgnored = false;
-  Offset? _doubleTapDownPosition;
+  late final _surfaceTaps = PlayerSurfaceTaps(
+    onSingleTap: () {
+      if (mounted) _toggleControls();
+    },
+    onDoubleTap: _onSurfaceDoubleTap,
+  );
   DateTime? _lastDesktopClickAt;
   bool _wasPlayingBeforeDesktopClick = false;
   DateTime? _lastSeekTime;
@@ -1024,6 +1030,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     _removeZoomModeToastOverlay();
     _skipForwardTimer?.cancel();
     _skipBackwardTimer?.cancel();
+    _surfaceTaps.cancel();
     _persistVolumeTimer?.cancel();
     if (PlatformDetection.isDesktop) {
       unawaited(_prefs.set(UserPreferences.playerVolume, _playerVolume));
@@ -2691,6 +2698,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       }
       return;
     }
+    // The wait rides out a drop nobody asked for, like a buffering blip. A
+    // pause the viewer asked for flips the button at once. The engine's own
+    // intent decides when it reports one, the manager's record otherwise.
+    final pauseAsked = _state.playWhenReady == null
+        ? _manager.viewerPaused
+        : _state.playWhenReady == false;
+    if (pauseAsked) {
+      if (_displayPlaying && mounted) {
+        setState(() => _displayPlaying = false);
+      }
+      return;
+    }
     final delay = _state.isBuffering
         ? const Duration(milliseconds: 600)
         : const Duration(milliseconds: 200);
@@ -3803,24 +3822,25 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
           autofocus: true,
           onKeyEvent: _handleKeyEvent,
           child: GestureDetector(
-            onTap: PlatformDetection.isTV ? null : _onSurfaceTap,
+            onTapUp: PlatformDetection.isTV ? null : _onSurfaceTapUp,
             onSecondaryTap: PlatformDetection.isTV
                 ? null
                 : _onSurfaceSecondaryTap,
-            onDoubleTapDown: PlatformDetection.isTV
-                ? null
-                : PlatformDetection.useMobileUi && !_isOsdLocked
-                ? _onDoubleTapDown
-                : null,
-            onDoubleTap: PlatformDetection.useDesktopUi
-                ? null
-                : _handleDoubleTapGesture,
             onVerticalDragStart: swipeGestures ? _onVerticalDragStart : null,
             onVerticalDragUpdate: swipeGestures ? _onVerticalDragUpdate : null,
             onVerticalDragEnd: swipeGestures ? _onVerticalDragEnd : null,
             onVerticalDragCancel: swipeGestures ? _onVerticalDragCancel : null,
             behavior: HitTestBehavior.opaque,
             child: Listener(
+              onPointerDown: PlatformDetection.useMobileUi
+                  ? _surfaceTaps.pointerDown
+                  : null,
+              onPointerUp: PlatformDetection.useMobileUi
+                  ? _surfaceTaps.pointerUp
+                  : null,
+              onPointerCancel: PlatformDetection.useMobileUi
+                  ? _surfaceTaps.pointerUp
+                  : null,
               onPointerSignal: PlatformDetection.useDesktopUi
                   ? _handleScrollSignal
                   : null,
@@ -6261,12 +6281,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     } catch (_) {}
   }
 
-  // Desktop double-click is timed here because onDoubleTap delays every click.
-  void _onSurfaceTap() {
-    if (!PlatformDetection.useDesktopUi) {
+  bool get _surfaceDoubleTapSeeks =>
+      PlatformDetection.useMobileUi && !_isOsdLocked && !_isCurrentPreroll;
+
+  // onDoubleTap holds back every tap under it, the controls included, until
+  // the double-tap timeout runs out. So the desktop double-click is timed here
+  // and the mobile double-tap goes through _surfaceTaps.
+  void _onSurfaceTapUp(TapUpDetails details) {
+    if (PlatformDetection.useDesktopUi) {
+      _onDesktopClick();
+    } else if (_surfaceDoubleTapSeeks) {
+      _surfaceTaps.tapUp(details);
+    } else {
       _toggleControls();
-      return;
     }
+  }
+
+  void _onDesktopClick() {
     final now = clock.now();
     final last = _lastDesktopClickAt;
     _lastDesktopClickAt = now;
@@ -6291,33 +6322,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     }
   }
 
-  void _onDoubleTapDown(TapDownDetails details) {
-    _doubleTapDownPosition = details.localPosition;
-  }
-
   void _handleControlButtonPress(VoidCallback onPressed) {
     onPressed();
     _showControls();
   }
 
-  void _handleDoubleTapGesture() {
-    if (_isCurrentPreroll) {
-      return;
-    }
-    if (PlatformDetection.useDesktopUi) {
-      return;
-    }
-    if (PlatformDetection.useMobileUi && !_isOsdLocked) {
-      _onDoubleTap();
-    }
-  }
-
-  void _onDoubleTap() {
-    final pos = _doubleTapDownPosition;
-    if (pos == null) return;
-    _doubleTapDownPosition = null;
+  void _onSurfaceDoubleTap(Offset localPosition) {
+    // The OSD can lock or a preroll start between the two taps.
+    if (!_surfaceDoubleTapSeeks) return;
     final screenWidth = MediaQuery.sizeOf(context).width;
-    _doubleTapSkip(forward: pos.dx >= screenWidth / 2);
+    _doubleTapSkip(forward: localPosition.dx >= screenWidth / 2);
   }
 
   void _doubleTapSkip({required bool forward}) {

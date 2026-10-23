@@ -82,11 +82,18 @@ class _Manager extends PlaybackManager {
   @override
   PlaybackBringupState get bringupState => bringup;
 
+  // The real calls run too, since they record the viewer's pause.
   @override
-  Future<void> pause() async => transport.add('pause');
+  Future<void> pause() async {
+    transport.add('pause');
+    await super.pause();
+  }
 
   @override
-  Future<void> resume() async => transport.add('resume');
+  Future<void> resume() async {
+    transport.add('resume');
+    await super.resume();
+  }
 
   @override
   Future<void> seekTo(Duration position) async => seeks.add(position);
@@ -450,6 +457,113 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
   }
+
+  // Issue #1804: the double-tap skip held every OSD button back until its
+  // timeout ran out.
+  testWidgets('a mobile OSD button answers its tap at once', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: const [Locale('en')],
+        home: const VideoPlayerScreen(),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.audiotrack_outlined));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 50));
+    expect(find.text('Audio Track'), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('a mobile surface tap still waits out a double-tap skip', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: const [Locale('en')],
+        home: const VideoPlayerScreen(),
+      ),
+    );
+    await tester.pump();
+    expect(find.byType(Slider), findsOneWidget);
+
+    await tester.tapAt(const Offset(100, 300));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(
+      find.byType(Slider),
+      findsOneWidget,
+      reason: 'a second tap could still make it a skip',
+    );
+    await tester.pump(kDoubleTapTimeout);
+    expect(find.byType(Slider), findsNothing);
+
+    await tester.tapAt(const Offset(700, 300));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.tapAt(const Offset(700, 300));
+    await tester.pump();
+    expect(find.text('30 seconds'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 1));
+    expect(
+      find.byType(Slider),
+      findsNothing,
+      reason: 'a double tap leaves the controls as they were',
+    );
+
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  // Issue #1804: the button also waited out the debounce meant for a
+  // buffering blip after a pause the viewer asked for.
+  testWidgets('a pause the viewer asked for shows play at once', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: const [Locale('en')],
+        home: const VideoPlayerScreen(),
+      ),
+    );
+    await tester.pump();
+    // The playing stream delivers after the first frame, so the rebuild
+    // lands on the second.
+    Future<void> setPlaying(bool playing) async {
+      manager.state.setPlaying(playing);
+      await tester.pump();
+      await tester.pump();
+    }
+
+    await setPlaying(true);
+    expect(find.byIcon(Icons.pause_rounded), findsOneWidget);
+
+    await setPlaying(false);
+    expect(
+      find.byIcon(Icons.pause_rounded),
+      findsOneWidget,
+      reason: 'a drop nobody asked for waits in case it is a blip',
+    );
+    await tester.pump(const Duration(milliseconds: 250));
+    expect(find.byIcon(Icons.pause_rounded), findsNothing);
+
+    await setPlaying(true);
+    await manager.pause();
+    await setPlaying(false);
+    expect(find.byIcon(Icons.pause_rounded), findsNothing);
+    expect(find.byIcon(Icons.play_arrow_rounded), findsWidgets);
+
+    // An engine that reports its own intent is believed over the manager.
+    await manager.resume();
+    await setPlaying(true);
+    manager.state.setPlayWhenReady(false);
+    await setPlaying(false);
+    expect(find.byIcon(Icons.pause_rounded), findsNothing);
+
+    await tester.pumpWidget(const SizedBox());
+  });
 
   // Issue #985: a click plays or pauses at once and a double-click toggles
   // fullscreen, putting back what its first click did to playback.

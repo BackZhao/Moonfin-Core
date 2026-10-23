@@ -339,6 +339,10 @@ class PlaybackManager implements AudioOwnable {
   /// viewer's own last pause/resume call and falls back to it.
   bool _viewerPaused = false;
 
+  /// Whether the viewer's last pause or resume call was a pause. On an engine
+  /// that reports no `playWhenReady`, this is what tells a pause from a stall.
+  bool get viewerPaused => _viewerPaused;
+
   /// Whether a frame has rendered since the current live stream opened.
   /// Reset at each fresh open, set the first time `playing` reports true.
   bool _liveFrameSeenSinceOpen = false;
