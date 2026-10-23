@@ -50,10 +50,52 @@ class _Factory extends Fake implements MediaServerClientFactory {
 }
 
 class _Cast extends Fake implements CastService {
+  final calls = <String>[];
   @override
   final activeKindNotifier = ValueNotifier<CastTargetKind?>(null);
   @override
-  CastTargetKind? get activeKind => null;
+  final castItemNotifier = ValueNotifier<AggregatedItem?>(null);
+  @override
+  final remoteStateNotifier = ValueNotifier<String?>(null);
+  @override
+  final remotePositionNotifier = ValueNotifier<int>(0);
+  @override
+  CastTargetKind? get activeKind => activeKindNotifier.value;
+
+  @override
+  Stream<CastTarget> discoverTargetsStreamed(AggregatedItem item) =>
+      Stream.value(
+        const CastTarget(
+          id: 'tv',
+          kind: CastTargetKind.googleCast,
+          title: 'Living Room',
+        ),
+      );
+
+  @override
+  Future<void> playToTarget(
+    CastTarget target, {
+    required AggregatedItem item,
+    List<AggregatedItem>? queueItems,
+    int? startPositionTicks,
+    String? mediaSourceId,
+    int? audioStreamIndex,
+    int? subtitleStreamIndex,
+  }) async {
+    castItemNotifier.value = item;
+    activeKindNotifier.value = target.kind;
+    remotePositionNotifier.value = startPositionTicks ?? 0;
+  }
+
+  @override
+  Future<void> play(CastTargetKind kind) async => calls.add('play');
+
+  @override
+  Future<void> pause(CastTargetKind kind) async => calls.add('pause');
+
+  @override
+  Future<void> seek(CastTargetKind kind, {required int positionTicks}) async =>
+      calls.add('seek ${positionTicks ~/ 10000000}s');
 }
 
 class _ThemeMusic extends Fake implements ThemeMusicService {
@@ -97,7 +139,10 @@ class _Manager extends PlaybackManager {
   }
 
   @override
-  Future<void> seekTo(Duration position) async => seeks.add(position);
+  Future<void> seekTo(Duration position) async {
+    seeks.add(position);
+    await super.seekTo(position);
+  }
 
   @override
   Future<void> stop({bool userInitiated = true}) async {
@@ -562,6 +607,59 @@ void main() {
     manager.state.setPlayWhenReady(false);
     await setPlaying(false);
     expect(find.byIcon(Icons.pause_rounded), findsNothing);
+
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  // Issue #1869: after a cast took over, the player's controls still drove
+  // the paused copy on the phone.
+  testWidgets('once cast, the controls drive the receiver', (tester) async {
+    final cast = GetIt.instance<CastService>() as _Cast;
+    manager.queueService.setQueue([
+      const AggregatedItem(
+        id: 'movie',
+        serverId: 'server',
+        rawData: {'Id': 'movie', 'Type': 'Movie'},
+      ),
+    ]);
+    await mountPlayer(tester);
+    manager.state.setDuration(const Duration(minutes: 10));
+    manager.state.setPosition(const Duration(seconds: 20));
+    manager.state.setPlaying(true);
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.cast));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Living Room'));
+    await tester.pump();
+    expect(manager.transport, ['pause'], reason: 'the phone hands off');
+    manager.state.setPlaying(false);
+    await tester.pumpAndSettle();
+    expect(find.text('Casting to Google Cast'), findsOneWidget);
+
+    cast.remoteStateNotifier.value = 'playing';
+    cast.remotePositionNotifier.value = 60 * 10000000;
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.pause_rounded));
+    await tester.pump();
+    expect(cast.calls, ['pause']);
+
+    cast.remoteStateNotifier.value = 'paused';
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.play_arrow_rounded).first);
+    await tester.pump();
+    expect(cast.calls, ['pause', 'play']);
+
+    await tester.tapAt(const Offset(700, 300));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.tapAt(const Offset(700, 300));
+    await tester.pump();
+    expect(cast.calls.last, 'seek 90s', reason: 'skips start from the cast');
+
+    cast.activeKindNotifier.value = null;
+    await tester.pumpAndSettle();
+    expect(find.text('Casting to Google Cast'), findsNothing);
+    expect(manager.hasTransportInterceptor, isFalse);
 
     await tester.pumpWidget(const SizedBox());
   });

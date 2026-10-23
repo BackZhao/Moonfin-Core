@@ -300,6 +300,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
   String? _remotePlaybackState;
   int _remotePositionTicks = 0;
   double? _remoteVolume;
+  bool _castOwnsTransport = false;
+  late final Listenable _castChanges = Listenable.merge([
+    _castService.activeKindNotifier,
+    _castService.remoteStateNotifier,
+    _castService.remotePositionNotifier,
+  ]);
   DateTime? _lastCastErrorAt;
   String? _lastCastErrorMessage;
   DateTime? _lastPlaybackErrorAt;
@@ -804,6 +810,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     });
     _syncPlayManager?.addListener(_onSyncPlayChanged);
     _prefs.addListener(_onPlaybackPrefsChanged);
+    _castChanges.addListener(_onCastChanged);
     _syncMediaQueuingPreference();
     _applySubtitleStyle();
     _scheduleHide();
@@ -1009,6 +1016,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     if (!_isMinimizing) _screensaverController.setPlaybackActive(false);
     _prefs.removeListener(_onPlaybackPrefsChanged);
     _syncPlayManager?.removeListener(_onSyncPlayChanged);
+    _castChanges.removeListener(_onCastChanged);
+    if (_castOwnsTransport) _manager.setTransportInterceptor(null);
     // A minimized video keeps the autoplay setting this screen applied; the
     // mini player resets it when it ends.
     if (!_isMinimizing) _manager.autoAdvanceEnabled = true;
@@ -2946,7 +2955,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
   void _seekRelative(int ms, {bool showControls = true}) {
     _noteViewerActivity();
     _suppressSeekPrompts();
-    final target = _state.position + Duration(milliseconds: ms);
+    final target = _transportPosition + Duration(milliseconds: ms);
     final clamped = Duration(
       milliseconds: target.inMilliseconds.clamp(
         0,
@@ -2970,7 +2979,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     final basePosition =
         _pendingScrubSeekTarget ??
         (_isSeeking ? _lastScrubCommitTarget : null) ??
-        _state.position;
+        _transportPosition;
     final target = basePosition + Duration(milliseconds: ms);
     _prefetchTrickplayDirectional(target, forward: ms > 0);
     _accumulateScrub(target);
@@ -3116,7 +3125,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     final rewindMs = _prefs.get(UserPreferences.unpauseRewindDuration);
     if (rewindMs > 0) {
       final rewind = Duration(milliseconds: rewindMs);
-      final current = _state.position;
+      final current = _transportPosition;
       final target = current > rewind ? current - rewind : Duration.zero;
       try {
         await _manager.seekTo(target);
@@ -3127,7 +3136,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
 
   void _togglePlayPause() {
     _noteViewerActivity();
-    if (_state.isPlaying) {
+    if (_castOwnsTransport ? _castPlaying : _state.isPlaying) {
       _manager.pause();
       return;
     }
@@ -3901,6 +3910,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
                         const Positioned.fill(
                           child: ColoredBox(color: Colors.transparent),
                         ), // Workaround for a Flutter web issue where the video surface can block pointer events.
+                      if (_castOwnsTransport) _buildCastingCover(),
                       _buildTrickplayVideoCover(),
                       _buildBringupOverlay(context),
                       if (_isRestoringPosition)
@@ -4384,7 +4394,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       stream: _state.playingStream,
       initialData: _state.isPlaying,
       builder: (context, snap) {
-        final isPlaying = _displayPlaying;
+        final isPlaying = _isPlayingShown;
         final centerControlsShowing =
             !PlatformDetection.useLeanbackUi &&
             _controlsVisible &&
@@ -4945,7 +4955,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
               stream: _state.bufferStream,
               initialData: _state.buffer,
               builder: (context, bufferSnap) {
-                final position = posSnap.data ?? Duration.zero;
+                final position = _castOwnsTransport
+                    ? _transportPosition
+                    : posSnap.data ?? Duration.zero;
                 final duration = durSnap.data ?? Duration.zero;
                 final buffer = bufferSnap.data ?? Duration.zero;
                 final durationMs = math
@@ -5516,7 +5528,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
               stream: _state.playingStream,
               initialData: _state.isPlaying,
               builder: (context, snap) {
-                final isPlaying = _displayPlaying;
+                final isPlaying = _isPlayingShown;
                 return _controlButton(
                   isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
                   onPressed: () => isPlaying
@@ -6746,7 +6758,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       initialData: _state.isPlaying,
       builder: (context, snap) {
         final l10n = AppLocalizations.of(context);
-        final isPlaying = _displayPlaying;
+        final isPlaying = _isPlayingShown;
         final scale = _osdButtonScale;
 
         return Row(
@@ -7674,6 +7686,94 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       subtitleStreamIndex: _manager.subtitleStreamIndex,
     );
     await pauseLocalPlaybackForCastHandoff();
+    _takeCastTransport(item);
+  }
+
+  // Once the receiver has this item, the player's own controls drive it
+  // rather than the paused copy on this device. AirPlay plays through the
+  // local player, so it needs none of this.
+  void _takeCastTransport(AggregatedItem item) {
+    if (!mounted || _castOwnsTransport || _manager.hasTransportInterceptor) {
+      return;
+    }
+    final kind = _castService.activeKind;
+    if (kind == null || kind == CastTargetKind.airPlay) return;
+    if (_castService.castItemNotifier.value?.id != item.id) return;
+    _manager.setTransportInterceptor(_castTransport);
+    setState(() => _castOwnsTransport = true);
+  }
+
+  void _onCastChanged() {
+    if (!_castOwnsTransport) return;
+    if (_castService.activeKind == null) {
+      _manager.setTransportInterceptor(null);
+      _castOwnsTransport = false;
+    }
+    setState(() {});
+  }
+
+  Future<bool> _castTransport(
+    TransportAction action, {
+    Duration? position,
+  }) async {
+    switch (action) {
+      case TransportAction.resume:
+        await _runCastAction(_castService.play);
+      case TransportAction.pause:
+        await _runCastAction(_castService.pause);
+      case TransportAction.seek:
+        await _runCastAction(
+          (k) => _castService.seek(
+            k,
+            positionTicks: position!.inMicroseconds * 10,
+          ),
+        );
+      // The local queue would start the next item on this device.
+      case TransportAction.next || TransportAction.previous:
+        break;
+      case TransportAction.stop:
+        return false;
+    }
+    return true;
+  }
+
+  bool get _castPlaying => switch (_castService.remoteStateNotifier.value) {
+    'playing' || 'buffering' => true,
+    _ => false,
+  };
+
+  bool get _isPlayingShown =>
+      _castOwnsTransport ? _castPlaying : _displayPlaying;
+
+  Duration get _transportPosition => _castOwnsTransport
+      ? Duration(microseconds: _castService.remotePositionNotifier.value ~/ 10)
+      : _state.position;
+
+  Widget _buildCastingCover() {
+    final l10n = AppLocalizations.of(context);
+    final label = switch (_castService.activeKind) {
+      CastTargetKind.googleCast => l10n.castingToGoogleCast,
+      CastTargetKind.dlna => l10n.castingViaDlna,
+      _ => l10n.remotePlayback,
+    };
+    return Positioned.fill(
+      child: ColoredBox(
+        color: Colors.black,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.cast_connected, size: 64, color: Colors.white70),
+              const SizedBox(height: AppSpacing.spaceMd),
+              Text(
+                label,
+                style: const TextStyle(color: Colors.white70, fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _showCastControls() {
