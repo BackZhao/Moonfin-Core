@@ -784,6 +784,8 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'seerr',
       'recommendations',
       'biography',
+      'links',
+      'social media',
     ]),
 
     navigation.screen(keywords: ['navbar', 'toolbar', 'sidebar']),

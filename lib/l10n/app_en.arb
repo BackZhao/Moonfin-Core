@@ -5003,6 +5003,14 @@
   "@detailSectionBirthplace": {
     "description": "Details screen section: a person's place of birth"
   },
+  "detailSectionPersonLinks": "Links",
+  "@detailSectionPersonLinks": {
+    "description": "Details screen section: buttons that open a person's IMDb, TMDB and social media pages"
+  },
+  "detailSectionPersonLinksSubtitle": "IMDb, TMDB and social media",
+  "@detailSectionPersonLinksSubtitle": {
+    "description": "Subtitle under the person links section switch"
+  },
   "detailSectionGuestAppearances": "Guest appearances",
   "@detailSectionGuestAppearances": {
     "description": "Details screen section: a person's guest appearances"

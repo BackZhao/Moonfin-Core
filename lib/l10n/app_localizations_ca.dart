@@ -3773,6 +3773,12 @@ class AppLocalizationsCa extends AppLocalizations {
   String get detailSectionBirthplace => 'Lloc de naixement';
 
   @override
+  String get detailSectionPersonLinks => 'Links';
+
+  @override
+  String get detailSectionPersonLinksSubtitle => 'IMDb, TMDB and social media';
+
+  @override
   String get detailSectionGuestAppearances => 'Aparicions de convidats';
 
   @override

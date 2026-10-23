@@ -3754,6 +3754,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get detailSectionBirthplace => 'Birthplace';
 
   @override
+  String get detailSectionPersonLinks => 'Links';
+
+  @override
+  String get detailSectionPersonLinksSubtitle => 'IMDb, TMDB and social media';
+
+  @override
   String get detailSectionGuestAppearances => 'Guest appearances';
 
   @override

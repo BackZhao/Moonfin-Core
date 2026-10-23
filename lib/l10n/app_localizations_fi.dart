@@ -3757,6 +3757,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get detailSectionBirthplace => 'Syntymäpaikka';
 
   @override
+  String get detailSectionPersonLinks => 'Links';
+
+  @override
+  String get detailSectionPersonLinksSubtitle => 'IMDb, TMDB and social media';
+
+  @override
   String get detailSectionGuestAppearances => 'Vierailut';
 
   @override

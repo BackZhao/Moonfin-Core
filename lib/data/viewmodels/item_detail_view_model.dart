@@ -6,6 +6,7 @@ import 'package:playback_core/playback_core.dart';
 import 'package:server_core/server_core.dart';
 import 'package:dio/dio.dart';
 
+import '../../preference/detail_section_layout.dart';
 import '../../preference/preference_constants.dart';
 import '../../preference/user_preferences.dart';
 import '../models/aggregated_item.dart';
@@ -2277,7 +2278,11 @@ class ItemDetailViewModel extends ChangeNotifier {
     if (tmdbId == null || tmdbId.isEmpty) return;
     final getIt = GetIt.instance;
     if (!getIt.isRegistered<PluginSyncService>() ||
-        !getIt<PluginSyncService>().tmdbPersonLinksAvailable) {
+        !getIt<PluginSyncService>().tmdbPersonLinksAvailable ||
+        !DetailSection.personLinks.isOffered ||
+        !DetailSectionVisibility.of(
+          getIt<UserPreferences>(),
+        ).shows(DetailSection.personLinks)) {
       return;
     }
     final accounts = await _tmdbRepository.getPersonAccounts(tmdbId);

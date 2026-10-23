@@ -3668,6 +3668,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get detailSectionBirthplace => '출생지';
 
   @override
+  String get detailSectionPersonLinks => 'Links';
+
+  @override
+  String get detailSectionPersonLinksSubtitle => 'IMDb, TMDB and social media';
+
+  @override
   String get detailSectionGuestAppearances => '특별 출연';
 
   @override

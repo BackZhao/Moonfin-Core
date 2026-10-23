@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import '../data/services/plugin_sync_service.dart';
 import '../l10n/app_localizations.dart';
+import '../util/platform_detection.dart';
 import 'button_layout.dart';
 import 'preference_constants.dart';
 import 'user_preferences.dart';
@@ -155,6 +156,12 @@ enum DetailSection {
     _modern,
     _nouveau,
   }),
+  personLinks('personLinks', Icons.link, DetailSectionGroup.person, {
+    _classic,
+    _modern,
+    _spotlight,
+    _nouveau,
+  }),
   guestAppearances(
     'guestAppearances',
     Icons.person_add_alt_outlined,
@@ -197,9 +204,11 @@ enum DetailSection {
       (style == DetailScreenStyle.minimalist &&
           styles.contains(DetailScreenStyle.spotlight));
 
-  /// Whether this device and server can show it at all.
-  bool get isOffered => switch (group) {
-    DetailSectionGroup.seerr =>
+  /// Whether this device and server can show it at all. A TV has no browser
+  /// to open a person's links in.
+  bool get isOffered => switch (this) {
+    DetailSection.personLinks => !PlatformDetection.isTV,
+    _ when group == DetailSectionGroup.seerr =>
       GetIt.instance.isRegistered<PluginSyncService>() &&
           GetIt.instance<PluginSyncService>().seerrAvailable,
     _ => true,
@@ -232,6 +241,7 @@ enum DetailSection {
     DetailSection.seerrPersonCrew => l10n.detailSectionSeerrPersonCrew,
     DetailSection.biography => l10n.detailSectionBiography,
     DetailSection.birthplace => l10n.detailSectionBirthplace,
+    DetailSection.personLinks => l10n.detailSectionPersonLinks,
     DetailSection.guestAppearances => l10n.detailSectionGuestAppearances,
     DetailSection.musicVideos => l10n.detailSectionMusicVideos,
     DetailSection.playlistOrder => l10n.detailSectionPlaylistOrder,
@@ -247,6 +257,7 @@ enum DetailSection {
     DetailSection.mediaInfo => l10n.detailSectionMediaInfoSubtitle,
     DetailSection.seerrPersonAppearances ||
     DetailSection.seerrPersonCrew => l10n.detailSectionPersonPagesSubtitle,
+    DetailSection.personLinks => l10n.detailSectionPersonLinksSubtitle,
     _ => null,
   };
 }

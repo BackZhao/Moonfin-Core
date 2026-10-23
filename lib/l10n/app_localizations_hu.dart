@@ -3761,6 +3761,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get detailSectionBirthplace => 'Születési hely';
 
   @override
+  String get detailSectionPersonLinks => 'Links';
+
+  @override
+  String get detailSectionPersonLinksSubtitle => 'IMDb, TMDB and social media';
+
+  @override
   String get detailSectionGuestAppearances => 'Vendégszereplések';
 
   @override

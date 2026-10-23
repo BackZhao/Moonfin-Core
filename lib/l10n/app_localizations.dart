@@ -6562,6 +6562,18 @@ abstract class AppLocalizations {
   /// **'Birthplace'**
   String get detailSectionBirthplace;
 
+  /// Details screen section: buttons that open a person's IMDb, TMDB and social media pages
+  ///
+  /// In en, this message translates to:
+  /// **'Links'**
+  String get detailSectionPersonLinks;
+
+  /// Subtitle under the person links section switch
+  ///
+  /// In en, this message translates to:
+  /// **'IMDb, TMDB and social media'**
+  String get detailSectionPersonLinksSubtitle;
+
   /// Details screen section: a person's guest appearances
   ///
   /// In en, this message translates to:

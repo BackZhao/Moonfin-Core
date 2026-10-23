@@ -3777,6 +3777,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get detailSectionBirthplace => 'Lieu de naissance';
 
   @override
+  String get detailSectionPersonLinks => 'Links';
+
+  @override
+  String get detailSectionPersonLinksSubtitle => 'IMDb, TMDB and social media';
+
+  @override
   String get detailSectionGuestAppearances => 'Apparitions d\'invités';
 
   @override
