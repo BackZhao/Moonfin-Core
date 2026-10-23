@@ -371,6 +371,54 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
+  // Issue #1886: on TV, Up from the seek bar never reached the skip button
+  // sitting just above it.
+  testWidgets('on TV, Up from the seek bar reaches the skip button', (
+    tester,
+  ) async {
+    PlatformDetection.setTvMode(true);
+    addTearDown(() => PlatformDetection.setTvMode(false));
+    client.items.segments = [
+      segmentJson(id: 'intro', type: 'Intro', startMs: 0, endMs: 90000),
+    ];
+    manager.queueService.setQueue([
+      AggregatedItem(
+        id: 'ep1',
+        serverId: 'server',
+        rawData: const {'Id': 'ep1', 'Type': 'Episode'},
+      ),
+    ]);
+    await mountPlayer(tester);
+    manager.state.setPosition(const Duration(seconds: 5));
+    await tester.pump();
+    await tester.pump();
+    final skip = tester
+        .widget<SkipSegmentOverlay>(find.byType(SkipSegmentOverlay))
+        .focusNode!;
+
+    // Focus moves wait for a frame and retry a moment later, so this keeps
+    // frames coming the way playing video does.
+    Future<void> press(LogicalKeyboardKey key) async {
+      await tester.sendKeyEvent(key);
+      for (var i = 0; i < 3; i++) {
+        tester.binding.scheduleFrame();
+        await tester.pump(const Duration(milliseconds: 60));
+      }
+    }
+
+    expect(skip.hasPrimaryFocus, isTrue);
+    await press(LogicalKeyboardKey.arrowDown);
+    await press(LogicalKeyboardKey.arrowLeft);
+    expect(skip.hasPrimaryFocus, isFalse);
+    await press(LogicalKeyboardKey.arrowDown);
+    await press(LogicalKeyboardKey.arrowUp);
+    expect(skip.hasPrimaryFocus, isFalse, reason: 'the seek bar comes first');
+    await press(LogicalKeyboardKey.arrowUp);
+    expect(skip.hasPrimaryFocus, isTrue);
+
+    await tester.pumpWidget(const SizedBox());
+  });
+
   testWidgets('short Cinema pre-roll blocks ordinary intro/outro actions', (
     tester,
   ) async {

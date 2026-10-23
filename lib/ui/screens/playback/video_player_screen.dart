@@ -5054,6 +5054,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
                                   );
                                   return KeyEventResult.handled;
                                 case LogicalKeyboardKey.arrowUp:
+                                  // The skip button sits just above the
+                                  // seek bar, so Up is how you get back to it.
+                                  _focusTvSkipSegment();
                                   return KeyEventResult.handled;
                                 case LogicalKeyboardKey.arrowDown:
                                   if (_primaryPlayFocus.context != null) {
