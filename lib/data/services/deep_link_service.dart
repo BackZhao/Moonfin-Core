@@ -40,6 +40,7 @@ class DeepLinkService {
   ///  - `moonfin://item?id=<itemId>[&serverId=<serverId>][&userId=<userId>]`
   ///  - `moonfin://play?id=<itemId>[&serverId=<serverId>][&userId=<userId>]`
   ///    (starts playback)
+  ///  - `moonfin://search?query=<text>` (opens search with the query text)
   ///
   /// `userId` optionally pins a stored user, skipping the profile picker on a
   /// cold start and switching to that user when another one is signed in. It
