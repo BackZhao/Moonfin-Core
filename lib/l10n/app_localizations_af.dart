@@ -12542,6 +12542,9 @@ class AppLocalizationsAf extends AppLocalizations {
   String get crewContributionsSeerr => 'Spanbydraes (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Kyk saam met die groep';
 
   @override

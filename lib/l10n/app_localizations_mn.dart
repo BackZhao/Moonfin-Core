@@ -12565,6 +12565,9 @@ class AppLocalizationsMn extends AppLocalizations {
   String get crewContributionsSeerr => 'Багийн оролцоо (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Бүлгээр үзэх';
 
   @override

@@ -22096,6 +22096,12 @@ abstract class AppLocalizations {
   /// **'Crew Contributions (Seerr)'**
   String get crewContributionsSeerr;
 
+  /// Tooltip for the button on a person page that opens their own website
+  ///
+  /// In en, this message translates to:
+  /// **'Official website'**
+  String get personWebsite;
+
   /// No description provided for @watchWithGroup.
   ///
   /// In en, this message translates to:

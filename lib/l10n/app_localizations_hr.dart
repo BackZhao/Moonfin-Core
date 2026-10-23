@@ -12755,6 +12755,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get crewContributionsSeerr => 'Doprinosi ekipe (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Gledaj s grupom';
 
   @override

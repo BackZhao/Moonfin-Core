@@ -12610,6 +12610,9 @@ class AppLocalizationsSw extends AppLocalizations {
   String get crewContributionsSeerr => 'Michango ya Wafanyakazi (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Tazama na kikundi';
 
   @override

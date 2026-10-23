@@ -12645,6 +12645,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get crewContributionsSeerr => 'Stábtag közreműködések (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Nézés csoporttal';
 
   @override

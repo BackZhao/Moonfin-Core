@@ -12470,6 +12470,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get crewContributionsSeerr => 'ผลงานทีมงาน (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'ดูกับกลุ่ม.';
 
   @override

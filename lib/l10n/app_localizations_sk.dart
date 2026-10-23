@@ -12598,6 +12598,9 @@ class AppLocalizationsSk extends AppLocalizations {
   String get crewContributionsSeerr => 'Podiel štábu (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Pozerať so skupinou';
 
   @override

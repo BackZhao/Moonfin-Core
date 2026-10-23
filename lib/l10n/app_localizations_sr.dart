@@ -12662,6 +12662,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get crewContributionsSeerr => 'Доприноси екипе (Сир (Seerr))';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Гледај са групом';
 
   @override

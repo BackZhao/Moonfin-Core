@@ -12555,6 +12555,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get crewContributionsSeerr => 'Ekip Katkıları (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Grupça İzle';
 
   @override

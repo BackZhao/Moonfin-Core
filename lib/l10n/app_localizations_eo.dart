@@ -12534,6 +12534,9 @@ class AppLocalizationsEo extends AppLocalizations {
   String get crewContributionsSeerr => 'Kontribuoj de teamo (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Rigardu kun grupo';
 
   @override

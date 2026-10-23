@@ -12643,6 +12643,9 @@ class AppLocalizationsTl extends AppLocalizations {
   String get crewContributionsSeerr => 'Mga Kontribusyon ng Crew (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Manood kasama ang grupo';
 
   @override

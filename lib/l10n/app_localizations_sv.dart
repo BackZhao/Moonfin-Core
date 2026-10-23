@@ -12560,6 +12560,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get crewContributionsSeerr => 'Bidrag från teamet (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Titta med grupp';
 
   @override

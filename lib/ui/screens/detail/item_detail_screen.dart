@@ -53,6 +53,7 @@ import 'nouveau/nouveau_detail_content.dart';
 import 'nouveau/hero/nouveau_action_buttons.dart';
 import 'modern/modern_detail_content.dart';
 import 'spotlight/spotlight_detail_content.dart';
+import 'person_links_row.dart';
 import 'playlist_sort_filter_bar.dart';
 import '../../widgets/skeleton/skeleton_detail_screen.dart';
 import '../../widgets/skeleton/skeleton_shimmer.dart';
@@ -1537,6 +1538,11 @@ class _DetailContentState extends State<_DetailContent> {
               textAlign: TextAlign.center,
             ),
           ],
+          PersonLinksRow(
+            item: item,
+            accounts: viewModel.personAccounts,
+            padding: const EdgeInsets.only(top: 24),
+          ),
         ],
       ),
     );
@@ -3085,6 +3091,13 @@ class _DetailContentState extends State<_DetailContent> {
           ],
         ),
       ),
+      // The split layout keeps the links in its profile panel.
+      if (!useSplit)
+        PersonLinksRow(
+          item: item,
+          accounts: viewModel.personAccounts,
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        ),
       ..._composeSections(specs, head: favoriteFocusNode),
       const SizedBox(height: 48),
     ];
@@ -6761,12 +6774,19 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
 
     if (item.type == 'Person') {
       final canFavorite = viewModel.supportsPersonFavorites;
+      // On a phone every button is a round tile with its label underneath,
+      // Seerr included, rather than one wide Favorite.
+      final compact = _isCompact(context);
+      final hasSeerrButton =
+          compact &&
+          (item.tmdbId?.isNotEmpty ?? false) &&
+          GetIt.instance<PluginSyncService>().seerrAvailable;
       final normalizedPrimaryButtons = [
         if (canFavorite)
           _DetailActionButton(
             label: item.isFavorite ? l10n.favorited : l10n.favorite,
             icon: Icons.favorite,
-            isPrimary: true,
+            isPrimary: !compact,
             focusNode: widget.tvPlayFocusNode ?? _primaryFocusNode(0),
             autofocus: autofocusPlay,
             onPressed: viewModel.toggleFavorite,
@@ -6812,20 +6832,58 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
                       .requestFocus();
                 }
               : _focusSidebar,
-          onArrowRight: widget.onArrowRightAtEnd ?? () {},
+          onArrowRight: hasSeerrButton
+              ? () => _primaryFocusNode(2).requestFocus()
+              : widget.onArrowRightAtEnd ?? () {},
         ),
+        if (hasSeerrButton)
+          _DetailActionButton(
+            label: GetIt.instance<SeerrPreferences>().labelOrDefault(
+              l10n.seerr,
+            ),
+            iconBuilder: (size, color) => SeerrIcon(size: size, color: color),
+            focusNode: _primaryFocusNode(2),
+            onPressed: () {
+              context.push(Destinations.seerrPerson(item.tmdbId!));
+            },
+            onArrowUp:
+                NavigationLayout.focusNavbarNotifier.value != null ||
+                    widget.upTarget != null
+                ? _focusUpTarget
+                : null,
+            onArrowDown: widget.downTarget != null ? _focusDownTarget : null,
+            onArrowLeft: () => _primaryFocusNode(1).requestFocus(),
+            onArrowRight: widget.onArrowRightAtEnd ?? () {},
+          ),
       ];
 
+      final alignStart = widget.modernStyle;
       return Align(
-        alignment: widget.modernStyle ? Alignment.centerLeft : Alignment.center,
-        child: Wrap(
-          spacing: widget.modernStyle ? 12.0 : 8.0,
-          runSpacing: 12.0,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          alignment: widget.modernStyle
-              ? WrapAlignment.start
-              : WrapAlignment.center,
-          children: normalizedPrimaryButtons,
+        alignment: alignStart ? Alignment.centerLeft : Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: alignStart
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.center,
+          children: [
+            Wrap(
+              spacing: widget.modernStyle ? 12.0 : 8.0,
+              runSpacing: 12.0,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: alignStart
+                  ? WrapAlignment.start
+                  : WrapAlignment.center,
+              children: normalizedPrimaryButtons,
+            ),
+            PersonLinksRow(
+              item: item,
+              accounts: viewModel.personAccounts,
+              alignment: alignStart
+                  ? WrapAlignment.start
+                  : WrapAlignment.center,
+              padding: const EdgeInsets.only(top: 16),
+            ),
+          ],
         ),
       );
     }

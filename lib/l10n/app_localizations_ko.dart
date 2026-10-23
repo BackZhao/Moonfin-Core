@@ -12153,6 +12153,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get crewContributionsSeerr => '제작 참여작(Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => '그룹과 함께 보기';
 
   @override

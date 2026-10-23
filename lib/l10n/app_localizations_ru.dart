@@ -12614,6 +12614,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get crewContributionsSeerr => 'Работа в съёмочной группе (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Смотреть с группой';
 
   @override

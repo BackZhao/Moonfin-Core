@@ -12544,6 +12544,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get crewContributionsSeerr => 'Đóng góp của ê-kíp (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Xem cùng nhóm';
 
   @override

@@ -12488,6 +12488,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get crewContributionsSeerr => 'مشارکت‌های عوامل (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'با گروه تماشا کنید';
 
   @override

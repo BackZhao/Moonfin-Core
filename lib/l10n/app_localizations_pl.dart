@@ -12860,6 +12860,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewContributionsSeerr => 'Twórcy (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Oglądaj z grupą';
 
   @override

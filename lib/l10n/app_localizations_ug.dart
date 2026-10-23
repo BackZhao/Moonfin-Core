@@ -12571,6 +12571,9 @@ class AppLocalizationsUg extends AppLocalizations {
   String get crewContributionsSeerr => 'خادىم تۆھپىلىرى (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'گۇرۇپپا بىلەن كۆرۈش';
 
   @override

@@ -12595,6 +12595,9 @@ class AppLocalizationsCy extends AppLocalizations {
   String get crewContributionsSeerr => 'Cyfraniadau\'r Criw (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Gwyliwch gyda\'r grŵp';
 
   @override

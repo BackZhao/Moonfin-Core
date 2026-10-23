@@ -11111,6 +11111,10 @@
   "guestAppearances": "Guest Appearances",
   "appearancesSeerr": "Appearances (Seerr)",
   "crewContributionsSeerr": "Crew Contributions (Seerr)",
+  "personWebsite": "Official website",
+  "@personWebsite": {
+    "description": "Tooltip for the button on a person page that opens their own website"
+  },
   "watchWithGroup": "Watch with group",
   "disk": "Disk",
   "openInBrowser": "Open in Browser",

@@ -12653,6 +12653,9 @@ class AppLocalizationsMl extends AppLocalizations {
   String get crewContributionsSeerr => 'ക്രൂ സംഭാവനകൾ (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'ഗ്രൂപ്പിനൊപ്പം കാണുക';
 
   @override

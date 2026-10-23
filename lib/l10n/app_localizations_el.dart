@@ -12691,6 +12691,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get crewContributionsSeerr => 'Συμμετοχές συντελεστών (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Παρακολουθήστε με ομάδα';
 
   @override

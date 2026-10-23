@@ -12759,6 +12759,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get crewContributionsSeerr => 'Contribucions de l\'equip (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Veure amb grup';
 
   @override

@@ -12505,6 +12505,9 @@ class AppLocalizationsPa extends AppLocalizations {
   String get crewContributionsSeerr => 'ਕਰੂ ਯੋਗਦਾਨ (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'ਸਮੂਹ ਨਾਲ ਦੇਖੋ';
 
   @override

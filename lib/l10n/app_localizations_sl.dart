@@ -12603,6 +12603,9 @@ class AppLocalizationsSl extends AppLocalizations {
   String get crewContributionsSeerr => 'Prispevki ekipe (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Glej s skupino';
 
   @override

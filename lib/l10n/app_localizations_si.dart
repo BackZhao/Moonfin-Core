@@ -12533,6 +12533,9 @@ class AppLocalizationsSi extends AppLocalizations {
   String get crewContributionsSeerr => 'කණ්ඩායම් දායකත්ව (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'කණ්ඩායම සමඟ නරඹන්න';
 
   @override

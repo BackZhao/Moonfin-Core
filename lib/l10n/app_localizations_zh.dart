@@ -12151,6 +12151,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get crewContributionsSeerr => '演职人员作品（Seerr）';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => '与播放组一起观看';
 
   @override

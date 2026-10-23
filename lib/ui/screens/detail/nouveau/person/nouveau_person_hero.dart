@@ -15,6 +15,7 @@ import '../../../../widgets/offline_aware_image.dart';
 import '../../../../widgets/overlay_sheet.dart';
 import '../../../../widgets/seerr/seerr_image_urls.dart';
 import '../../item_detail_screen.dart';
+import '../../person_links_row.dart';
 
 class NouveauPersonHero extends StatefulWidget {
   final AggregatedItem item;
@@ -407,6 +408,12 @@ class NouveauPersonHeroState extends State<NouveauPersonHero> {
               onNavigateDown: widget.onNavigateDown,
             ),
           ],
+        ),
+        PersonLinksRow(
+          item: widget.item,
+          accounts: widget.viewModel.personAccounts,
+          alignment: WrapAlignment.start,
+          padding: const EdgeInsets.only(top: 16),
         ),
       ],
     );

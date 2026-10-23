@@ -12528,6 +12528,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get crewContributionsSeerr => 'কলাকুশলীর অবদান (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'গ্রুপের সাথে দেখুন';
 
   @override

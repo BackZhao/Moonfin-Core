@@ -12276,6 +12276,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get crewContributionsSeerr => 'スタッフとしての参加 (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'グループで視聴';
 
   @override

@@ -12624,6 +12624,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get crewContributionsSeerr => 'Kontributet e ekipit (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Shiko me grupin';
 
   @override

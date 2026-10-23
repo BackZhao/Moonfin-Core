@@ -12613,6 +12613,9 @@ class AppLocalizationsMk extends AppLocalizations {
   String get crewContributionsSeerr => 'Придонеси на екипата (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Гледај со група';
 
   @override

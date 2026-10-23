@@ -12519,6 +12519,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get crewContributionsSeerr => 'مساهمات طاقم العمل (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'شاهد مع المجموعة';
 
   @override

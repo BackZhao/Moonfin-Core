@@ -12609,6 +12609,9 @@ class AppLocalizationsTe extends AppLocalizations {
   String get crewContributionsSeerr => 'సిబ్బంది సహకారాలు (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'సమూహంతో చూడండి';
 
   @override

@@ -12597,6 +12597,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get crewContributionsSeerr => 'Kūrybinės grupės darbai (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Žiūrėkite su grupe';
 
   @override

@@ -12538,6 +12538,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get crewContributionsSeerr => 'Kontribusi Kru (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Tonton bersama grup';
 
   @override

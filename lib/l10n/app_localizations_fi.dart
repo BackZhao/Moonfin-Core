@@ -12631,6 +12631,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get crewContributionsSeerr => 'Työryhmän osuudet (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Katso ryhmän kanssa';
 
   @override

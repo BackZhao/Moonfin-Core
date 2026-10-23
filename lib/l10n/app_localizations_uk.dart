@@ -12622,6 +12622,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get crewContributionsSeerr => 'Внесок знімальної групи (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Дивіться з групою';
 
   @override

@@ -12204,6 +12204,9 @@ class AppLocalizationsYue extends AppLocalizations {
   String get crewContributionsSeerr => '幕後參與（Seerr）';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => '同群組一齊睇';
 
   @override

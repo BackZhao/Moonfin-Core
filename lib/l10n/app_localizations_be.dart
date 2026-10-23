@@ -12604,6 +12604,9 @@ class AppLocalizationsBe extends AppLocalizations {
   String get crewContributionsSeerr => 'Удзел здымачнай групы (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Глядзіце з групай';
 
   @override

@@ -12612,6 +12612,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get crewContributionsSeerr => 'குழுப் பங்களிப்புகள் (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'குழுவுடன் பார்';
 
   @override

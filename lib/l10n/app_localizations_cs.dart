@@ -12574,6 +12574,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get crewContributionsSeerr => 'Příspěvky štábu (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Sledujte se skupinou';
 
   @override

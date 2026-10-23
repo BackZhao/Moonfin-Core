@@ -12537,6 +12537,9 @@ class AppLocalizationsNb extends AppLocalizations {
   String get crewContributionsSeerr => 'Bidrag fra teamet (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Se med gruppe';
 
   @override

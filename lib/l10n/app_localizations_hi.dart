@@ -12520,6 +12520,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get crewContributionsSeerr => 'क्रू योगदान (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'ग्रुप के साथ देखें';
 
   @override

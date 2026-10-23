@@ -12605,6 +12605,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get crewContributionsSeerr => 'ಸಿಬ್ಬಂದಿ ಕೊಡುಗೆಗಳು (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'ಗುಂಪಿನೊಂದಿಗೆ ವೀಕ್ಷಿಸಿ';
 
   @override

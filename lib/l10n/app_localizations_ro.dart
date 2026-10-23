@@ -12666,6 +12666,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get crewContributionsSeerr => 'Contribuții în echipă (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Vizionează cu grupul';
 
   @override

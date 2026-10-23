@@ -12550,6 +12550,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get crewContributionsSeerr => 'Meeskonna panused (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Vaadake koos rühmaga';
 
   @override

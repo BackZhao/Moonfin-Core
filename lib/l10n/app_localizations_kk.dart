@@ -12585,6 +12585,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get crewContributionsSeerr => 'Түсіру тобының үлесі (Seerr)';
 
   @override
+  String get personWebsite => 'Official website';
+
+  @override
   String get watchWithGroup => 'Топпен бірге көру';
 
   @override
