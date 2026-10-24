@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -34,7 +35,8 @@ double modernMetadataBudget(UserPreferences prefs) {
 
 /// How far a grown card's ratings and overview can run before the row ends.
 /// Focus parks a card at the leading edge, but the last few cards can't
-/// scroll that far, so they get less room.
+/// scroll that far, so they get less room. A [hovered] card stays where it
+/// is. Never wider than twice the card, so lines stay readable.
 double modernDetailsWidth({
   required ScrollController controller,
   required int index,
@@ -45,9 +47,11 @@ double modernDetailsWidth({
   required double maxWidth,
   required double leadingInset,
   required double trailingInset,
+  bool hovered = false,
 }) {
+  final cap = math.min(maxWidth, focusedWidth * 2);
   if (!controller.hasClients || !controller.position.hasViewportDimension) {
-    return maxWidth;
+    return cap;
   }
   final viewport = controller.position.viewportDimension;
   final stride = itemExtent + itemSpacing;
@@ -58,8 +62,8 @@ double modernDetailsWidth({
       trailingInset;
   final maxOffset = (contentWidth - viewport).clamp(0.0, double.infinity);
   final cardStart = leadingInset + index * stride;
-  final settledLeft = cardStart - cardStart.clamp(0.0, maxOffset);
-  return (viewport - settledLeft - trailingInset).clamp(0.0, maxWidth);
+  final offset = hovered ? controller.offset : cardStart.clamp(0.0, maxOffset);
+  return (viewport - (cardStart - offset) - trailingInset).clamp(0.0, cap);
 }
 
 /// Which Modern card is grown: by touch, by mouse, or by a D-pad dwell. These

@@ -5348,6 +5348,8 @@ class _ContentRowsState extends State<_ContentRows>
                                 maxWidth: v2ExtendedWidth,
                                 leadingInset: _kHomeRowLabelInset,
                                 trailingInset: _kHomeRowTrailingInset,
+                                hovered: _v2Expansion.hoveredKey.value ==
+                                    previewKey,
                               ),
                               isAudioRow: row.isAudio,
                             )

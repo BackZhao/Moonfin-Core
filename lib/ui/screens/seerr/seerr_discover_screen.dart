@@ -931,6 +931,7 @@ class _SeerrDiscoverScreenState extends State<SeerrDiscoverScreen> {
                             maxWidth: maxDetailsWidth,
                             leadingInset: sideInset,
                             trailingInset: sideInset,
+                            hovered: _modernExpansion.hoveredKey.value == key,
                           ),
                           overview: item.overview,
                           communityRating: (item.voteAverage ?? 0) > 0
