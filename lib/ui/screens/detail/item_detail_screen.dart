@@ -5604,12 +5604,14 @@ class _HorizontalActionRow extends StatefulWidget {
   final double spacing;
   final double? buttonWidth;
   final AlignmentGeometry alignment;
+  final CrossAxisAlignment crossAxisAlignment;
 
   const _HorizontalActionRow({
     required this.children,
     required this.spacing,
     this.buttonWidth,
     this.alignment = AlignmentDirectional.centerStart,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
   });
 
   @override
@@ -5736,7 +5738,7 @@ class _HorizontalActionRowState extends State<_HorizontalActionRow> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: widget.crossAxisAlignment,
             children: [
               for (var i = 0; i < widget.children.length; i++) ...[
                 if (i > 0) SizedBox(width: widget.spacing),
@@ -6889,7 +6891,9 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
             Wrap(
               spacing: widget.modernStyle ? 12.0 : 8.0,
               runSpacing: 12.0,
-              crossAxisAlignment: WrapCrossAlignment.center,
+              crossAxisAlignment: widget.modernStyle
+                  ? WrapCrossAlignment.center
+                  : WrapCrossAlignment.start,
               alignment: alignStart
                   ? WrapAlignment.start
                   : WrapAlignment.center,
@@ -7709,11 +7713,16 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
       final rowAlignment = widget.modernStyle
           ? AlignmentDirectional.centerStart
           : Alignment.center;
+      // A classic tile grows a line when its label wraps, so the tiles line
+      // up by their icons. Modern buttons share a height and stay centered.
       rowContent = prefLimit == -1
           ? _HorizontalActionRow(
               spacing: buttonSpacing,
               buttonWidth: compact ? 80.0 : 108.0 * desktopScale,
               alignment: rowAlignment,
+              crossAxisAlignment: widget.modernStyle
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start,
               children: normalizedButtons,
             )
           : Align(
@@ -7721,7 +7730,9 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
               child: Wrap(
                 spacing: buttonSpacing,
                 runSpacing: buttonRunSpacing,
-                crossAxisAlignment: WrapCrossAlignment.center,
+                crossAxisAlignment: widget.modernStyle
+                    ? WrapCrossAlignment.center
+                    : WrapCrossAlignment.start,
                 alignment: widget.modernStyle
                     ? WrapAlignment.start
                     : WrapAlignment.center,
@@ -7985,7 +7996,7 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
               Wrap(
                 spacing: buttonSpacing,
                 runSpacing: buttonRunSpacing,
-                crossAxisAlignment: WrapCrossAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.start,
                 alignment: wrapAlignment,
                 children: [...normalizedPrimaryButtons, moreButton],
               ),
@@ -7994,7 +8005,7 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
                 Wrap(
                   spacing: buttonSpacing,
                   runSpacing: buttonRunSpacing,
-                  crossAxisAlignment: WrapCrossAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.start,
                   alignment: wrapAlignment,
                   children: normalizedExtraButtons,
                 ),
