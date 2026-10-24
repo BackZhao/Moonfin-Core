@@ -2029,6 +2029,11 @@ class _LiveTvPlayerScreenState extends State<LiveTvPlayerScreen>
                   if (_infoVisible &&
                       !_isGuidePickerOpen &&
                       !_isCarouselOpen) ...[
+                    const Positioned.fill(
+                      child: IgnorePointer(
+                        child: ColoredBox(color: Color(0x4D000000)),
+                      ),
+                    ),
                     _buildTopOverlay(),
                     _buildBottomOverlay(),
                   ],
