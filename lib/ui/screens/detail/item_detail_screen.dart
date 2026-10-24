@@ -63,6 +63,7 @@ import '../../../data/services/seerr/seerr_api_models.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../util/error_message.dart';
 import '../../widgets/quick_return_wrapper.dart';
+import '../../widgets/trailer_picker.dart';
 import '../../widgets/progress_snack_bar.dart';
 import '../../../util/remote_subtitle_labels.dart';
 import '../../../util/subtitle_appearance_schedule.dart';
@@ -7156,7 +7157,12 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
           label: l10n.trailer,
           icon: Icons.movie_outlined,
           onPressed: () => viewModel.isSeerrOnly
-              ? openSeerrTrailer(context, seerrTrailer!)
+              ? _playSeerrTrailer(
+                  context,
+                  item.name,
+                  seerr!.state.relatedVideos,
+                  seerrTrailer!,
+                )
               : _playTrailer(context, item),
         ),
       if (!isBook &&
@@ -10020,13 +10026,18 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     return mediaStreamsForItem(item, selectedSource);
   }
 
-  AggregatedItem? _firstLocalTrailerFromFeatures(
+  List<AggregatedItem> _localTrailersFromFeatures(
     List<AggregatedItem> features,
+  ) => features
+      .where((feature) => isTrailerFeature(feature) && feature.id.isNotEmpty)
+      .toList(growable: false);
+
+  List<AggregatedItem> _preferredLocalTrailerFirst(
+    List<AggregatedItem> candidates,
   ) {
-    final candidates = features
-        .where((feature) => isTrailerFeature(feature) && feature.id.isNotEmpty)
-        .toList(growable: false);
-    return _preferredLocalTrailer(candidates);
+    final preferred = _preferredLocalTrailer(candidates);
+    if (preferred == null) return candidates;
+    return [preferred, ...candidates.where((c) => !identical(c, preferred))];
   }
 
   AggregatedItem? _preferredLocalTrailer(List<AggregatedItem> candidates) {
@@ -10098,11 +10109,13 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
     return audio;
   }
 
-  Future<AggregatedItem?> _loadLocalTrailerOnDemand(AggregatedItem item) async {
+  Future<List<AggregatedItem>> _loadLocalTrailersOnDemand(
+    AggregatedItem item,
+  ) async {
     final client = GetIt.instance<MediaServerClient>();
+    final candidates = <AggregatedItem>[];
     try {
       final trailers = await client.itemsApi.getLocalTrailers(item.id);
-      final candidates = <AggregatedItem>[];
       for (final raw in trailers) {
         final id = raw['Id']?.toString();
         if (id == null || id.isEmpty) {
@@ -10112,18 +10125,82 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
           AggregatedItem(id: id, serverId: item.serverId, rawData: raw),
         );
       }
-      return _preferredLocalTrailer(candidates);
     } catch (_) {}
-    return null;
+    return candidates;
+  }
+
+  String? _localTrailerImageUrl(AggregatedItem trailer, AggregatedItem item) {
+    final imageApi = viewModel.imageApi;
+    if (trailer.primaryImageTag case final tag?) {
+      return imageApi.getPrimaryImageUrl(trailer.id, maxWidth: 320, tag: tag);
+    }
+    if (item.backdropImageTags.isEmpty) return null;
+    return imageApi.getBackdropImageUrl(
+      item.id,
+      maxWidth: 320,
+      tag: item.backdropImageTags.first,
+    );
   }
 
   Future<void> _playTrailer(BuildContext context, AggregatedItem item) async {
-    final manager = GetIt.instance<PlaybackManager>();
-
-    var localTrailer = _firstLocalTrailerFromFeatures(viewModel.features);
-    localTrailer ??= await _loadLocalTrailerOnDemand(item);
+    var locals = _localTrailersFromFeatures(viewModel.features);
+    if (locals.isEmpty) locals = await _loadLocalTrailersOnDemand(item);
+    final choices = trailerChoicesFor(
+      locals: _preferredLocalTrailerFirst(locals),
+      remoteTrailers: item.remoteTrailers,
+      localImageUrl: (trailer) => _localTrailerImageUrl(trailer, item),
+    );
+    if (choices.isEmpty && viewModel.searchesYouTubeForTrailer) {
+      final url = await YouTubeStreamResolver.searchTrailer(
+        item.name,
+        year: item.productionYear,
+      );
+      if (url != null) choices.add(TrailerChoice.remote(url, null));
+    }
     if (!context.mounted) return;
 
+    if (choices.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context).noPlayableTrailerFound),
+        ),
+      );
+      return;
+    }
+    final choice = choices.length == 1
+        ? choices.single
+        : await TrailerPicker.show(
+            context,
+            itemName: item.name,
+            choices: choices,
+          );
+    if (choice == null || !context.mounted) return;
+    await _playTrailerChoice(context, choice);
+  }
+
+  Future<void> _playSeerrTrailer(
+    BuildContext context,
+    String itemName,
+    List<SeerrVideo> videos,
+    SeerrVideo best,
+  ) async {
+    final choices = seerrTrailerChoices(videos);
+    if (choices.length < 2) return openSeerrTrailer(context, best);
+    final choice = await TrailerPicker.show(
+      context,
+      itemName: itemName,
+      choices: choices,
+    );
+    if (choice == null || !context.mounted) return;
+    await _playTrailerChoice(context, choice);
+  }
+
+  Future<void> _playTrailerChoice(
+    BuildContext context,
+    TrailerChoice choice,
+  ) async {
+    final manager = GetIt.instance<PlaybackManager>();
+    final localTrailer = choice.local;
     if (localTrailer != null) {
       await _pushPlayerRouteWhileStartingPlayback(
         context,
@@ -10131,7 +10208,7 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
         startPlayback: (launchSession) async {
           final forceTranscode = await shouldForceTranscodeForDolbyVisionQueue(
             context,
-            [localTrailer!],
+            [localTrailer],
           );
           if (!context.mounted) return false;
           return _runWithDolbyVisionStartupFallbackPrompt(
@@ -10140,7 +10217,7 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
             () => runPlaybackStart(
               launchSession,
               () => manager.playItems(
-                [localTrailer!],
+                [localTrailer],
                 enableDirectPlay: !forceTranscode,
                 enableDirectStream: !forceTranscode,
               ),
@@ -10151,29 +10228,8 @@ class DetailActionButtonsState extends State<DetailActionButtons> {
       return;
     }
 
-    var trailerUrl = item.remoteTrailers
-        .map((t) => t['Url'] as String?)
-        .whereType<String>()
-        .firstWhere((u) => u.isNotEmpty, orElse: () => '');
-    if (trailerUrl.isEmpty && viewModel.searchesYouTubeForTrailer) {
-      trailerUrl =
-          await YouTubeStreamResolver.searchTrailer(
-            item.name,
-            year: item.productionYear,
-          ) ??
-          '';
-    }
-
-    if (trailerUrl.isEmpty) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context).noPlayableTrailerFound),
-        ),
-      );
-      return;
-    }
-
+    final trailerUrl = choice.url;
+    if (trailerUrl == null) return;
     if (opensTrailersExternally() &&
         await launchTrailerExternally(trailerUrl)) {
       return;

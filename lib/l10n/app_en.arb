@@ -6451,7 +6451,7 @@
   "@trailerCaptions": {
     "description": "Setting for YouTube trailer captions"
   },
-  "trailerCaptionsDescription": "Show captions on YouTube trailers in the media bar",
+  "trailerCaptionsDescription": "Show captions on YouTube trailers",
   "@trailerCaptionsDescription": {
     "description": "Description for YouTube trailer captions"
   },
@@ -14426,5 +14426,27 @@
   "unableToRequestLaterShowing": "Recording started, but couldn't request a later showing.",
   "@unableToRequestLaterShowing": {
     "description": "Snackbar when the recording started but asking for a later showing failed"
+  },
+  "trailerCount": "{count, plural, =1{1 trailer} other{{count} trailers}}",
+  "@trailerCount": {
+    "description": "How many trailers the trailer picker lists, shown in its header",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trailerNumber": "Trailer {number}",
+  "@trailerNumber": {
+    "description": "Fallback name in the trailer picker for a trailer the server gave no name, numbered by its place in the list",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "subtitled": "Subtitled",
+  "@subtitled": {
+    "description": "Chip in the trailer picker on a trailer that has subtitles burned into the video"
   }
 }

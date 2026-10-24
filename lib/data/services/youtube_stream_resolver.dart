@@ -13,6 +13,12 @@ class YouTubeStream {
   const YouTubeStream(this.url, {this.audioLanguage});
 }
 
+typedef YouTubeVideoDetails = ({
+  String? title,
+  Duration? length,
+  String? channel,
+});
+
 /// Resolves a YouTube trailer through YouTube's own player API, asked as the
 /// Vision Pro app first for a manifest with every resolution in it, then as the
 /// Android app, whose muxed file stops at 360p.
@@ -30,6 +36,7 @@ class YouTubeStreamResolver {
     _dio = dio;
     _visitorData = null;
     _searches.clear();
+    _details.clear();
   }
 
   static const _youtubeOrigin = 'https://www.youtube.com';
@@ -227,24 +234,80 @@ class YouTubeStreamResolver {
     } catch (_) {}
   }
 
+  static final _details = <String, Future<YouTubeVideoDetails?>>{};
+
+  /// A video's title, length and channel, for listing it before it plays.
+  /// Kept per video, but a failed lookup isn't kept so the next try asks
+  /// again.
+  static Future<YouTubeVideoDetails?> details(String videoId) =>
+      _details.putIfAbsent(videoId, () async {
+        YouTubeVideoDetails? details;
+        try {
+          details = videoDetailsOf(
+            await _requestPlayerWithVisitor(
+              videoId,
+              _visionOs,
+            ).timeout(_resolveTimeout),
+          );
+        } catch (_) {}
+        if (details == null) _details.remove(videoId);
+        return details;
+      });
+
+  @visibleForTesting
+  static YouTubeVideoDetails? videoDetailsOf(Map<String, dynamic>? data) {
+    final details = data?['videoDetails'];
+    if (details is! Map) return null;
+    final seconds = int.tryParse('${details['lengthSeconds']}');
+    final title = details['title'];
+    final author = details['author'];
+    return (
+      title: title is String && title.isNotEmpty ? title : null,
+      length: seconds == null || seconds <= 0
+          ? null
+          : Duration(seconds: seconds),
+      channel: author is String && author.isNotEmpty ? author : null,
+    );
+  }
+
+  static const _visionOs = _InnertubeClient(
+    name: 'VISIONOS',
+    nameId: '101',
+    version: '1.02',
+    userAgent:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 15_7_3) '
+        'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 '
+        'Safari/605.1.15',
+    needsVisitor: true,
+    extra: {
+      'deviceMake': 'Apple',
+      'deviceModel': 'RealityDevice17,1',
+      'osName': 'visionOS',
+      'osVersion': '26.5.23O471',
+    },
+  );
+
+  /// Turns captions on or off for the next load. media_kit turns on any
+  /// subtitle track it finds, so off has to be asked for outright.
+  static Future<void> showCaptions(
+    Player player,
+    bool show, {
+    String? language,
+  }) async {
+    final platform = player.platform;
+    if (platform is! NativePlayer) return;
+    try {
+      final dynamic native = platform;
+      await Future<void>.value(native.setProperty('sid', show ? 'auto' : 'no'));
+      await Future<void>.value(
+        native.setProperty('slang', show ? language ?? '' : ''),
+      );
+    } catch (_) {}
+  }
+
   static Future<YouTubeStream?> _tryInnertube(String videoId) async {
     const clients = [
-      _InnertubeClient(
-        name: 'VISIONOS',
-        nameId: '101',
-        version: '1.02',
-        userAgent:
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 15_7_3) '
-            'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 '
-            'Safari/605.1.15',
-        needsVisitor: true,
-        extra: {
-          'deviceMake': 'Apple',
-          'deviceModel': 'RealityDevice17,1',
-          'osName': 'visionOS',
-          'osVersion': '26.5.23O471',
-        },
-      ),
+      _visionOs,
       _InnertubeClient(
         name: 'ANDROID',
         nameId: '3',

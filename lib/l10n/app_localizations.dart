@@ -8677,7 +8677,7 @@ abstract class AppLocalizations {
   /// Description for YouTube trailer captions
   ///
   /// In en, this message translates to:
-  /// **'Show captions on YouTube trailers in the media bar'**
+  /// **'Show captions on YouTube trailers'**
   String get trailerCaptionsDescription;
 
   /// Setting for episode preview
@@ -27128,6 +27128,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recording started, but couldn\'t request a later showing.'**
   String get unableToRequestLaterShowing;
+
+  /// How many trailers the trailer picker lists, shown in its header
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 trailer} other{{count} trailers}}'**
+  String trailerCount(int count);
+
+  /// Fallback name in the trailer picker for a trailer the server gave no name, numbered by its place in the list
+  ///
+  /// In en, this message translates to:
+  /// **'Trailer {number}'**
+  String trailerNumber(int number);
+
+  /// Chip in the trailer picker on a trailer that has subtitles burned into the video
+  ///
+  /// In en, this message translates to:
+  /// **'Subtitled'**
+  String get subtitled;
 }
 
 class _AppLocalizationsDelegate

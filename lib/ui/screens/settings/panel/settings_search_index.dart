@@ -688,6 +688,12 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       keywords: ['youtube', 'trailer', 'external app'],
     ),
     details.leaf(
+      'mediaBarTrailerCaptions',
+      l10n.trailerCaptions,
+      subtitle: l10n.trailerCaptionsDescription,
+      keywords: ['subtitles'],
+    ),
+    details.leaf(
       'pref_hide_details_media_description',
       l10n.hideDetailsMediaDescription,
       subtitle: l10n.hideDetailsMediaDescriptionSubtitle,

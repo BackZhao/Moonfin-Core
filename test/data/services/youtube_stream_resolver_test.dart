@@ -383,6 +383,45 @@ void main() {
     expect(adapter.urls, hasLength(2));
   });
 
+  test('reads the title, length and channel of a video once', () async {
+    final adapter = _PlayerAdapter([
+      {
+        'playabilityStatus': {'status': 'OK'},
+        'videoDetails': {
+          'title': 'Cyberpunk: Edgerunners | Official Teaser | Netflix',
+          'lengthSeconds': '77',
+          'author': 'Netflix',
+        },
+      },
+    ]);
+    YouTubeStreamResolver.setDioForTesting(Dio()..httpClientAdapter = adapter);
+
+    final details = await YouTubeStreamResolver.details('x4ztgjvfU60');
+    final again = await YouTubeStreamResolver.details('x4ztgjvfU60');
+
+    expect(details?.title, 'Cyberpunk: Edgerunners | Official Teaser | Netflix');
+    expect(details?.length, const Duration(seconds: 77));
+    expect(details?.channel, 'Netflix');
+    expect(again, details);
+    expect(adapter.urls.single.path, '/youtubei/v1/player');
+  });
+
+  test('reads nothing from an answer without usable video details', () {
+    expect(YouTubeStreamResolver.videoDetailsOf(null), isNull);
+    expect(
+      YouTubeStreamResolver.videoDetailsOf({
+        'playabilityStatus': {'status': 'UNPLAYABLE'},
+      }),
+      isNull,
+    );
+    expect(
+      YouTubeStreamResolver.videoDetailsOf({
+        'videoDetails': {'lengthSeconds': '0', 'author': ''},
+      }),
+      (title: null, length: null, channel: null),
+    );
+  });
+
   test('passes a trailer that isnt on YouTube through untouched', () async {
     final stream = await YouTubeStreamResolver.resolveFromUrl(
       'https://example.com/trailer.mp4',

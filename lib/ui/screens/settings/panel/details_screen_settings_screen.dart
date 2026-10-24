@@ -169,6 +169,13 @@ class _DetailsScreenSettingsScreenState
                     onChanged: _pushPersonalizationSync,
                   ),
                   SwitchPreferenceTile(
+                    preference: UserPreferences.mediaBarTrailerCaptions,
+                    title: l10n.trailerCaptions,
+                    subtitle: l10n.trailerCaptionsDescription,
+                    icon: Icons.closed_caption_outlined,
+                    onChanged: _pushPersonalizationSync,
+                  ),
+                  SwitchPreferenceTile(
                     preference: UserPreferences.hideDetailsMediaDescription,
                     title: l10n.hideDetailsMediaDescription,
                     subtitle: l10n.hideDetailsMediaDescriptionSubtitle,

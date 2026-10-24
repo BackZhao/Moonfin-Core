@@ -13,6 +13,7 @@ import '../../../data/services/youtube_stream_resolver.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../playback/appletv_preview_player.dart';
 import '../../../playback/mpv_client_certificate.dart';
+import '../../../preference/user_preferences.dart';
 import '../../../util/platform_detection.dart';
 import '../../screensaver/screensaver_controller.dart';
 import '../../widgets/adaptive/sf_symbol.dart';
@@ -47,6 +48,9 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
   bool _sponsorBlockSeekInFlight = false;
   int _sponsorBlockToken = 0;
   final _screensaverController = GetIt.instance<ScreensaverController>();
+  final _showCaptions = GetIt.instance<UserPreferences>().get(
+    UserPreferences.mediaBarTrailerCaptions,
+  );
 
   bool get _supportsEmbeddedYouTubePlatform {
     return PlatformDetection.isAndroid ||
@@ -289,6 +293,13 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
         _player!,
         resolved.audioLanguage,
       );
+      await YouTubeStreamResolver.showCaptions(
+        _player!,
+        _showCaptions,
+        language: GetIt.instance<UserPreferences>().get(
+          UserPreferences.defaultSubtitleLanguage,
+        ),
+      );
       await applyMpvClientCertificate(_player!, streamUrl);
       await _player!.open(media).timeout(_openTimeout);
       if (!mounted) return;
@@ -394,6 +405,7 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
                         child: WebYouTubeTrailer(
                           videoId: _webVideoId!,
                           muted: false,
+                          showCaptions: _showCaptions,
                           loop: false,
                           onPlaybackStarted: _onEmbeddedPlaybackStarted,
                           onEmbeddedUnavailable: _useEmbeddedYouTube
