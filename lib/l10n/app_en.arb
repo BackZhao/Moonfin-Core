@@ -14448,5 +14448,79 @@
   "subtitled": "Subtitled",
   "@subtitled": {
     "description": "Chip in the trailer picker on a trailer that has subtitles burned into the video"
+  },
+  "rommAccount": "RomM account",
+  "@rommAccount": {
+    "description": "Title of the screen, and the button on a game library, for linking the user's own RomM account"
+  },
+  "rommAccountIntro": "Link your RomM account to play from your own RomM library and keep your saves in RomM.",
+  "@rommAccountIntro": {
+    "description": "Explains what linking a RomM account does, shown above the Link button"
+  },
+  "rommLinkAccount": "Link RomM account",
+  "@rommLinkAccount": {
+    "description": "Button that starts linking a RomM account"
+  },
+  "rommLinkInstructions": "Sign in to RomM and enter this code to link your account.",
+  "@rommLinkInstructions": {
+    "description": "Instructions above the code while a RomM link waits for approval"
+  },
+  "rommLinkScanOrVisit": "Scan the QR code with your phone, or go to {url}",
+  "@rommLinkScanOrVisit": {
+    "description": "Shown on TV beside the QR code while a RomM link waits for approval",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "rommOpen": "Open RomM",
+  "@rommOpen": {
+    "description": "Button that opens the RomM approval page in the browser with the code filled in"
+  },
+  "rommWaitingForApproval": "Waiting for you to approve the code in RomM...",
+  "@rommWaitingForApproval": {
+    "description": "Status shown while the app waits for the RomM code to be approved"
+  },
+  "rommLinkedAs": "Linked as {username}",
+  "@rommLinkedAs": {
+    "description": "Shown when the user's RomM account is linked",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "rommLinked": "Your RomM account is linked.",
+  "@rommLinked": {
+    "description": "Shown when the user's RomM account is linked and the server sent no user name"
+  },
+  "rommUnlinkNote": "Unlinking stops Moonfin from using your RomM key. The key stays in RomM until you remove it from your API tokens there.",
+  "@rommUnlinkNote": {
+    "description": "Explains what Unlink does on the RomM account screen"
+  },
+  "rommUnlink": "Unlink",
+  "@rommUnlink": {
+    "description": "Button that unlinks the user's RomM account"
+  },
+  "rommLinkExpired": "The code expired before it was approved. Link again to get a new one.",
+  "@rommLinkExpired": {
+    "description": "Error when a RomM link code ran out of time"
+  },
+  "rommLinkDenied": "The link was turned down in RomM.",
+  "@rommLinkDenied": {
+    "description": "Error when the user declined the RomM link request"
+  },
+  "rommUnreachable": "Moonfin couldn't reach RomM. Try again in a moment.",
+  "@rommUnreachable": {
+    "description": "Error when the server couldn't reach RomM while linking"
+  },
+  "rommNotAvailable": "This server has no RomM library.",
+  "@rommNotAvailable": {
+    "description": "Shown on the RomM account screen when the server has no RomM library"
+  },
+  "rommAccountLoadFailed": "Couldn't load your RomM account.",
+  "@rommAccountLoadFailed": {
+    "description": "Error when the RomM account status couldn't be loaded from the server"
   }
 }

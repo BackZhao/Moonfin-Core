@@ -27146,6 +27146,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subtitled'**
   String get subtitled;
+
+  /// Title of the screen, and the button on a game library, for linking the user's own RomM account
+  ///
+  /// In en, this message translates to:
+  /// **'RomM account'**
+  String get rommAccount;
+
+  /// Explains what linking a RomM account does, shown above the Link button
+  ///
+  /// In en, this message translates to:
+  /// **'Link your RomM account to play from your own RomM library and keep your saves in RomM.'**
+  String get rommAccountIntro;
+
+  /// Button that starts linking a RomM account
+  ///
+  /// In en, this message translates to:
+  /// **'Link RomM account'**
+  String get rommLinkAccount;
+
+  /// Instructions above the code while a RomM link waits for approval
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to RomM and enter this code to link your account.'**
+  String get rommLinkInstructions;
+
+  /// Shown on TV beside the QR code while a RomM link waits for approval
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR code with your phone, or go to {url}'**
+  String rommLinkScanOrVisit(String url);
+
+  /// Button that opens the RomM approval page in the browser with the code filled in
+  ///
+  /// In en, this message translates to:
+  /// **'Open RomM'**
+  String get rommOpen;
+
+  /// Status shown while the app waits for the RomM code to be approved
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for you to approve the code in RomM...'**
+  String get rommWaitingForApproval;
+
+  /// Shown when the user's RomM account is linked
+  ///
+  /// In en, this message translates to:
+  /// **'Linked as {username}'**
+  String rommLinkedAs(String username);
+
+  /// Shown when the user's RomM account is linked and the server sent no user name
+  ///
+  /// In en, this message translates to:
+  /// **'Your RomM account is linked.'**
+  String get rommLinked;
+
+  /// Explains what Unlink does on the RomM account screen
+  ///
+  /// In en, this message translates to:
+  /// **'Unlinking stops Moonfin from using your RomM key. The key stays in RomM until you remove it from your API tokens there.'**
+  String get rommUnlinkNote;
+
+  /// Button that unlinks the user's RomM account
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink'**
+  String get rommUnlink;
+
+  /// Error when a RomM link code ran out of time
+  ///
+  /// In en, this message translates to:
+  /// **'The code expired before it was approved. Link again to get a new one.'**
+  String get rommLinkExpired;
+
+  /// Error when the user declined the RomM link request
+  ///
+  /// In en, this message translates to:
+  /// **'The link was turned down in RomM.'**
+  String get rommLinkDenied;
+
+  /// Error when the server couldn't reach RomM while linking
+  ///
+  /// In en, this message translates to:
+  /// **'Moonfin couldn\'t reach RomM. Try again in a moment.'**
+  String get rommUnreachable;
+
+  /// Shown on the RomM account screen when the server has no RomM library
+  ///
+  /// In en, this message translates to:
+  /// **'This server has no RomM library.'**
+  String get rommNotAvailable;
+
+  /// Error when the RomM account status couldn't be loaded from the server
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your RomM account.'**
+  String get rommAccountLoadFailed;
 }
 
 class _AppLocalizationsDelegate
