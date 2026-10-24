@@ -11,6 +11,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../preference/detail_section_layout.dart';
 import '../../../../preference/user_preferences.dart';
 import '../../../../util/media_source_summary.dart';
+import '../../../widgets/detail_reviews.dart';
 import '../../../widgets/seerr/seerr_collection_banner.dart';
 import '../../../widgets/seerr/seerr_item_chips.dart';
 import '../../../widgets/seerr/seerr_item_status.dart'
@@ -236,6 +237,7 @@ class _SpotlightCardsBuilder {
         'seerr_details': _seerrDetailsCard,
         'people': _peopleCard,
         'similar': _similarCard,
+        'reviews': _reviewsCard,
       };
     }
     return switch (item.type) {
@@ -244,6 +246,7 @@ class _SpotlightCardsBuilder {
         'people': _peopleCard,
         'chapters_extras': _chaptersExtrasCard,
         'similar': _similarCard,
+        'reviews': _reviewsCard,
         'collections': _collectionsCard,
       },
       'Season' => {
@@ -282,6 +285,7 @@ class _SpotlightCardsBuilder {
         'chapters_extras': _chaptersExtrasCard,
         'file_details': _fileDetailsCard,
         'similar': _similarCard,
+        'reviews': _reviewsCard,
         'collections': _collectionsCard,
       },
     };
@@ -709,6 +713,27 @@ class _SpotlightCardsBuilder {
             similar.isEmpty ? l10n.similar : l10n.spotlightSimilarSeerr,
             seerrSimilar,
           ),
+      ],
+    );
+  }
+
+  SpotlightCardSpec? _reviewsCard() {
+    if (!_shows(DetailSection.reviews)) return null;
+    final reviews = vm.reviews;
+    if (reviews.isEmpty) return null;
+    return SpotlightCardSpec(
+      id: 'reviews',
+      title: l10n.reviews,
+      subtitle: l10n.spotlightReviewsCount(reviews.length),
+      imageUrl: fallbackImageUrl,
+      icon: Icons.rate_review_outlined,
+      sections: [
+        SpotlightModalSection(
+          builder: (context, firstFocusNode) => DetailReviewsGrid(
+            reviews: reviews,
+            firstFocusNode: firstFocusNode,
+          ),
+        ),
       ],
     );
   }

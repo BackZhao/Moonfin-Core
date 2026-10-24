@@ -80,6 +80,17 @@ void main() {
     expect(DetailSection.seerrStats.isOffered, isTrue);
   });
 
+  test('reviews are only offered when the plugin serves them', () {
+    final plugin = _PluginSync();
+    when(() => plugin.tmdbReviewsAvailable).thenReturn(false);
+    GetIt.instance.registerSingleton<PluginSyncService>(plugin);
+
+    expect(DetailSection.reviews.isOffered, isFalse);
+
+    when(() => plugin.tmdbReviewsAvailable).thenReturn(true);
+    expect(DetailSection.reviews.isOffered, isTrue);
+  });
+
   // Issue #1721: the links open a browser, which a TV doesn't have.
   test('person links are offered everywhere but TV', () {
     expect(DetailSection.personLinks.isOffered, isTrue);

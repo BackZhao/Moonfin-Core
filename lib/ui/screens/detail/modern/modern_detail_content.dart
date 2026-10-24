@@ -90,6 +90,7 @@ import '../../../widgets/seerr/seerr_item_status.dart';
 import '../../../widgets/seerr/seerr_status_pill.dart';
 import '../../../widgets/seerr/seerr_stats_card.dart';
 import '../../../widgets/seerr/seerr_streaming_row.dart';
+import '../../../widgets/detail_reviews.dart';
 import '../../../widgets/seerr_icons.dart';
 
 double _desktopUiScale({UserPreferences? prefs}) {
@@ -234,6 +235,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
   final FocusNode _studiosFirstFocusNode = FocusNode(debugLabel: 'studiosFirst');
   final FocusNode _chaptersFirstFocusNode = FocusNode(debugLabel: 'chaptersFirst');
   final FocusNode _similarFirstFocusNode = FocusNode(debugLabel: 'similarFirst');
+  final FocusNode _reviewsFirstFocusNode = FocusNode(debugLabel: 'reviewsFirst');
   final FocusNode _gridFirstFocusNode = FocusNode(debugLabel: 'gridFirst');
   final FocusNode _collectionSortFocusNode = FocusNode(debugLabel: 'collectionSort');
   LibrarySortBy _playlistSortBy = LibrarySortBy.playlistOrder;
@@ -522,6 +524,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
     _studiosFirstFocusNode.onKeyEvent = leftToSidebarHandler;
     _chaptersFirstFocusNode.onKeyEvent = leftToSidebarHandler;
     _similarFirstFocusNode.onKeyEvent = leftToSidebarHandler;
+    _reviewsFirstFocusNode.onKeyEvent = leftToSidebarHandler;
     _seasonsFirstFocusNode.onKeyEvent = leftToSidebarHandler;
     _episodesFirstFocusNode.onKeyEvent = leftToSidebarHandler;
     _personMoviesFirstFocusNode.onKeyEvent = leftToSidebarHandler;
@@ -714,6 +717,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
     _studiosFirstFocusNode.dispose();
     _chaptersFirstFocusNode.dispose();
     _similarFirstFocusNode.dispose();
+    _reviewsFirstFocusNode.dispose();
     _gridFirstFocusNode.dispose();
     _collectionSortFocusNode.dispose();
     _playlistSortFocusNode.dispose();
@@ -878,6 +882,9 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
             case 'similar':
               _similarFirstFocusNode.requestFocus();
               break;
+            case 'reviews':
+              _reviewsFirstFocusNode.requestFocus();
+              break;
             case 'collections':
               if (_vm.parentCollections.length == 1) {
                 _collectionFirstFocusNode.requestFocus();
@@ -1002,10 +1009,14 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
             (context, item) => _seerrTab(context, seerrState, seerrPieces),
           );
 
+    final hasReviews =
+        sections.shows(DetailSection.reviews) && _vm.reviews.isNotEmpty;
+    final reviews = _ModernTab('reviews', l10n.reviews, (_, _) => _reviewsTab());
+
     // A title that isn't in the library has no episodes to list, no chapters,
     // no extras and no file to describe, so the rest would all be empty.
     if (_vm.isSeerrOnly) {
-      return [if (hasCast) cast, ?seerrTab];
+      return [if (hasCast) cast, if (hasReviews) reviews, ?seerrTab];
     }
 
     final hasCrew = sections.shows(DetailSection.crew) &&
@@ -1063,6 +1074,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
               (context, item) => _collectionsTab(context, item),
             ),
           if (hasSimilar) similar,
+          if (hasReviews) reviews,
           ?seerrTab,
         ];
       case 'Season':
@@ -1275,6 +1287,7 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
               (context, item) => _collectionsTab(context, item),
             ),
           if (hasSimilar) similar,
+          if (hasReviews) reviews,
           ?seerrTab,
         ];
     }
@@ -3542,6 +3555,12 @@ class _ModernDetailContentState extends State<ModernDetailContent> {
 
   Widget _similarTab(BuildContext context, List<AggregatedItem> items) =>
       _mediaGrid(context, items, firstFocusNode: _similarFirstFocusNode);
+
+  Widget _reviewsTab() => DetailReviewsGrid(
+    reviews: _vm.reviews,
+    firstFocusNode: _reviewsFirstFocusNode,
+    onTopRowUp: _focusSelectedTab,
+  );
 
   /// The shared menu for a card in a collection's own grid, plus the entry
   /// that pulls the card out of this collection.

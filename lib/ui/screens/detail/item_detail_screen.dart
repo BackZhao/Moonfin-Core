@@ -63,6 +63,7 @@ import '../../../data/services/seerr/seerr_api_models.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../util/error_message.dart';
 import '../../widgets/quick_return_wrapper.dart';
+import '../../widgets/detail_reviews.dart';
 import '../../widgets/trailer_picker.dart';
 import '../../widgets/progress_snack_bar.dart';
 import '../../../util/remote_subtitle_labels.dart';
@@ -2210,6 +2211,27 @@ class _DetailContentState extends State<_DetailContent> {
     );
   }
 
+  _SectionSpec? _reviewsSpec(BuildContext context, String label) {
+    final reviews = viewModel.reviews;
+    if (reviews.isEmpty || !_visibility.shows(DetailSection.reviews)) {
+      return null;
+    }
+    final node = _sectionFocusNode(label);
+    return _SectionSpec(
+      focusNode: node,
+      build: (links) => HorizontalScrollSection(
+        title: AppLocalizations.of(context).reviews,
+        titleStyle: _rowTitleStyle(context),
+        builder: (_, ctrl) => DetailReviewsRow(
+          reviews: reviews,
+          scrollController: _trackSectionScrollController(node, ctrl),
+          firstItemFocusNode: node,
+          onItemKeyEvent: _sectionRowHandler(node, links, reviews.length),
+        ),
+      ),
+    );
+  }
+
   /// The Next Up card on a series and the Next Episode card on an episode.
   _SectionSpec? _nextUpSpec(
     BuildContext context, {
@@ -2289,6 +2311,7 @@ class _DetailContentState extends State<_DetailContent> {
           items: collection.items,
         ),
       ?_similarSpec(context, 'detailMovieSimilar'),
+      ?_reviewsSpec(context, 'detailMovieReviews'),
       ..._seerrSpecs(context),
     ];
 
@@ -2450,6 +2473,7 @@ class _DetailContentState extends State<_DetailContent> {
         ),
       ?_castSpec(context, 'detailSeriesCast'),
       ?_similarSpec(context, 'detailSeriesSimilar'),
+      ?_reviewsSpec(context, 'detailSeriesReviews'),
       ..._chapterAndExtraSpecs(context, item),
       ..._seerrSpecs(context),
     ];

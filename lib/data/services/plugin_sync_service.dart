@@ -100,6 +100,8 @@ class PluginSyncService extends ChangeNotifier {
   bool _tmdbPersonLinksSupported = false;
   bool get tmdbPersonLinksAvailable =>
       _pluginAvailable && _tmdbPersonLinksSupported;
+  bool _tmdbReviewsSupported = false;
+  bool get tmdbReviewsAvailable => _pluginAvailable && _tmdbReviewsSupported;
   bool _recommendationsSupported = false;
   bool get recommendationsSupported =>
       _pluginAvailable && _recommendationsSupported;
@@ -243,6 +245,7 @@ class PluginSyncService extends ChangeNotifier {
     _tmdbAvailable = false;
     _tmdbThumbsSupported = false;
     _tmdbPersonLinksSupported = false;
+    _tmdbReviewsSupported = false;
     _recommendationsSupported = false;
     _clientLogSupported = false;
     if (!keepIncompleteRecordings) _incompleteRecordings?.setSupported(false);
@@ -315,6 +318,8 @@ class PluginSyncService extends ChangeNotifier {
           _readBool(pingResult, 'tmdbThumbsSupported') ?? false;
       _tmdbPersonLinksSupported =
           _readBool(pingResult, 'tmdbPersonLinksSupported') ?? false;
+      _tmdbReviewsSupported =
+          _readBool(pingResult, 'tmdbReviewsSupported') ?? false;
       _recommendationsSupported =
           _readBool(pingResult, 'recommendationsSupported') ?? false;
       // Older plugins leave this out, which reads as false and hides the button.

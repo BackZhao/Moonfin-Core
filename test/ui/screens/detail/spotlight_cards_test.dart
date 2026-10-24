@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jellyfin_preference/jellyfin_preference.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:moonfin/data/models/aggregated_item.dart';
+import 'package:moonfin/data/repositories/tmdb_repository.dart';
 import 'package:moonfin/data/services/seerr/seerr_api_models.dart';
 import 'package:moonfin/data/viewmodels/item_detail_view_model.dart';
 import 'package:moonfin/data/viewmodels/seerr_media_detail_view_model.dart';
@@ -18,6 +19,7 @@ import 'package:moonfin/preference/seerr_preferences.dart';
 import 'package:moonfin/preference/user_preferences.dart';
 import 'package:moonfin/ui/screens/detail/spotlight/spotlight_cards.dart';
 import 'package:moonfin/ui/screens/detail/spotlight/widgets/spotlight_section_modal.dart';
+import 'package:moonfin/ui/widgets/detail_reviews.dart';
 import 'package:moonfin/ui/widgets/seerr/seerr_collection_banner.dart';
 import 'package:moonfin/util/platform_detection.dart';
 import 'package:server_core/server_core.dart';
@@ -58,6 +60,15 @@ AggregatedItem _seerrMissing(String tmdbId, String name) => AggregatedItem(
     'SeerrMediaType': 'movie',
     'ProviderIds': {'Tmdb': tmdbId},
   },
+);
+
+const TmdbReview _review = (
+  author: 'Critic',
+  rating: 8.0,
+  content: 'Loved it.',
+  createdAt: null,
+  avatarUrl: null,
+  url: null,
 );
 
 SpotlightCardActions _actions() => SpotlightCardActions(
@@ -133,6 +144,7 @@ void main() {
     when(() => vm.writers).thenReturn(const []);
     when(() => vm.features).thenReturn(const []);
     when(() => vm.similar).thenReturn(const []);
+    when(() => vm.reviews).thenReturn(const []);
     when(() => vm.similarSource).thenReturn(SimilarSource.jellyfin);
     when(() => vm.seasons).thenReturn(const []);
     when(() => vm.episodes).thenReturn(const []);
@@ -576,6 +588,29 @@ void main() {
     expect(similarCard.sections.single.title, _l10n.similar);
   });
 
+  test('reviews get their own card right after the recommendations', () async {
+    when(() => vm.similar).thenReturn([_child('s1', 'Movie')]);
+    when(() => vm.reviews).thenReturn(const [_review, _review]);
+
+    final cards = cardsFor(_item('Movie'));
+
+    expect(cards.map((c) => c.id), ['similar', 'reviews']);
+    final reviews = cards.last;
+    expect(reviews.title, _l10n.reviews);
+    expect(reviews.subtitle, '2 reviews');
+    expect(reviews.icon, Icons.rate_review_outlined);
+    expect(reviews.sections, hasLength(1));
+
+    await hide('reviews');
+    expect(cardsFor(_item('Movie')).map((c) => c.id), ['similar']);
+  });
+
+  test('no reviews means no reviews card', () {
+    when(() => vm.similar).thenReturn([_child('s1', 'Movie')]);
+
+    expect(cardsFor(_item('Series')).map((c) => c.id), ['similar']);
+  });
+
   test('collections card prepends the collection itself as the first item with artwork', () {
     when(() => vm.parentCollections).thenReturn([
       ParentCollection(
@@ -981,6 +1016,43 @@ void main() {
     // Through the modal's own opening node, rather than the trap scope's
     // fallback walk that happens to find the same banner.
     expect(focused?.debugLabel, 'SpotlightModalFirstCell');
+  });
+
+  testWidgets('the reviews modal opens on the first review', (tester) async {
+    PlatformDetection.setTvMode(true);
+    addTearDown(() => PlatformDetection.setTvMode(false));
+    GetIt.instance.registerSingleton<UserPreferences>(prefs);
+    when(() => vm.reviews).thenReturn(const [_review, _review]);
+    final reviews = cardFor('reviews', _item('Movie'))!;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () => SpotlightSectionModal.show(
+                context,
+                title: reviews.effectiveModalTitle,
+                sections: reviews.sections,
+              ),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ReviewCard), findsNWidgets(2));
+    final focused = FocusManager.instance.primaryFocus;
+    expect(focused?.debugLabel, 'SpotlightModalFirstCell');
+    expect(
+      focused?.context?.findAncestorWidgetOfExactType<ReviewCard>(),
+      isNotNull,
+    );
   });
 
   test('empty sections are dropped from a card', () {

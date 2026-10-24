@@ -6,6 +6,7 @@ import 'package:playback_core/playback_core.dart';
 import 'package:server_core/server_core.dart';
 import 'package:dio/dio.dart';
 
+import '../../l10n/current_app_localizations.dart';
 import '../../preference/detail_section_layout.dart';
 import '../../preference/preference_constants.dart';
 import '../../preference/user_preferences.dart';
@@ -270,6 +271,8 @@ class ItemDetailViewModel extends ChangeNotifier {
 
   List<AggregatedItem> _similar = const [];
   List<AggregatedItem> get similar => _similar;
+  List<TmdbReview> _reviews = const [];
+  List<TmdbReview> get reviews => _reviews;
   bool _similarInitialLoadComplete = false;
   bool get similarInitialLoadComplete => _similarInitialLoadComplete;
 
@@ -741,9 +744,10 @@ class ItemDetailViewModel extends ChangeNotifier {
     _state = ItemDetailState.ready;
     notifyListeners();
 
-    // Everything else in _loadSecondary needs a library id, but ratings are
-    // keyed by TMDB id, which this does have.
+    // Everything else in _loadSecondary needs a library id, but ratings and
+    // reviews are keyed by TMDB id, which this does have.
     unawaited(_loadRatings());
+    unawaited(_loadReviews());
     if (state.isTv) {
       unawaited(_loadUpcomingEpisode());
     }
@@ -1010,6 +1014,7 @@ class ItemDetailViewModel extends ChangeNotifier {
       futures.add(_loadFilmography());
       futures.add(_loadPersonAccounts());
     } else if (type == 'Series') {
+      unawaited(_loadReviews());
       futures.add(_loadRatings());
       futures.add(_loadSeasons());
       futures.add(_loadNextUp());
@@ -1053,6 +1058,7 @@ class ItemDetailViewModel extends ChangeNotifier {
       if (type != 'MusicVideo') {
         futures.add(_loadParentCollection());
       }
+      if (type == 'Movie') unawaited(_loadReviews());
     } else {
       futures.add(_loadRatings());
       futures.add(_loadSimilar());
@@ -2288,6 +2294,26 @@ class ItemDetailViewModel extends ChangeNotifier {
     final accounts = await _tmdbRepository.getPersonAccounts(tmdbId);
     if (accounts == null) return;
     _personAccounts = accounts;
+    notifyListeners();
+  }
+
+  Future<void> _loadReviews() async {
+    final item = _item;
+    final tmdbId = item?.tmdbId;
+    if (item == null || tmdbId == null || tmdbId.isEmpty) return;
+    if (!DetailSection.reviews.isOffered ||
+        !DetailSectionVisibility.of(
+          GetIt.instance<UserPreferences>(),
+        ).shows(DetailSection.reviews)) {
+      return;
+    }
+    final reviews = await _tmdbRepository.getReviews(
+      tmdbId: tmdbId,
+      type: item.type == 'Series' ? 'tv' : 'movie',
+      language: currentAppLocale().toLanguageTag(),
+    );
+    if (reviews == null || reviews.isEmpty || _item?.id != item.id) return;
+    _reviews = reviews;
     notifyListeners();
   }
 

@@ -14522,5 +14522,26 @@
   "rommAccountLoadFailed": "Couldn't load your RomM account.",
   "@rommAccountLoadFailed": {
     "description": "Error when the RomM account status couldn't be loaded from the server"
+  },
+  "reviews": "Reviews",
+  "@reviews": {
+    "description": "Title of the row, tab and card on the details screen that lists TMDB user reviews"
+  },
+  "detailSectionReviews": "Reviews",
+  "@detailSectionReviews": {
+    "description": "Details screen section: user reviews from TMDB"
+  },
+  "spotlightReviewsCount": "{count, plural, =1{1 review} other{{count} reviews}}",
+  "@spotlightReviewsCount": {
+    "description": "How many reviews a title has, under the Reviews card on the details screen",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "readOnTmdb": "Read on TMDB",
+  "@readOnTmdb": {
+    "description": "Button in an opened review that opens the review on the TMDB website"
   }
 }

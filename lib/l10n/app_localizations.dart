@@ -27242,6 +27242,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t load your RomM account.'**
   String get rommAccountLoadFailed;
+
+  /// Title of the row, tab and card on the details screen that lists TMDB user reviews
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviews;
+
+  /// Details screen section: user reviews from TMDB
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get detailSectionReviews;
+
+  /// How many reviews a title has, under the Reviews card on the details screen
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 review} other{{count} reviews}}'**
+  String spotlightReviewsCount(int count);
+
+  /// Button in an opened review that opens the review on the TMDB website
+  ///
+  /// In en, this message translates to:
+  /// **'Read on TMDB'**
+  String get readOnTmdb;
 }
 
 class _AppLocalizationsDelegate

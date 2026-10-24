@@ -92,6 +92,12 @@ enum DetailSection {
     DetailSectionGroup.sections,
     {_classic, _modern, _spotlight, _nouveau},
   ),
+  reviews(
+    'reviews',
+    Icons.rate_review_outlined,
+    DetailSectionGroup.sections,
+    {_classic, _modern, _spotlight, _nouveau},
+  ),
   moreEpisodes(
     'moreEpisodes',
     Icons.view_list_outlined,
@@ -211,9 +217,12 @@ enum DetailSection {
           styles.contains(DetailScreenStyle.spotlight));
 
   /// Whether this device and server can show it at all. A TV has no browser
-  /// to open a person's links in.
+  /// to open a person's links in, and reviews need a plugin that serves them.
   bool get isOffered => switch (this) {
     DetailSection.personLinks => !PlatformDetection.isTV,
+    DetailSection.reviews =>
+      GetIt.instance.isRegistered<PluginSyncService>() &&
+          GetIt.instance<PluginSyncService>().tmdbReviewsAvailable,
     _ when group == DetailSectionGroup.seerr =>
       GetIt.instance.isRegistered<PluginSyncService>() &&
           GetIt.instance<PluginSyncService>().seerrAvailable,
@@ -234,6 +243,7 @@ enum DetailSection {
     DetailSection.extras => l10n.detailSectionExtras,
     DetailSection.collections => l10n.detailSectionCollections,
     DetailSection.moreLikeThis => l10n.detailSectionMoreLikeThis,
+    DetailSection.reviews => l10n.detailSectionReviews,
     DetailSection.moreEpisodes => l10n.detailSectionMoreEpisodes,
     DetailSection.mediaInfo => l10n.detailSectionMediaInfo,
     DetailSection.seerrGenresTags => l10n.detailSectionSeerrGenresTags,
