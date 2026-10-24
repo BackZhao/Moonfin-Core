@@ -161,17 +161,38 @@ int? computeEffectiveSubtitleIndex({
 
   final bothUnavailable = !isPrimaryAvailable && !isSecondaryAvailable;
 
+  // A forced track only covers the foreign lines for someone who reads its
+  // language, so one in a language the viewer doesn't read is no help.
+  // Untagged ones stay in, since nothing says they're the wrong language.
+  final readableLanguages = [
+    preferredLanguage,
+    fallbackLanguage,
+    activeAudioLanguage ?? '',
+  ].where((l) {
+    final normalized = normalizeLanguage(l);
+    return normalized.isNotEmpty && normalized != 'none';
+  }).toList();
+  bool forcedLanguageFits(Map<String, dynamic> stream) {
+    final language = normalizeLanguage(stream['Language'] as String?);
+    if (language.isEmpty || language == 'und' || readableLanguages.isEmpty) {
+      return true;
+    }
+    return readableLanguages.any((l) => matchLang(language, l));
+  }
+
   final candidates = <Map<String, dynamic>>[];
   for (final stream in subtitleStreams) {
     if (stream['Index'] == null) continue;
     if (subtitleMode == SubtitleMode.forced) {
-      if (isForcedSubtitleStream(stream)) {
+      if (isForcedSubtitleStream(stream) && forcedLanguageFits(stream)) {
         candidates.add(stream);
       }
     } else if (subtitleMode == SubtitleMode.flagged) {
-      if (stream['IsDefault'] == true ||
-          isForcedSubtitleStream(stream) ||
-          (bothUnavailable && matchLang(stream['Language'], 'eng'))) {
+      final keep = isForcedSubtitleStream(stream)
+          ? forcedLanguageFits(stream)
+          : stream['IsDefault'] == true ||
+                (bothUnavailable && matchLang(stream['Language'], 'eng'));
+      if (keep) {
         candidates.add(stream);
       }
     } else {
@@ -195,7 +216,11 @@ int? computeEffectiveSubtitleIndex({
 
   final candidatesWithIndex = candidates.map((stream) {
     final originalIndex = subtitleStreams.indexOf(stream);
-    return (stream: stream, originalIndex: originalIndex);
+    return (
+      stream: stream,
+      originalIndex: originalIndex,
+      forced: isForcedSubtitleStream(stream),
+    );
   }).toList();
 
   candidatesWithIndex.sort((a, b) {
@@ -241,10 +266,8 @@ int? computeEffectiveSubtitleIndex({
     // 3. A forced track only carries the foreign dialogue, so neither
     // preference below may lift one above a full track.
     if (preferTextSubtitles || preferExternalSubtitles) {
-      final aForced = isForcedSubtitleStream(streamA);
-      final bForced = isForcedSubtitleStream(streamB);
-      if (aForced != bForced) {
-        return aForced ? 1 : -1;
+      if (a.forced != b.forced) {
+        return a.forced ? 1 : -1;
       }
     }
 
@@ -286,13 +309,11 @@ int? computeEffectiveSubtitleIndex({
     }
 
     // 8. Forced flag (prefer non-forced for full subtitles, prefer forced for SubtitleMode.forced)
-    final aForced = isForcedSubtitleStream(streamA);
-    final bForced = isForcedSubtitleStream(streamB);
-    if (aForced != bForced) {
+    if (a.forced != b.forced) {
       if (subtitleMode == SubtitleMode.forced) {
-        return aForced ? -1 : 1;
+        return a.forced ? -1 : 1;
       } else {
-        return aForced ? 1 : -1;
+        return a.forced ? 1 : -1;
       }
     }
 

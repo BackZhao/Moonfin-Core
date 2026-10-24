@@ -819,6 +819,67 @@ void main() {
       expect(matchSeriesTrackIndex(streams: episode, pref: pref), 10);
     });
   });
+  group('forced tracks in a language nobody reads', () {
+    final foreignForced = <Map<String, dynamic>>[
+      {'Index': 1, 'Language': 'ces', 'Title': 'Forced', 'IsForced': true},
+      {'Index': 2, 'Language': 'spa', 'Title': 'Latin American (Forced)', 'IsForced': true},
+      {'Index': 3, 'Language': 'fra', 'Title': 'European (Forced)', 'IsForced': true},
+    ];
+
+    int? pick(
+      List<Map<String, dynamic>> streams,
+      SubtitleMode mode, {
+      String audio = 'deu',
+    }) => computeEffectiveSubtitleIndex(
+      subtitleStreams: streams,
+      selectedSubtitleIndex: null,
+      activePlaybackSubtitleIndex: null,
+      subtitleMode: mode,
+      preferredLanguage: 'deu',
+      fallbackLanguage: '',
+      preferSdh: false,
+      pgsDirectPlay: true,
+      assDirectPlay: true,
+      preferredAudioLanguage: 'deu',
+      activeAudioLanguage: audio,
+    );
+
+    test('forced mode turns subtitles off', () {
+      expect(pick(foreignForced, SubtitleMode.forced), -1);
+    });
+
+    test('flagged mode turns subtitles off', () {
+      expect(pick(foreignForced, SubtitleMode.flagged), -1);
+    });
+
+    test('a forced track in the subtitle language is picked', () {
+      final streams = [
+        ...foreignForced,
+        {'Index': 4, 'Language': 'deu', 'Title': 'Forced', 'IsForced': true},
+      ];
+      expect(pick(streams, SubtitleMode.forced), 4);
+    });
+
+    test('a forced track in the audio language is picked', () {
+      expect(pick(foreignForced, SubtitleMode.forced, audio: 'spa'), 2);
+    });
+
+    test('a track tagged with the older ger code still counts as German', () {
+      final streams = [
+        ...foreignForced,
+        {'Index': 5, 'Language': 'ger', 'Title': 'Forced', 'IsForced': true},
+      ];
+      expect(pick(streams, SubtitleMode.forced), 5);
+    });
+
+    test('an untagged forced track is kept', () {
+      final streams = [
+        ...foreignForced,
+        {'Index': 6, 'Title': 'Forced', 'IsForced': true},
+      ];
+      expect(pick(streams, SubtitleMode.forced), 6);
+    });
+  });
   group('mapSubtitleResultToStreamIndex', () {
     test('returns -1 when result is 0 (None selected)', () {
       expect(mapSubtitleResultToStreamIndex(0, streams), -1);
