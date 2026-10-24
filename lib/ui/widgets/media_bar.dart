@@ -89,6 +89,8 @@ class MediaBar extends StatefulWidget {
   final MediaBarViewModel viewModel;
   final UserPreferences prefs;
   final bool externallyPaused;
+  // Holds back the trailer only, so the slides keep advancing.
+  final bool trailerPaused;
   final double height;
   final Future<void> Function()? onNavigateDown;
   final VoidCallback? onNavigateUp;
@@ -100,6 +102,7 @@ class MediaBar extends StatefulWidget {
     required this.viewModel,
     required this.prefs,
     this.externallyPaused = false,
+    this.trailerPaused = false,
     this.height = 220,
     this.onNavigateDown,
     this.onNavigateUp,
@@ -388,6 +391,7 @@ class _MediaBarState extends State<MediaBar>
   bool _trailerShouldBeActive() {
     return mounted &&
         !widget.externallyPaused &&
+        !widget.trailerPaused &&
         !PlayerRouteObserver.instance.isPlayerActive.value &&
         _isHomeRouteCurrent() &&
         !_mainPlaybackActive;
@@ -468,6 +472,13 @@ class _MediaBarState extends State<MediaBar>
         if (_isHomeRouteActive && _currentIndex < items.length) {
           _scheduleTrailerPreview(items[_currentIndex]);
         }
+      }
+    }
+    if (widget.trailerPaused != oldWidget.trailerPaused) {
+      if (widget.trailerPaused) {
+        _cancelTrailerPreview();
+      } else {
+        _scheduleTrailerForCurrentSlide();
       }
     }
   }
@@ -920,7 +931,7 @@ class _MediaBarState extends State<MediaBar>
     if (!widget.prefs.resolveMediaBarTrailerPreview()) {
       return;
     }
-    if (!_isHomeRouteActive) {
+    if (!_isHomeRouteActive || widget.trailerPaused) {
       return;
     }
     if (_mainPlaybackActive) {

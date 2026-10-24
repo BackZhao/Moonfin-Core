@@ -918,6 +918,7 @@ class _ContentRowsState extends State<_ContentRows>
   late final _mediaBarPauseInputs = Listenable.merge([
     _chromeAudioActiveNotifier,
     _screensaverVisible,
+    _mediaBarFocusNode,
   ]);
 
   double get _scrollOffset => _scrollOffsetNotifier.value;
@@ -4430,6 +4431,12 @@ class _ContentRowsState extends State<_ContentRows>
                                                       barPaused ||
                                                       !mediaBarVisible ||
                                                       _activePreviewKey != null,
+                                                  // A TV trailer hides the navbar,
+                                                  // so it only plays while the bar
+                                                  // itself has focus.
+                                                  trailerPaused:
+                                                      PlatformDetection.isTV &&
+                                                      !_mediaBarFocusNode.hasFocus,
                                                   height: mediaBarHeight,
                                                   onNavigateDown: _moveFocusFromMediaBarToRows,
                                                   onNavigateUp: _navigateFromMediaBarToNavbar,
