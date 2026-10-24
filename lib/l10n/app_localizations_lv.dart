@@ -12375,6 +12375,13 @@ class AppLocalizationsLv extends AppLocalizations {
       'Pirms aparatūras dekodētājiem izmantojiet FFmpeg (audio) un libgav1 (AV1). Atspējot, ja pārtrūkst HDMI audio caurlaide.';
 
   @override
+  String get hevcSoftwareDirectPlay => 'Direct Play HEVC (Software Decode)';
+
+  @override
+  String get hevcSoftwareDirectPlaySubtitle =>
+      'Play HEVC up to 1080p from the original file instead of asking the server to transcode it. This Apple TV decodes it in software, so heavy 10-bit or high bitrate files may stutter.';
+
+  @override
   String get useExternalPlayer => 'Izmantojiet ārējo atskaņotāju';
 
   @override

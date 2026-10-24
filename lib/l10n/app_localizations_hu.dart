@@ -12426,6 +12426,13 @@ class AppLocalizationsHu extends AppLocalizations {
       'Használd az FFmpeg-et (audió) és a libgav1-et (AV1) a hardveres dekódolók előtt. Tiltsd le, ha a HDMI-hangátengedés elromlik.';
 
   @override
+  String get hevcSoftwareDirectPlay => 'Direct Play HEVC (Software Decode)';
+
+  @override
+  String get hevcSoftwareDirectPlaySubtitle =>
+      'Play HEVC up to 1080p from the original file instead of asking the server to transcode it. This Apple TV decodes it in software, so heavy 10-bit or high bitrate files may stutter.';
+
+  @override
   String get useExternalPlayer => 'Mindig külső lejátszó használata';
 
   @override

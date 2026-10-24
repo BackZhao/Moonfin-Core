@@ -12323,6 +12323,13 @@ class AppLocalizationsId extends AppLocalizations {
       'Gunakan FFmpeg (audio) dan libgav1 (AV1) sebelum dekoder perangkat keras. Nonaktifkan jika passthrough audio HDMI bermasalah.';
 
   @override
+  String get hevcSoftwareDirectPlay => 'Direct Play HEVC (Software Decode)';
+
+  @override
+  String get hevcSoftwareDirectPlaySubtitle =>
+      'Play HEVC up to 1080p from the original file instead of asking the server to transcode it. This Apple TV decodes it in software, so heavy 10-bit or high bitrate files may stutter.';
+
+  @override
   String get useExternalPlayer => 'Selalu gunakan pemutar eksternal';
 
   @override

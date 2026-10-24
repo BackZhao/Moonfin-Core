@@ -1499,6 +1499,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         subtitle: l10n.hardwareDecodingSubtitle,
         keywords: ['gpu', 'acceleration'],
       ),
+    if (PlatformDetection.offersHevcSoftwareDecode)
+      quality.leaf(
+        'hevc_software_direct_play',
+        l10n.hevcSoftwareDirectPlay,
+        subtitle: l10n.hevcSoftwareDirectPlaySubtitle,
+        keywords: ['hevc', 'h265', 'x265', 'software decode'],
+      ),
     if (PlatformDetection.isAndroid && PlatformDetection.isTV) ...[
       quality.leaf(
         'exoplayer_prefer_ffmpeg',

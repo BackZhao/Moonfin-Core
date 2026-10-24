@@ -12273,6 +12273,13 @@ class AppLocalizationsFa extends AppLocalizations {
       'قبل از رمزگشاهای سخت افزاری از FFmpeg (صوتی) و libgav1 (AV1) استفاده کنید. در صورت خرابی گذر صوتی HDMI غیرفعال شود.';
 
   @override
+  String get hevcSoftwareDirectPlay => 'Direct Play HEVC (Software Decode)';
+
+  @override
+  String get hevcSoftwareDirectPlaySubtitle =>
+      'Play HEVC up to 1080p from the original file instead of asking the server to transcode it. This Apple TV decodes it in software, so heavy 10-bit or high bitrate files may stutter.';
+
+  @override
   String get useExternalPlayer => 'از پخش کننده خارجی استفاده کنید';
 
   @override

@@ -12480,6 +12480,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Verwenden Sie FFmpeg (Audio) und libgav1 (AV1) vor Hardware-Decodern. Deaktivieren, wenn HDMI-Audio-Passthrough unterbrochen wird.';
 
   @override
+  String get hevcSoftwareDirectPlay => 'Direct Play HEVC (Software Decode)';
+
+  @override
+  String get hevcSoftwareDirectPlaySubtitle =>
+      'Play HEVC up to 1080p from the original file instead of asking the server to transcode it. This Apple TV decodes it in software, so heavy 10-bit or high bitrate files may stutter.';
+
+  @override
   String get useExternalPlayer => 'Verwenden Sie einen externen Player';
 
   @override

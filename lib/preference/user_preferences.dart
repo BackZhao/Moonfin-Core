@@ -2177,6 +2177,11 @@ class UserPreferences extends ChangeNotifier {
     defaultValue: !(PlatformDetection.isAndroid && PlatformDetection.isTV),
   );
 
+  static final hevcSoftwareDirectPlay = Preference(
+    key: 'hevc_software_direct_play',
+    defaultValue: false,
+  );
+
   static final media3SkipSilence = Preference(
     key: 'media3_skip_silence',
     defaultValue: false,

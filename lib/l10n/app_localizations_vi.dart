@@ -12326,6 +12326,13 @@ class AppLocalizationsVi extends AppLocalizations {
       'Sử dụng FFmpeg (âm thanh) và libgav1 (AV1) trước bộ giải mã phần cứng. Tắt nếu quá trình truyền âm thanh HDMI bị hỏng.';
 
   @override
+  String get hevcSoftwareDirectPlay => 'Direct Play HEVC (Software Decode)';
+
+  @override
+  String get hevcSoftwareDirectPlaySubtitle =>
+      'Play HEVC up to 1080p from the original file instead of asking the server to transcode it. This Apple TV decodes it in software, so heavy 10-bit or high bitrate files may stutter.';
+
+  @override
   String get useExternalPlayer => 'Sử dụng trình phát bên ngoài';
 
   @override
