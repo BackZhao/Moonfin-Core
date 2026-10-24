@@ -3907,7 +3907,7 @@
     "@communityRating": {
         "description": "Rating source: Community Rating"
     },
-    "ratings": "Arviot",
+    "ratings": "Arvostelut",
     "@ratings": {
         "description": "Settings title for ratings"
     },
@@ -9202,7 +9202,7 @@
     "@trailerCaptions": {
         "description": "Setting for YouTube trailer captions"
     },
-    "trailerCaptionsDescription": "Näytä YouTube-trailereiden tekstitykset mediapalkissa",
+    "trailerCaptionsDescription": "Näytä tekstitykset YouTube-trailereissa",
     "@trailerCaptionsDescription": {
         "description": "Description for YouTube trailer captions"
     },
@@ -15441,5 +15441,122 @@
     "unableToRequestLaterShowing": "Tallennus alkoi, mutta myöhempää esitysaikaa ei voitu pyytää.",
     "@unableToRequestLaterShowing": {
         "description": "Snackbar when the recording started but asking for a later showing failed"
+    },
+    "trailerCount": "{count, plural, =1{1 trailer} other{{count} trailers}}",
+    "@trailerCount": {
+        "description": "How many trailers the trailer picker lists, shown in its header",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "trailerNumber": "Traileri {number}",
+    "@trailerNumber": {
+        "description": "Fallback name in the trailer picker for a trailer the server gave no name, numbered by its place in the list",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "subtitled": "Tekstitetty",
+    "@subtitled": {
+        "description": "Chip in the trailer picker on a trailer that has subtitles burned into the video"
+    },
+    "rommAccount": "RomM-tili",
+    "@rommAccount": {
+        "description": "Title of the screen, and the button on a game library, for linking the user's own RomM account"
+    },
+    "rommAccountIntro": "Yhdistä RomM-tilisi, jotta voit pelata omasta RomM-kirjastostasi ja tallentaa pelitilanteesi RomM:ään.",
+    "@rommAccountIntro": {
+        "description": "Explains what linking a RomM account does, shown above the Link button"
+    },
+    "rommLinkAccount": "Yhdistä RomM-tili",
+    "@rommLinkAccount": {
+        "description": "Button that starts linking a RomM account"
+    },
+    "rommLinkInstructions": "Kirjaudu sisään RomM:ään ja syötä tämä koodi liittääksesi tilisi.",
+    "@rommLinkInstructions": {
+        "description": "Instructions above the code while a RomM link waits for approval"
+    },
+    "rommLinkScanOrVisit": "Skannaa QR-koodi puhelimellasi tai siirry osoitteeseen {url}",
+    "@rommLinkScanOrVisit": {
+        "description": "Shown on TV beside the QR code while a RomM link waits for approval",
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "rommOpen": "Avaa RomM",
+    "@rommOpen": {
+        "description": "Button that opens the RomM approval page in the browser with the code filled in"
+    },
+    "rommWaitingForApproval": "Odotan, että hyväksyt koodin RomM:ssä...",
+    "@rommWaitingForApproval": {
+        "description": "Status shown while the app waits for the RomM code to be approved"
+    },
+    "rommLinkedAs": "Liitetty nimellä {username}",
+    "@rommLinkedAs": {
+        "description": "Shown when the user's RomM account is linked",
+        "placeholders": {
+            "username": {
+                "type": "String"
+            }
+        }
+    },
+    "rommLinked": "RomM-tilisi on linkitetty.",
+    "@rommLinked": {
+        "description": "Shown when the user's RomM account is linked and the server sent no user name"
+    },
+    "rommUnlinkNote": "Linkityksen poistaminen estää Moonfinia käyttämästä RomM-avainta. Avain säilyy RomM:ssä, kunnes poistat sen sieltä API-tunnisteiden joukosta.",
+    "@rommUnlinkNote": {
+        "description": "Explains what Unlink does on the RomM account screen"
+    },
+    "rommUnlink": "Poista linkki",
+    "@rommUnlink": {
+        "description": "Button that unlinks the user's RomM account"
+    },
+    "rommLinkExpired": "Koodi vanhentui ennen kuin se ehdittiin hyväksyä. Napsauta linkkiä uudelleen saadaksesi uuden koodin.",
+    "@rommLinkExpired": {
+        "description": "Error when a RomM link code ran out of time"
+    },
+    "rommLinkDenied": "Linkki hylättiin RomM:ssä.",
+    "@rommLinkDenied": {
+        "description": "Error when the user declined the RomM link request"
+    },
+    "rommUnreachable": "Moonfin ei saanut yhteyttä RomM:ään. Yritä uudelleen hetken kuluttua.",
+    "@rommUnreachable": {
+        "description": "Error when the server couldn't reach RomM while linking"
+    },
+    "rommNotAvailable": "Tällä palvelimella ei ole RomM-kirjastoa.",
+    "@rommNotAvailable": {
+        "description": "Shown on the RomM account screen when the server has no RomM library"
+    },
+    "rommAccountLoadFailed": "RomM-tiliäsi ei voitu ladata.",
+    "@rommAccountLoadFailed": {
+        "description": "Error when the RomM account status couldn't be loaded from the server"
+    },
+    "reviews": "Arvostelut",
+    "@reviews": {
+        "description": "Title of the row, tab and card on the details screen that lists TMDB user reviews"
+    },
+    "detailSectionReviews": "Arvostelut",
+    "@detailSectionReviews": {
+        "description": "Details screen section: user reviews from TMDB"
+    },
+    "spotlightReviewsCount": "{count, plural, =1{1 review} other{{count} reviews}}",
+    "@spotlightReviewsCount": {
+        "description": "How many reviews a title has, under the Reviews card on the details screen",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "readOnTmdb": "Lue lisää TMDB:stä",
+    "@readOnTmdb": {
+        "description": "Button in an opened review that opens the review on the TMDB website"
     }
 }
