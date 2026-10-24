@@ -608,21 +608,6 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'scaling',
     ]),
     style.leaf(
-      'pref_show_home_backdrop',
-      l10n.homeScreenBackdrop,
-      keywords: ['background images'],
-    ),
-    style.leaf(
-      'pref_show_details_backdrop',
-      l10n.detailsScreenBackdrop,
-      keywords: ['background images'],
-    ),
-    style.leaf(
-      'pref_hide_backdrops_in_libraries',
-      l10n.libraryBackdrops,
-      keywords: ['background images', 'browsing'],
-    ),
-    style.leaf(
       'pref_oled_mode',
       l10n.oledMode,
       subtitle: l10n.oledModeSubtitle,
@@ -669,6 +654,11 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'nouveau',
       'minimalist',
     ]),
+    details.leaf(
+      'pref_show_details_backdrop',
+      l10n.detailsScreenBackdrop,
+      keywords: ['background images'],
+    ),
     details.leaf('detailsBackgroundBlurAmount', l10n.detailsBackgroundBlur),
     details.leaf(
       'pref_detail_expanded_tabs',
@@ -941,6 +931,11 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
         l10n.homeRowInfoOverlay,
         subtitle: l10n.showTitleMetadataOnHomeRows,
       ),
+    home.leaf(
+      'pref_show_home_backdrop',
+      l10n.homeScreenBackdrop,
+      keywords: ['background images'],
+    ),
     home.leaf(
       'pref_hide_home_media_description',
       l10n.hideHomeMediaDescription,
@@ -1215,6 +1210,11 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'pref_show_media_details_on_library_page',
       l10n.showMediaDetailsOnLibraryPage,
       subtitle: l10n.showMediaDetailsOnLibraryPageDescription,
+    ),
+    libraries.leaf(
+      'pref_hide_backdrops_in_libraries',
+      l10n.libraryBackdrops,
+      keywords: ['background images', 'browsing'],
     ),
     libraries.leaf(
       'pref_use_detailed_sub_headings',

@@ -330,6 +330,12 @@ class _HomeScreenCategoryScreenState extends State<_HomeScreenCategoryScreen> {
                   },
                 ),
               SwitchPreferenceTile(
+                preference: UserPreferences.homeBackdropEnabled,
+                title: l10n.homeScreenBackdrop,
+                icon: Icons.photo,
+                onChanged: _pushPersonalizationSync,
+              ),
+              SwitchPreferenceTile(
                 preference: UserPreferences.hideHomeMediaDescription,
                 title: l10n.hideHomeMediaDescription,
                 subtitle: l10n.hideHomeMediaDescriptionSubtitle,

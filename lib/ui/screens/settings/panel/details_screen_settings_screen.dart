@@ -75,6 +75,12 @@ class _DetailsScreenSettingsScreenState
                       PersonalRatingStyle.numeric => l10n.personalRatingNumeric,
                     },
                   ),
+                  SwitchPreferenceTile(
+                    preference: UserPreferences.detailsBackdropEnabled,
+                    title: l10n.detailsScreenBackdrop,
+                    icon: Icons.photo,
+                    onChanged: _pushPersonalizationSync,
+                  ),
                   if (prefs.get(UserPreferences.detailScreenStyle) == DetailScreenStyle.classic)
                     SliderPreferenceTile(
                       preference: UserPreferences.detailsBackgroundBlurAmount,
