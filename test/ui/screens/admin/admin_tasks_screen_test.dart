@@ -114,5 +114,9 @@ void main() {
       for (var i = 0; i < 22; i++) tester.getTopLeft(chips.at(i)).dy,
     };
     expect(rows, hasLength(1));
+
+    final position = Scrollable.of(tester.element(chips.first)).position;
+    expect(position.axis, Axis.horizontal);
+    expect(position.maxScrollExtent, greaterThan(0));
   });
 }
