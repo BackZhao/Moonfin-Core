@@ -80,6 +80,7 @@ import '../../navigation/home_refresh_bus.dart';
 import '../../widgets/bounded_network_image.dart';
 import '../../widgets/fullscreen_backdrop_switcher.dart';
 import '../../navigation/route_lifecycle_observer.dart';
+import '../../screensaver/screensaver_controller.dart';
 import '../../util/home_row_title_localizer.dart';
 import '../../../util/game_library.dart';
 import 'home_row_prefetch.dart';
@@ -910,6 +911,14 @@ class _ContentRowsState extends State<_ContentRows>
       _chromeAudioActiveNotifier.value = value;
     }
   }
+
+  // The screensaver draws over Home instead of opening a route, so the media
+  // bar has to pause for it here or it keeps paging behind it.
+  final _screensaverVisible = GetIt.instance<ScreensaverController>().visible;
+  late final _mediaBarPauseInputs = Listenable.merge([
+    _chromeAudioActiveNotifier,
+    _screensaverVisible,
+  ]);
 
   double get _scrollOffset => _scrollOffsetNotifier.value;
   set _scrollOffset(double value) {
@@ -4368,9 +4377,11 @@ class _ContentRowsState extends State<_ContentRows>
                                   return ValueListenableBuilder<bool>(
                                     valueListenable: widget.isScrolledToTopNotifier,
                                     builder: (context, isScrolledToTop, _) {
-                                      return ValueListenableBuilder<bool>(
-                                        valueListenable: _chromeAudioActiveNotifier,
-                                        builder: (context, chromeAudioActive, _) {
+                                      return ListenableBuilder(
+                                        listenable: _mediaBarPauseInputs,
+                                        builder: (context, _) {
+                                          final chromeAudioActive =
+                                              _chromeAudioActiveNotifier.value;
                                           // Mobile leaves _isActivelyScrolling out. Nothing listens
                                           // for its idle reset, so a stale true would pin the bar
                                           // paused after scrolling back to the top, and
@@ -4379,7 +4390,8 @@ class _ContentRowsState extends State<_ContentRows>
                                               !isScrolledToTop ||
                                               (!PlatformDetection.isMobile &&
                                                   _isActivelyScrolling) ||
-                                              chromeAudioActive;
+                                              chromeAudioActive ||
+                                              _screensaverVisible.value;
 
                                           return RepaintBoundary(
                                             child: bannerMode

@@ -755,6 +755,70 @@ void main() {
       );
     });
   });
+  group('forced only by title', () {
+    // The track layout of a real episode: the forced English track carries
+    // no IsForced flag and is listed ahead of the full one.
+    final episode = <Map<String, dynamic>>[
+      {
+        'Index': 4,
+        'Language': 'rus',
+        'Title': 'Forced',
+        'DisplayTitle': 'Forced - Russian - Default - SUBRIP',
+        'IsDefault': true,
+      },
+      {
+        'Index': 10,
+        'Language': 'eng',
+        'Title': 'English (Forced)',
+        'DisplayTitle': 'English (Forced) - SUBRIP',
+      },
+      {'Index': 11, 'Language': 'eng', 'DisplayTitle': 'English - SUBRIP'},
+    ];
+
+    test('isForcedSubtitleStream reads the title', () {
+      expect(isForcedSubtitleStream(episode[1]), isTrue);
+      expect(isForcedSubtitleStream(episode[2]), isFalse);
+      expect(isForcedSubtitleStream({'Title': 'English (Non-Forced)'}), isFalse);
+    });
+
+    test('language preference picks the full track', () {
+      expect(
+        computeEffectiveSubtitleIndex(
+          subtitleStreams: episode,
+          selectedSubtitleIndex: null,
+          activePlaybackSubtitleIndex: null,
+          subtitleMode: SubtitleMode.always,
+          preferredLanguage: 'eng',
+          fallbackLanguage: '',
+          preferSdh: false,
+          pgsDirectPlay: true,
+          assDirectPlay: true,
+          preferredAudioLanguage: '',
+          activeAudioLanguage: null,
+        ),
+        11,
+      );
+    });
+
+    test('a full track remembered from another episode stays full', () {
+      final earlier = <Map<String, dynamic>>[
+        {'Index': 10, 'Language': 'eng', 'Title': 'English'},
+      ];
+      final pref = createSeriesTrackPreferenceFromStream(
+        streams: earlier,
+        selectedIndex: 10,
+      );
+      expect(matchSeriesTrackIndex(streams: episode, pref: pref), 11);
+    });
+
+    test('a forced track remembered here is still found', () {
+      final pref = createSeriesTrackPreferenceFromStream(
+        streams: episode,
+        selectedIndex: 10,
+      );
+      expect(matchSeriesTrackIndex(streams: episode, pref: pref), 10);
+    });
+  });
   group('mapSubtitleResultToStreamIndex', () {
     test('returns -1 when result is 0 (None selected)', () {
       expect(mapSubtitleResultToStreamIndex(0, streams), -1);

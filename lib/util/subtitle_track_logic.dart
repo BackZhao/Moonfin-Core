@@ -36,6 +36,20 @@ bool isSpecialSubtitleStream(Map<String, dynamic> stream) {
   ).hasMatch(titleParts);
 }
 
+final _forcedTitle = RegExp(r'(?<!non[\s-])\bforced\b');
+
+/// Plenty of files only say forced in the track title and leave the flag off,
+/// so a title like "English (Forced)" counts too.
+bool isForcedSubtitleStream(Map<String, dynamic> stream) {
+  if (stream['IsForced'] == true) return true;
+  final titleParts = [
+    stream['DisplayTitle'] as String?,
+    stream['Title'] as String?,
+    stream['Name'] as String?,
+  ].whereType<String>().map((s) => s.toLowerCase()).join(' ');
+  return _forcedTitle.hasMatch(titleParts);
+}
+
 bool shouldRenderSubtitleNatively(String? codec) {
   if (codec == null) return false;
   final normalized = codec.trim().toLowerCase();
@@ -151,12 +165,12 @@ int? computeEffectiveSubtitleIndex({
   for (final stream in subtitleStreams) {
     if (stream['Index'] == null) continue;
     if (subtitleMode == SubtitleMode.forced) {
-      if (stream['IsForced'] == true) {
+      if (isForcedSubtitleStream(stream)) {
         candidates.add(stream);
       }
     } else if (subtitleMode == SubtitleMode.flagged) {
       if (stream['IsDefault'] == true ||
-          stream['IsForced'] == true ||
+          isForcedSubtitleStream(stream) ||
           (bothUnavailable && matchLang(stream['Language'], 'eng'))) {
         candidates.add(stream);
       }
@@ -227,8 +241,8 @@ int? computeEffectiveSubtitleIndex({
     // 3. A forced track only carries the foreign dialogue, so neither
     // preference below may lift one above a full track.
     if (preferTextSubtitles || preferExternalSubtitles) {
-      final aForced = streamA['IsForced'] == true;
-      final bForced = streamB['IsForced'] == true;
+      final aForced = isForcedSubtitleStream(streamA);
+      final bForced = isForcedSubtitleStream(streamB);
       if (aForced != bForced) {
         return aForced ? 1 : -1;
       }
@@ -272,8 +286,8 @@ int? computeEffectiveSubtitleIndex({
     }
 
     // 8. Forced flag (prefer non-forced for full subtitles, prefer forced for SubtitleMode.forced)
-    final aForced = streamA['IsForced'] == true;
-    final bForced = streamB['IsForced'] == true;
+    final aForced = isForcedSubtitleStream(streamA);
+    final bForced = isForcedSubtitleStream(streamB);
     if (aForced != bForced) {
       if (subtitleMode == SubtitleMode.forced) {
         return aForced ? -1 : 1;
@@ -411,12 +425,20 @@ int? matchSeriesTrackIndex({
   final exact = _titleMatch(matchingStreams, targetTitle, loose: false);
   if (exact != null) return exact;
 
-  if (pref.relativeIndex >= 0 && pref.relativeIndex < matchingStreams.length) {
-    return matchingStreams[pref.relativeIndex]['Index'] as int?;
+  // Position only counts tracks of the same kind as the remembered one, so a
+  // forced track listed first can't stand in for the full one.
+  final prefForced = _forcedTitle.hasMatch(targetTitle);
+  final sameKind = matchingStreams
+      .where((s) => isForcedSubtitleStream(s) == prefForced)
+      .toList();
+  final positional = sameKind.isEmpty ? matchingStreams : sameKind;
+
+  if (pref.relativeIndex >= 0 && pref.relativeIndex < positional.length) {
+    return positional[pref.relativeIndex]['Index'] as int?;
   }
 
-  return _titleMatch(matchingStreams, targetTitle) ??
-      matchingStreams.first['Index'] as int?;
+  return _titleMatch(positional, targetTitle) ??
+      positional.first['Index'] as int?;
 }
 
 /// The first stream whose title reads as [targetTitle], or null. A [loose]
@@ -459,9 +481,11 @@ SeriesTrackPreference createSeriesTrackPreferenceFromStream({
   int relativeIndex = 0;
   final normLang = normalizeLanguage(language);
   final iso3Lang = toIso3Language(normLang);
+  final selectedForced = _forcedTitle.hasMatch(title);
 
   for (final stream in streams) {
     if (stream['Index'] == selectedIndex) break;
+    if (isForcedSubtitleStream(stream) != selectedForced) continue;
     final l = stream['Language'] as String? ?? '';
     if (languageMatchesPreferred(l, normLang, iso3Lang)) {
       relativeIndex++;
