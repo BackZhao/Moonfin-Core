@@ -1283,7 +1283,7 @@
     "@downloadSubtitlesLabel": {
         "description": "Label for the download subtitles option"
     },
-    "searchOpenSubtitlesPlugin": "Hae OpenSubtitles-laajennuksella",
+    "searchOpenSubtitlesPlugin": "Hae OpenSubtitles-palvelun avulla",
     "@searchOpenSubtitlesPlugin": {
         "description": "Subtitle for the download subtitles option"
     },
@@ -15207,5 +15207,239 @@
     "@playbackInfoDroppedFrames": {
         "description": "Playback information row label: how many video frames the player skipped"
     },
-    "sortServerOrder": "Palvelimen järjestys"
+    "sortServerOrder": "Palvelimen järjestys",
+    "signInWithPlex": "Kirjaudu sisään Plexillä",
+    "@signInWithPlex": {
+        "description": "Plex sign-in option label and title of the Plex sign-in screen"
+    },
+    "plexLinkInstructions": "Siirry osoitteeseen plex.tv/link millä tahansa laitteella ja syötä tämä koodi",
+    "@plexLinkInstructions": {
+        "description": "Instructions above the code on the Plex sign-in screen"
+    },
+    "plexOpenLink": "Avaa plex.tv/link",
+    "@plexOpenLink": {
+        "description": "Button that opens plex.tv/link in the browser with the code filled in"
+    },
+    "plexWaitingForApproval": "Odotan, että hyväksyt koodin...",
+    "@plexWaitingForApproval": {
+        "description": "Status shown while the app waits for the Plex code to be approved"
+    },
+    "plexSignInWithPassword": "Kirjaudu sisään salasanalla",
+    "@plexSignInWithPassword": {
+        "description": "Button on the Plex sign-in screen that swaps the code for an email or username and password form"
+    },
+    "plexVerificationCode": "Vahvistuskoodi",
+    "@plexVerificationCode": {
+        "description": "Field for the account's two-step verification code, shown once Plex asks for it"
+    },
+    "plexNoServers": "Tältä tililtä ei löytynyt Plex-palvelimia",
+    "@plexNoServers": {
+        "description": "Shown when the Plex account has no servers"
+    },
+    "seriesRecordingSkipsShowing": "Sarjan tallennus ohittaa tämän jakson",
+    "@seriesRecordingSkipsShowing": {
+        "description": "A series recording rule exists, but this showing won't record, for example because it is a repeat or the episode is already in the library"
+    },
+    "seriesRecordingEpisodesQuestion": "Mitkä jaksot tulee tallentaa?",
+    "@seriesRecordingEpisodesQuestion": {
+        "description": "Prompt in the dialog that chooses which episodes a series recording takes"
+    },
+    "seriesRecordingAllEpisodes": "Kaikki jaksot",
+    "@seriesRecordingAllEpisodes": {
+        "description": "Series recording choice that records every showing, repeats included"
+    },
+    "seriesRecordingAllEpisodesDescription": "Jokainen esitys, uusinnat mukaan lukien",
+    "@seriesRecordingAllEpisodesDescription": {
+        "description": "Explains the All Episodes series recording choice"
+    },
+    "seriesRecordingNotRecordedEpisodes": "Jaksot, joita ei ole vielä tallennettu",
+    "@seriesRecordingNotRecordedEpisodes": {
+        "description": "Series recording choice that skips episodes already in the library"
+    },
+    "seriesRecordingNotRecordedEpisodesDescription": "Ohittaa kirjastossasi jo olevat jaksot ja tallentaa jokaisen jakson kerran",
+    "@seriesRecordingNotRecordedEpisodesDescription": {
+        "description": "Explains the Episodes Not Already Recorded series recording choice"
+    },
+    "seriesRecordingNewEpisodesOnly": "Vain uudet jaksot",
+    "@seriesRecordingNewEpisodesOnly": {
+        "description": "Series recording choice that records only first airings"
+    },
+    "seriesRecordingNewEpisodesOnlyDescription": "Vain ensiesitykset, ei uusintoja",
+    "@seriesRecordingNewEpisodesOnlyDescription": {
+        "description": "Explains the New Episodes Only series recording choice"
+    },
+    "seriesRecordingSettings": "Sarjan asetukset",
+    "@seriesRecordingSettings": {
+        "description": "Action that changes which episodes an existing series recording takes"
+    },
+    "seriesRecordingUpdated": "Sarjan tallennustiedot päivitetty",
+    "@seriesRecordingUpdated": {
+        "description": "Confirmation after changing a series recording's settings"
+    },
+    "failedToUpdateSeriesRecording": "Sarjan tallennusta ei voitu päivittää",
+    "@failedToUpdateSeriesRecording": {
+        "description": "Error after changing a series recording's settings failed"
+    },
+    "invertGestureIndicators": "Käännä eleiden ilmaisimet",
+    "@invertGestureIndicators": {
+        "description": "Setting title for inverting placement of brightness and volume gesture indicators"
+    },
+    "invertGestureIndicatorsDescription": "Sijoita kirkkauden ja äänenvoimakkuuden visuaaliset ilmaisimet näytön samalle tai vastakkaiselle puolelle pyyhkäisyn suhteen",
+    "@invertGestureIndicatorsDescription": {
+        "description": "Description explaining gesture indicator placement relative to the swipe side"
+    },
+    "gestureIndicatorSame": "Sama",
+    "@gestureIndicatorSame": {
+        "description": "Option to display gesture indicators on the same side as the swipe"
+    },
+    "gestureIndicatorInverted": "Käänteinen",
+    "@gestureIndicatorInverted": {
+        "description": "Option to display gesture indicators on the opposite side from the swipe"
+    },
+    "detailSectionSeerrStreaming": "Streemaus palvelut",
+    "@detailSectionSeerrStreaming": {
+        "description": "Details screen Seerr section: logos of the services streaming the title in the user's region"
+    },
+    "seerrStreamingOn": "Striimataan",
+    "@seerrStreamingOn": {
+        "description": "Heading over the logos of the services streaming a Seerr title"
+    },
+    "detailSectionPersonLinks": "Linkit",
+    "@detailSectionPersonLinks": {
+        "description": "Details screen section: buttons that open a person's IMDb, TMDB and social media pages"
+    },
+    "detailSectionPersonLinksSubtitle": "IMDb, TMDB ja sosiaalinen media",
+    "@detailSectionPersonLinksSubtitle": {
+        "description": "Subtitle under the person links section switch"
+    },
+    "continueWatchingDefaultAction": "Oletustoiminto",
+    "@continueWatchingDefaultAction": {
+        "description": "Setting for default click action on Continue Watching and Next Up items"
+    },
+    "continueWatchingDefaultActionDescription": "Mitä tapahtuu, kun valitset ”Jatka katsomista” tai ”Seuraavaksi” -kohdan",
+    "@continueWatchingDefaultActionDescription": {
+        "description": "Description for Continue Watching and Next Up default click action setting"
+    },
+    "goToDetailsScreen": "Siirry lisätietoihin",
+    "@goToDetailsScreen": {
+        "description": "Option to navigate to the details screen for an item"
+    },
+    "playImmediately": "Toista heti",
+    "@playImmediately": {
+        "description": "Option to play an item immediately"
+    },
+    "personWebsite": "Virallinen verkkosivusto",
+    "@personWebsite": {
+        "description": "Tooltip for the button on a person page that opens their own website"
+    },
+    "playFromServer": "Toista palvelimelta",
+    "@playFromServer": {
+        "description": "Long-press menu action on a downloaded video: play it by streaming from the server instead of the downloaded copy, for example to get a higher quality than the download"
+    },
+    "settingsApplePlayerUi": "Videosoitin",
+    "@settingsApplePlayerUi": {
+        "description": "Settings label on iPhone and iPad for choosing which player plays video"
+    },
+    "settingsApplePlayerUiDescription": "Applen omassa soittimessa ei ole suoratoistotoimintoa, pyyhkäisyeleitä, suuntalukitusta, äänen viivettä eikä PiP-painiketta",
+    "@settingsApplePlayerUiDescription": {
+        "description": "Settings description for the video player choice, listing what the native Apple style player lacks"
+    },
+    "settingsApplePlayerUiStandard": "Standardi",
+    "@settingsApplePlayerUiStandard": {
+        "description": "Option for the regular Moonfin video player on iPhone and iPad"
+    },
+    "settingsApplePlayerUiNative": "Applen alkuperäinen tyyli",
+    "@settingsApplePlayerUiNative": {
+        "description": "Option for the native video player that the Apple TV app uses, offered on iPhone and iPad"
+    },
+    "playerTransportPosition": "Toistopainikkeet",
+    "@playerTransportPosition": {
+        "description": "Settings label for where the play, skip and seek buttons sit in the video player"
+    },
+    "playerTransportPositionDescription": "Näytä toisto-, ohitus- ja hakutoiminnot videon keskellä tai alareunan palkissa",
+    "@playerTransportPositionDescription": {
+        "description": "Settings description for where the video player's play buttons sit"
+    },
+    "playerTransportOnScreen": "Näytöllä",
+    "@playerTransportOnScreen": {
+        "description": "Option that puts the play, skip and seek buttons in the middle of the video"
+    },
+    "playerTransportDocked": "Telakoituna",
+    "@playerTransportDocked": {
+        "description": "Option that puts the play, skip and seek buttons in the bottom bar with the other player buttons"
+    },
+    "incompleteRecording": "Keskeneräinen",
+    "@incompleteRecording": {
+        "description": "Badge and detail label for a Live TV recording that was written for less than its scheduled length"
+    },
+    "incompleteRecordingMinutes": "{recorded} of {expected} min",
+    "@incompleteRecordingMinutes": {
+        "description": "How many minutes of an incomplete Live TV recording were written, out of its scheduled length with padding",
+        "placeholders": {
+            "recorded": {
+                "type": "int",
+                "example": "23"
+            },
+            "expected": {
+                "type": "int",
+                "example": "37"
+            }
+        }
+    },
+    "completeShowingScheduled": "Esitys on ohjelmassa {dateTime}",
+    "@completeShowingScheduled": {
+        "description": "Detail line status: a later complete showing of the incomplete episode will be recorded",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "Thu 8:00 PM"
+            }
+        }
+    },
+    "completeCopyRecorded": "Kopio tallennettu kokonaisuudessaan {dateTime}",
+    "@completeCopyRecorded": {
+        "description": "Detail line status: a complete copy of the incomplete episode has since been recorded",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "Thu 8:00 PM"
+            }
+        }
+    },
+    "noCompleteShowingFound": "Täydellisiä tuloksia ei löytynyt",
+    "@noCompleteShowingFound": {
+        "description": "Detail line status: no later complete showing of the incomplete episode was found in the guide"
+    },
+    "keepAsComplete": "Säilytä mahdollisimman täydellisenä",
+    "@keepAsComplete": {
+        "description": "Action that clears the Incomplete mark on a Live TV recording for everyone on the server"
+    },
+    "keptAsComplete": "Merkitty valmiiksi",
+    "@keptAsComplete": {
+        "description": "Snackbar confirmation after Keep as Complete"
+    },
+    "unableToKeepAsComplete": "Ei voi merkitä valmiiksi",
+    "@unableToKeepAsComplete": {
+        "description": "Snackbar shown when Keep as Complete fails"
+    },
+    "recordPromptAlreadyStarted": "Tämä ohjelma on jo alkanut. Voiko myöhemmän lähetyksenkin tallentaa?",
+    "@recordPromptAlreadyStarted": {
+        "description": "Record prompt shown when recording a program that is already airing"
+    },
+    "alsoRecordLaterShowing": "Tallenna myös myöhempi esitys",
+    "@alsoRecordLaterShowing": {
+        "description": "Record prompt choice: record now and also record a later showing of the same episode"
+    },
+    "justRecordNow": "Ala vain nauhoittaa nyt",
+    "@justRecordNow": {
+        "description": "Record prompt choice: only record the program that is already airing"
+    },
+    "laterShowingRequested": "Tallennus on alkanut. Myöhempi esitys tallennetaan myös.",
+    "@laterShowingRequested": {
+        "description": "Snackbar after recording now and asking for a later showing"
+    },
+    "unableToRequestLaterShowing": "Tallennus alkoi, mutta myöhempää esitysaikaa ei voitu pyytää.",
+    "@unableToRequestLaterShowing": {
+        "description": "Snackbar when the recording started but asking for a later showing failed"
+    }
 }
