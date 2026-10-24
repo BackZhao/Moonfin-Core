@@ -653,26 +653,26 @@ class AppLocalizationsFi extends AppLocalizations {
       'Verkkovirhe yhteyden muodostamisessa Emby Connectiin tai valittuun palvelimeen';
 
   @override
-  String get signInWithPlex => 'Sign in with Plex';
+  String get signInWithPlex => 'Kirjaudu sisään Plexillä';
 
   @override
   String get plexLinkInstructions =>
-      'Go to plex.tv/link on any device and enter this code';
+      'Siirry osoitteeseen plex.tv/link millä tahansa laitteella ja syötä tämä koodi';
 
   @override
-  String get plexOpenLink => 'Open plex.tv/link';
+  String get plexOpenLink => 'Avaa plex.tv/link';
 
   @override
-  String get plexWaitingForApproval => 'Waiting for you to approve the code...';
+  String get plexWaitingForApproval => 'Odotan, että hyväksyt koodin...';
 
   @override
-  String get plexSignInWithPassword => 'Sign in with a password';
+  String get plexSignInWithPassword => 'Kirjaudu sisään salasanalla';
 
   @override
-  String get plexVerificationCode => 'Verification code';
+  String get plexVerificationCode => 'Vahvistuskoodi';
 
   @override
-  String get plexNoServers => 'No Plex servers found on this account';
+  String get plexNoServers => 'Tältä tililtä ei löytynyt Plex-palvelimia';
 
   @override
   String get loadingLinkedServers => 'Lataa linkitettyjä palvelimia...';
@@ -1656,7 +1656,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get downloadSubtitlesLabel => 'Lataa tekstitykset...';
 
   @override
-  String get searchOpenSubtitlesPlugin => 'Hae OpenSubtitles-laajennuksella';
+  String get searchOpenSubtitlesPlugin => 'Hae OpenSubtitles-palvelun avulla';
 
   @override
   String get downloadSubtitles => 'Lataa tekstitykset';
@@ -2579,43 +2579,42 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get seriesRecordingSkipsShowing =>
-      'The series recording will skip this showing';
+      'Sarjan tallennus ohittaa tämän jakson';
 
   @override
-  String get seriesRecordingEpisodesQuestion =>
-      'Which episodes should be recorded?';
+  String get seriesRecordingEpisodesQuestion => 'Mitkä jaksot tulee tallentaa?';
 
   @override
-  String get seriesRecordingAllEpisodes => 'All Episodes';
+  String get seriesRecordingAllEpisodes => 'Kaikki jaksot';
 
   @override
   String get seriesRecordingAllEpisodesDescription =>
-      'Every showing, including repeats';
+      'Jokainen esitys, uusinnat mukaan lukien';
 
   @override
   String get seriesRecordingNotRecordedEpisodes =>
-      'Episodes Not Already Recorded';
+      'Jaksot, joita ei ole vielä tallennettu';
 
   @override
   String get seriesRecordingNotRecordedEpisodesDescription =>
-      'Skips episodes already in your library and records each episode once';
+      'Ohittaa kirjastossasi jo olevat jaksot ja tallentaa jokaisen jakson kerran';
 
   @override
-  String get seriesRecordingNewEpisodesOnly => 'New Episodes Only';
+  String get seriesRecordingNewEpisodesOnly => 'Vain uudet jaksot';
 
   @override
   String get seriesRecordingNewEpisodesOnlyDescription =>
-      'First airings only, no repeats';
+      'Vain ensiesitykset, ei uusintoja';
 
   @override
-  String get seriesRecordingSettings => 'Series Settings';
+  String get seriesRecordingSettings => 'Sarjan asetukset';
 
   @override
-  String get seriesRecordingUpdated => 'Series recording updated';
+  String get seriesRecordingUpdated => 'Sarjan tallennustiedot päivitetty';
 
   @override
   String get failedToUpdateSeriesRecording =>
-      'Unable to update series recording';
+      'Sarjan tallennusta ei voitu päivittää';
 
   @override
   String get recordCurrentEpisode => 'Tallenna tämä jakso';
@@ -3543,17 +3542,17 @@ class AppLocalizationsFi extends AppLocalizations {
       'Liu’uta soittimen ylä- tai alaosaa säätääksesi kirkkautta vasemmalla ja äänenvoimakkuutta oikealla';
 
   @override
-  String get invertGestureIndicators => 'Invert Gesture Indicators';
+  String get invertGestureIndicators => 'Käännä eleiden ilmaisimet';
 
   @override
   String get invertGestureIndicatorsDescription =>
-      'Place brightness and volume visual indicators on same or opposite side of screen from swipe';
+      'Sijoita kirkkauden ja äänenvoimakkuuden visuaaliset ilmaisimet näytön samalle tai vastakkaiselle puolelle pyyhkäisyn suhteen';
 
   @override
-  String get gestureIndicatorSame => 'Same';
+  String get gestureIndicatorSame => 'Sama';
 
   @override
-  String get gestureIndicatorInverted => 'Inverted';
+  String get gestureIndicatorInverted => 'Käänteinen';
 
   @override
   String get osdButtons => 'Soittimen painikkeet';
@@ -3733,10 +3732,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get detailSectionSeerrStats => 'Tilastot';
 
   @override
-  String get detailSectionSeerrStreaming => 'Streaming services';
+  String get detailSectionSeerrStreaming => 'Streemaus palvelut';
 
   @override
-  String get seerrStreamingOn => 'Streaming on';
+  String get seerrStreamingOn => 'Striimataan';
 
   @override
   String get detailSectionSeerrRecommendations => 'Suositukset';
@@ -3763,10 +3762,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get detailSectionBirthplace => 'Syntymäpaikka';
 
   @override
-  String get detailSectionPersonLinks => 'Links';
+  String get detailSectionPersonLinks => 'Linkit';
 
   @override
-  String get detailSectionPersonLinksSubtitle => 'IMDb, TMDB and social media';
+  String get detailSectionPersonLinksSubtitle =>
+      'IMDb, TMDB ja sosiaalinen media';
 
   @override
   String get detailSectionGuestAppearances => 'Vierailut';
@@ -5021,17 +5021,17 @@ class AppLocalizationsFi extends AppLocalizations {
   String get combineBothRows => 'Yhdistä molemmat rivit yhdeksi kotiosioon';
 
   @override
-  String get continueWatchingDefaultAction => 'Default Action';
+  String get continueWatchingDefaultAction => 'Oletustoiminto';
 
   @override
   String get continueWatchingDefaultActionDescription =>
-      'What selecting a Continue Watching or Next Up item does';
+      'Mitä tapahtuu, kun valitset ”Jatka katsomista” tai ”Seuraavaksi” -kohdan';
 
   @override
-  String get goToDetailsScreen => 'Go to Details';
+  String get goToDetailsScreen => 'Siirry lisätietoihin';
 
   @override
-  String get playImmediately => 'Play immediately';
+  String get playImmediately => 'Toista heti';
 
   @override
   String get nextUpMaxDays => 'Enimmäispäivien määrä Next Up -kohdassa';
@@ -12644,7 +12644,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get crewContributionsSeerr => 'Työryhmän osuudet (Seerr)';
 
   @override
-  String get personWebsite => 'Official website';
+  String get personWebsite => 'Virallinen verkkosivusto';
 
   @override
   String get watchWithGroup => 'Katso ryhmän kanssa';
@@ -15572,36 +15572,36 @@ class AppLocalizationsFi extends AppLocalizations {
   String get playbackInfoDroppedFrames => 'Hylätyt kehykset';
 
   @override
-  String get playFromServer => 'Play from Server';
+  String get playFromServer => 'Toista palvelimelta';
 
   @override
-  String get settingsApplePlayerUi => 'Video player';
+  String get settingsApplePlayerUi => 'Videosoitin';
 
   @override
   String get settingsApplePlayerUiDescription =>
-      'The native Apple style player has no casting, swipe gestures, orientation lock, audio delay or PiP button';
+      'Applen omassa soittimessa ei ole suoratoistotoimintoa, pyyhkäisyeleitä, suuntalukitusta, äänen viivettä eikä PiP-painiketta';
 
   @override
-  String get settingsApplePlayerUiStandard => 'Standard';
+  String get settingsApplePlayerUiStandard => 'Standardi';
 
   @override
-  String get settingsApplePlayerUiNative => 'Native Apple style';
+  String get settingsApplePlayerUiNative => 'Applen alkuperäinen tyyli';
 
   @override
-  String get playerTransportPosition => 'Play buttons';
+  String get playerTransportPosition => 'Toistopainikkeet';
 
   @override
   String get playerTransportPositionDescription =>
-      'Show play, skip and seek in the middle of the video or docked in the bottom bar';
+      'Näytä toisto-, ohitus- ja hakutoiminnot videon keskellä tai alareunan palkissa';
 
   @override
-  String get playerTransportOnScreen => 'On screen';
+  String get playerTransportOnScreen => 'Näytöllä';
 
   @override
-  String get playerTransportDocked => 'Docked';
+  String get playerTransportDocked => 'Telakoituna';
 
   @override
-  String get incompleteRecording => 'Incomplete';
+  String get incompleteRecording => 'Keskeneräinen';
 
   @override
   String incompleteRecordingMinutes(int recorded, int expected) {
@@ -15610,43 +15610,43 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String completeShowingScheduled(String dateTime) {
-    return 'Complete showing scheduled $dateTime';
+    return 'Esitys on ohjelmassa $dateTime';
   }
 
   @override
   String completeCopyRecorded(String dateTime) {
-    return 'Complete copy recorded $dateTime';
+    return 'Kopio tallennettu kokonaisuudessaan $dateTime';
   }
 
   @override
-  String get noCompleteShowingFound => 'No complete showing found';
+  String get noCompleteShowingFound => 'Täydellisiä tuloksia ei löytynyt';
 
   @override
-  String get keepAsComplete => 'Keep as Complete';
+  String get keepAsComplete => 'Säilytä mahdollisimman täydellisenä';
 
   @override
-  String get keptAsComplete => 'Marked as complete';
+  String get keptAsComplete => 'Merkitty valmiiksi';
 
   @override
-  String get unableToKeepAsComplete => 'Unable to mark as complete';
+  String get unableToKeepAsComplete => 'Ei voi merkitä valmiiksi';
 
   @override
   String get recordPromptAlreadyStarted =>
-      'This program has already started. Also record a later showing?';
+      'Tämä ohjelma on jo alkanut. Voiko myöhemmän lähetyksenkin tallentaa?';
 
   @override
-  String get alsoRecordLaterShowing => 'Also Record a Later Showing';
+  String get alsoRecordLaterShowing => 'Tallenna myös myöhempi esitys';
 
   @override
-  String get justRecordNow => 'Just Record Now';
+  String get justRecordNow => 'Ala vain nauhoittaa nyt';
 
   @override
   String get laterShowingRequested =>
-      'Recording started. A later showing will be recorded too.';
+      'Tallennus on alkanut. Myöhempi esitys tallennetaan myös.';
 
   @override
   String get unableToRequestLaterShowing =>
-      'Recording started, but couldn\'t request a later showing.';
+      'Tallennus alkoi, mutta myöhempää esitysaikaa ei voitu pyytää.';
 
   @override
   String trailerCount(int count) {
