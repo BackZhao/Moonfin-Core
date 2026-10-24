@@ -14193,7 +14193,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tämän mediaformaatin suoraa toistoa ei tueta.';
 
   @override
-  String get sortServerOrder => 'Server Order';
+  String get sortServerOrder => 'Palvelimen järjestys';
 
   @override
   String get sortAlphabetical => 'Aakkosjärjestys';
@@ -15399,20 +15399,20 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String playbackInfoChannelCount(int count) {
-    return '$count channels';
+    return '$count kanavat';
   }
 
   @override
-  String get playbackInfoBurnedIn => 'Burned in by the server';
+  String get playbackInfoBurnedIn => 'Poltettu palvelimelta';
 
   @override
   String playbackInfoOriginal(String value, String original) {
-    return '$value (original $original)';
+    return '$value (alkuperäinen $original)';
   }
 
   @override
   String playbackInfoConvertedFrom(String value, String source) {
-    return '$value (converted from $source)';
+    return '$value (muunnettu lähteestä $source)';
   }
 
   @override
@@ -15421,157 +15421,155 @@ class AppLocalizationsFi extends AppLocalizations {
     String size,
     String source,
   ) {
-    return '$name ($size, converted from $source)';
+    return '$name ($size, muunnettu lähteestä $source)';
   }
 
   @override
-  String get playbackInfoNoteDirectPlay => 'Playing the original file as is.';
+  String get playbackInfoNoteDirectPlay =>
+      'Alkuperäisen tiedoston toistaminen sellaisenaan.';
 
   @override
   String get playbackInfoNoteDirectStream =>
-      'The server is repackaging the file without converting it.';
+      'Palvelin pakkaa tiedoston uudelleen muuntamatta sitä.';
 
   @override
   String get playbackInfoNoteTranscodeVideo =>
-      'The server is converting the video so this device can play it.';
+      'Palvelin muuntaa videon, jotta tämä laite voi toistaa sen.';
 
   @override
   String get playbackInfoNoteTranscodeAudio =>
-      'The server is converting the audio so this device can play it.';
+      'Palvelin muuntaa äänen, jotta tämä laite voi toistaa sen.';
 
   @override
   String get playbackInfoNoteTranscodeBoth =>
-      'The server is converting the video and audio so this device can play it.';
+      'Palvelin muuntaa videon ja äänen, jotta tämä laite voi toistaa ne.';
 
   @override
   String get playbackInfoNoteTranscodeUnknown =>
-      'The server is converting this file so this device can play it.';
+      'Palvelin muuntaa tämän tiedoston, jotta tämä laite voi toistaa sen.';
 
   @override
-  String get playbackInfoNoteOffline => 'Playing a downloaded copy.';
+  String get playbackInfoNoteOffline => 'Toistaa ladattua kopiota.';
 
   @override
-  String get playbackInfoWhyForced => 'Transcoding is forced in settings';
+  String get playbackInfoWhyForced => 'Transkoodaus pakotetaan asetuksissa';
 
   @override
-  String get playbackInfoWhyBitrate =>
-      'The bitrate is above the streaming limit';
+  String get playbackInfoWhyBitrate => 'Bittinopeus ylittää suoratoistorajan';
 
   @override
   String get playbackInfoWhyContainer =>
-      'This device can\'t play this file type';
+      'Tämä laite ei voi toistaa tätä tiedostotyyppiä';
 
   @override
-  String get playbackInfoWhyVideo =>
-      'This device can\'t play this video format';
+  String get playbackInfoWhyVideo => 'Tämä laite ei tue tätä videomuotoa';
 
   @override
-  String get playbackInfoWhyHdr => 'This device can\'t display this HDR format';
+  String get playbackInfoWhyHdr =>
+      'Tämä laite ei tue tämän HDR-muodon näyttämistä';
 
   @override
-  String get playbackInfoWhyAudio =>
-      'This device can\'t play this audio format';
+  String get playbackInfoWhyAudio => 'Tämä laite ei tue tätä äänimuotoa';
 
   @override
-  String get playbackInfoWhySubtitles =>
-      'Subtitles are being burned into the video';
+  String get playbackInfoWhySubtitles => 'Tekstitykset poltetaan videoon';
 
   @override
-  String get playbackInfoWhyOther => 'The file couldn\'t be played directly';
+  String get playbackInfoWhyOther => 'Tiedostoa ei voitu toistaa suoraan';
 
   @override
   String playbackInfoWhyBitrateLimit(String bitrate, String limit) {
-    return '$bitrate is above the $limit streaming limit';
+    return '$bitrate ylittää $limit suoratoistorajan';
   }
 
   @override
   String playbackInfoWhyContainerName(String container) {
-    return 'This device can\'t open $container files';
+    return 'Tämä laite ei voi avata $container-tiedostoja';
   }
 
   @override
   String playbackInfoWhyVideoCodec(String codec) {
-    return 'This device can\'t play $codec video';
+    return 'Tämä laite ei voi toistaa $codec -muotoisia videoita';
   }
 
   @override
   String playbackInfoWhyVideoProfile(String codec, String profile) {
-    return 'This device can\'t play $codec $profile video';
+    return 'Tämä laite ei voi toistaa $codec $profile -muotoista videota';
   }
 
   @override
   String playbackInfoWhyVideoLevel(String codec, String level) {
-    return 'This device can\'t play $codec level $level video';
+    return 'Tämä laite ei voi toistaa $codec -koodekilla tallennettua $level -tason videota';
   }
 
   @override
   String playbackInfoWhyVideoBitDepth(int bits) {
-    return 'This device can\'t play $bits-bit video';
+    return 'Tämä laite ei voi toistaa $bits-bittistä videota';
   }
 
   @override
   String playbackInfoWhyVideoResolution(String resolution) {
-    return 'This device can\'t play $resolution video';
+    return 'Tämä laite ei voi toistaa $resolution -videota';
   }
 
   @override
   String playbackInfoWhyVideoFrameRate(String fps) {
-    return 'This device can\'t play $fps fps video';
+    return 'Tämä laite ei voi toistaa $fps fps:n videota';
   }
 
   @override
   String get playbackInfoWhyInterlaced =>
-      'This device can\'t play interlaced video';
+      'Tämä laite ei tue lomitettua videota';
 
   @override
   String get playbackInfoWhyAnamorphic =>
-      'This device can\'t play anamorphic video';
+      'Tämä laite ei tue anamorfisen videon toistoa';
 
   @override
   String playbackInfoWhyHdrName(String range) {
-    return 'This device can\'t display $range';
+    return 'Tämä laite ei voi näyttää $range';
   }
 
   @override
   String playbackInfoWhyAudioCodec(String format) {
-    return 'This device can\'t play $format audio';
+    return 'Tämä laite ei voi toistaa $format -muotoista ääntä';
   }
 
   @override
   String playbackInfoWhyAudioProfile(String fullFormat) {
-    return 'This device can\'t play $fullFormat';
+    return 'Tämä laite ei voi toistaa $fullFormat';
   }
 
   @override
   String playbackInfoWhyAudioChannels(String channels) {
-    return 'This device can\'t play $channels audio';
+    return 'Tämä laite ei voi toistaa $channels ääniä';
   }
 
   @override
   String playbackInfoWhyAudioSampleRate(String rate) {
-    return 'This device can\'t play $rate kHz audio';
+    return 'Tämä laite ei tue $rate kHz:n äänen toistoa';
   }
 
   @override
   String playbackInfoWhyAudioBitDepth(int bits) {
-    return 'This device can\'t play $bits-bit audio';
+    return 'Tämä laite ei tue $bits-bittistä ääntä';
   }
 
   @override
   String get playbackInfoWhyAudioExternal =>
-      'The audio track is in a separate file';
+      'Ääniraita on erillisessä tiedostossa';
 
   @override
   String get playbackInfoWhySecondaryAudio =>
-      'This device can only play the first audio track';
+      'Tämä laite voi toistaa vain ensimmäisen ääniraidan';
 
   @override
   String playbackInfoWhySubtitleFormat(String format) {
-    return '$format subtitles are being burned into the video';
+    return '$format tekstitykset poltetaan videoon';
   }
 
   @override
-  String get playbackInfoDroppedFrames => 'Dropped Frames';
+  String get playbackInfoDroppedFrames => 'Hylätyt kehykset';
 
   @override
   String get playFromServer => 'Play from Server';
