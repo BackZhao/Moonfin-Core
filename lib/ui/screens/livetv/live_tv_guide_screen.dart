@@ -1880,6 +1880,7 @@ class _LiveTvGuideScreenState extends State<LiveTvGuideScreen>
         }
         if (key.isLeftKey) {
           _onNavigationKey();
+          _focusFilterRail();
           return KeyEventResult.handled;
         }
         return KeyEventResult.ignored;
