@@ -15558,5 +15558,109 @@
     "readOnTmdb": "Lue lisää TMDB:stä",
     "@readOnTmdb": {
         "description": "Button in an opened review that opens the review on the TMDB website"
+    },
+    "animeMarkerSubbedShort": "Sub",
+    "@animeMarkerSubbedShort": {
+        "description": "Short form of the Subbed badge"
+    },
+    "animeMarkerDubbedShort": "Dub",
+    "@animeMarkerDubbedShort": {
+        "description": "Short form of the Dubbed badge"
+    },
+    "animeMarkerSubbedAndDubbedShort": "Sub/Dub",
+    "@animeMarkerSubbedAndDubbedShort": {
+        "description": "Short form of the Subbed/Dubbed badge"
+    },
+    "keyboardStyle": "Näppäimistötyyli",
+    "@keyboardStyle": {
+        "description": "Label for the setting that picks how the on-screen keyboard looks, or whether the TV's own keyboard is used"
+    },
+    "keyboardStyleDescription": "Native-tilassa käytetään television omaa näppäimistöä. Classic on alkuperäinen Moonfin-näppäimistö. Glass on himmeä paneeli, jossa on suuremmat näppäimet. Docked-tilassa näppäimistö täyttää näytön alaosan ja näyttää kirjoittamasi tekstin näppäinten yläpuolella.",
+    "@keyboardStyleDescription": {
+        "description": "Explanation under the keyboard style setting"
+    },
+    "keyboardStyleNative": "Natiivi",
+    "@keyboardStyleNative": {
+        "description": "Keyboard style option: the TV or device's own system keyboard"
+    },
+    "keyboardStyleClassic": "Klassinen",
+    "@keyboardStyleClassic": {
+        "description": "Keyboard style option: the original in-app keyboard"
+    },
+    "keyboardStyleGlass": "Lasi",
+    "@keyboardStyleGlass": {
+        "description": "Keyboard style option: a frosted glass panel with larger keys"
+    },
+    "keyboardStyleDocked": "Telakoituna",
+    "@keyboardStyleDocked": {
+        "description": "Keyboard style option: a full-width keyboard docked to the bottom of the screen"
+    },
+    "keyboardSpace": "välilyönti",
+    "@keyboardSpace": {
+        "description": "Label on the on-screen keyboard's space bar, lowercase like a printed key"
+    },
+    "keyboardHoldForAccents": "varata aksentteja varten",
+    "@keyboardHoldForAccents": {
+        "description": "On-screen keyboard hint next to an OK button cap: holding OK on a letter shows its accented versions"
+    },
+    "keyboardClose": "sulje",
+    "@keyboardClose": {
+        "description": "On-screen keyboard hint next to a Back button cap, lowercase like the hold for accents hint: Back closes the keyboard"
+    },
+    "hevcSoftwareDirectPlay": "HEVC:n suora toisto (ohjelmistopohjainen dekoodaus)",
+    "hevcSoftwareDirectPlaySubtitle": "Toista HEVC-tiedostoja jopa 1080p-tarkkuudella suoraan alkuperäisestä tiedostosta sen sijaan, että pyytäisit palvelinta koodaamaan sen uudelleen. Tämä Apple TV purkaa tiedoston ohjelmistollisesti, joten raskaat 10-bittiset tai korkean bittinopeuden tiedostot saattavat pätkiä.",
+    "sortCurrent": "Lajittele: {option}",
+    "@sortCurrent": {
+        "description": "Label beside a sort button showing the sort that is active",
+        "placeholders": {
+            "option": {
+                "type": "String"
+            }
+        }
+    },
+    "recordPromptTitle": "Tallennus {name}",
+    "@recordPromptTitle": {
+        "description": "Title of the Record prompt for a program that is already airing",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "recordPromptAlsoRecordLater": "Tallennetaanko myös tuleva esitys, jotta tallenne olisi täydellinen?",
+    "@recordPromptAlsoRecordLater": {
+        "description": "Record prompt question when a future showing is shown below it"
+    },
+    "recordPromptSearchLater": "Kokoa myös tulevat esitykset automaattisesti, kun niitä löytyy, jotta tallenne olisi täydellinen?",
+    "@recordPromptSearchLater": {
+        "description": "Record prompt question when no future showing is known yet and Moonfin will look for one"
+    },
+    "recordPromptNow": "Nyt",
+    "@recordPromptNow": {
+        "description": "Label of the Record prompt card for the program that is airing now"
+    },
+    "recordPromptLater": "Tuleva esitys",
+    "@recordPromptLater": {
+        "description": "Label of the Record prompt card for the future showing that would also be recorded"
+    },
+    "recordPromptUncertainMatch": "Hakutulokset perustuvat ainoastaan otsikkoon ja kuvaukseen. Tarkista, että kyseessä on sama ohjelma.",
+    "@recordPromptUncertainMatch": {
+        "description": "Caution under the future showing when it has no season and episode numbers to confirm it is the same program"
+    },
+    "recordPromptDescriptionsDiffer": "Kuvaukset eroavat toisistaan, joten kyseessä saattaa olla eri ohjelma.",
+    "@recordPromptDescriptionsDiffer": {
+        "description": "Caution under the future showing when its description differs from the program airing now"
+    },
+    "recordPromptAlreadyScheduled": "On jo asetettu tallennukseen",
+    "@recordPromptAlreadyScheduled": {
+        "description": "Note in the future showing's card when a recording is already scheduled for it, by anyone"
+    },
+    "recordPromptTomorrow": "Huomenna",
+    "@recordPromptTomorrow": {
+        "description": "When the future showing airs, used in the Record Now and ... button"
+    },
+    "recordNowOnly": "Tallenna vain kerran",
+    "@recordNowOnly": {
+        "description": "Record prompt choice: only record the program that is airing now"
     }
 }
