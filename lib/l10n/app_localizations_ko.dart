@@ -34,6 +34,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get animeMarkerSubbedAndDubbed => '자막/더빙';
 
   @override
+  String get animeMarkerSubbedShort => 'Sub';
+
+  @override
+  String get animeMarkerDubbedShort => 'Dub';
+
+  @override
+  String get animeMarkerSubbedAndDubbedShort => 'Sub/Dub';
+
+  @override
   String get animeMarkerPending => '대기 중';
 
   @override

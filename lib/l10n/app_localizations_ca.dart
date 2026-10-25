@@ -34,6 +34,15 @@ class AppLocalizationsCa extends AppLocalizations {
   String get animeMarkerSubbedAndDubbed => 'Sub/Dub';
 
   @override
+  String get animeMarkerSubbedShort => 'Sub';
+
+  @override
+  String get animeMarkerDubbedShort => 'Dub';
+
+  @override
+  String get animeMarkerSubbedAndDubbedShort => 'Sub/Dub';
+
+  @override
   String get animeMarkerPending => 'Pendent';
 
   @override

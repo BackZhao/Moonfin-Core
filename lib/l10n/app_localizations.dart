@@ -268,6 +268,24 @@ abstract class AppLocalizations {
   /// **'Subbed/Dubbed'**
   String get animeMarkerSubbedAndDubbed;
 
+  /// Short form of the Subbed badge, used when the server asks for compact anime audio labels
+  ///
+  /// In en, this message translates to:
+  /// **'Sub'**
+  String get animeMarkerSubbedShort;
+
+  /// Short form of the Dubbed badge, used when the server asks for compact anime audio labels
+  ///
+  /// In en, this message translates to:
+  /// **'Dub'**
+  String get animeMarkerDubbedShort;
+
+  /// Short form of the Subbed/Dubbed badge, used when the server asks for compact anime audio labels
+  ///
+  /// In en, this message translates to:
+  /// **'Sub/Dub'**
+  String get animeMarkerSubbedAndDubbedShort;
+
   /// Badge on an anime episode whose filler information the server has matched but not downloaded yet
   ///
   /// In en, this message translates to:

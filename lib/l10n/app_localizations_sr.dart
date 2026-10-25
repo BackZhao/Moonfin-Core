@@ -34,6 +34,15 @@ class AppLocalizationsSr extends AppLocalizations {
   String get animeMarkerSubbedAndDubbed => 'С титловима/синхронизовано';
 
   @override
+  String get animeMarkerSubbedShort => 'Sub';
+
+  @override
+  String get animeMarkerDubbedShort => 'Dub';
+
+  @override
+  String get animeMarkerSubbedAndDubbedShort => 'Sub/Dub';
+
+  @override
   String get animeMarkerPending => 'На чекању';
 
   @override

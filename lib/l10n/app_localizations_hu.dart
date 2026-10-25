@@ -34,6 +34,15 @@ class AppLocalizationsHu extends AppLocalizations {
   String get animeMarkerSubbedAndDubbed => 'Feliratos/Szinkronos';
 
   @override
+  String get animeMarkerSubbedShort => 'Sub';
+
+  @override
+  String get animeMarkerDubbedShort => 'Dub';
+
+  @override
+  String get animeMarkerSubbedAndDubbedShort => 'Sub/Dub';
+
+  @override
   String get animeMarkerPending => 'Függő';
 
   @override

@@ -34,6 +34,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get animeMarkerSubbedAndDubbed => 'Subtitrat/Dublat';
 
   @override
+  String get animeMarkerSubbedShort => 'Sub';
+
+  @override
+  String get animeMarkerDubbedShort => 'Dub';
+
+  @override
+  String get animeMarkerSubbedAndDubbedShort => 'Sub/Dub';
+
+  @override
   String get animeMarkerPending => 'În așteptare';
 
   @override

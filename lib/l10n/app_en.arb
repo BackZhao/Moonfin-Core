@@ -32,6 +32,18 @@
   "@animeMarkerSubbedAndDubbed": {
     "description": "Badge on anime that carries both the original Japanese audio and a dub, so it can be watched either way"
   },
+  "animeMarkerSubbedShort": "Sub",
+  "@animeMarkerSubbedShort": {
+    "description": "Short form of the Subbed badge"
+  },
+  "animeMarkerDubbedShort": "Dub",
+  "@animeMarkerDubbedShort": {
+    "description": "Short form of the Dubbed badge"
+  },
+  "animeMarkerSubbedAndDubbedShort": "Sub/Dub",
+  "@animeMarkerSubbedAndDubbedShort": {
+    "description": "Short form of the Subbed/Dubbed badge"
+  },
   "animeMarkerPending": "Pending",
   "@animeMarkerPending": {
     "description": "Badge on an anime episode whose filler information the server has matched but not downloaded yet"
