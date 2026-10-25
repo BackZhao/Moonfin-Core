@@ -27284,6 +27284,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Read on TMDB'**
   String get readOnTmdb;
+
+  /// Second line of the Add Server button on the server screen
+  ///
+  /// In en, this message translates to:
+  /// **'By address, or with a Plex or Emby Connect account'**
+  String get addServerButtonSubtitle;
+
+  /// Subtitle of the first step of the Add Server dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you\'d like to connect.'**
+  String get addServerChooseHow;
+
+  /// Add Server dialog: what the Server Address option is for
+  ///
+  /// In en, this message translates to:
+  /// **'Jellyfin or Emby on your network or online'**
+  String get addServerAddressChoice;
+
+  /// Add Server dialog: what the Sign in with Plex option does
+  ///
+  /// In en, this message translates to:
+  /// **'Use your Plex account to find its servers'**
+  String get addServerPlexChoice;
+
+  /// Add Server dialog: help under the Connect to Server title
+  ///
+  /// In en, this message translates to:
+  /// **'The same address you\'d open in a browser, including the port.'**
+  String get addServerAddressHelp;
+
+  /// Add Server dialog: note under the address field
+  ///
+  /// In en, this message translates to:
+  /// **'Works with Jellyfin and Emby. A Plex address opens the Plex sign-in.'**
+  String get addServerDetectNote;
+
+  /// Add Server dialog: shown under the field while the typed address is being tried
+  ///
+  /// In en, this message translates to:
+  /// **'Checking {address}'**
+  String addServerChecking(String address);
+
+  /// Add Server dialog: detail under Unable to connect to server
+  ///
+  /// In en, this message translates to:
+  /// **'Check the address and port, and that the server is running.'**
+  String get addServerUnreachableDetail;
+
+  /// Add Server dialog: title once the address answered
+  ///
+  /// In en, this message translates to:
+  /// **'Server found'**
+  String get addServerFound;
+
+  /// Add Server dialog: under the server that was found
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to choose who\'s signing in.'**
+  String get addServerFoundNote;
+
+  /// Add Server dialog: goes back to the address field instead of keeping the server that was found
+  ///
+  /// In en, this message translates to:
+  /// **'Use a different address'**
+  String get addServerUseDifferentAddress;
 }
 
 class _AppLocalizationsDelegate
