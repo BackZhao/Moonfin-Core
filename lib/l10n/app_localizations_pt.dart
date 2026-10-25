@@ -580,11 +580,32 @@ class AppLocalizationsPt extends AppLocalizations {
       'Os temas personalizados alteram elementos visuais em todo o Moonfin. Escolha uma destas opções para combinar com o seu estilo.';
 
   @override
-  String get keyboardPreferSystemIme => 'Prefira o teclado do sistema';
+  String get keyboardStyle => 'Keyboard Style';
 
   @override
-  String get keyboardPreferSystemImeDescription =>
-      'Use o método de entrada do seu dispositivo por padrão para entrada de texto';
+  String get keyboardStyleDescription =>
+      'Native uses your TV\'s own keyboard. Classic is the original Moonfin keyboard. Glass is a frosted panel with larger keys. Docked fills the bottom of the screen and shows what you type above the keys.';
+
+  @override
+  String get keyboardStyleNative => 'Native';
+
+  @override
+  String get keyboardStyleClassic => 'Classic';
+
+  @override
+  String get keyboardStyleGlass => 'Glass';
+
+  @override
+  String get keyboardStyleDocked => 'Docked';
+
+  @override
+  String get keyboardSpace => 'space';
+
+  @override
+  String get keyboardHoldForAccents => 'hold for accents';
+
+  @override
+  String get keyboardClose => 'close';
 
   @override
   String get controller => 'Controller';
@@ -16329,13 +16350,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
       'Temas personalizados alteram elementos visuais em todo o Moonfin. Escolha uma destas opções para combinar com o seu estilo.';
 
   @override
-  String get keyboardPreferSystemIme => 'Preferir o teclado do sistema';
-
-  @override
-  String get keyboardPreferSystemImeDescription =>
-      'Usar o método de entrada do seu dispositivo por padrão para digitar';
-
-  @override
   String get controller => 'Controle';
 
   @override
@@ -31365,13 +31379,6 @@ class AppLocalizationsPtPt extends AppLocalizationsPt {
   @override
   String get customThemeSubtitle =>
       'Os temas personalizados alteram elementos visuais em todo o Moonfin. Escolhe uma destas opções para combinar com o teu estilo.';
-
-  @override
-  String get keyboardPreferSystemIme => 'Preferir o teclado do sistema';
-
-  @override
-  String get keyboardPreferSystemImeDescription =>
-      'Utilizar o método de introdução do dispositivo por predefinição para escrever texto';
 
   @override
   String get controller => 'Comando de jogo';

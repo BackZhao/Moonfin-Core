@@ -2,6 +2,8 @@ import 'dart:ui' as ui;
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:custom_tv_text_field/custom_tv_text_field.dart'
+    show KeyboardStyle;
 import 'package:flutter/foundation.dart';
 import 'package:jellyfin_preference/jellyfin_preference.dart';
 import 'package:server_core/server_core.dart' hide ImageType;
@@ -120,6 +122,7 @@ class UserPreferences extends ChangeNotifier {
     _enforceMediaQueuingAlwaysOn();
     _seedClockFormatFromSystem();
     _migrateScreensaverPreferences();
+    _migrateSystemImePreference();
   }
 
   // Carry over the pre-rename jellyseerr* preference keys to their seerr* names.
@@ -276,6 +279,17 @@ class UserPreferences extends ChangeNotifier {
         _store.set(movement, ScreensaverMovement.fast);
       }
     }
+  }
+
+  // Prefer System Keyboard became the Native keyboard style. Only an explicit
+  // on carries over, everyone else gets the new default.
+  void _migrateSystemImePreference() {
+    final legacy = getEffectivePreference(_legacyPreferSystemIme);
+    final style = getEffectivePreference(keyboardStyle);
+    if (_store.containsKey(style.key) || !_store.containsKey(legacy.key)) {
+      return;
+    }
+    if (_store.get(legacy)) _store.set(style, KeyboardStyle.native);
   }
 
   // On first run, default the 12h/24h clock to the device's locale so users in
@@ -536,6 +550,7 @@ class UserPreferences extends ChangeNotifier {
     'pref_use_24_hour_clock',
     'pref_clock_behavior',
     'pref_prefer_system_ime_keyboard',
+    'pref_keyboard_style',
     'pref_audio_language',
     'pref_fallback_audio_language',
     'pref_prefer_default_audio_track',
@@ -1512,12 +1527,19 @@ class UserPreferences extends ChangeNotifier {
     values: AppTheme.values,
   );
 
-  static final preferSystemImeKeyboard = Preference(
+  /// Phones and desktops keep their own keyboard by default, every TV starts
+  /// on Docked.
+  static final keyboardStyle = EnumPreference(
+    key: 'pref_keyboard_style',
+    defaultValue: PlatformDetection.useMobileUi || PlatformDetection.isDesktop
+        ? KeyboardStyle.native
+        : KeyboardStyle.docked,
+    values: KeyboardStyle.values,
+  );
+
+  static final _legacyPreferSystemIme = Preference(
     key: 'pref_prefer_system_ime_keyboard',
-    defaultValue:
-        PlatformDetection.useMobileUi ||
-        PlatformDetection.isDesktop ||
-        PlatformDetection.isAppleTV,
+    defaultValue: false,
   );
 
   /// Whether a game controller drives the app UI. Games take the pad for

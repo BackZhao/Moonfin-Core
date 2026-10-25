@@ -902,8 +902,8 @@ class _AddServerDialogState extends State<AddServerDialog> {
             isFocused: focused,
             inputPurpose: InputPurpose.url,
             recentSuggestions: _recentServerAddresses,
-            preferSystemIme: _userPreferences.get(
-              UserPreferences.preferSystemImeKeyboard,
+            keyboardStyle: _userPreferences.get(
+              UserPreferences.keyboardStyle,
             ),
             hint: l10n.serverAddressHint,
             textFieldType: TextFieldType.url,

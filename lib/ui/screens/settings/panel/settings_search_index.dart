@@ -530,10 +530,18 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
     ),
     if (PlatformDetection.isTV)
       general.leaf(
-        'pref_prefer_system_ime_keyboard',
-        l10n.keyboardPreferSystemIme,
-        subtitle: l10n.keyboardPreferSystemImeDescription,
-        keywords: ['keyboard', 'input'],
+        'pref_keyboard_style',
+        l10n.keyboardStyle,
+        subtitle: l10n.keyboardStyleDescription,
+        keywords: [
+          'keyboard',
+          'input',
+          'native',
+          'system',
+          'classic',
+          'glass',
+          'docked',
+        ],
       ),
     if (PlatformDetection.isAppleTV)
       general.leaf(

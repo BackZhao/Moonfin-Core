@@ -580,11 +580,32 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los temas personalizados modifican los elementos visuales de todo Moonfin. Elige una de estas opciones según tu estilo.';
 
   @override
-  String get keyboardPreferSystemIme => 'Prefiere el teclado del sistema';
+  String get keyboardStyle => 'Keyboard Style';
 
   @override
-  String get keyboardPreferSystemImeDescription =>
-      'Utilice el método de entrada de su dispositivo de forma predeterminada para la entrada de texto';
+  String get keyboardStyleDescription =>
+      'Native uses your TV\'s own keyboard. Classic is the original Moonfin keyboard. Glass is a frosted panel with larger keys. Docked fills the bottom of the screen and shows what you type above the keys.';
+
+  @override
+  String get keyboardStyleNative => 'Native';
+
+  @override
+  String get keyboardStyleClassic => 'Classic';
+
+  @override
+  String get keyboardStyleGlass => 'Glass';
+
+  @override
+  String get keyboardStyleDocked => 'Docked';
+
+  @override
+  String get keyboardSpace => 'space';
+
+  @override
+  String get keyboardHoldForAccents => 'hold for accents';
+
+  @override
+  String get keyboardClose => 'close';
 
   @override
   String get controller => 'Controller';
@@ -16003,13 +16024,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'Cambia entre Moonfin y Neon Pulse sin reiniciar la aplicación';
 
   @override
-  String get keyboardPreferSystemIme => 'Prefiere el teclado del sistema';
-
-  @override
-  String get keyboardPreferSystemImeDescription =>
-      'Utilice el método de entrada de su dispositivo de forma predeterminada para la entrada de texto';
-
-  @override
   String get themeMoonfinSubtitle =>
       'Aspecto actual de Moonfin que a todos les encanta';
 
@@ -23356,13 +23370,6 @@ class AppLocalizationsEsAr extends AppLocalizationsEs {
       'Cambia entre Moonfin y Neon Pulse sin reiniciar la aplicación';
 
   @override
-  String get keyboardPreferSystemIme => 'Prefiere el teclado del sistema';
-
-  @override
-  String get keyboardPreferSystemImeDescription =>
-      'Utilice el método de entrada de su dispositivo de forma predeterminada para la entrada de texto';
-
-  @override
   String get themeMoonfinSubtitle =>
       'Aspecto actual de Moonfin que a todos les encanta';
 
@@ -30587,13 +30594,6 @@ class AppLocalizationsEsDo extends AppLocalizationsEs {
   @override
   String get settingsAppearanceThemeSubtitle =>
       'Cambia entre Moonfin y Neon Pulse sin reiniciar la aplicación';
-
-  @override
-  String get keyboardPreferSystemIme => 'Prefiere el teclado del sistema';
-
-  @override
-  String get keyboardPreferSystemImeDescription =>
-      'Utilice el método de entrada de su dispositivo de forma predeterminada para la entrada de texto';
 
   @override
   String get themeMoonfinSubtitle =>
@@ -37870,13 +37870,6 @@ class AppLocalizationsEsMx extends AppLocalizationsEs {
   @override
   String get settingsAppearanceThemeSubtitle =>
       'Cambia entre Moonfin y Neon Pulse sin reiniciar la aplicación';
-
-  @override
-  String get keyboardPreferSystemIme => 'Prefiere el teclado del sistema';
-
-  @override
-  String get keyboardPreferSystemImeDescription =>
-      'Utilice el método de entrada de su dispositivo de forma predeterminada para la entrada de texto';
 
   @override
   String get themeMoonfinSubtitle =>

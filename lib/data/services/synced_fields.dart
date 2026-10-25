@@ -1,3 +1,5 @@
+import 'package:custom_tv_text_field/custom_tv_text_field.dart'
+    show KeyboardStyle;
 import 'package:jellyfin_preference/jellyfin_preference.dart';
 
 import '../../preference/preference_constants.dart' as prefs;
@@ -323,7 +325,7 @@ final List<SyncedField> syncedFields = <SyncedField>[
   SyncedField('preferSdhSubtitles', UserPreferences.preferSdhSubtitles, SyncCodec.boolean),
   SyncedField('preferTextSubtitles', UserPreferences.preferTextSubtitles, SyncCodec.boolean),
   SyncedField('preferExternalSubtitles', UserPreferences.preferExternalSubtitles, SyncCodec.boolean),
-  SyncedField('preferSystemImeKeyboard', UserPreferences.preferSystemImeKeyboard, SyncCodec.boolean),
+  SyncedField('keyboardStyle', UserPreferences.keyboardStyle, SyncCodec.enumName, enumValues: KeyboardStyle.values),
   SyncedField('radarrCalendarShowCinema', UserPreferences.radarrCalendarShowCinema, SyncCodec.boolean),
   SyncedField('radarrCalendarShowDate', UserPreferences.radarrCalendarShowDate, SyncCodec.boolean),
   SyncedField('radarrCalendarShowDigital', UserPreferences.radarrCalendarShowDigital, SyncCodec.boolean),

@@ -610,11 +610,32 @@ class AppLocalizationsPl extends AppLocalizations {
       'Niestandardowe motywy zmieniają wygląd Moonfin. Wybierz opcję najlepiej pasującą do Twojego stylu.';
 
   @override
-  String get keyboardPreferSystemIme => 'Preferuj klawiaturę systemową';
+  String get keyboardStyle => 'Keyboard Style';
 
   @override
-  String get keyboardPreferSystemImeDescription =>
-      'Używaj systemowej metody wprowadzania tekstu';
+  String get keyboardStyleDescription =>
+      'Native uses your TV\'s own keyboard. Classic is the original Moonfin keyboard. Glass is a frosted panel with larger keys. Docked fills the bottom of the screen and shows what you type above the keys.';
+
+  @override
+  String get keyboardStyleNative => 'Native';
+
+  @override
+  String get keyboardStyleClassic => 'Classic';
+
+  @override
+  String get keyboardStyleGlass => 'Glass';
+
+  @override
+  String get keyboardStyleDocked => 'Docked';
+
+  @override
+  String get keyboardSpace => 'space';
+
+  @override
+  String get keyboardHoldForAccents => 'hold for accents';
+
+  @override
+  String get keyboardClose => 'close';
 
   @override
   String get controller => 'Kontroler';

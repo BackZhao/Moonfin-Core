@@ -575,10 +575,32 @@ class AppLocalizationsYue extends AppLocalizations {
   String get customThemeSubtitle => '自訂主題會改變成個 Moonfin 嘅視覺元素。揀一個啱你風格嘅選項啦。';
 
   @override
-  String get keyboardPreferSystemIme => '優先用系統鍵盤';
+  String get keyboardStyle => 'Keyboard Style';
 
   @override
-  String get keyboardPreferSystemImeDescription => '預設用你部裝置嘅輸入法嚟打字';
+  String get keyboardStyleDescription =>
+      'Native uses your TV\'s own keyboard. Classic is the original Moonfin keyboard. Glass is a frosted panel with larger keys. Docked fills the bottom of the screen and shows what you type above the keys.';
+
+  @override
+  String get keyboardStyleNative => 'Native';
+
+  @override
+  String get keyboardStyleClassic => 'Classic';
+
+  @override
+  String get keyboardStyleGlass => 'Glass';
+
+  @override
+  String get keyboardStyleDocked => 'Docked';
+
+  @override
+  String get keyboardSpace => 'space';
+
+  @override
+  String get keyboardHoldForAccents => 'hold for accents';
+
+  @override
+  String get keyboardClose => 'close';
 
   @override
   String get controller => 'Controller';
@@ -15464,12 +15486,6 @@ class AppLocalizationsYueCn extends AppLocalizationsYue {
       '在 Moonfin 和 Neon Pulse 之间切换，无需重新启动应用程序';
 
   @override
-  String get keyboardPreferSystemIme => '更喜欢系统键盘';
-
-  @override
-  String get keyboardPreferSystemImeDescription => '默认情况下使用您的设备输入法进行文本输入';
-
-  @override
   String get themeMoonfin => 'Moonfin';
 
   @override
@@ -22388,13 +22404,6 @@ class AppLocalizationsYueHk extends AppLocalizationsYue {
   @override
   String get settingsAppearanceThemeSubtitle =>
       '在 Moonfin 和 Neon Pulse 之間切換，無需重新啟動應用程式';
-
-  @override
-  String get keyboardPreferSystemIme => 'Prefer system keyboard';
-
-  @override
-  String get keyboardPreferSystemImeDescription =>
-      'Use your device input method by default for text entry';
 
   @override
   String get themeMoonfin => 'Moonfin';

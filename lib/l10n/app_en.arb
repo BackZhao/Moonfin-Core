@@ -673,13 +673,41 @@
   "@customThemeSubtitle": {
     "description": "Description under custom themes section"
   },
-  "keyboardPreferSystemIme": "Prefer System Keyboard",
-  "@keyboardPreferSystemIme": {
-    "description": "Settings label for preferring the native system keyboard instead of the custom TV keyboard"
+  "keyboardStyle": "Keyboard Style",
+  "@keyboardStyle": {
+    "description": "Label for the setting that picks how the on-screen keyboard looks, or whether the TV's own keyboard is used"
   },
-  "keyboardPreferSystemImeDescription": "Use your device input method by default for text entry",
-  "@keyboardPreferSystemImeDescription": {
-    "description": "Settings subtitle for the system keyboard preference"
+  "keyboardStyleDescription": "Native uses your TV's own keyboard. Classic is the original Moonfin keyboard. Glass is a frosted panel with larger keys. Docked fills the bottom of the screen and shows what you type above the keys.",
+  "@keyboardStyleDescription": {
+    "description": "Explanation under the keyboard style setting"
+  },
+  "keyboardStyleNative": "Native",
+  "@keyboardStyleNative": {
+    "description": "Keyboard style option: the TV or device's own system keyboard"
+  },
+  "keyboardStyleClassic": "Classic",
+  "@keyboardStyleClassic": {
+    "description": "Keyboard style option: the original in-app keyboard"
+  },
+  "keyboardStyleGlass": "Glass",
+  "@keyboardStyleGlass": {
+    "description": "Keyboard style option: a frosted glass panel with larger keys"
+  },
+  "keyboardStyleDocked": "Docked",
+  "@keyboardStyleDocked": {
+    "description": "Keyboard style option: a full-width keyboard docked to the bottom of the screen"
+  },
+  "keyboardSpace": "space",
+  "@keyboardSpace": {
+    "description": "Label on the on-screen keyboard's space bar, lowercase like a printed key"
+  },
+  "keyboardHoldForAccents": "hold for accents",
+  "@keyboardHoldForAccents": {
+    "description": "On-screen keyboard hint next to an OK button cap: holding OK on a letter shows its accented versions"
+  },
+  "keyboardClose": "close",
+  "@keyboardClose": {
+    "description": "On-screen keyboard hint next to a Back button cap, lowercase like the hold for accents hint: Back closes the keyboard"
   },
   "controller": "Controller",
   "@controller": {

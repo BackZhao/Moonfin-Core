@@ -2444,8 +2444,8 @@ class _SettingsTextFieldState extends State<_SettingsTextField> {
               isFocused: focused,
               popParentOnKeyboardClose: false,
               hint: widget.hint,
-              preferSystemIme: GetIt.instance<UserPreferences>().get(
-                UserPreferences.preferSystemImeKeyboard,
+              keyboardStyle: GetIt.instance<UserPreferences>().get(
+                UserPreferences.keyboardStyle,
               ),
               filled: true,
               fillColor: focused

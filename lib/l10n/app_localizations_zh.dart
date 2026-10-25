@@ -571,10 +571,32 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customThemeSubtitle => '自定义主题可更改 Moonfin 全部视觉元素，从中挑选一款贴合你的使用风格。';
 
   @override
-  String get keyboardPreferSystemIme => '优先使用系统键盘';
+  String get keyboardStyle => 'Keyboard Style';
 
   @override
-  String get keyboardPreferSystemImeDescription => '文本输入默认使用设备输入法';
+  String get keyboardStyleDescription =>
+      'Native uses your TV\'s own keyboard. Classic is the original Moonfin keyboard. Glass is a frosted panel with larger keys. Docked fills the bottom of the screen and shows what you type above the keys.';
+
+  @override
+  String get keyboardStyleNative => 'Native';
+
+  @override
+  String get keyboardStyleClassic => 'Classic';
+
+  @override
+  String get keyboardStyleGlass => 'Glass';
+
+  @override
+  String get keyboardStyleDocked => 'Docked';
+
+  @override
+  String get keyboardSpace => 'space';
+
+  @override
+  String get keyboardHoldForAccents => 'hold for accents';
+
+  @override
+  String get keyboardClose => 'close';
 
   @override
   String get controller => '手柄控制器';
@@ -15487,12 +15509,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get customThemeSubtitle => '自訂主題會改變整個 Moonfin 的視覺元素。請選擇一個符合您風格的選項。';
-
-  @override
-  String get keyboardPreferSystemIme => '優先使用系統鍵盤';
-
-  @override
-  String get keyboardPreferSystemImeDescription => '預設使用您裝置的輸入法輸入文字';
 
   @override
   String get themeMoonfin => 'Moonfin';

@@ -1048,17 +1048,59 @@ abstract class AppLocalizations {
   /// **'Custom themes alter visual elements across Moonfin. Choose one of these options to suit your style.'**
   String get customThemeSubtitle;
 
-  /// Settings label for preferring the native system keyboard instead of the custom TV keyboard
+  /// Label for the setting that picks how the on-screen keyboard looks, or whether the TV's own keyboard is used
   ///
   /// In en, this message translates to:
-  /// **'Prefer System Keyboard'**
-  String get keyboardPreferSystemIme;
+  /// **'Keyboard Style'**
+  String get keyboardStyle;
 
-  /// Settings subtitle for the system keyboard preference
+  /// Explanation under the keyboard style setting
   ///
   /// In en, this message translates to:
-  /// **'Use your device input method by default for text entry'**
-  String get keyboardPreferSystemImeDescription;
+  /// **'Native uses your TV\'s own keyboard. Classic is the original Moonfin keyboard. Glass is a frosted panel with larger keys. Docked fills the bottom of the screen and shows what you type above the keys.'**
+  String get keyboardStyleDescription;
+
+  /// Keyboard style option: the TV or device's own system keyboard
+  ///
+  /// In en, this message translates to:
+  /// **'Native'**
+  String get keyboardStyleNative;
+
+  /// Keyboard style option: the original in-app keyboard
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get keyboardStyleClassic;
+
+  /// Keyboard style option: a frosted glass panel with larger keys
+  ///
+  /// In en, this message translates to:
+  /// **'Glass'**
+  String get keyboardStyleGlass;
+
+  /// Keyboard style option: a full-width keyboard docked to the bottom of the screen
+  ///
+  /// In en, this message translates to:
+  /// **'Docked'**
+  String get keyboardStyleDocked;
+
+  /// Label on the on-screen keyboard's space bar, lowercase like a printed key
+  ///
+  /// In en, this message translates to:
+  /// **'space'**
+  String get keyboardSpace;
+
+  /// On-screen keyboard hint next to an OK button cap: holding OK on a letter shows its accented versions
+  ///
+  /// In en, this message translates to:
+  /// **'hold for accents'**
+  String get keyboardHoldForAccents;
+
+  /// On-screen keyboard hint next to a Back button cap, lowercase like the hold for accents hint: Back closes the keyboard
+  ///
+  /// In en, this message translates to:
+  /// **'close'**
+  String get keyboardClose;
 
   /// Settings section header for game controller options
   ///
