@@ -36,7 +36,8 @@ double modernMetadataBudget(UserPreferences prefs) {
 /// How far a grown card's ratings and overview can run before the row ends.
 /// Focus parks a card at the leading edge, but the last few cards can't
 /// scroll that far, so they get less room. A [hovered] card stays where it
-/// is. Never wider than twice the card, so lines stay readable.
+/// is. Off TV it's never wider than twice the card, so lines stay readable on
+/// a wide window. A TV canvas is narrow enough to keep the whole row.
 double modernDetailsWidth({
   required ScrollController controller,
   required int index,
@@ -49,7 +50,9 @@ double modernDetailsWidth({
   required double trailingInset,
   bool hovered = false,
 }) {
-  final cap = math.min(maxWidth, focusedWidth * 2);
+  final cap = PlatformDetection.isTV
+      ? maxWidth
+      : math.min(maxWidth, focusedWidth * 2);
   if (!controller.hasClients || !controller.position.hasViewportDimension) {
     return cap;
   }
@@ -127,6 +130,41 @@ class ModernCardExpansion {
     pressedKey.dispose();
     hoveredKey.dispose();
     settledKey.dispose();
+  }
+}
+
+/// Builds a grown card's details knowing whether the pointer is on it. The
+/// card's selector only rebuilds when it grows or shrinks, so this picks up
+/// hover on a card focus already grew, and follows the row's scroll while
+/// hovered.
+class ModernHoverBuilder extends StatelessWidget {
+  const ModernHoverBuilder({
+    super.key,
+    required this.expansion,
+    required this.cardKey,
+    required this.controller,
+    required this.builder,
+  });
+
+  final ModernCardExpansion expansion;
+  final String cardKey;
+  final ScrollController controller;
+  final Widget Function(BuildContext context, bool hovered) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<String?>(
+      valueListenable: expansion.hoveredKey,
+      builder: (context, hoveredKey, _) {
+        final hovered = hoveredKey == cardKey;
+        return ListenableBuilder(
+          // Only a hovered card needs the scroll. hoveredKey is a stand-in so
+          // the widget stays the same and the details aren't rebuilt from scratch.
+          listenable: hovered ? controller : expansion.hoveredKey,
+          builder: (context, _) => builder(context, hovered),
+        );
+      },
+    );
   }
 }
 

@@ -916,28 +916,34 @@ class _SeerrDiscoverScreenState extends State<SeerrDiscoverScreen> {
                 card: card,
                 prefs: _prefs,
                 details: expanded
-                    ? ValueListenableBuilder<Map<String, Map<String, double>>>(
-                        valueListenable: _modernRatings,
-                        builder: (context, ratings, _) => ModernCardDetails(
-                          prefs: _prefs,
-                          cardWidth: width,
-                          detailsWidth: modernDetailsWidth(
-                            controller: scrollController,
-                            index: index,
-                            itemCount: row.items.length,
-                            itemExtent: sizes.portraitWidth,
-                            itemSpacing: itemSpacing,
-                            focusedWidth: width,
-                            maxWidth: maxDetailsWidth,
-                            leadingInset: sideInset,
-                            trailingInset: sideInset,
-                            hovered: _modernExpansion.hoveredKey.value == key,
+                    ? ModernHoverBuilder(
+                        expansion: _modernExpansion,
+                        cardKey: key,
+                        controller: scrollController,
+                        builder: (context, hovered) =>
+                            ValueListenableBuilder<Map<String, Map<String, double>>>(
+                          valueListenable: _modernRatings,
+                          builder: (context, ratings, _) => ModernCardDetails(
+                            prefs: _prefs,
+                            cardWidth: width,
+                            detailsWidth: modernDetailsWidth(
+                              controller: scrollController,
+                              index: index,
+                              itemCount: row.items.length,
+                              itemExtent: sizes.portraitWidth,
+                              itemSpacing: itemSpacing,
+                              focusedWidth: width,
+                              maxWidth: maxDetailsWidth,
+                              leadingInset: sideInset,
+                              trailingInset: sideInset,
+                              hovered: hovered,
+                            ),
+                            overview: item.overview,
+                            communityRating: (item.voteAverage ?? 0) > 0
+                                ? item.voteAverage
+                                : null,
+                            additionalRatings: ratings[key] ?? const {},
                           ),
-                          overview: item.overview,
-                          communityRating: (item.voteAverage ?? 0) > 0
-                              ? item.voteAverage
-                              : null,
-                          additionalRatings: ratings[key] ?? const {},
                         ),
                       )
                     : null,

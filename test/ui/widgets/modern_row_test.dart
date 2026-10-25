@@ -2,6 +2,7 @@ import 'package:fake_async/fake_async.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moonfin/ui/widgets/modern_row.dart';
+import 'package:moonfin/util/platform_detection.dart';
 
 void main() {
   group('ModernCardExpansion', () {
@@ -132,6 +133,72 @@ void main() {
 
     testWidgets('a hovered card in a scrolled row starts from the offset', (tester) async {
       expect(width(await row(tester, offset: 500), 9, hovered: true), 310);
+    });
+
+    testWidgets('a TV keeps the whole row', (tester) async {
+      PlatformDetection.setInterfaceLayout(InterfaceLayout.tv);
+      addTearDown(() => PlatformDetection.setInterfaceLayout(InterfaceLayout.automatic));
+      expect(width(await row(tester), 0), 800);
+    });
+  });
+
+  group('ModernHoverBuilder', () {
+    late ModernCardExpansion expansion;
+    late ScrollController controller;
+    late List<bool> builds;
+
+    Future<void> pump(WidgetTester tester) async {
+      expansion = ModernCardExpansion();
+      controller = ScrollController();
+      addTearDown(expansion.dispose);
+      addTearDown(controller.dispose);
+      builds = [];
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100,
+                child: ListView(
+                  controller: controller,
+                  scrollDirection: Axis.horizontal,
+                  children: const [SizedBox(width: 5000)],
+                ),
+              ),
+              ModernHoverBuilder(
+                expansion: expansion,
+                cardKey: 'a',
+                controller: controller,
+                builder: (context, hovered) {
+                  builds.add(hovered);
+                  return const SizedBox();
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    testWidgets('rebuilds when the pointer lands on a card focus already grew', (tester) async {
+      await pump(tester);
+      expansion.hoveredKey.value = 'a';
+      await tester.pump();
+      expect(builds, [false, true]);
+    });
+
+    testWidgets('follows the row only while hovered', (tester) async {
+      await pump(tester);
+      controller.jumpTo(100);
+      await tester.pump();
+      expect(builds, [false]);
+
+      expansion.hoveredKey.value = 'a';
+      await tester.pump();
+      controller.jumpTo(200);
+      await tester.pump();
+      expect(builds, [false, true, true]);
     });
   });
 }

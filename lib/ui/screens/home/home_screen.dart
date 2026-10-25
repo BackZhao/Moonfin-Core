@@ -5328,30 +5328,36 @@ class _ContentRowsState extends State<_ContentRows>
                         );
 
                   if (isRowsV2) {
+                    final rowController = _rowHorizontalController(rowIndex);
                     return ModernExpandingCard(
                       card: previewWrappedCard,
                       prefs: prefs,
                       details: effectiveV2Focused
-                          ? _buildV2ExtendedSection(
-                              item,
-                              // Ratings are cached under the global item key,
-                              // so look them up without the row index.
-                              _previewKeyFor(item),
-                              cardWidth: width,
-                              detailsWidth: modernDetailsWidth(
-                                controller: _rowHorizontalController(rowIndex),
-                                index: idx,
-                                itemCount: row.items.length,
-                                itemExtent: firstCardWidth,
-                                itemSpacing: itemSpacing,
-                                focusedWidth: width,
-                                maxWidth: v2ExtendedWidth,
-                                leadingInset: _kHomeRowLabelInset,
-                                trailingInset: _kHomeRowTrailingInset,
-                                hovered: _v2Expansion.hoveredKey.value ==
-                                    previewKey,
+                          ? ModernHoverBuilder(
+                              expansion: _v2Expansion,
+                              cardKey: previewKey,
+                              controller: rowController,
+                              builder: (context, hovered) =>
+                                  _buildV2ExtendedSection(
+                                item,
+                                // Ratings are cached under the global item key,
+                                // so look them up without the row index.
+                                _previewKeyFor(item),
+                                cardWidth: width,
+                                detailsWidth: modernDetailsWidth(
+                                  controller: rowController,
+                                  index: idx,
+                                  itemCount: row.items.length,
+                                  itemExtent: firstCardWidth,
+                                  itemSpacing: itemSpacing,
+                                  focusedWidth: width,
+                                  maxWidth: v2ExtendedWidth,
+                                  leadingInset: _kHomeRowLabelInset,
+                                  trailingInset: _kHomeRowTrailingInset,
+                                  hovered: hovered,
+                                ),
+                                isAudioRow: row.isAudio,
                               ),
-                              isAudioRow: row.isAudio,
                             )
                           : null,
                     );
