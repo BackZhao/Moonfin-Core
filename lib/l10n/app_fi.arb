@@ -11778,7 +11778,7 @@
     "@savedMediaPlayFromStart": {
         "description": "Row menu action that restarts a partly watched download from the beginning"
     },
-    "savedMediaGoToDetails": "Siirry yksityiskohtiin",
+    "savedMediaGoToDetails": "Katso lisätietoja",
     "@savedMediaGoToDetails": {
         "description": "Row menu action that opens the item's detail screen"
     },
@@ -15662,5 +15662,118 @@
     "recordNowOnly": "Tallenna vain kerran",
     "@recordNowOnly": {
         "description": "Record prompt choice: only record the program that is airing now"
+    },
+    "recordPromptStarted": "{minutes, plural, =1{Tämä esitys alkoi minuutti sitten, joten tallenteesta jää alku pois.} other{Tämä esitys alkoi {minutes} muutama minuutti sitten, joten tallenteesta jää alku pois.}}",
+    "@recordPromptStarted": {
+        "description": "First line of the Record prompt, saying how long ago the program started",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptAired": "{minutes, plural, =1{1 min already aired} other{{minutes} min on jo esitetty}}",
+    "@recordPromptAired": {
+        "description": "Beside the progress bar on the Record prompt's Now card",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptSameEpisode": "Sama jakso (S{season}E{episode})",
+    "@recordPromptSameEpisode": {
+        "description": "Note under the future showing when its season and episode match the program airing now",
+        "placeholders": {
+            "season": {
+                "type": "int"
+            },
+            "episode": {
+                "type": "int"
+            }
+        }
+    },
+    "recordNowAnd": "Tallenna nyt ja {when}",
+    "@recordNowAnd": {
+        "description": "Record prompt choice: record now and the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "recordNowAndLater": "Tallennus nyt ja tulevat esitykset",
+    "@recordNowAndLater": {
+        "description": "Record prompt choice when no future showing is known yet: record now and let Moonfin find a future showing"
+    },
+    "recordOnlyLater": "Tallenna {when} ainoastaan",
+    "@recordOnlyLater": {
+        "description": "Record prompt choice: skip the airing now and record only the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "recordLaterShowingOnly": "Näytä vain tulevat tallenteet",
+    "@recordLaterShowingOnly": {
+        "description": "Record prompt choice when no future showing is known yet: skip the airing now and let Moonfin record a future showing"
+    },
+    "laterShowingOnlyRequested": "Tuleva esitys tallennetaan.",
+    "@laterShowingOnlyRequested": {
+        "description": "Snackbar after choosing to record only the future showing"
+    },
+    "unableToRequestLaterShowingOnly": "Osoitusta ei voitu pyytää, joten mitään ei tallenneta.",
+    "@unableToRequestLaterShowingOnly": {
+        "description": "Snackbar when only the future showing was chosen and asking for it failed"
+    },
+    "addServerButtonSubtitle": "Osoitteen perusteella tai Plex- tai Emby Connect -tilin avulla",
+    "@addServerButtonSubtitle": {
+        "description": "Second line of the Add Server button on the server screen"
+    },
+    "addServerChooseHow": "Valitse, miten haluat muodostaa yhteyden.",
+    "@addServerChooseHow": {
+        "description": "Subtitle of the first step of the Add Server dialog"
+    },
+    "addServerAddressChoice": "Jellyfin tai Emby verkossasi tai verkossa",
+    "@addServerAddressChoice": {
+        "description": "Add Server dialog: what the Server Address option is for"
+    },
+    "addServerPlexChoice": "Etsi palvelimet Plex-tilisi avulla",
+    "@addServerPlexChoice": {
+        "description": "Add Server dialog: what the Sign in with Plex option does"
+    },
+    "addServerAddressHelp": "Sama osoite, jonka avaisit selaimessa, portti mukaan lukien.",
+    "@addServerAddressHelp": {
+        "description": "Add Server dialog: help under the Connect to Server title"
+    },
+    "addServerDetectNote": "Toimii Jellyfinin ja Embyn kanssa. Plex-osoite avaa Plexin kirjautumissivun.",
+    "@addServerDetectNote": {
+        "description": "Add Server dialog: note under the address field"
+    },
+    "addServerChecking": "Tarkistaminen {address}",
+    "@addServerChecking": {
+        "description": "Add Server dialog: shown under the field while the typed address is being tried",
+        "placeholders": {
+            "address": {
+                "type": "String"
+            }
+        }
+    },
+    "addServerUnreachableDetail": "Tarkista osoite ja portti sekä se, että palvelin on käynnissä.",
+    "@addServerUnreachableDetail": {
+        "description": "Add Server dialog: detail under Unable to connect to server"
+    },
+    "addServerFound": "Palvelin löytyi",
+    "@addServerFound": {
+        "description": "Add Server dialog: title once the address answered"
+    },
+    "addServerFoundNote": "Jatka valitsemalla, kuka kirjautuu sisään.",
+    "@addServerFoundNote": {
+        "description": "Add Server dialog: under the server that was found"
+    },
+    "addServerUseDifferentAddress": "Käytä toista osoitetta",
+    "@addServerUseDifferentAddress": {
+        "description": "Add Server dialog: goes back to the address field instead of keeping the server that was found"
     }
 }
