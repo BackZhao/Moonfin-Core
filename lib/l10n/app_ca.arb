@@ -15203,5 +15203,561 @@
     "@playbackInfoDroppedFrames": {
         "description": "Playback information row label: how many video frames the player skipped"
     },
-    "sortServerOrder": "Ordre del servidor"
+    "sortServerOrder": "Ordre del servidor",
+    "animeMarkerSubbedShort": "",
+    "@animeMarkerSubbedShort": {
+        "description": "Short form of the Subbed badge"
+    },
+    "animeMarkerDubbedShort": "",
+    "@animeMarkerDubbedShort": {
+        "description": "Short form of the Dubbed badge"
+    },
+    "animeMarkerSubbedAndDubbedShort": "",
+    "@animeMarkerSubbedAndDubbedShort": {
+        "description": "Short form of the Subbed/Dubbed badge"
+    },
+    "keyboardStyle": "",
+    "@keyboardStyle": {
+        "description": "Label for the setting that picks how the on-screen keyboard looks, or whether the TV's own keyboard is used"
+    },
+    "keyboardStyleDescription": "",
+    "@keyboardStyleDescription": {
+        "description": "Explanation under the keyboard style setting"
+    },
+    "keyboardStyleNative": "",
+    "@keyboardStyleNative": {
+        "description": "Keyboard style option: the TV or device's own system keyboard"
+    },
+    "keyboardStyleClassic": "",
+    "@keyboardStyleClassic": {
+        "description": "Keyboard style option: the original in-app keyboard"
+    },
+    "keyboardStyleGlass": "",
+    "@keyboardStyleGlass": {
+        "description": "Keyboard style option: a frosted glass panel with larger keys"
+    },
+    "keyboardStyleDocked": "",
+    "@keyboardStyleDocked": {
+        "description": "Keyboard style option: a full-width keyboard docked to the bottom of the screen"
+    },
+    "keyboardSpace": "",
+    "@keyboardSpace": {
+        "description": "Label on the on-screen keyboard's space bar, lowercase like a printed key"
+    },
+    "keyboardHoldForAccents": "",
+    "@keyboardHoldForAccents": {
+        "description": "On-screen keyboard hint next to an OK button cap: holding OK on a letter shows its accented versions"
+    },
+    "keyboardClose": "",
+    "@keyboardClose": {
+        "description": "On-screen keyboard hint next to a Back button cap, lowercase like the hold for accents hint: Back closes the keyboard"
+    },
+    "hevcSoftwareDirectPlay": "",
+    "hevcSoftwareDirectPlaySubtitle": "",
+    "sortCurrent": "",
+    "@sortCurrent": {
+        "description": "Label beside a sort button showing the sort that is active",
+        "placeholders": {
+            "option": {
+                "type": "String"
+            }
+        }
+    },
+    "recordPromptTitle": "",
+    "@recordPromptTitle": {
+        "description": "Title of the Record prompt for a program that is already airing",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "recordPromptStarted": "",
+    "@recordPromptStarted": {
+        "description": "First line of the Record prompt, saying how long ago the program started",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptAlsoRecordLater": "",
+    "@recordPromptAlsoRecordLater": {
+        "description": "Record prompt question when a future showing is shown below it"
+    },
+    "recordPromptSearchLater": "",
+    "@recordPromptSearchLater": {
+        "description": "Record prompt question when no future showing is known yet and Moonfin will look for one"
+    },
+    "recordPromptNow": "",
+    "@recordPromptNow": {
+        "description": "Label of the Record prompt card for the program that is airing now"
+    },
+    "recordPromptLater": "",
+    "@recordPromptLater": {
+        "description": "Label of the Record prompt card for the future showing that would also be recorded"
+    },
+    "recordPromptAired": "",
+    "@recordPromptAired": {
+        "description": "Beside the progress bar on the Record prompt's Now card",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptUncertainMatch": "",
+    "@recordPromptUncertainMatch": {
+        "description": "Caution under the future showing when it has no season and episode numbers to confirm it is the same program"
+    },
+    "recordPromptDescriptionsDiffer": "",
+    "@recordPromptDescriptionsDiffer": {
+        "description": "Caution under the future showing when its description differs from the program airing now"
+    },
+    "recordPromptSameEpisode": "",
+    "@recordPromptSameEpisode": {
+        "description": "Note under the future showing when its season and episode match the program airing now",
+        "placeholders": {
+            "season": {
+                "type": "int"
+            },
+            "episode": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptAlreadyScheduled": "",
+    "@recordPromptAlreadyScheduled": {
+        "description": "Note in the future showing's card when a recording is already scheduled for it, by anyone"
+    },
+    "recordPromptTomorrow": "",
+    "@recordPromptTomorrow": {
+        "description": "When the future showing airs, used in the Record Now and ... button"
+    },
+    "recordNowOnly": "",
+    "@recordNowOnly": {
+        "description": "Record prompt choice: only record the program that is airing now"
+    },
+    "recordNowAnd": "",
+    "@recordNowAnd": {
+        "description": "Record prompt choice: record now and the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "recordNowAndLater": "",
+    "@recordNowAndLater": {
+        "description": "Record prompt choice when no future showing is known yet: record now and let Moonfin find a future showing"
+    },
+    "recordOnlyLater": "",
+    "@recordOnlyLater": {
+        "description": "Record prompt choice: skip the airing now and record only the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "recordLaterShowingOnly": "",
+    "@recordLaterShowingOnly": {
+        "description": "Record prompt choice when no future showing is known yet: skip the airing now and let Moonfin record a future showing"
+    },
+    "laterShowingOnlyRequested": "",
+    "@laterShowingOnlyRequested": {
+        "description": "Snackbar after choosing to record only the future showing"
+    },
+    "unableToRequestLaterShowingOnly": "",
+    "@unableToRequestLaterShowingOnly": {
+        "description": "Snackbar when only the future showing was chosen and asking for it failed"
+    },
+    "addServerButtonSubtitle": "",
+    "@addServerButtonSubtitle": {
+        "description": "Second line of the Add Server button on the server screen"
+    },
+    "addServerChooseHow": "",
+    "@addServerChooseHow": {
+        "description": "Subtitle of the first step of the Add Server dialog"
+    },
+    "addServerAddressChoice": "",
+    "@addServerAddressChoice": {
+        "description": "Add Server dialog: what the Server Address option is for"
+    },
+    "addServerPlexChoice": "",
+    "@addServerPlexChoice": {
+        "description": "Add Server dialog: what the Sign in with Plex option does"
+    },
+    "addServerAddressHelp": "",
+    "@addServerAddressHelp": {
+        "description": "Add Server dialog: help under the Connect to Server title"
+    },
+    "addServerDetectNote": "",
+    "@addServerDetectNote": {
+        "description": "Add Server dialog: note under the address field"
+    },
+    "addServerChecking": "",
+    "@addServerChecking": {
+        "description": "Add Server dialog: shown under the field while the typed address is being tried",
+        "placeholders": {
+            "address": {
+                "type": "String"
+            }
+        }
+    },
+    "addServerUnreachableDetail": "",
+    "@addServerUnreachableDetail": {
+        "description": "Add Server dialog: detail under Unable to connect to server"
+    },
+    "addServerFound": "",
+    "@addServerFound": {
+        "description": "Add Server dialog: title once the address answered"
+    },
+    "addServerFoundNote": "",
+    "@addServerFoundNote": {
+        "description": "Add Server dialog: under the server that was found"
+    },
+    "addServerUseDifferentAddress": "",
+    "@addServerUseDifferentAddress": {
+        "description": "Add Server dialog: goes back to the address field instead of keeping the server that was found"
+    },
+    "signInWithPlex": "",
+    "@signInWithPlex": {
+        "description": "Plex sign-in option label and title of the Plex sign-in screen"
+    },
+    "plexLinkInstructions": "",
+    "@plexLinkInstructions": {
+        "description": "Instructions above the code on the Plex sign-in screen"
+    },
+    "plexOpenLink": "",
+    "@plexOpenLink": {
+        "description": "Button that opens plex.tv/link in the browser with the code filled in"
+    },
+    "plexWaitingForApproval": "",
+    "@plexWaitingForApproval": {
+        "description": "Status shown while the app waits for the Plex code to be approved"
+    },
+    "plexSignInWithPassword": "",
+    "@plexSignInWithPassword": {
+        "description": "Button on the Plex sign-in screen that swaps the code for an email or username and password form"
+    },
+    "plexVerificationCode": "",
+    "@plexVerificationCode": {
+        "description": "Field for the account's two-step verification code, shown once Plex asks for it"
+    },
+    "seriesRecordingEpisodesQuestion": "",
+    "@seriesRecordingEpisodesQuestion": {
+        "description": "Prompt in the dialog that chooses which episodes a series recording takes"
+    },
+    "seriesRecordingAllEpisodes": "",
+    "@seriesRecordingAllEpisodes": {
+        "description": "Series recording choice that records every showing, repeats included"
+    },
+    "seriesRecordingAllEpisodesDescription": "",
+    "@seriesRecordingAllEpisodesDescription": {
+        "description": "Explains the All Episodes series recording choice"
+    },
+    "seriesRecordingNotRecordedEpisodes": "",
+    "@seriesRecordingNotRecordedEpisodes": {
+        "description": "Series recording choice that skips episodes already in the library"
+    },
+    "seriesRecordingNotRecordedEpisodesDescription": "",
+    "@seriesRecordingNotRecordedEpisodesDescription": {
+        "description": "Explains the Episodes Not Already Recorded series recording choice"
+    },
+    "seriesRecordingNewEpisodesOnly": "",
+    "@seriesRecordingNewEpisodesOnly": {
+        "description": "Series recording choice that records only first airings"
+    },
+    "seriesRecordingNewEpisodesOnlyDescription": "",
+    "@seriesRecordingNewEpisodesOnlyDescription": {
+        "description": "Explains the New Episodes Only series recording choice"
+    },
+    "seriesRecordingSettings": "",
+    "@seriesRecordingSettings": {
+        "description": "Action that changes which episodes an existing series recording takes"
+    },
+    "seriesRecordingUpdated": "",
+    "@seriesRecordingUpdated": {
+        "description": "Confirmation after changing a series recording's settings"
+    },
+    "failedToUpdateSeriesRecording": "",
+    "@failedToUpdateSeriesRecording": {
+        "description": "Error after changing a series recording's settings failed"
+    },
+    "invertGestureIndicators": "",
+    "@invertGestureIndicators": {
+        "description": "Setting title for inverting placement of brightness and volume gesture indicators"
+    },
+    "invertGestureIndicatorsDescription": "",
+    "@invertGestureIndicatorsDescription": {
+        "description": "Description explaining gesture indicator placement relative to the swipe side"
+    },
+    "gestureIndicatorSame": "",
+    "@gestureIndicatorSame": {
+        "description": "Option to display gesture indicators on the same side as the swipe"
+    },
+    "gestureIndicatorInverted": "",
+    "@gestureIndicatorInverted": {
+        "description": "Option to display gesture indicators on the opposite side from the swipe"
+    },
+    "detailSectionSeerrStreaming": "",
+    "@detailSectionSeerrStreaming": {
+        "description": "Details screen Seerr section: logos of the services streaming the title in the user's region"
+    },
+    "seerrStreamingOn": "",
+    "@seerrStreamingOn": {
+        "description": "Heading over the logos of the services streaming a Seerr title"
+    },
+    "detailSectionPersonLinksSubtitle": "",
+    "@detailSectionPersonLinksSubtitle": {
+        "description": "Subtitle under the person links section switch"
+    },
+    "continueWatchingDefaultAction": "",
+    "@continueWatchingDefaultAction": {
+        "description": "Setting for default click action on Continue Watching and Next Up items"
+    },
+    "continueWatchingDefaultActionDescription": "",
+    "@continueWatchingDefaultActionDescription": {
+        "description": "Description for Continue Watching and Next Up default click action setting"
+    },
+    "goToDetailsScreen": "",
+    "@goToDetailsScreen": {
+        "description": "Option to navigate to the details screen for an item"
+    },
+    "playImmediately": "",
+    "@playImmediately": {
+        "description": "Option to play an item immediately"
+    },
+    "personWebsite": "",
+    "@personWebsite": {
+        "description": "Tooltip for the button on a person page that opens their own website"
+    },
+    "trailerCount": "",
+    "@trailerCount": {
+        "description": "How many trailers the trailer picker lists, shown in its header",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "trailerNumber": "",
+    "@trailerNumber": {
+        "description": "Fallback name in the trailer picker for a trailer the server gave no name, numbered by its place in the list",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "subtitled": "",
+    "@subtitled": {
+        "description": "Chip in the trailer picker on a trailer that has subtitles burned into the video"
+    },
+    "rommAccount": "",
+    "@rommAccount": {
+        "description": "Title of the screen, and the button on a game library, for linking the user's own RomM account"
+    },
+    "rommAccountIntro": "",
+    "@rommAccountIntro": {
+        "description": "Explains what linking a RomM account does, shown above the Link button"
+    },
+    "rommLinkAccount": "",
+    "@rommLinkAccount": {
+        "description": "Button that starts linking a RomM account"
+    },
+    "rommLinkInstructions": "",
+    "@rommLinkInstructions": {
+        "description": "Instructions above the code while a RomM link waits for approval"
+    },
+    "rommLinkScanOrVisit": "",
+    "@rommLinkScanOrVisit": {
+        "description": "Shown on TV beside the QR code while a RomM link waits for approval",
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "rommOpen": "",
+    "@rommOpen": {
+        "description": "Button that opens the RomM approval page in the browser with the code filled in"
+    },
+    "rommWaitingForApproval": "",
+    "@rommWaitingForApproval": {
+        "description": "Status shown while the app waits for the RomM code to be approved"
+    },
+    "rommLinkedAs": "",
+    "@rommLinkedAs": {
+        "description": "Shown when the user's RomM account is linked",
+        "placeholders": {
+            "username": {
+                "type": "String"
+            }
+        }
+    },
+    "rommLinked": "",
+    "@rommLinked": {
+        "description": "Shown when the user's RomM account is linked and the server sent no user name"
+    },
+    "rommUnlinkNote": "",
+    "@rommUnlinkNote": {
+        "description": "Explains what Unlink does on the RomM account screen"
+    },
+    "rommUnlink": "",
+    "@rommUnlink": {
+        "description": "Button that unlinks the user's RomM account"
+    },
+    "rommLinkExpired": "",
+    "@rommLinkExpired": {
+        "description": "Error when a RomM link code ran out of time"
+    },
+    "rommLinkDenied": "",
+    "@rommLinkDenied": {
+        "description": "Error when the user declined the RomM link request"
+    },
+    "rommUnreachable": "",
+    "@rommUnreachable": {
+        "description": "Error when the server couldn't reach RomM while linking"
+    },
+    "rommNotAvailable": "",
+    "@rommNotAvailable": {
+        "description": "Shown on the RomM account screen when the server has no RomM library"
+    },
+    "rommAccountLoadFailed": "",
+    "@rommAccountLoadFailed": {
+        "description": "Error when the RomM account status couldn't be loaded from the server"
+    },
+    "reviews": "",
+    "@reviews": {
+        "description": "Title of the row, tab and card on the details screen that lists TMDB user reviews"
+    },
+    "detailSectionReviews": "",
+    "@detailSectionReviews": {
+        "description": "Details screen section: user reviews from TMDB"
+    },
+    "spotlightReviewsCount": "",
+    "@spotlightReviewsCount": {
+        "description": "How many reviews a title has, under the Reviews card on the details screen",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "readOnTmdb": "",
+    "@readOnTmdb": {
+        "description": "Button in an opened review that opens the review on the TMDB website"
+    },
+    "playFromServer": "",
+    "@playFromServer": {
+        "description": "Long-press menu action on a downloaded video: play it by streaming from the server instead of the downloaded copy, for example to get a higher quality than the download"
+    },
+    "settingsApplePlayerUi": "",
+    "@settingsApplePlayerUi": {
+        "description": "Settings label on iPhone and iPad for choosing which player plays video"
+    },
+    "settingsApplePlayerUiDescription": "",
+    "@settingsApplePlayerUiDescription": {
+        "description": "Settings description for the video player choice, listing what the native Apple style player lacks"
+    },
+    "settingsApplePlayerUiStandard": "",
+    "@settingsApplePlayerUiStandard": {
+        "description": "Option for the regular Moonfin video player on iPhone and iPad"
+    },
+    "settingsApplePlayerUiNative": "",
+    "@settingsApplePlayerUiNative": {
+        "description": "Option for the native video player that the Apple TV app uses, offered on iPhone and iPad"
+    },
+    "playerTransportPosition": "",
+    "@playerTransportPosition": {
+        "description": "Settings label for where the play, skip and seek buttons sit in the video player"
+    },
+    "playerTransportPositionDescription": "",
+    "@playerTransportPositionDescription": {
+        "description": "Settings description for where the video player's play buttons sit"
+    },
+    "playerTransportOnScreen": "",
+    "@playerTransportOnScreen": {
+        "description": "Option that puts the play, skip and seek buttons in the middle of the video"
+    },
+    "playerTransportDocked": "",
+    "@playerTransportDocked": {
+        "description": "Option that puts the play, skip and seek buttons in the bottom bar with the other player buttons"
+    },
+    "incompleteRecording": "",
+    "@incompleteRecording": {
+        "description": "Badge and detail label for a Live TV recording that was written for less than its scheduled length"
+    },
+    "incompleteRecordingMinutes": "",
+    "@incompleteRecordingMinutes": {
+        "description": "How many minutes of an incomplete Live TV recording were written, out of its scheduled length with padding",
+        "placeholders": {
+            "recorded": {
+                "type": "int",
+                "example": "23"
+            },
+            "expected": {
+                "type": "int",
+                "example": "37"
+            }
+        }
+    },
+    "completeShowingScheduled": "",
+    "@completeShowingScheduled": {
+        "description": "Detail line status: a later complete showing of the incomplete episode will be recorded",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "Thu 8:00 PM"
+            }
+        }
+    },
+    "completeCopyRecorded": "",
+    "@completeCopyRecorded": {
+        "description": "Detail line status: a complete copy of the incomplete episode has since been recorded",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "Thu 8:00 PM"
+            }
+        }
+    },
+    "noCompleteShowingFound": "",
+    "@noCompleteShowingFound": {
+        "description": "Detail line status: no later complete showing of the incomplete episode was found in the guide"
+    },
+    "keepAsComplete": "",
+    "@keepAsComplete": {
+        "description": "Action that clears the Incomplete mark on a Live TV recording for everyone on the server"
+    },
+    "keptAsComplete": "",
+    "@keptAsComplete": {
+        "description": "Snackbar confirmation after Keep as Complete"
+    },
+    "unableToKeepAsComplete": "",
+    "@unableToKeepAsComplete": {
+        "description": "Snackbar shown when Keep as Complete fails"
+    },
+    "plexNoServers": "",
+    "@plexNoServers": {
+        "description": "Shown when the Plex account has no servers"
+    },
+    "seriesRecordingSkipsShowing": "",
+    "@seriesRecordingSkipsShowing": {
+        "description": "A series recording rule exists, but this showing won't record, for example because it is a repeat or the episode is already in the library"
+    },
+    "detailSectionPersonLinks": "",
+    "@detailSectionPersonLinks": {
+        "description": "Details screen section: buttons that open a person's IMDb, TMDB and social media pages"
+    },
+    "laterShowingRequested": "",
+    "@laterShowingRequested": {
+        "description": "Snackbar after recording now and asking for a future showing"
+    },
+    "unableToRequestLaterShowing": "",
+    "@unableToRequestLaterShowing": {
+        "description": "Snackbar when the recording started but asking for a future showing failed"
+    }
 }
