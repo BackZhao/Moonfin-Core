@@ -4160,7 +4160,7 @@ class UserPreferences extends ChangeNotifier {
         final lastPlayedStr =
             item.rawData['UserData']?['LastPlayedDate'] as String?;
         if (lastPlayedStr != null && lastPlayedStr.isNotEmpty) {
-          final lastPlayed = DateTime.tryParse(lastPlayedStr);
+          final lastPlayed = parseServerDate(lastPlayedStr);
           final hiddenAt = DateTime.tryParse(hidden[matchedKey]!);
           if (lastPlayed != null &&
               hiddenAt != null &&
@@ -4207,7 +4207,7 @@ class UserPreferences extends ChangeNotifier {
         final lastPlayedStr =
             item.rawData['UserData']?['LastPlayedDate'] as String?;
         if (lastPlayedStr != null && lastPlayedStr.isNotEmpty) {
-          final lastPlayed = DateTime.tryParse(lastPlayedStr);
+          final lastPlayed = parseServerDate(lastPlayedStr);
           final hiddenAt = DateTime.tryParse(hidden[seriesId]!);
           if (lastPlayed != null &&
               hiddenAt != null &&
