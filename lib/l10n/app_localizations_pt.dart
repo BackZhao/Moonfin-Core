@@ -34,6 +34,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get animeMarkerSubbedAndDubbed => 'Subbed/Dubbed';
 
   @override
+  String get animeMarkerSubbedShort => 'Sub';
+
+  @override
+  String get animeMarkerDubbedShort => 'Dub';
+
+  @override
+  String get animeMarkerSubbedAndDubbedShort => 'Sub/Dub';
+
+  @override
   String get animeMarkerPending => 'Pending';
 
   @override
