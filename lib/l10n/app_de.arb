@@ -10749,5 +10749,4963 @@
     "savedMediaNoDownloads": "Noch nichts gespeichert",
     "@savedMediaNoDownloads": {
         "description": "Empty state title when no downloads are on the device"
-    }
+    },
+    "rommUnlink": "",
+    "@rommUnlink": {
+        "description": "Button that unlinks the user's RomM account"
+    },
+    "animeMarkerSubbedShort": "",
+    "@animeMarkerSubbedShort": {
+        "description": "Short form of the Subbed badge"
+    },
+    "animeMarkerDubbedShort": "",
+    "@animeMarkerDubbedShort": {
+        "description": "Short form of the Dubbed badge"
+    },
+    "animeMarkerSubbedAndDubbedShort": "",
+    "@animeMarkerSubbedAndDubbedShort": {
+        "description": "Short form of the Subbed/Dubbed badge"
+    },
+    "keyboardStyle": "",
+    "@keyboardStyle": {
+        "description": "Label for the setting that picks how the on-screen keyboard looks, or whether the TV's own keyboard is used"
+    },
+    "keyboardStyleDescription": "",
+    "@keyboardStyleDescription": {
+        "description": "Explanation under the keyboard style setting"
+    },
+    "keyboardStyleNative": "",
+    "@keyboardStyleNative": {
+        "description": "Keyboard style option: the TV or device's own system keyboard"
+    },
+    "keyboardStyleClassic": "",
+    "@keyboardStyleClassic": {
+        "description": "Keyboard style option: the original in-app keyboard"
+    },
+    "keyboardStyleGlass": "",
+    "@keyboardStyleGlass": {
+        "description": "Keyboard style option: a frosted glass panel with larger keys"
+    },
+    "keyboardStyleDocked": "",
+    "@keyboardStyleDocked": {
+        "description": "Keyboard style option: a full-width keyboard docked to the bottom of the screen"
+    },
+    "keyboardSpace": "",
+    "@keyboardSpace": {
+        "description": "Label on the on-screen keyboard's space bar, lowercase like a printed key"
+    },
+    "keyboardHoldForAccents": "",
+    "@keyboardHoldForAccents": {
+        "description": "On-screen keyboard hint next to an OK button cap: holding OK on a letter shows its accented versions"
+    },
+    "keyboardClose": "",
+    "@keyboardClose": {
+        "description": "On-screen keyboard hint next to a Back button cap, lowercase like the hold for accents hint: Back closes the keyboard"
+    },
+    "hevcSoftwareDirectPlay": "",
+    "hevcSoftwareDirectPlaySubtitle": "",
+    "sortCurrent": "",
+    "@sortCurrent": {
+        "description": "Label beside a sort button showing the sort that is active",
+        "placeholders": {
+            "option": {
+                "type": "String"
+            }
+        }
+    },
+    "recordPromptTitle": "",
+    "@recordPromptTitle": {
+        "description": "Title of the Record prompt for a program that is already airing",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "recordPromptStarted": "",
+    "@recordPromptStarted": {
+        "description": "First line of the Record prompt, saying how long ago the program started",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptAlsoRecordLater": "",
+    "@recordPromptAlsoRecordLater": {
+        "description": "Record prompt question when a future showing is shown below it"
+    },
+    "recordPromptSearchLater": "",
+    "@recordPromptSearchLater": {
+        "description": "Record prompt question when no future showing is known yet and Moonfin will look for one"
+    },
+    "recordPromptNow": "",
+    "@recordPromptNow": {
+        "description": "Label of the Record prompt card for the program that is airing now"
+    },
+    "recordPromptLater": "",
+    "@recordPromptLater": {
+        "description": "Label of the Record prompt card for the future showing that would also be recorded"
+    },
+    "recordPromptAired": "",
+    "@recordPromptAired": {
+        "description": "Beside the progress bar on the Record prompt's Now card",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptUncertainMatch": "",
+    "@recordPromptUncertainMatch": {
+        "description": "Caution under the future showing when it has no season and episode numbers to confirm it is the same program"
+    },
+    "recordPromptDescriptionsDiffer": "",
+    "@recordPromptDescriptionsDiffer": {
+        "description": "Caution under the future showing when its description differs from the program airing now"
+    },
+    "recordPromptSameEpisode": "",
+    "@recordPromptSameEpisode": {
+        "description": "Note under the future showing when its season and episode match the program airing now",
+        "placeholders": {
+            "season": {
+                "type": "int"
+            },
+            "episode": {
+                "type": "int"
+            }
+        }
+    },
+    "recordPromptAlreadyScheduled": "",
+    "@recordPromptAlreadyScheduled": {
+        "description": "Note in the future showing's card when a recording is already scheduled for it, by anyone"
+    },
+    "recordPromptTomorrow": "",
+    "@recordPromptTomorrow": {
+        "description": "When the future showing airs, used in the Record Now and ... button"
+    },
+    "recordNowOnly": "",
+    "@recordNowOnly": {
+        "description": "Record prompt choice: only record the program that is airing now"
+    },
+    "recordNowAnd": "",
+    "@recordNowAnd": {
+        "description": "Record prompt choice: record now and the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "recordNowAndLater": "",
+    "@recordNowAndLater": {
+        "description": "Record prompt choice when no future showing is known yet: record now and let Moonfin find a future showing"
+    },
+    "recordOnlyLater": "",
+    "@recordOnlyLater": {
+        "description": "Record prompt choice: skip the airing now and record only the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "recordLaterShowingOnly": "",
+    "@recordLaterShowingOnly": {
+        "description": "Record prompt choice when no future showing is known yet: skip the airing now and let Moonfin record a future showing"
+    },
+    "laterShowingOnlyRequested": "",
+    "@laterShowingOnlyRequested": {
+        "description": "Snackbar after choosing to record only the future showing"
+    },
+    "unableToRequestLaterShowingOnly": "",
+    "@unableToRequestLaterShowingOnly": {
+        "description": "Snackbar when only the future showing was chosen and asking for it failed"
+    },
+    "unableToRequestLaterShowing": "",
+    "@unableToRequestLaterShowing": {
+        "description": "Snackbar when the recording started but asking for a future showing failed"
+    },
+    "addServerButtonSubtitle": "",
+    "@addServerButtonSubtitle": {
+        "description": "Second line of the Add Server button on the server screen"
+    },
+    "addServerChooseHow": "",
+    "@addServerChooseHow": {
+        "description": "Subtitle of the first step of the Add Server dialog"
+    },
+    "addServerAddressChoice": "",
+    "@addServerAddressChoice": {
+        "description": "Add Server dialog: what the Server Address option is for"
+    },
+    "addServerPlexChoice": "",
+    "@addServerPlexChoice": {
+        "description": "Add Server dialog: what the Sign in with Plex option does"
+    },
+    "addServerAddressHelp": "",
+    "@addServerAddressHelp": {
+        "description": "Add Server dialog: help under the Connect to Server title"
+    },
+    "addServerDetectNote": "",
+    "@addServerDetectNote": {
+        "description": "Add Server dialog: note under the address field"
+    },
+    "addServerChecking": "",
+    "@addServerChecking": {
+        "description": "Add Server dialog: shown under the field while the typed address is being tried",
+        "placeholders": {
+            "address": {
+                "type": "String"
+            }
+        }
+    },
+    "addServerUnreachableDetail": "",
+    "@addServerUnreachableDetail": {
+        "description": "Add Server dialog: detail under Unable to connect to server"
+    },
+    "addServerFound": "",
+    "@addServerFound": {
+        "description": "Add Server dialog: title once the address answered"
+    },
+    "addServerFoundNote": "",
+    "@addServerFoundNote": {
+        "description": "Add Server dialog: under the server that was found"
+    },
+    "addServerUseDifferentAddress": "",
+    "@addServerUseDifferentAddress": {
+        "description": "Add Server dialog: goes back to the address field instead of keeping the server that was found"
+    },
+    "signInWithPlex": "",
+    "@signInWithPlex": {
+        "description": "Plex sign-in option label and title of the Plex sign-in screen"
+    },
+    "plexLinkInstructions": "",
+    "@plexLinkInstructions": {
+        "description": "Instructions above the code on the Plex sign-in screen"
+    },
+    "plexOpenLink": "",
+    "@plexOpenLink": {
+        "description": "Button that opens plex.tv/link in the browser with the code filled in"
+    },
+    "plexWaitingForApproval": "",
+    "@plexWaitingForApproval": {
+        "description": "Status shown while the app waits for the Plex code to be approved"
+    },
+    "plexSignInWithPassword": "",
+    "@plexSignInWithPassword": {
+        "description": "Button on the Plex sign-in screen that swaps the code for an email or username and password form"
+    },
+    "plexVerificationCode": "",
+    "@plexVerificationCode": {
+        "description": "Field for the account's two-step verification code, shown once Plex asks for it"
+    },
+    "plexNoServers": "",
+    "@plexNoServers": {
+        "description": "Shown when the Plex account has no servers"
+    },
+    "timesUpResumesToday": "",
+    "@timesUpResumesToday": {
+        "description": "When access returns, on the Time's up screen, for a time later today",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "timesUpResumesTomorrow": "",
+    "@timesUpResumesTomorrow": {
+        "description": "When access returns, on the Time's up screen, for a time tomorrow",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "timesUpResumesOn": "",
+    "@timesUpResumesOn": {
+        "description": "When access returns, on the Time's up screen, for a time on a later day",
+        "placeholders": {
+            "day": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "seriesRecordingSkipsShowing": "",
+    "@seriesRecordingSkipsShowing": {
+        "description": "A series recording rule exists, but this showing won't record, for example because it is a repeat or the episode is already in the library"
+    },
+    "seriesRecordingEpisodesQuestion": "",
+    "@seriesRecordingEpisodesQuestion": {
+        "description": "Prompt in the dialog that chooses which episodes a series recording takes"
+    },
+    "seriesRecordingNotRecordedEpisodes": "",
+    "@seriesRecordingNotRecordedEpisodes": {
+        "description": "Series recording choice that skips episodes already in the library"
+    },
+    "seriesRecordingNotRecordedEpisodesDescription": "",
+    "@seriesRecordingNotRecordedEpisodesDescription": {
+        "description": "Explains the Episodes Not Already Recorded series recording choice"
+    },
+    "seriesRecordingNewEpisodesOnly": "",
+    "@seriesRecordingNewEpisodesOnly": {
+        "description": "Series recording choice that records only first airings"
+    },
+    "seriesRecordingNewEpisodesOnlyDescription": "",
+    "@seriesRecordingNewEpisodesOnlyDescription": {
+        "description": "Explains the New Episodes Only series recording choice"
+    },
+    "seriesRecordingSettings": "",
+    "@seriesRecordingSettings": {
+        "description": "Action that changes which episodes an existing series recording takes"
+    },
+    "seriesRecordingUpdated": "",
+    "@seriesRecordingUpdated": {
+        "description": "Confirmation after changing a series recording's settings"
+    },
+    "failedToUpdateSeriesRecording": "",
+    "@failedToUpdateSeriesRecording": {
+        "description": "Error after changing a series recording's settings failed"
+    },
+    "invertGestureIndicators": "",
+    "@invertGestureIndicators": {
+        "description": "Setting title for inverting placement of brightness and volume gesture indicators"
+    },
+    "invertGestureIndicatorsDescription": "",
+    "@invertGestureIndicatorsDescription": {
+        "description": "Description explaining gesture indicator placement relative to the swipe side"
+    },
+    "gestureIndicatorSame": "",
+    "@gestureIndicatorSame": {
+        "description": "Option to display gesture indicators on the same side as the swipe"
+    },
+    "gestureIndicatorInverted": "",
+    "@gestureIndicatorInverted": {
+        "description": "Option to display gesture indicators on the opposite side from the swipe"
+    },
+    "shortcutHideControls": "",
+    "@shortcutHideControls": {
+        "description": "What Backspace and Delete do in the player: hide the controls or the panel on top of them"
+    },
+    "cropBlackBarsRecropInterval": "",
+    "@cropBlackBarsRecropInterval": {
+        "description": "Setting for how often to re-detect encoded letterbox bars"
+    },
+    "savedMediaDeleteEpisodes": "",
+    "@savedMediaDeleteEpisodes": {
+        "description": "Menu action that removes every saved episode of one series",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "holidayValentines": "",
+    "@holidayValentines": {
+        "description": "Seasonal row title for Valentine's Day"
+    },
+    "holidayEaster": "",
+    "@holidayEaster": {
+        "description": "Seasonal row title for Easter"
+    },
+    "liveReconnecting": "",
+    "@liveReconnecting": {
+        "description": "Overlay shown while a live channel's bounded recovery is retrying",
+        "placeholders": {
+            "attempt": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "actionButtonsOnScreenAll": "",
+    "@actionButtonsOnScreenAll": {
+        "description": "Option showing all action buttons in a horizontal scrollable row"
+    },
+    "seasonalRowDescription": "",
+    "@seasonalRowDescription": {
+        "description": "Explains the seasonal Home row setting"
+    },
+    "seasonalRowCountry": "",
+    "@seasonalRowCountry": {
+        "description": "Setting for which country's holidays the seasonal row follows"
+    },
+    "holidayPride": "",
+    "@holidayPride": {
+        "description": "Seasonal row title for Pride month"
+    },
+    "savedMediaCancelDownload": "",
+    "@savedMediaCancelDownload": {
+        "description": "Row menu action that stops a running or queued transfer"
+    },
+    "watchChannelLive": "",
+    "@watchChannelLive": {
+        "description": "Button label to tune a channel live when the selected program is not the one that will play (ended or upcoming)"
+    },
+    "liveTvJumpToLive": "",
+    "@liveTvJumpToLive": {
+        "description": "Live TV player button that leaves a rewound or paused stream and returns to what is airing now"
+    },
+    "playbackVideoUnsupported": "",
+    "@playbackVideoUnsupported": {
+        "description": "Shown when the player can't show an item's video and no transcode is left to try, instead of playing the audio over a black screen"
+    },
+    "detailMetadataYear": "",
+    "@detailMetadataYear": {
+        "description": "Item label for release or production year in metadata row"
+    },
+    "savedMediaDeleteSeason": "",
+    "@savedMediaDeleteSeason": {
+        "description": "Menu action that removes every saved episode of one season",
+        "placeholders": {
+            "season": {
+                "type": "String"
+            }
+        }
+    },
+    "keyNameDelete": "",
+    "@keyNameDelete": {
+        "description": "Key cap label for the Delete key"
+    },
+    "detailSectionSeerrStreaming": "",
+    "@detailSectionSeerrStreaming": {
+        "description": "Details screen Seerr section: logos of the services streaming the title in the user's region"
+    },
+    "seerrStreamingOn": "",
+    "@seerrStreamingOn": {
+        "description": "Heading over the logos of the services streaming a Seerr title"
+    },
+    "detailSectionPersonLinks": "",
+    "@detailSectionPersonLinks": {
+        "description": "Details screen section: buttons that open a person's IMDb, TMDB and social media pages"
+    },
+    "detailSectionPersonLinksSubtitle": "",
+    "@detailSectionPersonLinksSubtitle": {
+        "description": "Subtitle under the person links section switch"
+    },
+    "continueWatchingDefaultAction": "",
+    "@continueWatchingDefaultAction": {
+        "description": "Setting for default click action on Continue Watching and Next Up items"
+    },
+    "continueWatchingDefaultActionDescription": "",
+    "@continueWatchingDefaultActionDescription": {
+        "description": "Description for Continue Watching and Next Up default click action setting"
+    },
+    "playImmediately": "",
+    "@playImmediately": {
+        "description": "Option to play an item immediately"
+    },
+    "detailSectionLogoSubtitle": "",
+    "@detailSectionLogoSubtitle": {
+        "description": "Subtitle for the logo section switch"
+    },
+    "detailSectionTagline": "",
+    "@detailSectionTagline": {
+        "description": "Details screen section: the short tagline under the title"
+    },
+    "detailSectionGroupHeader": "",
+    "@detailSectionGroupHeader": {
+        "description": "Group heading for the title area of the Details screen"
+    },
+    "detailSectionMoreLikeThis": "",
+    "@detailSectionMoreLikeThis": {
+        "description": "Details screen section: similar items from the library"
+    },
+    "detailSectionMediaInfoSubtitle": "",
+    "@detailSectionMediaInfoSubtitle": {
+        "description": "Subtitle for the media info section switch"
+    },
+    "upcomingEpisodeTomorrow": "",
+    "@upcomingEpisodeTomorrow": {
+        "description": "Upcoming episode airs tomorrow"
+    },
+    "upcomingEpisodeNext": "",
+    "@upcomingEpisodeNext": {
+        "description": "Formatted badge text for an upcoming episode release date",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "season": {
+                "type": "int"
+            },
+            "episode": {
+                "type": "int"
+            }
+        }
+    },
+    "settingsAudioPassthroughOutputIecLabel": "",
+    "detailSectionLyrics": "",
+    "@detailSectionLyrics": {
+        "description": "Details screen section: the lyrics panel for songs"
+    },
+    "detailSectionSeerrGenresTags": "",
+    "@detailSectionSeerrGenresTags": {
+        "description": "Details screen Seerr section: genre and keyword chips"
+    },
+    "settingsAudioPassthroughOutputPlatform": "",
+    "detailSectionMusicVideos": "",
+    "@detailSectionMusicVideos": {
+        "description": "Details screen section: a person's music videos"
+    },
+    "detailSectionUpNext": "",
+    "@detailSectionUpNext": {
+        "description": "Details screen section: the next up or next episode card"
+    },
+    "detailSectionSeerrStats": "",
+    "@detailSectionSeerrStats": {
+        "description": "Details screen Seerr section: TMDB score, status, budget and revenue"
+    },
+    "detailSectionSeerrRecommendations": "",
+    "@detailSectionSeerrRecommendations": {
+        "description": "Details screen Seerr section: recommended titles"
+    },
+    "settingsAudioPassthroughOutputIec": "",
+    "detailSectionSeerrSimilar": "",
+    "@detailSectionSeerrSimilar": {
+        "description": "Details screen Seerr section: similar titles"
+    },
+    "screensaverBackdropMoonfin": "",
+    "@screensaverBackdropMoonfin": {
+        "description": "Screensaver backdrop: Moonfin"
+    },
+    "screensaverSourceLibrariesDefault": "",
+    "@screensaverSourceLibrariesDefault": {
+        "description": "Subtitle when no source libraries are explicitly filtered in screensaver"
+    },
+    "fromThisAlbum": "",
+    "@fromThisAlbum": {
+        "description": "Heading over the track list of the album shown in the music library hero"
+    },
+    "bookLibraryStyleDescription": "",
+    "@bookLibraryStyleDescription": {
+        "description": "Explanation under the book library style setting"
+    },
+    "bookLibraryStyleBookstore": "",
+    "@bookLibraryStyleBookstore": {
+        "description": "Book library style option: browse entries over a title grid"
+    },
+    "musicLibraryStyleImmersive": "",
+    "@musicLibraryStyleImmersive": {
+        "description": "Music library style option: a full-width album hero over the rows"
+    },
+    "libraryOrderSubtitle": "",
+    "@libraryOrderSubtitle": {
+        "description": "Subtitle of the Library Order entry in the libraries settings"
+    },
+    "showLiveTvButton": "",
+    "@showLiveTvButton": {
+        "description": "Setting for showing live TV button"
+    },
+    "bookSeriesCount": "",
+    "@bookSeriesCount": {
+        "description": "How many series a book library holds",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "bookInProgressCount": "",
+    "@bookInProgressCount": {
+        "description": "How many books or audiobooks are started but not finished",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "libraryStyleDescription": "",
+    "@libraryStyleDescription": {
+        "description": "Explanation under the library style setting on TV and desktop"
+    },
+    "preferredSecondarySubtitleLanguage": "",
+    "@preferredSecondarySubtitleLanguage": {
+        "description": "Preferred language used to sort secondary subtitle tracks in the picker. It doesn't turn subtitles on."
+    },
+    "secondarySubtitleTrack": "",
+    "@secondarySubtitleTrack": {
+        "description": "Title of the picker for the secondary subtitle track"
+    },
+    "decreaseValue": "",
+    "@decreaseValue": {
+        "description": "Tooltip for the button that lowers a setting's value",
+        "placeholders": {
+            "setting": {
+                "type": "String"
+            }
+        }
+    },
+    "subtitleDownloadLanguagesDescription": "",
+    "@subtitleDownloadLanguagesDescription": {
+        "description": "Description for the subtitle download languages setting"
+    },
+    "libraryStyle": "",
+    "@libraryStyle": {
+        "description": "Label for the setting that picks the library page header layout"
+    },
+    "libraryStyleClassic": "",
+    "@libraryStyleClassic": {
+        "description": "Library style option: the original header"
+    },
+    "libraryOrderTvHint": "",
+    "@libraryOrderTvHint": {
+        "description": "Remote control hint on the Library Order settings screen"
+    },
+    "libraryOrderSaveFailed": "",
+    "@libraryOrderSaveFailed": {
+        "description": "Error shown when saving the library order to the server fails"
+    },
+    "screensaverComponentRunner": "",
+    "@screensaverComponentRunner": {
+        "description": "Screensaver component: Runner"
+    },
+    "screensaverComponentMovement": "",
+    "@screensaverComponentMovement": {
+        "description": "Setting for screensaver component movement"
+    },
+    "pinResetFailed": "",
+    "@pinResetFailed": {
+        "description": "Shown on sign in when Forgot PIN could not clear a PIN kept on the server"
+    },
+    "bookLibraryStyle": "",
+    "@bookLibraryStyle": {
+        "description": "Label for the setting that picks the book and audiobook library layout"
+    },
+    "homeRowsExternalLists": "",
+    "@homeRowsExternalLists": {
+        "description": "Home Rows editor: heading of the group of disabled rows from IMDb, TMDB, Letterboxd and MDBList lists"
+    },
+    "profileOverridesGlobal": "",
+    "@profileOverridesGlobal": {
+        "description": "Subtitle of the Desktop, Mobile and TV settings profile cards"
+    },
+    "resetNamedProfile": "",
+    "@resetNamedProfile": {
+        "description": "Button that resets the chosen settings profile, for example Reset TV Profile",
+        "placeholders": {
+            "profile": {
+                "type": "String"
+            }
+        }
+    },
+    "showSeerrAvailabilityBadgesDescription": "",
+    "@showSeerrAvailabilityBadgesDescription": {
+        "description": "Setting description for showing Seerr availability badges on media details pages"
+    },
+    "adminDlnaDefaultUser": "",
+    "adminEmbyRestoreShuttingDown": "",
+    "adminHiddenRemotely": "",
+    "adminTagMode": "",
+    "adminGeneralBannerText": "",
+    "adminGeneralBannerTextHelp": "",
+    "adminGeneralSectionMaintenance": "",
+    "adminGeneralMaintenanceMode": "",
+    "adminGeneralMaintenanceMessage": "",
+    "adminGeneralMaintenanceMessageHelp": "",
+    "adminEmbyBackupNow": "",
+    "adminEmbyLightBackups": "",
+    "adminEmbyBackupServerVersion": "",
+    "@adminEmbyBackupServerVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "adminEmbyRestoreServerIdHelp": "",
+    "adminEmbyRestoreServerId": "",
+    "adminCinemaIntrosCodecPathHelp": "",
+    "profileAppliesEverywhere": "",
+    "@profileAppliesEverywhere": {
+        "description": "Subtitle of the Global settings profile card"
+    },
+    "adminNetworkingIpv4OnlyHelp": "",
+    "adminNetworkingSectionServerAddress": "",
+    "adminResumeAudiobookRemainingHelp": "",
+    "adminNetworkingSectionRemoteAccess": "",
+    "adminNetworkingSectionDiscovery": "",
+    "adminNetworkingEnableHttpsHelp": "",
+    "adminNetworkingSectionFirewall": "",
+    "adminNetworkingPublicHttpsPortHelp": "",
+    "adminNetworkingInternalUriHelp": "",
+    "adminNetworkingExternalUri": "",
+    "clientCertUploadFailed": "",
+    "@clientCertUploadFailed": {
+        "description": "Shown when the TV can't open the page the phone sends the certificate to"
+    },
+    "contextMenuRemoveFromCollection": "",
+    "@contextMenuRemoveFromCollection": {
+        "description": "Context menu action to remove an item from the collection whose page it is shown on"
+    },
+    "removeFromCollectionFailed": "",
+    "@removeFromCollectionFailed": {
+        "description": "Error shown when removing an item from a collection fails"
+    },
+    "modernCardsOnMyMediaRowDescription": "",
+    "settingsDisplayRedetected": "",
+    "@settingsDisplayRedetected": {
+        "placeholders": {
+            "formats": {
+                "type": "String"
+            }
+        }
+    },
+    "clientCertReplace": "",
+    "@clientCertReplace": {
+        "description": "Button that imports a new certificate in place of the stored one for a host"
+    },
+    "clientCertWrongPassword": "",
+    "@clientCertWrongPassword": {
+        "description": "Shown when the password for the .p12 or .pfx file is wrong"
+    },
+    "clientCertRequired": "",
+    "@clientCertRequired": {
+        "description": "Shown on the sign-in screens when the server turned the connection away for lack of a client certificate"
+    },
+    "untrustedServerCertificate": "",
+    "@untrustedServerCertificate": {
+        "description": "Shown on the sign-in screens when a server's TLS certificate is rejected, above a button that turns on Allow self-signed certificates"
+    },
+    "removeFromCollectionConfirm": "",
+    "@removeFromCollectionConfirm": {
+        "description": "Confirmation shown before removing an item from a collection",
+        "placeholders": {
+            "item": {
+                "type": "String"
+            },
+            "collection": {
+                "type": "String"
+            }
+        }
+    },
+    "blockedRatingsUnrankedSection": "",
+    "@blockedRatingsUnrankedSection": {
+        "description": "Heading for ratings the app can't rank, which block only the exact rating rather than everything above it"
+    },
+    "blockedRatingsCeilingHint": "",
+    "@blockedRatingsCeilingHint": {
+        "description": "Explains that the blocked ratings list works as a ceiling"
+    },
+    "itemBlockedByParentalControls": "",
+    "@itemBlockedByParentalControls": {
+        "description": "Shown instead of a title whose rating the viewer has blocked. Deliberately says nothing about what the title is."
+    },
+    "clientCertTitle": "",
+    "@clientCertTitle": {
+        "description": "Title of the dialog that imports a TLS client certificate for a server"
+    },
+    "clientCertHost": "",
+    "@clientCertHost": {
+        "description": "Names the server host the client certificate will be presented to",
+        "placeholders": {
+            "host": {
+                "type": "String"
+            }
+        }
+    },
+    "clientCertChooseFile": "",
+    "@clientCertChooseFile": {
+        "description": "Button that picks a .p12 or .pfx file"
+    },
+    "clientCertPassword": "",
+    "@clientCertPassword": {
+        "description": "Label for the password that unlocks the .p12 or .pfx file"
+    },
+    "clientCertNoSecureStorage": "",
+    "@clientCertNoSecureStorage": {
+        "description": "Shown when there is no keychain or secret store to keep the certificate in"
+    },
+    "clientCertStartUpload": "",
+    "@clientCertStartUpload": {
+        "description": "Button on a TV that opens a one-time page a phone on the same network can send the certificate to"
+    },
+    "personWebsite": "",
+    "@personWebsite": {
+        "description": "Tooltip for the button on a person page that opens their own website"
+    },
+    "achievementsUnlockToasts": "",
+    "@achievementsUnlockToasts": {
+        "description": "Switch that shows a notification when the user unlocks a badge"
+    },
+    "achievementsLibraryCount": "",
+    "@achievementsLibraryCount": {
+        "description": "How many libraries have a completion percentage",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsRerollWeekly": "",
+    "@achievementsRerollWeekly": {
+        "description": "Action that swaps the weekly quest set for a new one"
+    },
+    "achievementBadges": "",
+    "@achievementBadges": {
+        "description": "Title of the Achievement Badges plugin panel"
+    },
+    "achievementsPointsToNextRank": "",
+    "@achievementsPointsToNextRank": {
+        "description": "Points needed to reach the next rank tier",
+        "placeholders": {
+            "points": {
+                "type": "int"
+            },
+            "tier": {
+                "type": "String"
+            }
+        }
+    },
+    "achievementsRecap": "",
+    "@achievementsRecap": {
+        "description": "Recap section title"
+    },
+    "chatImageUnsupported": "",
+    "@chatImageUnsupported": {
+        "description": "Shown when a picked chat image has an unsupported type"
+    },
+    "chatPhoto": "",
+    "@chatPhoto": {
+        "description": "Preview of a chat message that is an image"
+    },
+    "chatViewPhoto": "",
+    "@chatViewPhoto": {
+        "description": "Action that opens a photo sent in a chat at full size"
+    },
+    "chatAttach": "",
+    "@chatAttach": {
+        "description": "Button that picks an image to send in a chat"
+    },
+    "chatEdited": "",
+    "@chatEdited": {
+        "description": "Marks a chat message that was changed after sending"
+    },
+    "achievementsNoSuggestions": "",
+    "@achievementsNoSuggestions": {
+        "description": "Shown when the plugin has no items to recommend for a badge"
+    },
+    "achievementsActivityUnlocked": "",
+    "@achievementsActivityUnlocked": {
+        "description": "One line of the activity feed",
+        "placeholders": {
+            "user": {
+                "type": "String"
+            },
+            "badge": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsMessages": "",
+    "@friendsMessages": {
+        "description": "Entry that opens the list of chats"
+    },
+    "friendsOpenItem": "",
+    "@friendsOpenItem": {
+        "description": "Action that opens what a friend is watching",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsBlock": "",
+    "@friendsBlock": {
+        "description": "Action that blocks a user from messaging"
+    },
+    "friendsUnblock": "",
+    "@friendsUnblock": {
+        "description": "Action that unblocks a user"
+    },
+    "chatNone": "",
+    "@chatNone": {
+        "description": "Shown when there are no chats or no messages in a chat"
+    },
+    "chatHint": "",
+    "@chatHint": {
+        "description": "Hint of the chat message field"
+    },
+    "achievementsRerollConfirmBody": "",
+    "@achievementsRerollConfirmBody": {
+        "description": "Body of the dialog confirming a quest reroll"
+    },
+    "achievementsPowerUps": "",
+    "@achievementsPowerUps": {
+        "description": "Section header above the consumable boosts a user holds"
+    },
+    "achievementsStatScoreEarned": "",
+    "@achievementsStatScoreEarned": {
+        "description": "Counter label"
+    },
+    "achievementsShop": "",
+    "@achievementsShop": {
+        "description": "Screen selling power-ups for score"
+    },
+    "achievementsRerollConfirm": "",
+    "@achievementsRerollConfirm": {
+        "description": "Title of the dialog confirming a quest reroll"
+    },
+    "achievementsProgressLabel": "",
+    "@achievementsProgressLabel": {
+        "description": "Label above a badge's current progress figure"
+    },
+    "friendsSubtitle": "",
+    "@friendsSubtitle": {
+        "description": "Subtitle of the Friends entry"
+    },
+    "achievementsBoostBody": "",
+    "@achievementsBoostBody": {
+        "description": "What the XP Boost power-up does"
+    },
+    "achievementsBadgesEarned": "",
+    "@achievementsBadgesEarned": {
+        "description": "How many badges were earned in the recap period",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "chatLeave": "",
+    "@chatLeave": {
+        "description": "Action that leaves a group chat"
+    },
+    "chatNewGroupSubtitle": "",
+    "@chatNewGroupSubtitle": {
+        "description": "Subtitle of the New group entry"
+    },
+    "achievementsAppearanceFailed": "",
+    "@achievementsAppearanceFailed": {
+        "description": "Shown when equipping or removing an avatar or title fails"
+    },
+    "friendsMuteDuringPlayback": "",
+    "@friendsMuteDuringPlayback": {
+        "description": "Setting that hides new message banners while a video or game plays"
+    },
+    "friendsPrivacy": "",
+    "@friendsPrivacy": {
+        "description": "Entry that opens the friends privacy settings"
+    },
+    "friendsDecline": "",
+    "@friendsDecline": {
+        "description": "Decline a friend request"
+    },
+    "chatCreate": "",
+    "@chatCreate": {
+        "description": "Button that creates a group chat"
+    },
+    "chatAdmin": "",
+    "@chatAdmin": {
+        "description": "Marks a group chat admin"
+    },
+    "chatMakeAdmin": "",
+    "@chatMakeAdmin": {
+        "description": "Action that makes a group member an admin"
+    },
+    "preferExternalSubtitles": "",
+    "achievementsActivity": "",
+    "@achievementsActivity": {
+        "description": "Screen listing badges unlocked across the server"
+    },
+    "chatPickMembers": "",
+    "@chatPickMembers": {
+        "description": "Hint on the new group screen"
+    },
+    "trailerCount": "",
+    "@trailerCount": {
+        "description": "How many trailers the trailer picker lists, shown in its header",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "trailerNumber": "",
+    "@trailerNumber": {
+        "description": "Fallback name in the trailer picker for a trailer the server gave no name, numbered by its place in the list",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "subtitled": "",
+    "@subtitled": {
+        "description": "Chip in the trailer picker on a trailer that has subtitles burned into the video"
+    },
+    "rommAccount": "",
+    "@rommAccount": {
+        "description": "Title of the screen, and the button on a game library, for linking the user's own RomM account"
+    },
+    "rommAccountIntro": "",
+    "@rommAccountIntro": {
+        "description": "Explains what linking a RomM account does, shown above the Link button"
+    },
+    "rommLinkAccount": "",
+    "@rommLinkAccount": {
+        "description": "Button that starts linking a RomM account"
+    },
+    "rommLinkInstructions": "",
+    "@rommLinkInstructions": {
+        "description": "Instructions above the code while a RomM link waits for approval"
+    },
+    "rommLinkScanOrVisit": "",
+    "@rommLinkScanOrVisit": {
+        "description": "Shown on TV beside the QR code while a RomM link waits for approval",
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "rommOpen": "",
+    "@rommOpen": {
+        "description": "Button that opens the RomM approval page in the browser with the code filled in"
+    },
+    "rommWaitingForApproval": "",
+    "@rommWaitingForApproval": {
+        "description": "Status shown while the app waits for the RomM code to be approved"
+    },
+    "rommLinkedAs": "",
+    "@rommLinkedAs": {
+        "description": "Shown when the user's RomM account is linked",
+        "placeholders": {
+            "username": {
+                "type": "String"
+            }
+        }
+    },
+    "rommLinked": "",
+    "@rommLinked": {
+        "description": "Shown when the user's RomM account is linked and the server sent no user name"
+    },
+    "rommUnlinkNote": "",
+    "@rommUnlinkNote": {
+        "description": "Explains what Unlink does on the RomM account screen"
+    },
+    "rommLinkExpired": "",
+    "@rommLinkExpired": {
+        "description": "Error when a RomM link code ran out of time"
+    },
+    "rommLinkDenied": "",
+    "@rommLinkDenied": {
+        "description": "Error when the user declined the RomM link request"
+    },
+    "rommUnreachable": "",
+    "@rommUnreachable": {
+        "description": "Error when the server couldn't reach RomM while linking"
+    },
+    "rommNotAvailable": "",
+    "@rommNotAvailable": {
+        "description": "Shown on the RomM account screen when the server has no RomM library"
+    },
+    "rommAccountLoadFailed": "",
+    "@rommAccountLoadFailed": {
+        "description": "Error when the RomM account status couldn't be loaded from the server"
+    },
+    "reviews": "",
+    "@reviews": {
+        "description": "Title of the row, tab and card on the details screen that lists TMDB user reviews"
+    },
+    "detailSectionReviews": "",
+    "@detailSectionReviews": {
+        "description": "Details screen section: user reviews from TMDB"
+    },
+    "spotlightReviewsCount": "",
+    "@spotlightReviewsCount": {
+        "description": "How many reviews a title has, under the Reviews card on the details screen",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "readOnTmdb": "",
+    "@readOnTmdb": {
+        "description": "Button in an opened review that opens the review on the TMDB website"
+    },
+    "playbackInfoWhyForced": "",
+    "@playbackInfoWhyForced": {
+        "description": "Playback information reason: a setting turned off direct play, so the server has to transcode"
+    },
+    "playbackInfoWhyBitrate": "",
+    "@playbackInfoWhyBitrate": {
+        "description": "Playback information reason: the file's bitrate is over the streaming limit, used when the two numbers can't be shown"
+    },
+    "playFromServer": "",
+    "@playFromServer": {
+        "description": "Long-press menu action on a downloaded video: play it by streaming from the server instead of the downloaded copy, for example to get a higher quality than the download"
+    },
+    "settingsApplePlayerUi": "",
+    "@settingsApplePlayerUi": {
+        "description": "Settings label on iPhone and iPad for choosing which player plays video"
+    },
+    "settingsApplePlayerUiDescription": "",
+    "@settingsApplePlayerUiDescription": {
+        "description": "Settings description for the video player choice, listing what the native Apple style player lacks"
+    },
+    "settingsApplePlayerUiStandard": "",
+    "@settingsApplePlayerUiStandard": {
+        "description": "Option for the regular Moonfin video player on iPhone and iPad"
+    },
+    "settingsApplePlayerUiNative": "",
+    "@settingsApplePlayerUiNative": {
+        "description": "Option for the native video player that the Apple TV app uses, offered on iPhone and iPad"
+    },
+    "playerTransportPosition": "",
+    "@playerTransportPosition": {
+        "description": "Settings label for where the play, skip and seek buttons sit in the video player"
+    },
+    "playerTransportPositionDescription": "",
+    "@playerTransportPositionDescription": {
+        "description": "Settings description for where the video player's play buttons sit"
+    },
+    "playerTransportOnScreen": "",
+    "@playerTransportOnScreen": {
+        "description": "Option that puts the play, skip and seek buttons in the middle of the video"
+    },
+    "playerTransportDocked": "",
+    "@playerTransportDocked": {
+        "description": "Option that puts the play, skip and seek buttons in the bottom bar with the other player buttons"
+    },
+    "incompleteRecording": "",
+    "@incompleteRecording": {
+        "description": "Badge and detail label for a Live TV recording that was written for less than its scheduled length"
+    },
+    "incompleteRecordingMinutes": "",
+    "@incompleteRecordingMinutes": {
+        "description": "How many minutes of an incomplete Live TV recording were written, out of its scheduled length with padding",
+        "placeholders": {
+            "recorded": {
+                "type": "int",
+                "example": "23"
+            },
+            "expected": {
+                "type": "int",
+                "example": "37"
+            }
+        }
+    },
+    "completeShowingScheduled": "",
+    "@completeShowingScheduled": {
+        "description": "Detail line status: a later complete showing of the incomplete episode will be recorded",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "Thu 8:00 PM"
+            }
+        }
+    },
+    "completeCopyRecorded": "",
+    "@completeCopyRecorded": {
+        "description": "Detail line status: a complete copy of the incomplete episode has since been recorded",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "Thu 8:00 PM"
+            }
+        }
+    },
+    "noCompleteShowingFound": "",
+    "@noCompleteShowingFound": {
+        "description": "Detail line status: no later complete showing of the incomplete episode was found in the guide"
+    },
+    "keepAsComplete": "",
+    "@keepAsComplete": {
+        "description": "Action that clears the Incomplete mark on a Live TV recording for everyone on the server"
+    },
+    "keptAsComplete": "",
+    "@keptAsComplete": {
+        "description": "Snackbar confirmation after Keep as Complete"
+    },
+    "unableToKeepAsComplete": "",
+    "@unableToKeepAsComplete": {
+        "description": "Snackbar shown when Keep as Complete fails"
+    },
+    "sortServerOrder": "",
+    "playbackInfoConvertedFrom": "",
+    "@playbackInfoConvertedFrom": {
+        "description": "Playback information value: what the player gets, with what the file had before the server converted it",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            },
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoResolutionConverted": "",
+    "@playbackInfoResolutionConverted": {
+        "description": "Playback information value: the resolution being sent, like 1080p (1920x1080, converted from 4K)",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            },
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoNoteDirectPlay": "",
+    "@playbackInfoNoteDirectPlay": {
+        "description": "Playback information note under the play method for direct play"
+    },
+    "playbackInfoNoteDirectStream": "",
+    "@playbackInfoNoteDirectStream": {
+        "description": "Playback information note under the play method for direct stream"
+    },
+    "playbackInfoNoteTranscodeVideo": "",
+    "@playbackInfoNoteTranscodeVideo": {
+        "description": "Playback information note under the play method when only the video is transcoded"
+    },
+    "playbackInfoNoteTranscodeAudio": "",
+    "@playbackInfoNoteTranscodeAudio": {
+        "description": "Playback information note under the play method when only the audio is transcoded"
+    },
+    "playbackInfoNoteTranscodeBoth": "",
+    "@playbackInfoNoteTranscodeBoth": {
+        "description": "Playback information note under the play method when the video and the audio are transcoded"
+    },
+    "playbackInfoNoteTranscodeUnknown": "",
+    "@playbackInfoNoteTranscodeUnknown": {
+        "description": "Playback information note under the play method for a transcode when it isn't known what is converted"
+    },
+    "playbackInfoNoteOffline": "",
+    "@playbackInfoNoteOffline": {
+        "description": "Playback information note under the play method when a download plays"
+    },
+    "playbackInfoWhyContainer": "",
+    "@playbackInfoWhyContainer": {
+        "description": "Playback information reason: the container format isn't supported, used when the file type isn't known"
+    },
+    "playbackInfoWhyVideo": "",
+    "@playbackInfoWhyVideo": {
+        "description": "Playback information reason: the video format isn't supported, used when the server gives no detail or the detail isn't known"
+    },
+    "playbackInfoWhyHdr": "",
+    "@playbackInfoWhyHdr": {
+        "description": "Playback information reason: the HDR format isn't supported, used when the HDR type isn't known"
+    },
+    "playbackInfoWhyAudio": "",
+    "@playbackInfoWhyAudio": {
+        "description": "Playback information reason: the audio format isn't supported, used when the server gives no detail or the detail isn't known"
+    },
+    "playbackInfoWhySubtitles": "",
+    "@playbackInfoWhySubtitles": {
+        "description": "Playback information reason: the player can't show the subtitles, so the server draws them into the video, used when the subtitle format isn't known"
+    },
+    "playbackInfoWhyOther": "",
+    "@playbackInfoWhyOther": {
+        "description": "Playback information reason: any other server reason"
+    },
+    "playbackInfoWhyBitrateLimit": "",
+    "@playbackInfoWhyBitrateLimit": {
+        "description": "Playback information reason: the file's bitrate, like 68.4 Mbps, is over the streaming limit, like 20 Mbps",
+        "placeholders": {
+            "bitrate": {
+                "type": "String"
+            },
+            "limit": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyContainerName": "",
+    "@playbackInfoWhyContainerName": {
+        "description": "Playback information reason: the container format, like MKV, isn't supported",
+        "placeholders": {
+            "container": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyVideoCodec": "",
+    "@playbackInfoWhyVideoCodec": {
+        "description": "Playback information reason: the video codec, like HEVC or AV1, isn't supported",
+        "placeholders": {
+            "codec": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyVideoProfile": "",
+    "@playbackInfoWhyVideoProfile": {
+        "description": "Playback information reason: the video codec's profile, like HEVC Main 10, isn't supported",
+        "placeholders": {
+            "codec": {
+                "type": "String"
+            },
+            "profile": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyVideoLevel": "",
+    "@playbackInfoWhyVideoLevel": {
+        "description": "Playback information reason: the video codec's level, like HEVC level 5.1, isn't supported",
+        "placeholders": {
+            "codec": {
+                "type": "String"
+            },
+            "level": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyVideoBitDepth": "",
+    "@playbackInfoWhyVideoBitDepth": {
+        "description": "Playback information reason: the video bit depth, like 10-bit, isn't supported",
+        "placeholders": {
+            "bits": {
+                "type": "int"
+            }
+        }
+    },
+    "autoDownloadTranscodedRunningNote": "",
+    "@autoDownloadTranscodedRunningNote": {
+        "description": "Shown under a running transcoded download that a subscription queued"
+    },
+    "autoDownloadDeleteAfterWeek": "",
+    "@autoDownloadDeleteAfterWeek": {
+        "description": "Delete-after-watching option"
+    },
+    "autoDownloadBackgroundRefreshSubtitle": "",
+    "@autoDownloadBackgroundRefreshSubtitle": {
+        "description": "Explains the background refresh setting"
+    },
+    "autoDownloadRemove": "",
+    "@autoDownloadRemove": {
+        "description": "Tooltip on the button that removes a followed series"
+    },
+    "downloadNotificationProgress": "",
+    "@downloadNotificationProgress": {
+        "description": "System notification body with the item label (for example Series S1E1) and its percentage",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
+    "downloadNotificationFailedBody": "",
+    "@downloadNotificationFailedBody": {
+        "description": "System notification body for a failed download",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "bottomNavbarTabsPinned": "",
+    "@bottomNavbarTabsPinned": {
+        "description": "Section header for the tabs pinned to the bottom bar"
+    },
+    "smartDownloadsEnableDescription": "",
+    "@smartDownloadsEnableDescription": {
+        "description": "Explains the smart downloads switch, including that watched episodes are deleted"
+    },
+    "autoDownloadDeleteFollowedSubtitle": "",
+    "@autoDownloadDeleteFollowedSubtitle": {
+        "description": "Explains the delete-after-watching setting"
+    },
+    "removeWatchedDownloadsSubtitle": "",
+    "@removeWatchedDownloadsSubtitle": {
+        "description": "Explains the remove-watched-downloads setting"
+    },
+    "bottomNavbarTabTurnedOff": "",
+    "@bottomNavbarTabTurnedOff": {
+        "description": "Hint on a bottom bar tab that can't be pinned because its navigation button setting is off"
+    },
+    "autoDownloadStorageFullTitle": "",
+    "@autoDownloadStorageFullTitle": {
+        "description": "System notification title when the automatic check has to hold new episodes back"
+    },
+    "settingsGeneralSubtitle": "",
+    "@settingsGeneralSubtitle": {
+        "description": "Subtitle for the General settings root entry"
+    },
+    "settingsDetailsPageSubtitle": "",
+    "@settingsDetailsPageSubtitle": {
+        "description": "Subtitle for the Details Page entry on the Appearance settings screen"
+    },
+    "settingsLooksSection": "",
+    "@settingsLooksSection": {
+        "description": "Section header on the Home Screen settings screen for how rows and cards look"
+    },
+    "autoDownloadTranscodedForegroundNote": "",
+    "@autoDownloadTranscodedForegroundNote": {
+        "description": "Shown under transcoded options when choosing the quality of an auto-download subscription"
+    },
+    "detailsPage": "",
+    "@detailsPage": {
+        "description": "Settings entry and screen for options that shape the details page"
+    },
+    "removeWatchedDownloads": "",
+    "@removeWatchedDownloads": {
+        "description": "Storage setting that picks how soon an episode or movie the user downloaded themselves is removed after it was watched"
+    },
+    "serverMessagesNotificationTitle": "",
+    "@serverMessagesNotificationTitle": {
+        "description": "System notification title for a message sent by the server when it carries no header"
+    },
+    "animationSpeedFast": "",
+    "@animationSpeedFast": {
+        "description": "Option label for fast animation speed"
+    },
+    "navYou": "",
+    "@navYou": {
+        "description": "Bottom bar tab that opens the user's own menu with their profile, extra destinations and settings"
+    },
+    "setupStyleMinimalist": "",
+    "@setupStyleMinimalist": {
+        "description": "Name of the stripped-back detail layout, offered in the setup wizard"
+    },
+    "bottomNavbarTabsAvailable": "",
+    "@bottomNavbarTabsAvailable": {
+        "description": "Section header for tabs that can be pinned to the bottom bar"
+    },
+    "autoDownloadKeepUnwatched": "",
+    "@autoDownloadKeepUnwatched": {
+        "description": "Setting that caps how many unwatched episodes per series stay downloaded"
+    },
+    "showBookDiscoverTab": "",
+    "@showBookDiscoverTab": {
+        "description": "Setting that shows or hides the discovery tab in book and audiobook libraries"
+    },
+    "downloadNotificationRunningBatch": "",
+    "@downloadNotificationRunningBatch": {
+        "description": "System notification title while a batch transfers; done is the 1-based position of the current item",
+        "placeholders": {
+            "done": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "autoDownloadEnabledFor": "",
+    "@autoDownloadEnabledFor": {
+        "description": "Snackbar after subscribing a series",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "smartDownloadsKeepReady": "",
+    "@smartDownloadsKeepReady": {
+        "description": "Setting for how many unwatched episodes of a series stay downloaded after one is watched"
+    },
+    "keepVideoClearOfDynamicIsland": "",
+    "@keepVideoClearOfDynamicIsland": {
+        "description": "iPhone playback setting that holds the picture back from the camera housing in landscape"
+    },
+    "settingsHomeScreenSubtitle": "",
+    "@settingsHomeScreenSubtitle": {
+        "description": "Subtitle for the Home Screen entry on the Appearance settings screen"
+    },
+    "downloadStorageLimitReached": "",
+    "@downloadStorageLimitReached": {
+        "description": "Error shown when a download would exceed the storage limit set in the download settings"
+    },
+    "settingsLibrariesEntrySubtitle": "",
+    "@settingsLibrariesEntrySubtitle": {
+        "description": "Subtitle for the Libraries entry on the Appearance settings screen"
+    },
+    "settingsAudioAndSubtitlesSection": "",
+    "@settingsAudioAndSubtitlesSection": {
+        "description": "Section header on the Playback settings screen"
+    },
+    "settingsSkippingAndQueueSection": "",
+    "@settingsSkippingAndQueueSection": {
+        "description": "Section header on the Playback settings screen"
+    },
+    "autoDownloadBackgroundRefreshDenied": "",
+    "@autoDownloadBackgroundRefreshDenied": {
+        "description": "Shown when iOS forbids background refresh for the app"
+    },
+    "downloadNotificationTransfer": "",
+    "@downloadNotificationTransfer": {
+        "description": "System notification body for a transfer the native engine reports on. The engine fills in progress (a percentage such as 42%) and timeRemaining (mm:ss) itself.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "progress": {
+                "type": "String"
+            },
+            "timeRemaining": {
+                "type": "String"
+            }
+        }
+    },
+    "smartDownloadsSection": "",
+    "@smartDownloadsSection": {
+        "description": "Settings section header for downloading the next episodes of a series after one is watched"
+    },
+    "autoDownloadStoppedFor": "",
+    "@autoDownloadStoppedFor": {
+        "description": "Snackbar after unsubscribing a series",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "navigationSpeedSubtitle": "",
+    "@navigationSpeedSubtitle": {
+        "description": "Description for the navigation animation speed setting"
+    },
+    "bottomNavbarTabsReset": "",
+    "@bottomNavbarTabsReset": {
+        "description": "Action that clears the pinned bottom bar tabs so they are picked automatically again"
+    },
+    "autoDownloadEnable": "",
+    "@autoDownloadEnable": {
+        "description": "Master switch for auto-download subscriptions"
+    },
+    "settingsAdvancedSection": "",
+    "@settingsAdvancedSection": {
+        "description": "Section header on the Playback settings screen"
+    },
+    "playerSettingsSubtitle": "",
+    "@playerSettingsSubtitle": {
+        "description": "Subtitle for the Player entry on the Playback settings screen"
+    },
+    "playbackInfoDroppedFrames": "",
+    "@playbackInfoDroppedFrames": {
+        "description": "Playback information row label: how many video frames the player skipped"
+    },
+    "librarySortDateEpisodeAdded": "",
+    "@librarySortDateEpisodeAdded": {
+        "description": "Sort option for series: when the newest episode was added"
+    },
+    "librarySortParentalRating": "",
+    "@librarySortParentalRating": {
+        "description": "Sort option: by parental (age) rating such as PG-13"
+    },
+    "playlistTypeMusicVideo": "",
+    "@playlistTypeMusicVideo": {
+        "description": "Filter checkbox label for music video playlists"
+    },
+    "transcodeAudioCodecWithCodec": "",
+    "@transcodeAudioCodecWithCodec": {
+        "placeholders": {
+            "codec": {
+                "type": "String"
+            }
+        }
+    },
+    "seriesRecordingAllEpisodes": "",
+    "@seriesRecordingAllEpisodes": {
+        "description": "Series recording choice that records every showing, repeats included"
+    },
+    "seriesRecordingAllEpisodesDescription": "",
+    "@seriesRecordingAllEpisodesDescription": {
+        "description": "Explains the All Episodes series recording choice"
+    },
+    "goToDetailsScreen": "",
+    "@goToDetailsScreen": {
+        "description": "Option to navigate to the details screen for an item"
+    },
+    "laterShowingRequested": "",
+    "@laterShowingRequested": {
+        "description": "Snackbar after recording now and asking for a future showing"
+    },
+    "seasonalRow": "",
+    "@seasonalRow": {
+        "description": "Name of the Home row that shows holiday movies"
+    },
+    "detailSectionMoreLikeThisSubtitle": "",
+    "@detailSectionMoreLikeThisSubtitle": {
+        "description": "Subtitle for the More Like This section switch"
+    },
+    "detailSectionPoster": "",
+    "@detailSectionPoster": {
+        "description": "Details screen section: the poster image beside the title"
+    },
+    "detailSectionSeerrPersonAppearances": "",
+    "@detailSectionSeerrPersonAppearances": {
+        "description": "Details screen Seerr section: a person's appearances"
+    },
+    "screensaverLibraryContent": "",
+    "@screensaverLibraryContent": {
+        "description": "Section header for screensaver library content"
+    },
+    "screensaverBackdropBlack": "",
+    "@screensaverBackdropBlack": {
+        "description": "Screensaver backdrop: Black"
+    },
+    "musicLibraryStyleClassic": "",
+    "@musicLibraryStyleClassic": {
+        "description": "Music library style option: the original rows"
+    },
+    "musicLibraryStyleQuickAccess": "",
+    "@musicLibraryStyleQuickAccess": {
+        "description": "Music library style option: a grid of recent albums and playlists over the rows"
+    },
+    "yourPlaylists": "",
+    "@yourPlaylists": {
+        "description": "Heading over the user's playlists in a music library"
+    },
+    "blue": "",
+    "@blue": {
+        "description": "Color: blue"
+    },
+    "bookLibraryStyleClassic": "",
+    "@bookLibraryStyleClassic": {
+        "description": "Book library style option: the original shelves"
+    },
+    "libraryStyleDescriptionPhone": "",
+    "@libraryStyleDescriptionPhone": {
+        "description": "Explanation under the library style setting on phones"
+    },
+    "showDownloadsButton": "",
+    "@showDownloadsButton": {
+        "description": "Setting for showing downloads button"
+    },
+    "libraryStyleDocked": "",
+    "@libraryStyleDocked": {
+        "description": "Library style option: a side panel on TV and desktop, a bottom bar on phones"
+    },
+    "libraryShowLabel": "",
+    "@libraryShowLabel": {
+        "description": "Library button that opens the played status filter, followed by its current value such as All or Unwatched"
+    },
+    "screensaverGeneralSettings": "",
+    "@screensaverGeneralSettings": {
+        "description": "Section header for screensaver general settings"
+    },
+    "lightGray": "",
+    "@lightGray": {
+        "description": "Color: light gray"
+    },
+    "darkGray": "",
+    "@darkGray": {
+        "description": "Color: dark gray"
+    },
+    "pinSynced": "",
+    "@pinSynced": {
+        "description": "Shown under the PIN switch when the PIN is kept on the server, so it applies on every device"
+    },
+    "showMissingCollectionItems": "",
+    "@showMissingCollectionItems": {
+        "description": "Setting title to show missing items from Seerr on Collection pages"
+    },
+    "adminTranscodingMaxResolutionHelp": "",
+    "adminCinemaIntrosParental": "",
+    "adminCinemaIntrosCustomPath": "",
+    "adminDlnaPlayToHelp": "",
+    "adminDlnaServer": "",
+    "adminDlnaServerHelp": "",
+    "adminEmbyConnect": "",
+    "adminBackupArchiveNotFound": "",
+    "adminBrandingSplashSection": "",
+    "adminBrandingSectionWebClient": "",
+    "adminBrandingSplashSizeHint": "",
+    "settingsDisplayMarkedSdr": "",
+    "clientCertExpired": "",
+    "@clientCertExpired": {
+        "description": "Shown on the sign-in screen when the server turned the connection away and the stored certificate has expired",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "settingsRedetectDisplay": "",
+    "clientCertUploadHint": "",
+    "@clientCertUploadHint": {
+        "description": "Shown under the QR code while the TV waits for the phone to send the certificate"
+    },
+    "achievementsStatGenres": "",
+    "@achievementsStatGenres": {
+        "description": "Counter label"
+    },
+    "chatNewMessageFrom": "",
+    "@chatNewMessageFrom": {
+        "description": "Title of the banner for a new chat message",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "achievementsScoreBank": "",
+    "@achievementsScoreBank": {
+        "description": "Label for the score a user still has to spend"
+    },
+    "achievementsLoadFailed": "",
+    "@achievementsLoadFailed": {
+        "description": "Shown when the Achievement Badges plugin data fails to load"
+    },
+    "achievementsStatsHabits": "",
+    "@achievementsStatsHabits": {
+        "description": "Section of counters for when a user watches"
+    },
+    "friendsSaveFailed": "",
+    "@friendsSaveFailed": {
+        "description": "Shown when the friends privacy settings fail to save"
+    },
+    "achievementsStatsWatched": "",
+    "@achievementsStatsWatched": {
+        "description": "Section of counters for what a user has watched"
+    },
+    "playbackInfoWhyVideoResolution": "",
+    "@playbackInfoWhyVideoResolution": {
+        "description": "Playback information reason: the video resolution, like 4K or 1080p, isn't supported",
+        "placeholders": {
+            "resolution": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyVideoFrameRate": "",
+    "@playbackInfoWhyVideoFrameRate": {
+        "description": "Playback information reason: the video frame rate in frames per second, like 59.94, isn't supported",
+        "placeholders": {
+            "fps": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyInterlaced": "",
+    "@playbackInfoWhyInterlaced": {
+        "description": "Playback information reason: interlaced video isn't supported"
+    },
+    "externalSources": "",
+    "@externalSources": {
+        "description": "Section header on the Home Screen settings screen for rows that come from IMDb, TMDB, calendars, Seerr and custom lists"
+    },
+    "autoDownloadQualityTitle": "",
+    "@autoDownloadQualityTitle": {
+        "description": "Title of the quality sheet when it is opened to create an auto-download subscription"
+    },
+    "bottomNavbarTabsAutomatic": "",
+    "@bottomNavbarTabsAutomatic": {
+        "description": "Shown when the bottom bar tabs are picked from the navigation button settings"
+    },
+    "homeRowsSubtitle": "",
+    "@homeRowsSubtitle": {
+        "description": "Subtitle for the Home rows entry"
+    },
+    "qualityAndDecoding": "",
+    "@qualityAndDecoding": {
+        "description": "Settings screen for streaming limits, decoding, HDR and Dolby Vision"
+    },
+    "setupDetailNouveauHint": "",
+    "@setupDetailNouveauHint": {
+        "description": "What the nouveau detail screen style gives you"
+    },
+    "settingsStorageSubtitle": "",
+    "@settingsStorageSubtitle": {
+        "description": "Subtitle for the Storage & Downloads settings root entry"
+    },
+    "downloadNotEnoughStorage": "",
+    "@downloadNotEnoughStorage": {
+        "description": "Error shown when a download would not fit on the device; needed and free are formatted sizes",
+        "placeholders": {
+            "needed": {
+                "type": "String"
+            },
+            "free": {
+                "type": "String"
+            }
+        }
+    },
+    "navigationBar": "",
+    "@navigationBar": {
+        "description": "Settings screen for the navigation bar style and buttons"
+    },
+    "settingsAccountSubtitle": "",
+    "@settingsAccountSubtitle": {
+        "description": "Subtitle for the Account settings root entry"
+    },
+    "settingsAppearanceSubtitle": "",
+    "@settingsAppearanceSubtitle": {
+        "description": "Subtitle for the Appearance settings root entry"
+    },
+    "pageTransitionFadeNone": "",
+    "@pageTransitionFadeNone": {
+        "description": "Option label for instant page transition with no fade"
+    },
+    "settingsSignInSection": "",
+    "@settingsSignInSection": {
+        "description": "Section header on the Account settings screen"
+    },
+    "settingsLanguageSection": "",
+    "@settingsLanguageSection": {
+        "description": "Section header on the General settings screen"
+    },
+    "settingsInputSection": "",
+    "@settingsInputSection": {
+        "description": "Section header on the General settings screen for keyboard, remote and pointer options"
+    },
+    "settingsContentsSection": "",
+    "@settingsContentsSection": {
+        "description": "Section header on the Home Screen settings screen for the rows, row options and media bar"
+    },
+    "bottomNavbarSplitSearchNote": "",
+    "@bottomNavbarSplitSearchNote": {
+        "description": "Note on the bottom bar tabs screen about the Split style"
+    },
+    "pageTransitionFadeMedium": "",
+    "@pageTransitionFadeMedium": {
+        "description": "Option label for medium fade page transition"
+    },
+    "bottomNavbarStyleDock": "",
+    "@bottomNavbarStyleDock": {
+        "description": "Bottom bar style: a floating pill with labelled tabs"
+    },
+    "animationSpeedMedium": "",
+    "@animationSpeedMedium": {
+        "description": "Option label for medium/normal animation speed"
+    },
+    "autoDownloadStorageFull": "",
+    "@autoDownloadStorageFull": {
+        "description": "Appended to the last-check summary when the storage limit stopped queueing"
+    },
+    "smartDownloadsKeepReadyLowered": "",
+    "@smartDownloadsKeepReadyLowered": {
+        "description": "Shown after lowering the episodes to keep downloaded, explaining nothing is deleted"
+    },
+    "cinemaSkipPrerolls": "",
+    "modernCardsTransitionSpeed": "",
+    "@modernCardsTransitionSpeed": {
+        "description": "Setting title for adjusting animation speed of modern card expansions"
+    },
+    "downloadSpeed": "",
+    "@downloadSpeed": {
+        "description": "Transfer rate of a running download, e.g. '25.3 MB/s'",
+        "placeholders": {
+            "speed": {
+                "type": "String"
+            }
+        }
+    },
+    "screensaverAdditionalComponent": "",
+    "@screensaverAdditionalComponent": {
+        "description": "Setting for screensaver additional component"
+    },
+    "currentTime": "",
+    "@currentTime": {
+        "description": "The current time as it appears on a clock"
+    },
+    "cropBlackBarsEverySecond": "",
+    "@cropBlackBarsEverySecond": {
+        "description": "Letterbox recrop interval: scan about once a second"
+    },
+    "countryCanada": "",
+    "@countryCanada": {
+        "description": "Country name"
+    },
+    "seasonalRowHolidays": "",
+    "@seasonalRowHolidays": {
+        "description": "Heading for the list of holidays the seasonal row can show"
+    },
+    "shortcutZoom": "",
+    "@shortcutZoom": {
+        "description": "Reader shortcut action"
+    },
+    "savedMediaNoResults": "",
+    "@savedMediaNoResults": {
+        "description": "Empty state when a search over saved media matches nothing"
+    },
+    "achievementsPowerUpFailed": "",
+    "@achievementsPowerUpFailed": {
+        "description": "Message shown when using a power-up did not go through"
+    },
+    "achievementsHours": "",
+    "@achievementsHours": {
+        "description": "Leaderboard category: hours watched"
+    },
+    "achievementsLocked": "",
+    "@achievementsLocked": {
+        "description": "Badge filter: locked only"
+    },
+    "friendsUnblockBody": "",
+    "@friendsUnblockBody": {
+        "description": "Body of the dialog unblocking a user",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "autoDownloadCheckNow": "",
+    "@autoDownloadCheckNow": {
+        "description": "Button that runs a subscription check immediately"
+    },
+    "autoDownloadFollowedSeries": "",
+    "@autoDownloadFollowedSeries": {
+        "description": "Settings section header listing the series with auto-download on"
+    },
+    "topShelfAppBanner": "",
+    "@topShelfAppBanner": {
+        "description": "Top Shelf option that shows only the static Moonfin logo banner, nothing from the library"
+    },
+    "autoDownloadLastCheckFailed": "",
+    "@autoDownloadLastCheckFailed": {
+        "description": "Subtitle when the last subscription check hit an error",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "friends": "",
+    "@friends": {
+        "description": "Title of the friends panel from the Achievement Badges plugin"
+    },
+    "friendsRequests": "",
+    "@friendsRequests": {
+        "description": "Entry that opens pending friend requests"
+    },
+    "friendsPrivacySubtitle": "",
+    "@friendsPrivacySubtitle": {
+        "description": "Subtitle of the friends Privacy entry"
+    },
+    "friendsNone": "",
+    "@friendsNone": {
+        "description": "Shown when the friends list is empty"
+    },
+    "friendsCancelRequest": "",
+    "@friendsCancelRequest": {
+        "description": "Take back a friend request the user sent"
+    },
+    "friendsNoMatches": "",
+    "@friendsNoMatches": {
+        "description": "Shown when the people search finds nobody"
+    },
+    "friendsProfileHidden": "",
+    "@friendsProfileHidden": {
+        "description": "Shown when another user hides their profile",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsHideLastWatched": "",
+    "@friendsHideLastWatched": {
+        "description": "Privacy setting that hides the last played item while offline"
+    },
+    "chatNew": "",
+    "@chatNew": {
+        "description": "Entry that starts a chat with one friend"
+    },
+    "chatNewSubtitle": "",
+    "@chatNewSubtitle": {
+        "description": "Subtitle of the New message entry"
+    },
+    "chatSeen": "",
+    "@chatSeen": {
+        "description": "Read receipt on a sent chat message"
+    },
+    "chatDeleteBody": "",
+    "@chatDeleteBody": {
+        "description": "Body of the dialog deleting a chat message"
+    },
+    "chatClear": "",
+    "@chatClear": {
+        "description": "Action that deletes every message in a chat"
+    },
+    "chatMemberCount": "",
+    "@chatMemberCount": {
+        "description": "How many people are in a group chat",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "chatAddMember": "",
+    "@chatAddMember": {
+        "description": "Action that adds friends to a group chat"
+    },
+    "transcodeAudioChannelsExceeded": "",
+    "@transcodeAudioChannelsExceeded": {
+        "placeholders": {
+            "channels": {
+                "type": "int"
+            }
+        }
+    },
+    "siriRemoteSwipeSensitivity": "",
+    "@siriRemoteSwipeSensitivity": {
+        "description": "Apple TV settings label for how far a swipe on the Siri Remote touchpad moves the focus highlight"
+    },
+    "adminTranscodingAudioSeekHelp": "",
+    "adminTranscodingTranscodeAudio": "",
+    "adminResumeAudiobookRemaining": "",
+    "cropBlackBars": "",
+    "@cropBlackBars": {
+        "description": "Setting to detect and crop encoded letterbox/pillarbox bars"
+    },
+    "adminNetworkingLocalHttpsPort": "",
+    "adminNetworkingLocalHttpsPortHelp": "",
+    "adminNetworkingCertPasswordHelp": "",
+    "adminNetworkingOtherPublishedUrisHelp": "",
+    "adminBackupsHelp": "",
+    "quickConnectScanHint": "",
+    "@quickConnectScanHint": {
+        "description": "Caption under the Quick Connect QR code that opens the server's web page with the code filled in"
+    },
+    "quickConnectTapOrScanHint": "",
+    "@quickConnectTapOrScanHint": {
+        "description": "Caption under the Quick Connect QR code on a phone or tablet, where tapping the code opens the server's web page with the code filled in"
+    },
+    "musicLibraryStyle": "",
+    "@musicLibraryStyle": {
+        "description": "Label for the setting that picks the music library layout"
+    },
+    "musicLibraryStyleDescription": "",
+    "@musicLibraryStyleDescription": {
+        "description": "Explanation under the music library style setting"
+    },
+    "jumpBackIn": "",
+    "@jumpBackIn": {
+        "description": "Heading over the albums and playlists the user played recently in a music library"
+    },
+    "locallyDecodedCodecs": "",
+    "adminBackupDisclaimer": "",
+    "adminBackupTasksWarningTitle": "",
+    "spotlightStudiosCount": "",
+    "@spotlightStudiosCount": {
+        "description": "Count fragment on spotlight summary cards: studios",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "detailMetadataRuntimeAndSeasons": "",
+    "@detailMetadataRuntimeAndSeasons": {
+        "description": "Item label for runtime or season/episode counts in metadata row"
+    },
+    "detailMetadataStatus": "",
+    "@detailMetadataStatus": {
+        "description": "Item label for series status badge in metadata row"
+    },
+    "screensaverComponentPosition": "",
+    "@screensaverComponentPosition": {
+        "description": "Setting for screensaver component position"
+    },
+    "screensaverBackdropCalm": "",
+    "@screensaverBackdropCalm": {
+        "description": "Screensaver backdrop: Calm"
+    },
+    "subtitleDownloadLanguages": "",
+    "@subtitleDownloadLanguages": {
+        "description": "Setting that picks which languages a subtitle download searches"
+    },
+    "libraryAToZ": "",
+    "@libraryAToZ": {
+        "description": "Library bottom bar button that turns the alphabet on and off"
+    },
+    "detailSectionGuestAppearances": "",
+    "@detailSectionGuestAppearances": {
+        "description": "Details screen section: a person's guest appearances"
+    },
+    "bookLibraryStyleReadingRoom": "",
+    "@bookLibraryStyleReadingRoom": {
+        "description": "Book library style option: large Continue cards over a few shelves"
+    },
+    "requestedByLabel": "",
+    "@requestedByLabel": {
+        "description": "Label above the name of whoever requested media, where the name sits on its own line"
+    },
+    "adminTranscodingFontExtraction": "",
+    "adminNetworkingLocalAddressHelp": "",
+    "adminSyncJobCancel": "",
+    "adminCinemaIntrosLibraryHelp": "",
+    "adminCinemaIntrosCount": "",
+    "adminCinemaIntrosCustomPathHelp": "",
+    "adminCinemaIntrosCodecPath": "",
+    "adminDlnaPlayTo": "",
+    "adminCameraUploadPath": "",
+    "adminPremiereLoadFailed": "",
+    "embyPremiereRequiredTitle": "",
+    "adminImageTypeArt": "",
+    "adminMetadataFieldAlbum": "",
+    "adminMetadataFieldTrackNumber": "",
+    "adminMetadataFieldDiscNumber": "",
+    "adminLibDelimiterWhitelistHelp": "",
+    "adminLiveTvSdCreateAccount": "",
+    "@adminLiveTvSdCreateAccount": {
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLiveTvRecordingPath": "",
+    "adminKeepEditing": "",
+    "adminLiveTvMapChannels": "",
+    "adminLiveTvSdLineup": "",
+    "adminUserLastActivity": "",
+    "@adminUserLastActivity": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "adminChannelAccess": "",
+    "adminDashboardAlerts": "",
+    "adminLogLevelDebug": "",
+    "adminActivityAllUsers": "",
+    "adminNetworkingBaseUrlHelp": "",
+    "adminNetworkingKnownProxiesHelp": "",
+    "adminGroupPlayback": "",
+    "adminGroupPeople": "",
+    "adminPageDescDashboard": "",
+    "adminPageDescLiveTv": "",
+    "adminBackupTasksWarning": "",
+    "settingsShowLiveTvButtonInNavigation": "",
+    "achievementsBadges": "",
+    "@achievementsBadges": {
+        "description": "Badges section title"
+    },
+    "friendsBlocked": "",
+    "@friendsBlocked": {
+        "description": "Section header listing blocked users"
+    },
+    "friendsRequestCount": "",
+    "@friendsRequestCount": {
+        "description": "How many friend requests wait for an answer",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementBadgesSubtitle": "",
+    "@achievementBadgesSubtitle": {
+        "description": "Subtitle of the Achievement Badges entry in Integrations"
+    },
+    "achievementsEarnedAt": "",
+    "@achievementsEarnedAt": {
+        "description": "What a user has to reach to unlock a cosmetic without paying",
+        "placeholders": {
+            "score": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsAppearanceEmpty": "",
+    "@achievementsAppearanceEmpty": {
+        "description": "Shown when the plugin carries no cosmetics this panel can draw"
+    },
+    "achievementsStatDays": "",
+    "@achievementsStatDays": {
+        "description": "Counter label"
+    },
+    "achievementsUnlockToastsSubtitle": "",
+    "@achievementsUnlockToastsSubtitle": {
+        "description": "Subtitle of the unlock notifications switch"
+    },
+    "adminRestoreInProgress": "",
+    "transcodeSubtitleBurnInPgsHint": "",
+    "serverMessagesNotificationReceived": "",
+    "@serverMessagesNotificationReceived": {
+        "description": "System notification body for a server message with empty text"
+    },
+    "bottomNavbarStyleStrip": "",
+    "@bottomNavbarStyleStrip": {
+        "description": "Bottom bar style: a full-width bar along the bottom edge"
+    },
+    "setupOptional": "",
+    "@setupOptional": {
+        "description": "Tag beside an optional section in the setup wizard"
+    },
+    "autoDownloadChecking": "",
+    "@autoDownloadChecking": {
+        "description": "Subtitle while a subscription check is running"
+    },
+    "settingsServicesSubtitle": "",
+    "@settingsServicesSubtitle": {
+        "description": "Subtitle for the Services settings root entry"
+    },
+    "downloadNotificationSaved": "",
+    "@downloadNotificationSaved": {
+        "description": "System notification body for one finished download; name is the item label (for example Series S1E1)",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminRestoreWaitingForServer": "",
+    "adminRestoreSucceeded": "",
+    "adminLogStopWatching": "",
+    "adminPluginInstallConfirmTitle": "",
+    "adminGroupOverview": "",
+    "adminGroupLibrary": "",
+    "savedMediaDeleteDownload": "",
+    "@savedMediaDeleteDownload": {
+        "description": "Row menu action that removes one downloaded file from the device"
+    },
+    "animeMarkerPending": "",
+    "@animeMarkerPending": {
+        "description": "Badge on an anime episode whose filler information the server has matched but not downloaded yet"
+    },
+    "animeMarkerAnimeCanon": "",
+    "@animeMarkerAnimeCanon": {
+        "description": "Badge on an anime episode that is not in the source manga but is part of the anime's own continuity"
+    },
+    "animeMarkerMangaCanon": "",
+    "@animeMarkerMangaCanon": {
+        "description": "Badge on an anime episode adapted from the source manga"
+    },
+    "animeMarkerSubbed": "",
+    "@animeMarkerSubbed": {
+        "description": "Badge on an anime episode or season whose only audio is Japanese, so it is watched with subtitles"
+    },
+    "animeMarkerDubbed": "",
+    "@animeMarkerDubbed": {
+        "description": "Badge on an anime episode or season that has an audio track in a language other than Japanese"
+    },
+    "animeMarkerSubbedAndDubbed": "",
+    "@animeMarkerSubbedAndDubbed": {
+        "description": "Badge on anime that carries both the original Japanese audio and a dub, so it can be watched either way"
+    },
+    "spotlightSeasonsCount": "",
+    "@spotlightSeasonsCount": {
+        "description": "Count fragment on spotlight summary cards: seasons",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminPageDescTasks": "",
+    "adminPageDescLibraries": "",
+    "detailMetadataGenres": "",
+    "@detailMetadataGenres": {
+        "description": "Item label for genre tags in metadata row"
+    },
+    "detailMetadataSeerrAvailability": "",
+    "@detailMetadataSeerrAvailability": {
+        "description": "Item label for Seerr request and availability badge in metadata row"
+    },
+    "adminPageDescDisplay": "",
+    "adminPageDescMetadata": "",
+    "adminPageDescNfo": "",
+    "adminPageDescResume": "",
+    "adminPageDescStreaming": "",
+    "adminPageDescTrickplay": "",
+    "adminPageDescDevices": "",
+    "adminPageDescLogs": "",
+    "adminSearchSettingsHint": "",
+    "@adminSearchSettingsHint": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminSearchClear": "",
+    "transcodeDolbyVisionProfile7ElHint": "",
+    "adminUnsavedChanges": "",
+    "adminDiscard": "",
+    "pluginConnected": "",
+    "@pluginConnected": {
+        "description": "Status line on the Settings Sync screen when the server plugin answers"
+    },
+    "pluginConnectedVersion": "",
+    "@pluginConnectedVersion": {
+        "description": "Status line on the Settings Sync screen with the server plugin's version",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "pluginSyncOff": "",
+    "@pluginSyncOff": {
+        "description": "Caption under the settings sync switch while sync is off"
+    },
+    "rowOptions": "",
+    "@rowOptions": {
+        "description": "Settings screen with sorting and content options for each Home row"
+    },
+    "rowOptionsSubtitle": "",
+    "@rowOptionsSubtitle": {
+        "description": "Subtitle for the Row Options entry"
+    },
+    "imageTypePerRow": "",
+    "@imageTypePerRow": {
+        "description": "Settings entry and screen for choosing the image type of each Home row"
+    },
+    "skippingAndAutoplay": "",
+    "@skippingAndAutoplay": {
+        "description": "Settings screen for media segment skipping, cinema mode and autoplay"
+    },
+    "advancedPlayback": "",
+    "@advancedPlayback": {
+        "description": "Settings screen for advanced player routing, external players and mpv"
+    },
+    "spotlightChaptersCount": "",
+    "@spotlightChaptersCount": {
+        "description": "Count fragment on spotlight summary cards: chapters",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightExtrasCount": "",
+    "@spotlightExtrasCount": {
+        "description": "Count fragment on spotlight summary cards: extras/special features",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightMoviesCount": "",
+    "@spotlightMoviesCount": {
+        "description": "Count fragment on spotlight summary cards: movies",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightShowsCount": "",
+    "@spotlightShowsCount": {
+        "description": "Count fragment on spotlight summary cards: series/shows",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "seerrDiscoverSliders": "",
+    "@seerrDiscoverSliders": {
+        "description": "Seerr Lists heading for the sliders an admin set up on Seerr's discover page"
+    },
+    "screensaverBackdropAurora": "",
+    "@screensaverBackdropAurora": {
+        "description": "Screensaver backdrop: Aurora"
+    },
+    "achievementsUsePowerUp": "",
+    "@achievementsUsePowerUp": {
+        "description": "Title of the dialog confirming a power-up is spent"
+    },
+    "achievementsStatEarlyMorning": "",
+    "@achievementsStatEarlyMorning": {
+        "description": "Counter label"
+    },
+    "achievementsStatWeekend": "",
+    "@achievementsStatWeekend": {
+        "description": "Counter label"
+    },
+    "transcodeTargetCodecs": "",
+    "achievementsAppearanceSubtitle": "",
+    "@achievementsAppearanceSubtitle": {
+        "description": "Subtitle on the row that opens the appearance screen"
+    },
+    "spotlightCollectionsCount": "",
+    "@spotlightCollectionsCount": {
+        "description": "Count fragment on spotlight summary cards: collections",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "shortcutNextItem": "",
+    "@shortcutNextItem": {
+        "description": "Player shortcut action for the next-track media key"
+    },
+    "timesUpTitle": "",
+    "@timesUpTitle": {
+        "description": "Title of the screen that covers the app when the user's access schedule doesn't allow the current time"
+    },
+    "timesUpMessage": "",
+    "@timesUpMessage": {
+        "description": "Explanation on the Time's up screen"
+    },
+    "downloadBytesOfTotal": "",
+    "@downloadBytesOfTotal": {
+        "description": "Transfer status of a running download, e.g. '1.2 GB of 4.6 GB'",
+        "placeholders": {
+            "received": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "spotlightPeopleCount": "",
+    "@spotlightPeopleCount": {
+        "description": "Count fragment on spotlight summary cards: people",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightItemsCount": "",
+    "@spotlightItemsCount": {
+        "description": "Count fragment on spotlight summary cards: generic items",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightAlbumsCount": "",
+    "@spotlightAlbumsCount": {
+        "description": "Count fragment on spotlight summary cards: albums",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightTitlesCount": "",
+    "@spotlightTitlesCount": {
+        "description": "Count fragment on the spotlight similar card: titles across the library and Seerr sections",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "savedMediaPlayFromStart": "",
+    "@savedMediaPlayFromStart": {
+        "description": "Row menu action that restarts a partly watched download from the beginning"
+    },
+    "actionButtonsOnScreenPlayOnly": "",
+    "@actionButtonsOnScreenPlayOnly": {
+        "description": "Option showing only the play action button on screen"
+    },
+    "detailMetadataParentalRating": "",
+    "@detailMetadataParentalRating": {
+        "description": "Item label for parental content rating in metadata row"
+    },
+    "shortcutSeekBack": "",
+    "@shortcutSeekBack": {
+        "description": "Player shortcut action. The step is the skip back length from settings"
+    },
+    "shortcutPreviousItem": "",
+    "@shortcutPreviousItem": {
+        "description": "Player shortcut action for the previous-track media key"
+    },
+    "holidayChristmas": "",
+    "@holidayChristmas": {
+        "description": "Seasonal row title for Christmas"
+    },
+    "recordCurrentProgram": "",
+    "@recordCurrentProgram": {
+        "description": "Live TV player action to record only the current program"
+    },
+    "nextSeriesRecording": "",
+    "@nextSeriesRecording": {
+        "description": "Next scheduled recording for the current series, shown in the Live TV recording dialog",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "Oct 5, 2026 · 8:00 PM"
+            }
+        }
+    },
+    "videoRendererDescription": "",
+    "@videoRendererDescription": {
+        "description": "Settings description for the video renderer choice"
+    },
+    "videoRendererNativeWindow": "",
+    "@videoRendererNativeWindow": {
+        "description": "Video renderer option that plays every title in its own window"
+    },
+    "videoRendererNativeHdrOnly": "",
+    "@videoRendererNativeHdrOnly": {
+        "description": "Video renderer option that uses its own window for HDR titles and the in-app renderer for SDR"
+    },
+    "detailSectionGroupOther": "",
+    "@detailSectionGroupOther": {
+        "description": "Group heading for Details screen sections that fit no other group"
+    },
+    "noProgramData": "",
+    "@noProgramData": {
+        "description": "Guide cell label for a real EPG schedule gap, not a genre-filtered program"
+    },
+    "screensaverBackdropNeonPulse": "",
+    "@screensaverBackdropNeonPulse": {
+        "description": "Screensaver backdrop: Neon Pulse"
+    },
+    "settingsAudioPassthroughOutput": "",
+    "@settingsAudioPassthroughOutput": {
+        "description": "Title of the RAW-vs-IEC passthrough packer selector (Android TV, Media3 engine)"
+    },
+    "detailSectionBirthplace": "",
+    "@detailSectionBirthplace": {
+        "description": "Details screen section: a person's place of birth"
+    },
+    "detailSectionPersonPagesSubtitle": "",
+    "@detailSectionPersonPagesSubtitle": {
+        "description": "Subtitle for Seerr sections only shown on a person's Details screen"
+    },
+    "detailSectionBiography": "",
+    "@detailSectionBiography": {
+        "description": "Details screen section: a person's biography"
+    },
+    "primarySubtitleSlot": "",
+    "@primarySubtitleSlot": {
+        "description": "Label for the primary subtitle selection slot"
+    },
+    "secondarySubtitleSlot": "",
+    "@secondarySubtitleSlot": {
+        "description": "Label for the secondary subtitle selection slot"
+    },
+    "adminGeneralMaintenanceModeHelp": "",
+    "adminGeneralSectionUpdates": "",
+    "adminEmbyRestoreConfirm": "",
+    "@adminEmbyRestoreConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminAllowSharingPersonalItems": "",
+    "adminAllowPreferenceAccess": "",
+    "adminPremiereKeyRejected": "",
+    "adminLibUseCustomTagDelimiters": "",
+    "adminMetadataFieldDeathDate": "",
+    "adminLiveTvDeleteTuner": "",
+    "adminLiveTvGuideDaysHelp": "",
+    "adminLiveTvSectionDefaultRecording": "",
+    "adminLiveTvSectionMetadata": "",
+    "adminCurrentPassword": "",
+    "adminLogLevelTrace": "",
+    "adminNetworkingBindAddress": "",
+    "adminPageDescPlugins": "",
+    "clientCertDecodeFailed": "",
+    "@clientCertDecodeFailed": {
+        "description": "Shown when the file isn't a usable .p12 or .pfx"
+    },
+    "pinTryAgainIn": "",
+    "@pinTryAgainIn": {
+        "description": "Shown when PIN entry is locked after repeated wrong guesses",
+        "placeholders": {
+            "wait": {
+                "type": "String",
+                "example": "30s"
+            }
+        }
+    },
+    "settingsDisplayNoHdrDetected": "",
+    "settingsRedetectDisplayDescription": "",
+    "clientCertSubject": "",
+    "@clientCertSubject": {
+        "description": "Label for the name on a client certificate"
+    },
+    "friendsRemoveBody": "",
+    "@friendsRemoveBody": {
+        "description": "Body of the dialog removing a friend",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsAppearOffline": "",
+    "@friendsAppearOffline": {
+        "description": "Privacy setting that always shows the user as offline"
+    },
+    "friendsWatching": "",
+    "@friendsWatching": {
+        "description": "Status line of a friend who is playing something",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "achievementsBadgeCount": "",
+    "@achievementsBadgeCount": {
+        "description": "How many badges are unlocked out of the total",
+        "placeholders": {
+            "unlocked": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsStatRewatches": "",
+    "@achievementsStatRewatches": {
+        "description": "Counter label"
+    },
+    "achievementsStatBestWatchStreak": "",
+    "@achievementsStatBestWatchStreak": {
+        "description": "Counter label"
+    },
+    "achievementsStatLibraries": "",
+    "@achievementsStatLibraries": {
+        "description": "Counter label"
+    },
+    "achievementsBoost": "",
+    "@achievementsBoost": {
+        "description": "Power-up that doubles score for an hour"
+    },
+    "achievementsNothingHere": "",
+    "@achievementsNothingHere": {
+        "description": "Empty state for an achievements list"
+    },
+    "achievementsHiddenBadge": "",
+    "@achievementsHiddenBadge": {
+        "description": "Placeholder name for a secret badge that is still locked"
+    },
+    "achievementsStatBestLoginStreak": "",
+    "@achievementsStatBestLoginStreak": {
+        "description": "Counter label"
+    },
+    "analyticsShareOfItems": "",
+    "@analyticsShareOfItems": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsOutgoing": "",
+    "@friendsOutgoing": {
+        "description": "Section header for friend requests the user sent"
+    },
+    "setupPlaybackLanguages": "",
+    "@setupPlaybackLanguages": {
+        "description": "Heading of the optional audio and subtitle language section on the last setup wizard screen"
+    },
+    "topShelfDescription": "",
+    "@topShelfDescription": {
+        "description": "Apple TV settings subtitle for the Top Shelf option"
+    },
+    "settingsMotionSection": "",
+    "@settingsMotionSection": {
+        "description": "Section header on the Appearance settings screen for animation speeds"
+    },
+    "transcodeSubtitleNotSupportedWithCodec": "",
+    "@transcodeSubtitleNotSupportedWithCodec": {
+        "placeholders": {
+            "codec": {
+                "type": "String"
+            }
+        }
+    },
+    "transcodeSecondaryAudioNotSupported": "",
+    "autoDownloadDeleteAfterDay": "",
+    "@autoDownloadDeleteAfterDay": {
+        "description": "Delete-after-watching option"
+    },
+    "autoDownloadDelete": "",
+    "@autoDownloadDelete": {
+        "description": "Setting that picks how soon an auto-downloaded episode is removed after it was watched"
+    },
+    "autoDownloadBackgroundRestrictedAndroid": "",
+    "@autoDownloadBackgroundRestrictedAndroid": {
+        "description": "Shown when Android restricts the app from running in the background"
+    },
+    "homeRows": "",
+    "@homeRows": {
+        "description": "Settings entry and screen for turning Home rows on or off and ordering them"
+    },
+    "autoDownloadDeleteImmediately": "",
+    "@autoDownloadDeleteImmediately": {
+        "description": "Delete-after-watching option: remove at the next check once played"
+    },
+    "transcodeDolbyVisionFallbackHint": "",
+    "transcodeAudioBitDepthNotSupported": "",
+    "shortcutSkipSegment": "",
+    "@shortcutSkipSegment": {
+        "description": "Player shortcut action that presses the skip intro or credits button while it is showing"
+    },
+    "buttonShownInSyncPlayGroup": "",
+    "@buttonShownInSyncPlayGroup": {
+        "description": "Hint under the SyncPlay and Watch with group buttons in the button settings, which only appear once the user has joined a group"
+    },
+    "libraryStyleModern": "",
+    "@libraryStyleModern": {
+        "description": "Library style option: one bar with labeled buttons"
+    },
+    "libraryJumpToLetter": "",
+    "@libraryJumpToLetter": {
+        "description": "Label of the alphabet in a library, which scrolls to the first item starting with the chosen letter"
+    },
+    "adminExternalIdTypeArtist": "",
+    "adminExternalIdTypeAlbumArtist": "",
+    "adminExternalIdTypeOtherArtist": "",
+    "adminExternalIdTypeReleaseGroup": "",
+    "adminLibFetcherSettings": "",
+    "adminLibImageOptionsTitle": "",
+    "@adminLibImageOptionsTitle": {
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLibFetchImages": "",
+    "adminImageTypeBox": "",
+    "adminImageTypeBoxRear": "",
+    "adminImageTypeDisc": "",
+    "adminImageTypeMenu": "",
+    "adminActivityMediaDetails": "",
+    "adminMetadataFieldOriginalLanguage": "",
+    "adminMetadataFieldDateAdded": "",
+    "adminMetadataFieldSeriesName": "",
+    "adminMetadataFieldRuntime": "",
+    "adminMetadataFieldPlaceOfBirth": "",
+    "adminMetadataFieldBirthDate": "",
+    "adminMetadataFieldAspectRatio": "",
+    "adminMetadataFieldAirsBeforeSeason": "",
+    "adminMetadataSectionRatings": "",
+    "adminMetadataItemLocked": "",
+    "adminMetadataNameOrIdRequired": "",
+    "adminLibMetadataReaders": "",
+    "adminRenameLibraryWarning": "",
+    "adminDeleteLibraryConfirm": "",
+    "@adminDeleteLibraryConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminDeleteLibraryLocations": "",
+    "adminRefreshModeScan": "",
+    "adminRefreshModeMissing": "",
+    "adminReplaceTrickplayImages": "",
+    "adminActivityCount": "",
+    "@adminActivityCount": {
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLiveTvTabSources": "",
+    "adminLiveTvTabRecordings": "",
+    "adminLiveTvAddTuner": "",
+    "adminLiveTvDetectDevices": "",
+    "adminLiveTvNoNewDevices": "",
+    "adminLiveTvDrmNote": "",
+    "adminLiveTvDeleteProvider": "",
+    "adminLiveTvNoTunerChannels": "",
+    "adminLiveTvSdSelectLineup": "",
+    "adminLiveTvGuideDays": "",
+    "adminLiveTvStartWhenPossible": "",
+    "adminDeviceAccess": "",
+    "adminSessionGoHome": "",
+    "adminPlayMethodRemux": "",
+    "adminLogLevelInformation": "",
+    "adminTaskLastRan": "",
+    "@adminTaskLastRan": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            },
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskResultFailed": "",
+    "adminTaskHoursValue": "",
+    "@adminTaskHoursValue": {
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTimeLimitHours": "",
+    "adminTranscodingDecodingFor": "",
+    "adminTranscodingThreadMax": "",
+    "adminTranscodingTrimCopiedAudio": "",
+    "adminResumeMinAudiobookMinutes": "",
+    "adminResumeMinAudiobookHelp": "",
+    "adminNetworkingSectionHttps": "",
+    "adminNetworkingSectionIpProtocols": "",
+    "adminNetworkingBindAddressHelp": "",
+    "adminNetworkingLanNetworksHelp": "",
+    "adminNetworkingCustomCertPath": "",
+    "adminNetworkingCertPathHelp": "",
+    "adminNetworkingAllowRemote": "",
+    "adminNetworkingAllowRemoteHelp": "",
+    "adminNetworkingRemoteIpFilterHelp": "",
+    "adminNetworkingRemoteIpFilterMode": "",
+    "adminNetworkingPublicHttpPortHelp": "",
+    "adminLogWatch": "",
+    "adminPageDescAnalytics": "",
+    "adminPageDescActivity": "",
+    "adminPageDescUsers": "",
+    "adminPageDescRepositories": "",
+    "adminPageDescBackups": "",
+    "adminLeaveTitle": "",
+    "adminLeaveMessage": "",
+    "librarySortMyRating": "",
+    "@librarySortMyRating": {
+        "description": "Sort option: by the viewer's own like or dislike"
+    },
+    "librarySortAlbumArtist": "",
+    "@librarySortAlbumArtist": {
+        "description": "Sort option for music: by album artist"
+    },
+    "librarySortAlbum": "",
+    "@librarySortAlbum": {
+        "description": "Sort option for music: by album name"
+    },
+    "seasonalDensityNormal": "",
+    "@seasonalDensityNormal": {
+        "description": "Seasonal effect density: the default amount"
+    },
+    "seasonalDensityHeavy": "",
+    "@seasonalDensityHeavy": {
+        "description": "Seasonal effect density: most particles"
+    },
+    "noUpcomingSeriesRecording": "",
+    "@noUpcomingSeriesRecording": {
+        "description": "A series recording rule exists but no future episode timer is available"
+    },
+    "syncProfileDescription": "",
+    "@syncProfileDescription": {
+        "description": "Caption above the settings profile cards on the Settings Sync screen"
+    },
+    "settingsDisplayIsSdr": "",
+    "modernCardsOnMyMediaRow": "",
+    "clientCertStopUpload": "",
+    "@clientCertStopUpload": {
+        "description": "Button that closes the phone upload page before a certificate arrives"
+    },
+    "clientCertNoFileData": "",
+    "@clientCertNoFileData": {
+        "description": "Shown when the picked file has no contents"
+    },
+    "clientCertPickFailed": "",
+    "@clientCertPickFailed": {
+        "description": "Shown when the file picker fails to open"
+    },
+    "achievementsStatsServer": "",
+    "@achievementsStatsServer": {
+        "description": "Section of figures covering every user"
+    },
+    "chatRemoveMember": "",
+    "@chatRemoveMember": {
+        "description": "Action that removes someone from a group chat"
+    },
+    "chatEmoji": "",
+    "@chatEmoji": {
+        "description": "Button that opens the emoji picker in a chat"
+    },
+    "audiobookFullTimeline": "",
+    "friendsNoRequests": "",
+    "@friendsNoRequests": {
+        "description": "Shown when there are no pending friend requests"
+    },
+    "achievementsStatLateNight": "",
+    "@achievementsStatLateNight": {
+        "description": "Counter label"
+    },
+    "transcodeRefFramesNotSupported": "",
+    "autoDownloadStop": "",
+    "@autoDownloadStop": {
+        "description": "Row in the download sheet of a series that is already subscribed; tapping removes the subscription"
+    },
+    "pageTransitionsSubtitle": "",
+    "@pageTransitionsSubtitle": {
+        "description": "Description for the page transitions animation speed setting"
+    },
+    "pageTransitionFadeLong": "",
+    "@pageTransitionFadeLong": {
+        "description": "Option label for long fade page transition"
+    },
+    "bottomNavbarTabsDescription": "",
+    "@bottomNavbarTabsDescription": {
+        "description": "Explains the bottom bar tabs screen"
+    },
+    "downloadNotificationSeriesEpisodes": "",
+    "@downloadNotificationSeriesEpisodes": {
+        "description": "System notification body for a finished batch that all belongs to one series",
+        "placeholders": {
+            "series": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "autoDownloadLastCheck": "",
+    "@autoDownloadLastCheck": {
+        "description": "Subtitle summarising the last subscription check",
+        "placeholders": {
+            "when": {
+                "type": "String"
+            },
+            "queued": {
+                "type": "int"
+            }
+        }
+    },
+    "smartDownloadsKeepReadySubtitle": "",
+    "@smartDownloadsKeepReadySubtitle": {
+        "description": "Subtitle under the episodes to keep ready setting",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "queuedMoreCount": "",
+    "@queuedMoreCount": {
+        "description": "Row under the active downloads list standing in for queued items not shown individually",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "screensaverVisualComponents": "",
+    "@screensaverVisualComponents": {
+        "description": "Section header for screensaver visual components"
+    },
+    "playlistSortReleaseDate": "",
+    "@playlistSortReleaseDate": {
+        "description": "Label for sorting playlist items by release date"
+    },
+    "playlistSortCriticRating": "",
+    "@playlistSortCriticRating": {
+        "description": "Label for sorting playlist items by critic rating"
+    },
+    "playlistSortRuntime": "",
+    "@playlistSortRuntime": {
+        "description": "Label for sorting playlist items by runtime"
+    },
+    "playlistSortLastPlayed": "",
+    "@playlistSortLastPlayed": {
+        "description": "Label for sorting playlist items by last played date"
+    },
+    "playlistSortPlayCount": "",
+    "@playlistSortPlayCount": {
+        "description": "Label for sorting playlist items by play count"
+    },
+    "playlistNoMatchingTracks": "",
+    "@playlistNoMatchingTracks": {
+        "description": "Empty state message shown when playlist filters match no items"
+    },
+    "trackActionViewDetails": "",
+    "achievementsUnlockedCount": "",
+    "@achievementsUnlockedCount": {
+        "description": "Title of the notification for several badges unlocked at once",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsScore": "",
+    "@achievementsScore": {
+        "description": "The score a user has earned",
+        "placeholders": {
+            "score": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsShowcase": "",
+    "@achievementsShowcase": {
+        "description": "The badges a user pinned to their profile"
+    },
+    "achievementsRerollFailed": "",
+    "@achievementsRerollFailed": {
+        "description": "Message shown when a quest reroll did not go through"
+    },
+    "achievementsAppearance": "",
+    "@achievementsAppearance": {
+        "description": "Row that opens the avatars and rank titles a profile can wear"
+    },
+    "achievementsStatsBests": "",
+    "@achievementsStatsBests": {
+        "description": "Section of a user's highest counters"
+    },
+    "achievementsStatDecades": "",
+    "@achievementsStatDecades": {
+        "description": "Counter label"
+    },
+    "achievementsStatCountries": "",
+    "@achievementsStatCountries": {
+        "description": "Counter label"
+    },
+    "achievementsBuyConfirmBody": "",
+    "@achievementsBuyConfirmBody": {
+        "description": "Body of the dialog confirming a purchase"
+    },
+    "achievementsDoubleCreditBody": "",
+    "@achievementsDoubleCreditBody": {
+        "description": "What the Double Credit power-up does"
+    },
+    "achievementsPeriodYear": "",
+    "@achievementsPeriodYear": {
+        "description": "Recap period: the last year"
+    },
+    "achievementsDaysWatched": "",
+    "@achievementsDaysWatched": {
+        "description": "How many days the user watched something",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsTopActors": "",
+    "@achievementsTopActors": {
+        "description": "Recap list of most-watched actors"
+    },
+    "friendsShowButtonSubtitle": "",
+    "@friendsShowButtonSubtitle": {
+        "description": "Subtitle of the setting that adds a Friends button"
+    },
+    "friendsSendMessage": "",
+    "@friendsSendMessage": {
+        "description": "Action that opens a chat with a friend"
+    },
+    "chatNobodyToAdd": "",
+    "@chatNobodyToAdd": {
+        "description": "Shown when every friend is already in the group"
+    },
+    "setupDetailSpotlightHint": "",
+    "@setupDetailSpotlightHint": {
+        "description": "What the spotlight detail screen style gives you"
+    },
+    "setupStyleNouveau": "",
+    "@setupStyleNouveau": {
+        "description": "Name of the full-screen stacked detail layout, offered in the setup wizard"
+    },
+    "autoDownloadDeleteNever": "",
+    "@autoDownloadDeleteNever": {
+        "description": "Delete-after-watching option: keep episodes"
+    },
+    "autoDownloadBackgroundRefresh": "",
+    "@autoDownloadBackgroundRefresh": {
+        "description": "Setting that lets the system wake the app to check for new episodes"
+    },
+    "adminLiveTvXmltvPathHelp": "",
+    "adminLiveTvSdSignIn": "",
+    "adminLiveTvStopWhenPossible": "",
+    "adminLiveTvMinutesBefore": "",
+    "adminLiveTvMinutesAfter": "",
+    "adminLiveTvSectionGuide": "",
+    "adminDeleteFromAllLibraries": "",
+    "adminUserDisabledBanner": "",
+    "adminPlayMethodDirectStream": "",
+    "adminPlayMethodDirectPlay": "",
+    "adminLogLevelWarning": "",
+    "adminLogLevelError": "",
+    "adminTaskResultCancelled": "",
+    "adminTaskResultAborted": "",
+    "adminDeleteTaskTrigger": "",
+    "adminTaskTriggerEveryMinutes": "",
+    "@adminTaskTriggerEveryMinutes": {
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskTriggerEveryHours": "",
+    "@adminTaskTriggerEveryHours": {
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTaskMinutesValue": "",
+    "@adminTaskMinutesValue": {
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "adminTranscodingAudioSeek": "",
+    "screensaverBackdrop": "",
+    "@screensaverBackdrop": {
+        "description": "Setting for screensaver backdrop"
+    },
+    "screensaverComponentMoonfinLogo": "",
+    "@screensaverComponentMoonfinLogo": {
+        "description": "Screensaver component: Moonfin Logo"
+    },
+    "performanceModeSubtitle": "",
+    "@performanceModeSubtitle": {
+        "description": "Explanation under the device performance setting"
+    },
+    "showSeerrAvailabilityBadges": "",
+    "@showSeerrAvailabilityBadges": {
+        "description": "Setting title for showing Seerr availability badges on media details pages"
+    },
+    "setupNavbarStyleSplitHint": "",
+    "@setupNavbarStyleSplitHint": {
+        "description": "What the Split bottom bar style gives you"
+    },
+    "additionalParts": "",
+    "@additionalParts": {
+        "description": "Heading for the other files of a movie split across several files, like DVD1 and DVD2"
+    },
+    "shortcutFirstPage": "",
+    "@shortcutFirstPage": {
+        "description": "Reader shortcut action"
+    },
+    "cancelCurrentRecording": "",
+    "@cancelCurrentRecording": {
+        "description": "Live TV player action to cancel only the current recording, leaving any series rule intact"
+    },
+    "loadingAnimationImageMoonfinLogo": "",
+    "@loadingAnimationImageMoonfinLogo": {
+        "description": "Loading animation image option: Moonfin Logo"
+    },
+    "autoDownloadNeverChecked": "",
+    "@autoDownloadNeverChecked": {
+        "description": "Subtitle when no subscription check has run"
+    },
+    "settingsWatchTogetherSection": "",
+    "@settingsWatchTogetherSection": {
+        "description": "Section header on the Playback settings screen for SyncPlay"
+    },
+    "seasonalRowSubtitle": "",
+    "@seasonalRowSubtitle": {
+        "description": "Source label shown under the seasonal row's title"
+    },
+    "holidayNewYear": "",
+    "@holidayNewYear": {
+        "description": "Seasonal row title for New Year's"
+    },
+    "cinemaSkipPrerollsDescription": "",
+    "transcodeAudioChannelsHint": "",
+    "transcodeSubtitleBurnInAssDisabled": "",
+    "modernCardsTransitionSpeedSubtitle": "",
+    "@modernCardsTransitionSpeedSubtitle": {
+        "description": "Description for modern cards transition speed setting"
+    },
+    "detailSectionSeerrPersonCrew": "",
+    "@detailSectionSeerrPersonCrew": {
+        "description": "Details screen Seerr section: a person's crew credits"
+    },
+    "shortcutSeekForward": "",
+    "@shortcutSeekForward": {
+        "description": "Player shortcut action. The step is the skip forward length from settings"
+    },
+    "rendererMode": "",
+    "@rendererMode": {
+        "description": "Label for the TV graphics renderer setting"
+    },
+    "rendererModeSubtitle": "",
+    "@rendererModeSubtitle": {
+        "description": "Explanation under the TV graphics renderer setting"
+    },
+    "detailMetadata": "",
+    "@detailMetadata": {
+        "description": "Settings screen for choosing and reordering details screen metadata items"
+    },
+    "detailSectionStudios": "",
+    "@detailSectionStudios": {
+        "description": "Details screen section: studios and networks"
+    },
+    "trickplayPauseWhileScrubbing": "",
+    "@trickplayPauseWhileScrubbing": {
+        "description": "Setting for whether seeking pauses playback so the trickplay preview holds still"
+    },
+    "trickplayPauseWhileScrubbingSubtitle": "",
+    "@trickplayPauseWhileScrubbingSubtitle": {
+        "description": "Description for the trickplay pause-while-scrubbing setting"
+    },
+    "profileThisDevice": "",
+    "@profileThisDevice": {
+        "description": "Marks the settings profile card that matches the current device"
+    },
+    "increaseValue": "",
+    "@increaseValue": {
+        "description": "Tooltip for the button that raises a setting's value",
+        "placeholders": {
+            "setting": {
+                "type": "String"
+            }
+        }
+    },
+    "semiTransparentWhite": "",
+    "@semiTransparentWhite": {
+        "description": "Color: semi-transparent white"
+    },
+    "friendsMessageNotificationsSubtitle": "",
+    "@friendsMessageNotificationsSubtitle": {
+        "description": "Subtitle of the Message notifications setting"
+    },
+    "preferTextSubtitles": "",
+    "preferTextSubtitlesSubtitle": "",
+    "achievementsUnlockedMore": "",
+    "@achievementsUnlockedMore": {
+        "description": "Follows the first few badge names when more were unlocked at once",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsPoints": "",
+    "@achievementsPoints": {
+        "description": "Points a badge is worth",
+        "placeholders": {
+            "points": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsScoreLabel": "",
+    "@achievementsScoreLabel": {
+        "description": "Leaderboard category: overall score"
+    },
+    "achievementsAvatars": "",
+    "@achievementsAvatars": {
+        "description": "Tab of the icons that can sit on a profile"
+    },
+    "achievementsTopDirectors": "",
+    "@achievementsTopDirectors": {
+        "description": "Recap list of most-watched directors"
+    },
+    "friendsUnreadCount": "",
+    "@friendsUnreadCount": {
+        "description": "How many chat messages are unread",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "friendsAddSubtitle": "",
+    "@friendsAddSubtitle": {
+        "description": "Subtitle of the Add friends entry"
+    },
+    "friendsCancelRequestBody": "",
+    "@friendsCancelRequestBody": {
+        "description": "Body of the dialog cancelling a sent friend request",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsHideNowPlayingSubtitle": "",
+    "@friendsHideNowPlayingSubtitle": {
+        "description": "Subtitle of the Hide what I am watching setting"
+    },
+    "friendsShowButton": "",
+    "@friendsShowButton": {
+        "description": "Navigation setting that adds a Friends button"
+    },
+    "friendsOnline": "",
+    "@friendsOnline": {
+        "description": "Section header and status for friends who are online"
+    },
+    "achievementsPeriodWeek": "",
+    "@achievementsPeriodWeek": {
+        "description": "Recap period: the last week"
+    },
+    "advancedPlaybackSubtitle": "",
+    "@advancedPlaybackSubtitle": {
+        "description": "Subtitle for the Advanced Playback entry"
+    },
+    "animationSpeedOff": "",
+    "@animationSpeedOff": {
+        "description": "Option label for turning animations off / instant transitions"
+    },
+    "playlistSortRandom": "",
+    "@playlistSortRandom": {
+        "description": "Label for sorting playlist items randomly"
+    },
+    "playlistFilterActiveCount": "",
+    "@playlistFilterActiveCount": {
+        "description": "Indicator of how many filters are currently active on a playlist",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "setupNavbarStyleStripHint": "",
+    "@setupNavbarStyleStripHint": {
+        "description": "What the Strip bottom bar style gives you"
+    },
+    "siriRemoteSwipeSensitivityDescription": "",
+    "@siriRemoteSwipeSensitivityDescription": {
+        "description": "Apple TV settings subtitle for the Siri Remote touchpad swipe sensitivity option"
+    },
+    "bottomNavbarStyle": "",
+    "@bottomNavbarStyle": {
+        "description": "Settings title for choosing how the mobile bottom navigation bar looks"
+    },
+    "bottomNavbarTabs": "",
+    "@bottomNavbarTabs": {
+        "description": "Settings title for choosing which tabs sit on the mobile bottom navigation bar"
+    },
+    "showBookDiscoverTabDescription": "",
+    "@showBookDiscoverTabDescription": {
+        "description": "Explains the setting that shows or hides the discovery tab in book libraries"
+    },
+    "adminNetworkingExternalDomainHelp": "",
+    "adminDrawerDatabase": "",
+    "adminDatabaseCacheSizeHelp": "",
+    "adminPageDescDlna": "",
+    "adminDlnaDefaultUserHelp": "",
+    "adminDlnaDebugLog": "",
+    "adminMetadataFieldAirTime": "",
+    "adminLibForcedSubtitlesOnly": "",
+    "adminLibThumbnailInterval": "",
+    "adminEmbyFullBackup": "",
+    "adminTranscodingTempPathHelp": "",
+    "adminNetworkingLocalAddress": "",
+    "adminPageDescDatabase": "",
+    "adminLibMetadataChangeHelp": "",
+    "adminLibSimilarProvidersFor": "",
+    "@adminLibSimilarProvidersFor": {
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLibMediaSegmentProviders": "",
+    "playerTooltipMinimize": "",
+    "@playerTooltipMinimize": {
+        "description": "Tooltip label for shrinking the video player into the mini player bar so the viewer can keep browsing"
+    },
+    "miniPlayerOpenPlayer": "",
+    "@miniPlayerOpenPlayer": {
+        "description": "Tooltip label for returning from the video mini player bar to the full player"
+    },
+    "achievementsLeaderboardSubtitle": "",
+    "@achievementsLeaderboardSubtitle": {
+        "description": "Leaderboard section subtitle"
+    },
+    "achievementsRerollOffer": "",
+    "@achievementsRerollOffer": {
+        "description": "Subtitle on the reroll row while a reroll is still available"
+    },
+    "achievementsRerollSpentDaily": "",
+    "@achievementsRerollSpentDaily": {
+        "description": "Subtitle on the reroll row once the daily reroll is spent"
+    },
+    "friendsIncoming": "",
+    "@friendsIncoming": {
+        "description": "Section header for friend requests others sent"
+    },
+    "friendsRemove": "",
+    "@friendsRemove": {
+        "description": "Action that removes a friend"
+    },
+    "chatYou": "",
+    "@chatYou": {
+        "description": "Stands for the signed-in user in chats and member lists"
+    },
+    "friendsRequestFrom": "",
+    "@friendsRequestFrom": {
+        "description": "Title of the dialog answering a friend request",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "setupDetailMinimalistHint": "",
+    "@setupDetailMinimalistHint": {
+        "description": "What the minimalist detail screen style gives you"
+    },
+    "friendsLoadFailed": "",
+    "@friendsLoadFailed": {
+        "description": "Shown when a friends or chat screen fails to load"
+    },
+    "friendsBlockBody": "",
+    "@friendsBlockBody": {
+        "description": "Body of the dialog blocking a user",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsAppearOfflineSubtitle": "",
+    "@friendsAppearOfflineSubtitle": {
+        "description": "Subtitle of the Appear offline setting"
+    },
+    "chatSent": "",
+    "@chatSent": {
+        "description": "Delivery mark on a sent chat message nobody has read yet"
+    },
+    "friendsHideLastWatchedSubtitle": "",
+    "@friendsHideLastWatchedSubtitle": {
+        "description": "Subtitle of the Hide my last watched setting"
+    },
+    "chatEmojiSearch": "",
+    "@chatEmojiSearch": {
+        "description": "Hint of the search field in the emoji picker"
+    },
+    "autoDownloadEnableSubtitle": "",
+    "@autoDownloadEnableSubtitle": {
+        "description": "Explains the master switch"
+    },
+    "friendsHideNowPlaying": "",
+    "@friendsHideNowPlaying": {
+        "description": "Privacy setting that hides what is playing"
+    },
+    "chatNoRecentEmoji": "",
+    "@chatNoRecentEmoji": {
+        "description": "Shown in the emoji picker's recent tab before any emoji was used"
+    },
+    "qualityAndDecodingSubtitle": "",
+    "@qualityAndDecodingSubtitle": {
+        "description": "Subtitle for the Quality & Decoding entry"
+    },
+    "settingsPlaybackSubtitle": "",
+    "@settingsPlaybackSubtitle": {
+        "description": "Subtitle for the Playback settings root entry"
+    },
+    "settingsServersSection": "",
+    "@settingsServersSection": {
+        "description": "Section header on the Account settings screen for server list and certificate options"
+    },
+    "autoDownloadWaitingForWifi": "",
+    "@autoDownloadWaitingForWifi": {
+        "description": "Last-check summary when Wi-Fi only is on and the device was on mobile data"
+    },
+    "keepVideoClearOfDynamicIslandDescription": "",
+    "@keepVideoClearOfDynamicIslandDescription": {
+        "description": "Description for the iPhone setting that keeps video clear of the Dynamic Island"
+    },
+    "downloadNotificationSavedCount": "",
+    "@downloadNotificationSavedCount": {
+        "description": "System notification body for a finished batch of mixed items",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "downloadNotificationFailedTitle": "",
+    "@downloadNotificationFailedTitle": {
+        "description": "System notification title for a failed download"
+    },
+    "bottomNavbarTabsLimit": "",
+    "@bottomNavbarTabsLimit": {
+        "description": "Hint shown when the maximum number of bottom bar tabs is already pinned"
+    },
+    "storageAndDownloads": "",
+    "@storageAndDownloads": {
+        "description": "Settings root entry and screen for downloads, storage location and the image cache"
+    },
+    "settingsSync": "",
+    "@settingsSync": {
+        "description": "Settings screen for syncing settings through the Moonbase plugin"
+    },
+    "transcodeDisplayLacksHdr10ForFallback": "",
+    "adminTranscodingFfmpegPath": "",
+    "adminLiveTvEditTuner": "",
+    "adminLiveTvAddProvider": "",
+    "adminLiveTvRefreshGuide": "",
+    "adminNetworkingLocalHttpPort": "",
+    "adminNetworkingLocalHttpPortHelp": "",
+    "adminNetworkingAutoDiscoveryLabel": "",
+    "adminPageDescApiKeys": "",
+    "adminLiveTvTunerSaved": "",
+    "adminLiveTvDeleteTunerConfirm": "",
+    "adminLiveTvDeleteProviderConfirm": "",
+    "adminLiveTvProviderSaved": "",
+    "adminExternalIdLabel": "",
+    "@adminExternalIdLabel": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminExternalIdTypePerson": "",
+    "adminExternalIdTypeBook": "",
+    "downloadNotificationCompleteTitle": "",
+    "@downloadNotificationCompleteTitle": {
+        "description": "System notification title once a download or a batch has finished",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pageTransitions": "",
+    "@pageTransitions": {
+        "description": "Setting title for adjusting the speed of page navigation transitions"
+    },
+    "downloadEstimateTotal": "",
+    "@downloadEstimateTotal": {
+        "description": "Estimated total download size for a batch, e.g. '~1.2 GB total'",
+        "placeholders": {
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "savedMediaOfLimit": "",
+    "@savedMediaOfLimit": {
+        "description": "Storage used against the configured limit, for example '56.4 GB of 80 GB'",
+        "placeholders": {
+            "used": {
+                "type": "String"
+            },
+            "limit": {
+                "type": "String"
+            }
+        }
+    },
+    "savedMediaSelectItems": "",
+    "@savedMediaSelectItems": {
+        "description": "Overflow menu entry that turns on multi-select in the saved media list"
+    },
+    "savedMediaOpenShow": "",
+    "@savedMediaOpenShow": {
+        "description": "Row menu action that opens a saved show's seasons and episodes"
+    },
+    "upcomingEpisodeToday": "",
+    "@upcomingEpisodeToday": {
+        "description": "Upcoming episode airs today"
+    },
+    "achievementsQuests": "",
+    "@achievementsQuests": {
+        "description": "Quests section title"
+    },
+    "achievementsQuestCount": "",
+    "@achievementsQuestCount": {
+        "description": "How many quests are completed",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsLeaderboard": "",
+    "@achievementsLeaderboard": {
+        "description": "Leaderboard section title"
+    },
+    "adminPlaybackHwAccelWarning": "",
+    "achievementsStatLanguages": "",
+    "@achievementsStatLanguages": {
+        "description": "Counter label"
+    },
+    "achievementsStatUsers": "",
+    "@achievementsStatUsers": {
+        "description": "Counter label for how many people use the server"
+    },
+    "transcodeAudioSampleRateNotSupported": "",
+    "adminLibMaxBackdrops": "",
+    "adminMetadataFieldArtists": "",
+    "adminMetadataFieldAlbumArtists": "",
+    "adminMetadataFieldEpisodeNumber": "",
+    "adminMetadataFieldSeasonNumber": "",
+    "adminMetadataFieldBirthYear": "",
+    "adminMetadataFieldAirsAfterSeason": "",
+    "adminMetadataFieldAirsBeforeEpisode": "",
+    "adminLibEnableLibrary": "",
+    "adminLibEnableLibraryHelp": "",
+    "adminLibCustomTagDelimiters": "",
+    "adminLibCustomTagDelimitersHelp": "",
+    "adminLibDelimiterWhitelist": "",
+    "adminLibDownloadLanguages": "",
+    "adminRefreshMode": "",
+    "adminRefreshDialogHelp": "",
+    "adminCinemaIntrosParentalHelp": "",
+    "adminCinemaIntrosUnwatchedOnly": "",
+    "adminCinemaIntrosSimilarOnly": "",
+    "adminPageDescPremiere": "",
+    "adminPremiereActive": "",
+    "adminPremiereInactive": "",
+    "adminPremiereCurrentKey": "",
+    "embyPremiereRequiredBody": "",
+    "embyPremiereRequiredSaveBody": "",
+    "embyPremiereSaveAnyway": "",
+    "embyPremiereEnterKey": "",
+    "adminPremiereNote": "",
+    "adminLibMinBackdropWidth": "",
+    "showChapterMarkersDescription": "",
+    "@showChapterMarkersDescription": {
+        "description": "Description for the chapter marks setting"
+    },
+    "detailSectionGroupCollection": "",
+    "@detailSectionGroupCollection": {
+        "description": "Group heading for sections only shown on a collection's Details screen"
+    },
+    "detailSectionVersionBadge": "",
+    "@detailSectionVersionBadge": {
+        "description": "Details screen section: the badge shown when an item has more than one version"
+    },
+    "profileSaveSubtitle": "",
+    "@profileSaveSubtitle": {
+        "description": "Line under the Save button saying which way the settings go"
+    },
+    "detailMetadataSectionDescription": "",
+    "@detailMetadataSectionDescription": {
+        "description": "Explains how to customize and reorder details screen metadata items"
+    },
+    "detailMetadataUpcomingEpisodeDate": "",
+    "@detailMetadataUpcomingEpisodeDate": {
+        "description": "Item label for upcoming episode air date badge in metadata row"
+    },
+    "libraryOrder": "",
+    "@libraryOrder": {
+        "description": "Title of the settings screen that reorders the user's libraries"
+    },
+    "screensaverComponentSize": "",
+    "@screensaverComponentSize": {
+        "description": "Setting for screensaver component size"
+    },
+    "showMissingCollectionItemsDesc": "",
+    "@showMissingCollectionItemsDesc": {
+        "description": "Setting subtitle explaining that missing items will be included on Collection pages"
+    },
+    "achievementsStreakFreeze": "",
+    "@achievementsStreakFreeze": {
+        "description": "Power-up that protects a watch streak"
+    },
+    "achievementsStreakFreezeBody": "",
+    "@achievementsStreakFreezeBody": {
+        "description": "What the Streak Freeze power-up does"
+    },
+    "chatEditing": "",
+    "@chatEditing": {
+        "description": "Banner above the chat field while changing a sent message"
+    },
+    "chatMessageOptions": "",
+    "@chatMessageOptions": {
+        "description": "Title of the dialog with actions for a chat message"
+    },
+    "chatGroupInfo": "",
+    "@chatGroupInfo": {
+        "description": "Screen and action with a group chat name and members"
+    },
+    "friendsLastWatched": "",
+    "@friendsLastWatched": {
+        "description": "Status line of an offline friend with the last thing they played",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "friendsLastSeen": "",
+    "@friendsLastSeen": {
+        "description": "Status line of an offline friend, with a relative time such as 5m ago",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "autoDownloadForegroundOnly": "",
+    "@autoDownloadForegroundOnly": {
+        "description": "Short note next to a followed series in a transcoded quality"
+    },
+    "downloadNotificationRunning": "",
+    "@downloadNotificationRunning": {
+        "description": "System notification title while a download transfers"
+    },
+    "downloadNotificationStarting": "",
+    "@downloadNotificationStarting": {
+        "description": "System notification body before the size of a download is known",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "navigationSpeed": "",
+    "@navigationSpeed": {
+        "description": "Setting title for adjusting the speed of focus movement and row scrolling"
+    },
+    "delayCardExpansionOnRapidScrollSubtitle": "",
+    "@delayCardExpansionOnRapidScrollSubtitle": {
+        "description": "Description for debouncing modern card expansion setting"
+    },
+    "animationSpeedExtraSlow": "",
+    "@animationSpeedExtraSlow": {
+        "description": "Option label for extra slow animation speed"
+    },
+    "bottomNavbarButtonsNote": "",
+    "@bottomNavbarButtonsNote": {
+        "description": "Note under the navigation buttons section while the bottom bar is in use"
+    },
+    "settingsDisplayIsSdrDescription": "",
+    "spotlightFactsCount": "",
+    "@spotlightFactsCount": {
+        "description": "Count fragment on spotlight summary cards: Seerr facts",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightTagsCount": "",
+    "@spotlightTagsCount": {
+        "description": "Count fragment on spotlight summary cards: genres, networks and keywords",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "spotlightTracksCount": "",
+    "@spotlightTracksCount": {
+        "description": "Count fragment on spotlight summary cards: audio tracks",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "savedMediaNoDownloadsDetail": "",
+    "@savedMediaNoDownloadsDetail": {
+        "description": "Empty state body when no downloads are on the device"
+    },
+    "savedMediaNoActiveDownloads": "",
+    "@savedMediaNoActiveDownloads": {
+        "description": "Empty state for the active downloads tab"
+    },
+    "sortBySize": "",
+    "@sortBySize": {
+        "description": "Sort option: largest download first"
+    },
+    "sortByName": "",
+    "@sortByName": {
+        "description": "Sort option: alphabetical by title"
+    },
+    "sortByDateAdded": "",
+    "@sortByDateAdded": {
+        "description": "Sort option: most recently downloaded first"
+    },
+    "actionButtonsOnScreen": "",
+    "@actionButtonsOnScreen": {
+        "description": "Setting title for choosing how many action buttons are visible before overflowing into More Actions"
+    },
+    "settingsAudioPassthroughOutputDescription": "",
+    "transcodeInterlacedVideoNotSupported": "",
+    "autoDownloadKeepAll": "",
+    "@autoDownloadKeepAll": {
+        "description": "Option meaning no cap on kept unwatched episodes"
+    },
+    "animationSpeedSlow": "",
+    "@animationSpeedSlow": {
+        "description": "Option label for slow animation speed"
+    },
+    "clientCertAddButton": "",
+    "@clientCertAddButton": {
+        "description": "Button that opens the certificate import from the add-server and sign-in screens"
+    },
+    "settingsClientCertificates": "",
+    "@settingsClientCertificates": {
+        "description": "Settings entry that lists the imported client certificates"
+    },
+    "settingsClientCertificatesSubtitle": "",
+    "@settingsClientCertificatesSubtitle": {
+        "description": "Subtitle for the client certificates settings entry"
+    },
+    "clientCertExpires": "",
+    "@clientCertExpires": {
+        "description": "When a client certificate stops being valid",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "clientCertAdd": "",
+    "@clientCertAdd": {
+        "description": "Button that starts importing a certificate for a new host"
+    },
+    "clientCertAddHostPrompt": "",
+    "@clientCertAddHostPrompt": {
+        "description": "Title of the prompt that asks which host a new certificate is for"
+    },
+    "achievementsPowerUpHeld": "",
+    "@achievementsPowerUpHeld": {
+        "description": "How many of a power-up the user owns",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsStreak": "",
+    "@achievementsStreak": {
+        "description": "Leaderboard category: best watch streak"
+    },
+    "friendsRequestSent": "",
+    "@friendsRequestSent": {
+        "description": "Shown after sending a friend request",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "achievementsStatCommonBadge": "",
+    "@achievementsStatCommonBadge": {
+        "description": "Label for the badge the most users hold"
+    },
+    "achievementsPowerUpActive": "",
+    "@achievementsPowerUpActive": {
+        "description": "Marker on a power-up that is currently in effect"
+    },
+    "friendsMessageNotifications": "",
+    "@friendsMessageNotifications": {
+        "description": "Setting that shows a banner for new chat messages"
+    },
+    "chatClearBody": "",
+    "@chatClearBody": {
+        "description": "Body of the dialog clearing a chat"
+    },
+    "friendsOffline": "",
+    "@friendsOffline": {
+        "description": "Section header and status for friends who are offline"
+    },
+    "detailSections": "",
+    "@detailSections": {
+        "description": "Settings tile title for switching Details screen sections on and off"
+    },
+    "detailSectionsDescription": "",
+    "@detailSectionsDescription": {
+        "description": "Settings tile subtitle for the Details screen sections list"
+    },
+    "detailSectionsScreenDescription": "",
+    "@detailSectionsScreenDescription": {
+        "description": "Explanatory text at the top of the Details screen sections list"
+    },
+    "detailSectionGroupSections": "",
+    "@detailSectionGroupSections": {
+        "description": "Group heading for the rows, tabs and cards of the Details screen"
+    },
+    "detailSectionGroupPerson": "",
+    "@detailSectionGroupPerson": {
+        "description": "Group heading for sections only shown on a person's Details screen"
+    },
+    "detailSectionCast": "",
+    "@detailSectionCast": {
+        "description": "Details screen section: the cast row, tab or card"
+    },
+    "detailSectionCastSubtitle": "",
+    "@detailSectionCastSubtitle": {
+        "description": "Subtitle for the cast section switch"
+    },
+    "detailSectionCrew": "",
+    "@detailSectionCrew": {
+        "description": "Details screen section: directors and writers"
+    },
+    "achievementsRerollSpentWeekly": "",
+    "@achievementsRerollSpentWeekly": {
+        "description": "Subtitle on the reroll row once the weekly reroll is spent"
+    },
+    "friendsAccept": "",
+    "@friendsAccept": {
+        "description": "Accept a friend request"
+    },
+    "achievementsUnlockedNotification": "",
+    "@achievementsUnlockedNotification": {
+        "description": "Title of the notification for one newly unlocked badge"
+    },
+    "detailSectionChapters": "",
+    "@detailSectionChapters": {
+        "description": "Details screen section: chapters"
+    },
+    "detailSectionExtras": "",
+    "@detailSectionExtras": {
+        "description": "Details screen section: trailers, featurettes and other extras"
+    },
+    "detailSectionCollections": "",
+    "@detailSectionCollections": {
+        "description": "Details screen section: the collections an item belongs to"
+    },
+    "detailSectionMoreEpisodes": "",
+    "@detailSectionMoreEpisodes": {
+        "description": "Details screen section: the other episodes of a show on an episode's page"
+    },
+    "detailSectionMoreEpisodesSubtitle": "",
+    "@detailSectionMoreEpisodesSubtitle": {
+        "description": "Subtitle for the More episodes section switch"
+    },
+    "detailSectionMediaInfo": "",
+    "@detailSectionMediaInfo": {
+        "description": "Details screen section: file, stream and Direct Play details"
+    },
+    "detailSectionSeerrCollection": "",
+    "@detailSectionSeerrCollection": {
+        "description": "Details screen Seerr section: the banner for the collection a movie is part of"
+    },
+    "detailSectionPlaylistOrder": "",
+    "@detailSectionPlaylistOrder": {
+        "description": "Details screen section: a collection's playlist order"
+    },
+    "detailSectionBookGenres": "",
+    "@detailSectionBookGenres": {
+        "description": "Details screen section: the genre chips on a book's page"
+    },
+    "detailSectionPhotoExif": "",
+    "@detailSectionPhotoExif": {
+        "description": "Details screen section: camera and image details on a photo's page"
+    },
+    "libraryOrderDescription": "",
+    "@libraryOrderDescription": {
+        "description": "Explanation shown at the top of the Library Order settings screen"
+    },
+    "achievementsShopSubtitle": "",
+    "@achievementsShopSubtitle": {
+        "description": "Subtitle on the row that opens the shop"
+    },
+    "achievementsShopEmpty": "",
+    "@achievementsShopEmpty": {
+        "description": "Shown when the shop catalogue came back with nothing"
+    },
+    "achievementsBuyConfirm": "",
+    "@achievementsBuyConfirm": {
+        "description": "Title of the dialog confirming a purchase"
+    },
+    "achievementsLibraryCompletion": "",
+    "@achievementsLibraryCompletion": {
+        "description": "Library completion section title"
+    },
+    "friendsSendRequest": "",
+    "@friendsSendRequest": {
+        "description": "Action that sends a friend request to someone"
+    },
+    "achievementsStatMostEpisodes": "",
+    "@achievementsStatMostEpisodes": {
+        "description": "Counter label"
+    },
+    "achievementsStatDaysSignedIn": "",
+    "@achievementsStatDaysSignedIn": {
+        "description": "Counter label"
+    },
+    "achievementsBuyFailed": "",
+    "@achievementsBuyFailed": {
+        "description": "Message shown when a purchase did not go through"
+    },
+    "chatGroupName": "",
+    "@chatGroupName": {
+        "description": "Label of the group chat name field"
+    },
+    "chatOwner": "",
+    "@chatOwner": {
+        "description": "Marks the person who created a group chat"
+    },
+    "preferExternalSubtitlesSubtitle": "",
+    "achievementsDailyQuests": "",
+    "@achievementsDailyQuests": {
+        "description": "Daily quests section"
+    },
+    "achievementsPeriodMonth": "",
+    "@achievementsPeriodMonth": {
+        "description": "Recap period: the last month"
+    },
+    "chatYouSaid": "",
+    "@chatYouSaid": {
+        "description": "Preview of the last chat message when the user sent it",
+        "placeholders": {
+            "text": {
+                "type": "String"
+            }
+        }
+    },
+    "achievementsRecapSubtitle": "",
+    "@achievementsRecapSubtitle": {
+        "description": "Recap section subtitle"
+    },
+    "bookReadingUnavailableTitle": "",
+    "@bookReadingUnavailableTitle": {
+        "description": "Title of the dialog shown on Apple TV when the user tries to open a book or comic, which tvOS has no reader for"
+    },
+    "bookReadingUnavailableMessage": "",
+    "@bookReadingUnavailableMessage": {
+        "description": "Body of the dialog shown on Apple TV when the user tries to open a book or comic"
+    },
+    "transcodeAudioCodecs": "",
+    "@transcodeAudioCodecs": {
+        "description": "Setting that lists the audio codecs the server converts instead of the device playing them"
+    },
+    "transcodeAudioCodecsDescription": "",
+    "@transcodeAudioCodecsDescription": {
+        "description": "Description for the transcode audio codecs setting"
+    },
+    "trailerVolume": "",
+    "@trailerVolume": {
+        "description": "Setting for how loud media bar trailers play"
+    },
+    "trailerVolumeDescription": "",
+    "@trailerVolumeDescription": {
+        "description": "Description for the trailer volume slider"
+    },
+    "previewVolume": "",
+    "@previewVolume": {
+        "description": "Setting for how loud media previews on cards play"
+    },
+    "previewVolumeDescription": "",
+    "@previewVolumeDescription": {
+        "description": "Description for the preview volume slider"
+    },
+    "externalPlayerLiveTvOnly": "",
+    "@externalPlayerLiveTvOnly": {
+        "description": "Setting that limits the external player to Live TV channels"
+    },
+    "externalPlayerLiveTvOnlySubtitle": "",
+    "@externalPlayerLiveTvOnlySubtitle": {
+        "description": "Description for the Live TV Only external player setting"
+    },
+    "homeScreenBackdrop": "",
+    "@homeScreenBackdrop": {
+        "description": "Setting to show or hide the backdrop image behind the home screen"
+    },
+    "detailsScreenBackdrop": "",
+    "@detailsScreenBackdrop": {
+        "description": "Setting to show or hide the backdrop image behind the item details screen"
+    },
+    "libraryBackdrops": "",
+    "@libraryBackdrops": {
+        "description": "Setting to show or hide backdrop images while browsing library pages"
+    },
+    "playbackInfoChannel": "",
+    "@playbackInfoChannel": {
+        "description": "Playback information row label: the Live TV channel being watched"
+    },
+    "playbackInfoProgram": "",
+    "@playbackInfoProgram": {
+        "description": "Playback information row label: the Live TV program on now"
+    },
+    "playbackInfoWhy": "",
+    "@playbackInfoWhy": {
+        "description": "Playback information row label: why the server isn't sending the original file as is"
+    },
+    "playbackInfoQualityLimit": "",
+    "@playbackInfoQualityLimit": {
+        "description": "Playback information row label: the maximum streaming bitrate the user picked"
+    },
+    "playbackInfoFrameRate": "",
+    "@playbackInfoFrameRate": {
+        "description": "Playback information row label: video frames per second"
+    },
+    "playbackInfoDelivery": "",
+    "@playbackInfoDelivery": {
+        "description": "Playback information row label: how the subtitles reach the player (embedded, external, burned in)"
+    },
+    "playbackInfoFile": "",
+    "@playbackInfoFile": {
+        "description": "Playback information section header for the media file"
+    },
+    "playbackInfoTechnical": "",
+    "@playbackInfoTechnical": {
+        "description": "Playback information section header for details aimed at developers and testers"
+    },
+    "playbackInfoDevice": "",
+    "@playbackInfoDevice": {
+        "description": "Playback information row label: this device's model and operating system"
+    },
+    "playbackInfoAudioRoute": "",
+    "@playbackInfoAudioRoute": {
+        "description": "Playback information row label: where the sound goes, like HDMI or Bluetooth"
+    },
+    "playbackInfoSurround51": "",
+    "@playbackInfoSurround51": {
+        "description": "Playback information value: six channel surround audio"
+    },
+    "playbackInfoSurround71": "",
+    "@playbackInfoSurround71": {
+        "description": "Playback information value: eight channel surround audio"
+    },
+    "achievementsCurrentStreak": "",
+    "@achievementsCurrentStreak": {
+        "description": "The current watch streak",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsBestStreak": "",
+    "@achievementsBestStreak": {
+        "description": "The best watch streak",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsUnlocked": "",
+    "@achievementsUnlocked": {
+        "description": "Badge filter: unlocked only"
+    },
+    "achievementsWeeklyQuests": "",
+    "@achievementsWeeklyQuests": {
+        "description": "Weekly quests section"
+    },
+    "achievementsQuestReward": "",
+    "@achievementsQuestReward": {
+        "description": "Points a quest pays out",
+        "placeholders": {
+            "points": {
+                "type": "int"
+            }
+        }
+    },
+    "achievementsRerollDaily": "",
+    "@achievementsRerollDaily": {
+        "description": "Action that swaps the daily quest set for a new one"
+    },
+    "achievementsSuggested": "",
+    "@achievementsSuggested": {
+        "description": "Header above the items the plugin suggests for a badge"
+    },
+    "achievementsLoadout": "",
+    "@achievementsLoadout": {
+        "description": "Screen holding the score bank and the power-ups a user owns"
+    },
+    "achievementsLoadoutSubtitle": "",
+    "@achievementsLoadoutSubtitle": {
+        "description": "Subtitle on the row that opens the loadout"
+    },
+    "achievementsTitles": "",
+    "@achievementsTitles": {
+        "description": "Tab of the titles that can replace a rank name"
+    },
+    "achievementsEquipped": "",
+    "@achievementsEquipped": {
+        "description": "State of the avatar or title a profile is wearing"
+    },
+    "achievementsOwned": "",
+    "@achievementsOwned": {
+        "description": "State of an avatar or title that is held but not worn"
+    },
+    "achievementsStats": "",
+    "@achievementsStats": {
+        "description": "Screen of watch counters and server figures"
+    },
+    "achievementsStatsSubtitle": "",
+    "@achievementsStatsSubtitle": {
+        "description": "Subtitle on the row that opens stats"
+    },
+    "achievementsStatsClock": "",
+    "@achievementsStatsClock": {
+        "description": "Header above the hour of day chart"
+    },
+    "achievementsStatItems": "",
+    "@achievementsStatItems": {
+        "description": "Counter label"
+    },
+    "achievementsStatMovies": "",
+    "@achievementsStatMovies": {
+        "description": "Counter label"
+    },
+    "achievementsStatSeries": "",
+    "@achievementsStatSeries": {
+        "description": "Counter label"
+    },
+    "achievementsStatHours": "",
+    "@achievementsStatHours": {
+        "description": "Counter label"
+    },
+    "achievementsStatMostMovies": "",
+    "@achievementsStatMostMovies": {
+        "description": "Counter label"
+    },
+    "achievementsStatLongestItem": "",
+    "@achievementsStatLongestItem": {
+        "description": "Counter label, a run time in minutes"
+    },
+    "achievementsStatBestCombo": "",
+    "@achievementsStatBestCombo": {
+        "description": "Counter label"
+    },
+    "achievementsStatBadgesUnlocked": "",
+    "@achievementsStatBadgesUnlocked": {
+        "description": "Counter label"
+    },
+    "achievementsActivitySubtitle": "",
+    "@achievementsActivitySubtitle": {
+        "description": "Subtitle on the row that opens the activity feed"
+    },
+    "playbackInfoChannelCount": "",
+    "@playbackInfoChannelCount": {
+        "description": "Playback information value: an audio channel count with no common layout name",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "playbackInfoBurnedIn": "",
+    "@playbackInfoBurnedIn": {
+        "description": "Playback information value: the server draws the subtitles into the video picture"
+    },
+    "playbackInfoOriginal": "",
+    "@playbackInfoOriginal": {
+        "description": "Playback information value: the bitrate being sent, with the file's own bitrate after it",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            },
+            "original": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyAnamorphic": "",
+    "@playbackInfoWhyAnamorphic": {
+        "description": "Playback information reason: anamorphic video isn't supported"
+    },
+    "playbackInfoWhyHdrName": "",
+    "@playbackInfoWhyHdrName": {
+        "description": "Playback information reason: the HDR format, like Dolby Vision Profile 7 or HDR10+, isn't supported",
+        "placeholders": {
+            "range": {
+                "type": "String"
+            }
+        }
+    },
+    "adminLiveTvTunerType": "",
+    "adminLiveTvRecordingPathHelp": "",
+    "adminScheduleStartBeforeEnd": "",
+    "adminTranscodingThreadCountHelp": "",
+    "adminNetworkingExternalUriHelp": "",
+    "adminNetworkingOtherPublishedUris": "",
+    "adminPluginInstallDisclaimer": "",
+    "adminGroupSystem": "",
+    "adminAreasLabel": "",
+    "adminPagesLabel": "",
+    "adminPageDescTranscoding": "",
+    "adminPageDescSettings": "",
+    "adminPageDescBranding": "",
+    "smartDownloadsEnable": "",
+    "@smartDownloadsEnable": {
+        "description": "Switch that swaps a watched downloaded episode for the next episodes of the series"
+    },
+    "countryUnitedStates": "",
+    "@countryUnitedStates": {
+        "description": "Country name"
+    },
+    "holidayHalloween": "",
+    "@holidayHalloween": {
+        "description": "Seasonal row title for Halloween"
+    },
+    "holidayLunarNewYear": "",
+    "@holidayLunarNewYear": {
+        "description": "Seasonal row title for Lunar New Year"
+    },
+    "holidayDiwali": "",
+    "@holidayDiwali": {
+        "description": "Seasonal row title for Diwali"
+    },
+    "magenta": "",
+    "@magenta": {
+        "description": "Color: magenta"
+    },
+    "adminPageDescNetworking": "",
+    "achievementsUnlockedOn": "",
+    "@achievementsUnlockedOn": {
+        "description": "When a badge was unlocked",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "topShelf": "",
+    "@topShelf": {
+        "description": "Apple TV settings label for what the tvOS home screen shows above the Moonfin icon. Top Shelf is Apple's name for that area"
+    },
+    "playbackInfoWhyAudioCodec": "",
+    "@playbackInfoWhyAudioCodec": {
+        "description": "Playback information reason: the audio codec, like Dolby TrueHD or DTS, isn't supported",
+        "placeholders": {
+            "format": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyAudioProfile": "",
+    "@playbackInfoWhyAudioProfile": {
+        "description": "Playback information reason: the full audio format, like Dolby TrueHD with Atmos or DTS-HD Master Audio, isn't supported",
+        "placeholders": {
+            "fullFormat": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyAudioChannels": "",
+    "@playbackInfoWhyAudioChannels": {
+        "description": "Playback information reason: the audio channel layout, like 7.1 or 3-channel, isn't supported",
+        "placeholders": {
+            "channels": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyAudioSampleRate": "",
+    "@playbackInfoWhyAudioSampleRate": {
+        "description": "Playback information reason: the audio sample rate in kilohertz, like 96 or 44.1, isn't supported",
+        "placeholders": {
+            "rate": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackInfoWhyAudioBitDepth": "",
+    "@playbackInfoWhyAudioBitDepth": {
+        "description": "Playback information reason: the audio bit depth, like 24-bit, isn't supported",
+        "placeholders": {
+            "bits": {
+                "type": "int"
+            }
+        }
+    },
+    "playbackInfoWhyAudioExternal": "",
+    "@playbackInfoWhyAudioExternal": {
+        "description": "Playback information reason: the picked audio track is an external file"
+    },
+    "playbackInfoWhySecondaryAudio": "",
+    "@playbackInfoWhySecondaryAudio": {
+        "description": "Playback information reason: the device can't switch to an audio track other than the first"
+    },
+    "playbackInfoWhySubtitleFormat": "",
+    "@playbackInfoWhySubtitleFormat": {
+        "description": "Playback information reason: the player can't show this subtitle format, like PGS or ASS, so the server draws the subtitles into the video",
+        "placeholders": {
+            "format": {
+                "type": "String"
+            }
+        }
+    },
+    "playbackStreamLost": "",
+    "@playbackStreamLost": {
+        "description": "Shown in place of an internal sentinel error code when playback gives up trying to recover a stalled or starved stream"
+    },
+    "savedMediaPlayNextUnwatched": "",
+    "@savedMediaPlayNextUnwatched": {
+        "description": "Row menu action that plays the earliest unwatched saved episode of a show"
+    },
+    "seasonalRowCountryOther": "",
+    "@seasonalRowCountryOther": {
+        "description": "Country option for a country the seasonal row does not list"
+    },
+    "seasonalRowHolidaysHint": "",
+    "@seasonalRowHolidaysHint": {
+        "description": "Hint under the holiday checklist"
+    },
+    "seasonalRowCountryAuto": "",
+    "@seasonalRowCountryAuto": {
+        "description": "Country option that reads the country from the device"
+    },
+    "cropBlackBarsOnce": "",
+    "@cropBlackBarsOnce": {
+        "description": "Letterbox recrop interval: detect once after playback starts"
+    },
+    "settingsCropBlackBarsIntervalDescription": "",
+    "@settingsCropBlackBarsIntervalDescription": {
+        "description": "Description for the letterbox recrop-interval setting"
+    },
+    "settingsCropBlackBarsDescription": "",
+    "@settingsCropBlackBarsDescription": {
+        "description": "Description for the crop black bars playback setting"
+    },
+    "shortcutShowControlsOrPlayPause": "",
+    "@shortcutShowControlsOrPlayPause": {
+        "description": "What Enter does in the player"
+    },
+    "shortcutScrollPage": "",
+    "@shortcutScrollPage": {
+        "description": "What the up and down arrows do in the ebook reader"
+    },
+    "detailMetadataSeerrAvailabilitySubtitle": "",
+    "@detailMetadataSeerrAvailabilitySubtitle": {
+        "description": "Subtitle explaining the Seerr availability metadata badge"
+    },
+    "holidayThanksgiving": "",
+    "@holidayThanksgiving": {
+        "description": "Seasonal row title for Thanksgiving"
+    },
+    "playerRecroppingBlackBars": "",
+    "@playerRecroppingBlackBars": {
+        "description": "Toast when the player re-runs letterbox crop detection"
+    },
+    "actionButtonsOnScreenDescription": "",
+    "@actionButtonsOnScreenDescription": {
+        "description": "Subtitle explaining how action buttons overflow into More Actions"
+    },
+    "savedMediaGoToDetails": "",
+    "@savedMediaGoToDetails": {
+        "description": "Row menu action that opens the item's detail screen"
+    },
+    "videoRendererInApp": "",
+    "@videoRendererInApp": {
+        "description": "Video renderer option that draws every title inside the app and converts HDR to SDR"
+    },
+    "detailSectionLogo": "",
+    "@detailSectionLogo": {
+        "description": "Details screen section: the title logo artwork"
+    },
+    "savedMediaCount": "",
+    "@savedMediaCount": {
+        "description": "How many downloads the saved media list holds, shown beside the total size",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "showChapterMarkers": "",
+    "@showChapterMarkers": {
+        "description": "Setting label for drawing a mark per chapter on the player seek bar"
+    },
+    "seasonalChristmas": "",
+    "@seasonalChristmas": {
+        "description": "Seasonal effect: snow with falling baubles and stars"
+    },
+    "seasonalHalloween": "",
+    "@seasonalHalloween": {
+        "description": "Seasonal effect: bats, ghosts, candy and orange and purple leaves"
+    },
+    "seasonalDensity": "",
+    "@seasonalDensity": {
+        "description": "Setting for how many seasonal effect particles are on screen at once"
+    },
+    "seasonalDensityLight": "",
+    "@seasonalDensityLight": {
+        "description": "Seasonal effect density: fewest particles"
+    },
+    "detailMetadataUpcomingEpisodeDateSubtitle": "",
+    "@detailMetadataUpcomingEpisodeDateSubtitle": {
+        "description": "Subtitle describing data sources for upcoming episode air dates in metadata row"
+    },
+    "adminEmbyConnectUser": "",
+    "adminEmbyConnectHelp": "",
+    "adminEmbyConnectLink": "",
+    "adminLibImportCollections": "",
+    "adminLibThumbnailEverySeconds": "",
+    "@adminLibThumbnailEverySeconds": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminLibThumbnailAtChapters": "",
+    "adminLibSaveThumbnailsWithMedia": "",
+    "adminTranscodingHwEncoders": "",
+    "adminTranscodingThrottleHelp": "",
+    "adminTranscodingDownmixHelp": "",
+    "adminTranscodingMaxResolution": "",
+    "detailMetadataDescription": "",
+    "@detailMetadataDescription": {
+        "description": "Subtitle for the details metadata settings tile"
+    },
+    "seasonalPetals": "",
+    "@seasonalPetals": {
+        "description": "Seasonal effect: falling cherry blossoms and petals with bees flying by"
+    },
+    "detailMetadataStatusSubtitle": "",
+    "@detailMetadataStatusSubtitle": {
+        "description": "Subtitle explaining the series status metadata badge"
+    },
+    "seasonalFireflies": "",
+    "@seasonalFireflies": {
+        "description": "Seasonal effect: glowing fireflies for summer"
+    },
+    "pluginSyncOn": "",
+    "@pluginSyncOn": {
+        "description": "Caption under the settings sync switch while sync is on"
+    },
+    "profileLoad": "",
+    "@profileLoad": {
+        "description": "Button that replaces this device's settings with the chosen profile from the server"
+    },
+    "profileLoadSubtitle": "",
+    "@profileLoadSubtitle": {
+        "description": "Line under the Load button saying which way the settings go"
+    },
+    "adminTranscodingToneMapSoftware": "",
+    "adminTranscodingToneMapHardware": "",
+    "adminTranscodingToneMapHelp": "",
+    "adminNetworkingBehindProxy": "",
+    "adminNetworkingExternalDomain": "",
+    "adminNetworkingUpnpHelp": "",
+    "adminNetworkingProxyHeaders": "",
+    "adminNetworkingProxyHeadersHelp": "",
+    "adminSyncJobTransferring": "",
+    "adminSyncJobCompletedWithError": "",
+    "adminSyncJobItemCount": "",
+    "@adminSyncJobItemCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "adminDatabaseWarning": "",
+    "adminDatabaseCacheSize": "",
+    "adminDlnaDebugLogHelp": "",
+    "adminDrawerCameraUpload": "",
+    "adminPageDescCameraUpload": "",
+    "adminPremiereKeyInvalid": "",
+    "adminPremiereNewKey": "",
+    "adminPremiereNewKeyHint": "",
+    "adminPremiereSaveKey": "",
+    "adminPremiereRemoveKey": "",
+    "adminLibraryFolderRequired": "",
+    "adminHiddenFromUnusedDevices": "",
+    "adminPremiereNoteLiveTv": "",
+    "adminPremiereNoteBackups": "",
+    "adminGeneralLaunchWebApp": "",
+    "adminOnePerLine": "",
+    "adminStreamingStreamLimit": "",
+    "adminStreamingStreamLimitHelp": "",
+    "adminSyncJobsConversions": "",
+    "adminSyncJobsEmpty": "",
+    "videoRenderer": "",
+    "@videoRenderer": {
+        "description": "Settings label for choosing where Windows draws video, in its own window or inside the app"
+    },
+    "savedMediaRead": "",
+    "@savedMediaRead": {
+        "description": "Row menu action that opens a downloaded book in the reader"
+    },
+    "achievementsTopRank": "",
+    "@achievementsTopRank": {
+        "description": "Shown instead of progress when the user is at the highest rank"
+    },
+    "friendsSearchHint": "",
+    "@friendsSearchHint": {
+        "description": "Hint of the people search field"
+    },
+    "friendsMuteDuringPlaybackSubtitle": "",
+    "@friendsMuteDuringPlaybackSubtitle": {
+        "description": "Subtitle of the Mute during playback setting"
+    },
+    "chatNewGroup": "",
+    "@chatNewGroup": {
+        "description": "Entry that creates a group chat"
+    },
+    "setupStyleSpotlight": "",
+    "@setupStyleSpotlight": {
+        "description": "Name of the hero-first detail layout, offered in the setup wizard"
+    },
+    "librarySortArtist": "",
+    "@librarySortArtist": {
+        "description": "Sort option for music: by track artist"
+    },
+    "transcodeSubtitleBurnInAssHint": "",
+    "librarySortPlaylistOrder": "",
+    "@librarySortPlaylistOrder": {
+        "description": "Sort option: the playlist's own track order"
+    },
+    "librarySortDateAdded": "",
+    "@librarySortDateAdded": {
+        "description": "Sort option: when an item was added to the server library"
+    },
+    "analyticsLibraryShare": "",
+    "analyticsTopRating": "",
+    "analyticsTypicalRuntime": "",
+    "chatRemoveAdmin": "",
+    "@chatRemoveAdmin": {
+        "description": "Action that takes admin away from a group member"
+    },
+    "achievementsShopPack": "",
+    "@achievementsShopPack": {
+        "description": "A shop item that grants more than one of a power-up",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "chatLeaveBody": "",
+    "@chatLeaveBody": {
+        "description": "Body of the dialog leaving a group chat"
+    },
+    "librarySortTrackNumber": "",
+    "@librarySortTrackNumber": {
+        "description": "Sort option for music: by track number"
+    },
+    "librarySortGenre": "",
+    "@librarySortGenre": {
+        "description": "Sort option: by genre"
+    },
+    "librarySortFoldersFirst": "",
+    "@librarySortFoldersFirst": {
+        "description": "Sort option for folder libraries: folders before files, then by name"
+    },
+    "librarySortLength": "",
+    "@librarySortLength": {
+        "description": "Sort option for music: by track or album length"
+    },
+    "gameOrientation": "",
+    "@gameOrientation": {
+        "description": "Setting and in-game menu row for how the device is held while playing games"
+    },
+    "gameOrientationSubtitle": "",
+    "@gameOrientationSubtitle": {
+        "description": "Subtitle of the game orientation setting"
+    },
+    "landscape": "",
+    "@landscape": {
+        "description": "Orientation choice: the device held sideways"
+    },
+    "portrait": "",
+    "@portrait": {
+        "description": "Orientation choice: the device held upright"
+    },
+    "gameKeepPlaying": "",
+    "@gameKeepPlaying": {
+        "description": "Exit confirmation choice that returns to the game"
+    },
+    "gameSaveAndExit": "",
+    "@gameSaveAndExit": {
+        "description": "Exit confirmation choice that saves the game state and then leaves, staying in the game if the save fails"
+    },
+    "gameExitGame": "",
+    "@gameExitGame": {
+        "description": "Exit confirmation choice that leaves the game"
+    },
+    "gameSavingBeforeExit": "",
+    "@gameSavingBeforeExit": {
+        "description": "Shown over the paused game while it saves on the way out"
+    },
+    "gameSaveFailedStillPlaying": "",
+    "@gameSaveFailedStillPlaying": {
+        "description": "Message shown when Save & exit could not save, so the game keeps running"
+    },
+    "adminCinemaIntrosOlder": "",
+    "adminCinemaIntrosLibrary": "",
+    "adminMetadataNamesHelp": "",
+    "adminNetworkingOtherPublishedUriHint": "",
+    "adminLibSaveLyricsWithMedia": "",
+    "autoDownloadKeepUnwatchedSubtitle": "",
+    "@autoDownloadKeepUnwatchedSubtitle": {
+        "description": "Subtitle under the auto-download row explaining the keep-unwatched rule",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "delayCardExpansionOnRapidScroll": "",
+    "@delayCardExpansionOnRapidScroll": {
+        "description": "Setting title for debouncing modern card expansion during rapid D-pad scrolling"
+    },
+    "autoDownloadSection": "",
+    "@autoDownloadSection": {
+        "description": "Settings section header for auto-download subscriptions"
+    },
+    "settingsFamilySection": "",
+    "@settingsFamilySection": {
+        "description": "Section header on the Account settings screen for Kids Mode and parental controls"
+    },
+    "appleTvHomeScreen": "",
+    "@appleTvHomeScreen": {
+        "description": "Section header in Home Screen settings for options that affect the tvOS home screen outside the app"
+    },
+    "topShelfLatestMedia": "",
+    "@topShelfLatestMedia": {
+        "description": "Top Shelf option that shows a carousel of the newest items from the home screen's Latest rows"
+    },
+    "transcodeBitrateExceededWithValues": "",
+    "@transcodeBitrateExceededWithValues": {
+        "placeholders": {
+            "fileBitrate": {
+                "type": "String"
+            },
+            "maxBitrate": {
+                "type": "String"
+            }
+        }
+    },
+    "transcodeAudioCodecHintPassthrough": "",
+    "@transcodeAudioCodecHintPassthrough": {
+        "placeholders": {
+            "codec": {
+                "type": "String"
+            }
+        }
+    },
+    "dateCreatedFormat": "",
+    "@dateCreatedFormat": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "transcodeAnamorphicVideoNotSupported": "",
+    "bookBrowseAllTitles": "",
+    "@bookBrowseAllTitles": {
+        "description": "Link from the book library to the full title grid",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "searchBooks": "",
+    "@searchBooks": {
+        "description": "Button in the book library that opens search within it"
+    },
+    "homeRowsGenresAndStudios": "",
+    "@homeRowsGenresAndStudios": {
+        "description": "Home Rows editor: heading of the group of disabled genre and studio rows"
+    },
+    "adminGeneralRunAtStartup": "",
+    "adminGeneralAutoUpdate": "",
+    "adminGeneralAutoRestart": "",
+    "adminGeneralAutoRestartHelp": "",
+    "adminTaskTriggerSystemEvent": "",
+    "@adminTaskTriggerSystemEvent": {
+        "placeholders": {
+            "event": {
+                "type": "String"
+            }
+        }
+    },
+    "adminPluginNeedsPremiere": "",
+    "adminEmbyBackupsHelp": "",
+    "adminEmbyBackupsNoPlugin": "",
+    "adminSimultaneousStreamLimitHelp": "",
+    "adminUnlimited": "",
+    "adminAutoRemoteQuality": "",
+    "adminAutoRemoteQualityHelp": "",
+    "adminAllowCameraUpload": "",
+    "adminAllowSubtitleDownloading": "",
+    "adminAllowMediaConversion": "",
+    "adminAllowSyncTranscoding": "",
+    "adminEmbyConnectUnlink": "",
+    "adminEmbyConnectLinked": "",
+    "adminEmbyConnectPending": "",
+    "adminEmbyConnectUnlinked": "",
+    "adminEmbyConnectNotFound": "",
+    "adminLibImportPlaylists": "",
+    "adminLibExcludeFromSearch": "",
+    "adminLibrarySectionMarkers": "",
+    "adminLibIntroDetection": "",
+    "adminLibIntroDetectionDuringScan": "",
+    "adminProviderEmbyGuide": "",
+    "adminLiveTvEmbyGuideSelectLineup": "",
+    "adminLiveTvWakeServer": "",
+    "adminDrawerLiveTvChannels": "",
+    "adminPageDescLiveTvChannels": "",
+    "adminLiveTvChannelsEmpty": "",
+    "adminTranscodingHwaAdvanced": "",
+    "adminTranscodingHwaHelp": "",
+    "adminTranscodingHwDecoders": "",
+    "adminNetworkingIpv4Only": "",
+    "adminSyncJobCancelConfirm": "",
+    "@adminSyncJobCancelConfirm": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "adminSyncJobConverting": "",
+    "adminSyncJobReady": "",
+    "adminDatabaseOptimize": "",
+    "adminDatabaseOptimizeHelp": "",
+    "adminDatabaseAnalysisLimit": "",
+    "adminDatabaseAnalysisLimitHelp": "",
+    "adminDatabaseVacuum": "",
+    "adminDatabaseVacuumHelp": "",
+    "adminDrawerCinemaIntros": "",
+    "adminPageDescCinemaIntros": "",
+    "adminCinemaIntrosPlayBefore": "",
+    "adminCinemaIntrosUpcoming": "",
+    "adminCinemaIntrosSimilarOnlyHelp": "",
+    "adminCinemaIntrosCustom": "",
+    "adminDrawerDlna": "",
+    "adminCameraUploadPathHelp": "",
+    "adminCameraUploadSubfolders": "",
+    "adminDrawerConversions": "",
+    "adminPageDescConversions": "",
+    "adminConversionsTempPath": "",
+    "adminConversionsTempPathHelp": "",
+    "adminConversionsFullSpeed": "",
+    "adminConversionsFullSpeedHelp": "",
+    "adminDrawerPremiere": "",
+    "embyPremiereLearnMore": "",
+    "adminTranscodingFfmpegPathHelp": "",
+    "adminNetworkingAutoDiscoveryHelp": "",
+    "adminNetworkingSamePublishedUri": "",
+    "adminNetworkingPublishedUri": "",
+    "adminNetworkingPublishedUriHelp": "",
+    "adminNetworkingInternalUri": "",
+    "adminSearchNoResults": "",
+    "achievementsDoubleCredit": "",
+    "@achievementsDoubleCredit": {
+        "description": "Power-up that makes the next item count twice"
+    },
+    "achievementsUsePowerUpBody": "",
+    "@achievementsUsePowerUpBody": {
+        "description": "Body of the dialog confirming a power-up is spent"
+    },
+    "settingsSyncSubtitle": "",
+    "@settingsSyncSubtitle": {
+        "description": "Subtitle for the Settings Sync entry"
+    },
+    "autoDownloadStopSubtitle": "",
+    "@autoDownloadStopSubtitle": {
+        "description": "Subtitle under the stop auto-download row showing the subscription's quality",
+        "placeholders": {
+            "quality": {
+                "type": "String"
+            }
+        }
+    },
+    "autoDownloadNewEpisodes": "",
+    "@autoDownloadNewEpisodes": {
+        "description": "Row in the download sheet of a series that subscribes it to automatic downloads"
+    },
+    "musicVideoPlaylistsSection": "",
+    "@musicVideoPlaylistsSection": {
+        "description": "Section header above music video playlists when Group by Type is enabled"
+    },
+    "transcodeVideoRangeNotSupported": "",
+    "transcodeDolbyVisionFallbackPreferenceTranscode": "",
+    "loginForbidden": "",
+    "@loginForbidden": {
+        "description": "Sign in error when the server refuses the account with a 403, which Jellyfin does for an access schedule, a lockout or a disabled account without saying which"
+    },
+    "spotlightEpisodesCount": "",
+    "@spotlightEpisodesCount": {
+        "description": "Count fragment on spotlight summary cards: episodes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "rendererModeAuto": "",
+    "@rendererModeAuto": {
+        "description": "Renderer option: let the app choose per device"
+    },
+    "rendererModeSkia": "",
+    "@rendererModeSkia": {
+        "description": "Renderer option: always use the Skia renderer"
+    },
+    "searchMusic": "",
+    "@searchMusic": {
+        "description": "Placeholder and label for the search control in a music library"
+    },
+    "adminNetworkingUpnp": "",
+    "adminNetworkingProxyHeadersRemote": "",
+    "adminSyncJobsDownloads": "",
+    "adminNewPasswordEmpty": "",
+    "adminLogLevelCritical": "",
+    "adminLogLevelNone": "",
+    "adminDurationSecondsShort": "",
+    "@adminDurationSecondsShort": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "adminDeleteTaskTriggerConfirm": "",
+    "chatImageTooLarge": "",
+    "@chatImageTooLarge": {
+        "description": "Shown when a picked chat image is too big"
+    },
+    "friendsAdd": "",
+    "@friendsAdd": {
+        "description": "Entry that opens the people search"
+    },
+    "achievementsStatsVariety": "",
+    "@achievementsStatsVariety": {
+        "description": "Section of counters for how widely a user watches"
+    },
+    "friendsActionFailed": "",
+    "@friendsActionFailed": {
+        "description": "Shown when a friends or chat action fails without a reason from the server"
+    },
+    "keepDownloaded": "",
+    "@keepDownloaded": {
+        "description": "Toggle on the download sheet that stops watched downloads of this title from being removed automatically"
+    },
+    "keepDownloadedSubtitle": "",
+    "@keepDownloadedSubtitle": {
+        "description": "Explains the keep-downloaded toggle"
+    },
+    "bottomNavbarStyleSplit": "",
+    "@bottomNavbarStyleSplit": {
+        "description": "Bottom bar style: tabs in one capsule with search as its own round button"
+    },
+    "setupNavbarStyleQuestion": "",
+    "@setupNavbarStyleQuestion": {
+        "description": "Setup question asking which style the bottom navigation bar should use"
+    },
+    "setupNavbarStyleDockHint": "",
+    "@setupNavbarStyleDockHint": {
+        "description": "What the Dock bottom bar style gives you"
+    },
+    "autoDownloadNoSubscriptions": "",
+    "@autoDownloadNoSubscriptions": {
+        "description": "Shown in settings when no series is followed"
+    },
+    "pageTransitionFadeShort": "",
+    "@pageTransitionFadeShort": {
+        "description": "Option label for short fade page transition"
+    },
+    "autoDownloadStorageFullBody": "",
+    "@autoDownloadStorageFullBody": {
+        "description": "System notification body when the automatic check has to hold new episodes back; name is the label of the first one (for example Series S1E1) and size its formatted size",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "name": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "transcodeSubtitleBurnInPgsDisabled": "",
+    "transcodeDisplayReportsNoHdr": "",
+    "transcodeResolutionHint": "",
+    "transcodeBitrateHint": "",
+    "transcodeDolbyVisionProfile7ElDisabled": "",
+    "transcodeDirectPlayError": ""
 }
