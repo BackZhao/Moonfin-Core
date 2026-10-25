@@ -254,121 +254,13 @@ class EmbyItemsApi implements ItemsApi {
         'EnableResumable': ?enableResumable,
         'EnableImageTypes': ?enableImageTypes,
         'ImageTypeLimit': ?imageTypeLimit,
+        // Emby 4.10 answers a Next Up that isn't scoped to one series with an
+        // empty list unless it's asked for the legacy one, which is the same
+        // list its own home screen shows. Older servers ignore the flag.
+        if (seriesId == null) 'LegacyNextUp': true,
       },
     );
-    final raw = response.data as Map<String, dynamic>;
-    final items = raw['Items'] as List? ?? const [];
-    if (items.isNotEmpty || seriesId != null) {
-      return raw;
-    }
-    // Emby 4.10 answers an unscoped Next Up with an empty list however much
-    // history the user has, while the same query scoped to a series returns
-    // the right episode. Ask per series instead, newest play first, so the row
-    // has the contents the server would have given if the wide query worked.
-    return _nextUpPerSeries(
-      startIndex: startIndex,
-      limit: limit,
-      fields: fields,
-      enableImageTypes: enableImageTypes,
-      imageTypeLimit: imageTypeLimit,
-      empty: raw,
-    );
-  }
-
-  /// How many recently played series the per series sweep asks about, and how
-  /// many of those it has in flight at once so a small server isn't hit with
-  /// the lot in one go.
-  static const _nextUpSeriesSweepLimit = 25;
-  static const _nextUpSweepConcurrency = 5;
-
-  Future<Map<String, dynamic>> _nextUpPerSeries({
-    required int? startIndex,
-    required int? limit,
-    required String? fields,
-    required String? enableImageTypes,
-    required int? imageTypeLimit,
-    required Map<String, dynamic> empty,
-  }) async {
-    try {
-      final played = await getItems(
-        includeItemTypes: const ['Episode'],
-        filters: const ['IsPlayed'],
-        recursive: true,
-        sortBy: 'DatePlayed',
-        sortOrder: 'Descending',
-        limit: 100,
-        fields: 'SeriesId',
-      );
-
-      // A set keeps the order it was filled in, so this stays newest play
-      // first while dropping the repeats a binged series produces.
-      final seriesIds = <String>{};
-      for (final item in played['Items'] as List? ?? const []) {
-        if (item is! Map) continue;
-        final id = item['SeriesId']?.toString();
-        if (id == null || id.isEmpty) continue;
-        seriesIds.add(id);
-        if (seriesIds.length >= _nextUpSeriesSweepLimit) break;
-      }
-      if (seriesIds.isEmpty) return empty;
-
-      final ordered = seriesIds.toList();
-      final episodes = <Object?>[];
-      for (var i = 0; i < ordered.length; i += _nextUpSweepConcurrency) {
-        final batch = ordered.skip(i).take(_nextUpSweepConcurrency);
-        episodes.addAll(
-          await Future.wait(
-            batch.map(
-              (id) => _firstNextUpForSeries(
-                id,
-                fields: fields,
-                enableImageTypes: enableImageTypes,
-                imageTypeLimit: imageTypeLimit,
-              ),
-            ),
-          ),
-        );
-      }
-
-      final merged = episodes.nonNulls.toList();
-      final from = (startIndex ?? 0).clamp(0, merged.length);
-      final to = limit == null
-          ? merged.length
-          : (from + limit).clamp(from, merged.length);
-
-      return {
-        ...empty,
-        'Items': merged.sublist(from, to),
-        'TotalRecordCount': merged.length,
-      };
-    } catch (_) {
-      // The sweep is a best effort on top of an answer we already have, so
-      // anything it throws leaves that answer alone rather than failing the
-      // row outright.
-      return empty;
-    }
-  }
-
-  Future<Object?> _firstNextUpForSeries(
-    String seriesId, {
-    required String? fields,
-    required String? enableImageTypes,
-    required int? imageTypeLimit,
-  }) async {
-    final response = await _dio.get(
-      '/Shows/NextUp',
-      queryParameters: {
-        'UserId': _getUserId(),
-        'SeriesId': seriesId,
-        'Limit': 1,
-        'Fields': ?_knownFields(fields),
-        'EnableImageTypes': ?enableImageTypes,
-        'ImageTypeLimit': ?imageTypeLimit,
-      },
-    );
-    final data = response.data as Map<String, dynamic>;
-    final items = data['Items'] as List? ?? const [];
-    return items.isEmpty ? null : items.first;
+    return response.data as Map<String, dynamic>;
   }
 
   @override
@@ -443,8 +335,9 @@ class EmbyItemsApi implements ItemsApi {
     int? imageTypeLimit,
     bool recursive = false,
   }) async {
+    final userId = _getUserId();
     final response = await _dio.get(
-      '/Items',
+      '/Users/$userId/Items',
       queryParameters: {
         if (parentId != null) 'ParentId': parentId,
         if (recursive) 'Recursive': true,
@@ -459,14 +352,7 @@ class EmbyItemsApi implements ItemsApi {
         'MaxPremiereDate': DateTime.now().toUtc().toIso8601String(),
       },
     );
-
-    // /Items/Latest returns a bare array, so normalize it into the
-    // same shape as /Items so all callers stay unchanged.
-    final data = response.data;
-    if (data is List) {
-      return {'Items': data, 'TotalRecordCount': data.length};
-    }
-    return data as Map<String, dynamic>;
+    return response.data as Map<String, dynamic>;
   }
 
   @override
@@ -604,7 +490,7 @@ class EmbyItemsApi implements ItemsApi {
       '/Playlists/$playlistId/Items',
       queryParameters: {
         'Fields':
-            'BasicSyncInfo,PrimaryImageAspectRatio,RunTimeTicks,Artists,AlbumArtist,IndexNumber,MediaType,PlaylistItemId,BackdropImageTags,ParentBackdropImageTags,ParentBackdropItemId,SeriesName,ParentIndexNumber,Genres,Chapters,Overview,UserData,MediaStreams',
+            'BasicSyncInfo,PrimaryImageAspectRatio,RunTimeTicks,Artists,AlbumArtist,IndexNumber,MediaType,PlaylistItemId,BackdropImageTags,ParentBackdropImageTags,ParentBackdropItemId,SeriesName,ParentIndexNumber,Genres,Chapters,Overview,UserData,MediaStreams,DateCreated,SortName',
         'EnableImageTypes': 'Primary,Backdrop,Logo,Thumb',
         'ImageTypeLimit': 1,
         'StartIndex': ?startIndex,
@@ -614,6 +500,7 @@ class EmbyItemsApi implements ItemsApi {
     return response.data as Map<String, dynamic>;
   }
 
+  /// Emby only reads Ids as a comma list and fails on an array.
   @override
   Future<Map<String, dynamic>> createPlaylist({
     required String name,
@@ -621,7 +508,7 @@ class EmbyItemsApi implements ItemsApi {
   }) async {
     final response = await _dio.post(
       '/Playlists',
-      data: {'Name': name, 'Ids': ?itemIds},
+      queryParameters: {'Name': name, 'Ids': ?itemIds?.join(',')},
     );
     return response.data as Map<String, dynamic>;
   }
@@ -749,9 +636,12 @@ class EmbyItemsApi implements ItemsApi {
     );
   }
 
+  /// Emby has no playlist update route, so the name goes through the item
+  /// update, which wants the whole item back.
   @override
   Future<void> renamePlaylist(String playlistId, String name) async {
-    await _dio.post('/Playlists/$playlistId', data: {'Name': name});
+    final item = await getItem(playlistId);
+    await _dio.post('/Items/$playlistId', data: {...item, 'Name': name});
   }
 
   @override
@@ -872,6 +762,15 @@ class EmbyItemsApi implements ItemsApi {
     } catch (_) {
       return const [];
     }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getAdditionalParts(String itemId) async {
+    final response = await _dio.get(
+      '/Videos/$itemId/AdditionalParts',
+      queryParameters: {'UserId': _getUserId()},
+    );
+    return _parseItemListResponse(response.data);
   }
 
   @override

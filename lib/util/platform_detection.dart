@@ -36,6 +36,11 @@ class PlatformDetection {
       !kIsWeb && defaultTargetPlatform == TargetPlatform.linux;
   static bool get isWeb => kIsWeb;
 
+  /// The ID this Flatpak was installed under, or null outside a Flatpak.
+  /// Flathub's ID isn't the native org.moonfin.linux.
+  static String? get flatpakAppId => isLinux ? linuxFlatpakAppId() : null;
+  static bool get isFlatpak => flatpakAppId != null;
+
   static String get linuxSessionType => '';
 
   static String get pathSeparator => isWindows ? '\\' : '/';
@@ -81,6 +86,9 @@ class PlatformDetection {
   static final Map<String, dynamic> _mediaCodecCapabilities =
       <String, dynamic>{};
   static final Map<String, dynamic> _deviceMemory = <String, dynamic>{};
+  static int? _uptimeAtProbeMs;
+  static final Stopwatch _sinceUptimeProbe = Stopwatch();
+  static String? _renderer;
   static final Map<String, dynamic> _audioCapabilities = <String, dynamic>{};
   static bool _hasDisplayHdrCapabilities = false;
   static bool _hasDolbyVisionCodecCapabilities = false;
@@ -138,6 +146,8 @@ class PlatformDetection {
   static bool get supportsHevcMain10 => _capabilityBool('supportsHevcMain10');
   static int get hevcMainLevel => _capabilityInt('hevcMainLevel');
   static int get hevcMain10Level => _capabilityInt('hevcMain10Level');
+  static bool get offersHevcSoftwareDecode =>
+      _capabilityBool('offersHevcSoftwareDecode');
   static bool get supportsHevcDolbyVision =>
       _capabilityBool('supportsHevcDolbyVision');
   static bool get supportsHevcDolbyVisionEl =>
@@ -263,6 +273,29 @@ class PlatformDetection {
       ..addAll(values ?? const <String, dynamic>{});
   }
 
+  /// How long the device has been up, not counting deep sleep. It's read from
+  /// SystemClock.uptimeMillis once at launch and moved forward by a Stopwatch,
+  /// which runs on the same clock on Android. Null until the probe answers.
+  static Duration? get systemUptime {
+    final atProbe = _uptimeAtProbeMs;
+    if (atProbe == null) return null;
+    return Duration(milliseconds: atProbe) + _sinceUptimeProbe.elapsed;
+  }
+
+  static void setSystemUptime(int? uptimeMs) {
+    _uptimeAtProbeMs = uptimeMs;
+    _sinceUptimeProbe
+      ..reset()
+      ..start();
+  }
+
+  /// Which renderer Android asked the engine for at launch and why, as the
+  /// platform side words it. Null until the probe answers, and on other
+  /// platforms.
+  static String? get renderer => _renderer;
+
+  static void setRenderer(String? value) => _renderer = value;
+
   static bool _capabilityBool(String key) {
     return _asBool(_mediaCodecCapabilities[key]);
   }
@@ -379,9 +412,9 @@ class PlatformDetection {
   /// Windows user picking the TV layout would activate this by accident.
   ///
   /// This only says the platform is capable. Whether the window is actually
-  /// used is decided per session from the content, the display's HDR state and
-  /// [UserPreferences.nativeHdrOutput] - see `HdrOutputController`. That
-  /// preference is the off switch; there is deliberately no compile-time one.
+  /// used is decided per session - see `HdrOutputController`.
+  /// [UserPreferences.videoRenderer] is the off switch. There is deliberately
+  /// no compile-time one.
   static bool get supportsNativeHdrWindow => isWindows;
 
   /// Apple platforms use the shared AVPlayer-based preview/theme channels

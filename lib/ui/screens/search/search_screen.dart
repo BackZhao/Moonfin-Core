@@ -11,15 +11,19 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:server_core/server_core.dart';
 
 import '../../../data/models/aggregated_item.dart';
+import '../../../data/offline/connectivity_aware_media_server_client.dart';
+import '../../../data/repositories/multi_server_repository.dart';
 import '../../../data/repositories/search_repository.dart';
 import '../../../data/repositories/seerr_repository.dart';
 import '../../../data/services/recent_searches_store.dart';
+import '../../../data/services/remote_search_session.dart';
 import '../../../data/services/voice_search_controller.dart';
 import '../../../data/viewmodels/search_view_model.dart';
 import '../../../preference/preference_constants.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../preference/seerr_preferences.dart';
 import '../../navigation/destinations.dart';
+import '../../navigation/route_lifecycle_observer.dart';
 import '../../../util/artwork_request_size.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/game_library.dart';
@@ -29,7 +33,10 @@ import '../../util/error_message.dart';
 import '../../util/search_group_title_localizer.dart';
 import '../../../util/focus/grid_focus_node_mixin.dart';
 import '../../../util/focus/row_focus_coordinator.dart';
+import '../../theme/app_theme_controller.dart';
+import '../../widgets/bottom_nav/bottom_navbar.dart';
 import '../../widgets/library_row.dart';
+import '../../widgets/media_badge.dart';
 import '../../widgets/media_card.dart';
 import '../../widgets/navigation_layout.dart';
 import '../../widgets/focus/context_menu_sheet.dart';
@@ -40,14 +47,21 @@ import '../../widgets/skeleton/skeleton_library_grid.dart';
 class SearchScreen extends StatefulWidget {
   final String? initialQuery;
   final String? scopedLibraryId;
+  final RemoteSearchSession? remoteSearch;
 
-  const SearchScreen({super.key, this.initialQuery, this.scopedLibraryId});
+  const SearchScreen({
+    super.key,
+    this.initialQuery,
+    this.scopedLibraryId,
+    this.remoteSearch,
+  });
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
+class _SearchScreenState extends State<SearchScreen>
+    with GridFocusNodeMixin, RouteAware {
   final _searchController = TextEditingController();
   final _voiceFocus = FocusNode();
   final _searchFocus = FocusNode();
@@ -58,7 +72,11 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   final Map<String, FocusNode> _allRowNodes = <String, FocusNode>{};
   // Per-row keys so focusing a card can scroll its whole row (title included)
   // into view rather than just the card.
-  final Map<int, GlobalKey> _allRowKeys = <int, GlobalKey>{};
+  final Map<String, GlobalKey> _allRowKeys = <String, GlobalKey>{};
+  // What each All tab row shows, top to bottom, as of the last build. Nodes
+  // and keys go by this rather than the row's position, so a row that arrives
+  // late doesn't take focus or scroll position from the rows below it.
+  List<String> _allRowIds = const [];
   // The results tab pill is a single focus stop.
   final _tabsFocusNode = FocusNode(debugLabel: 'search_tabs');
   // Vertical focus model: search field, then the tabs pill. Rebuilt each build.
@@ -72,16 +90,17 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   static const _tmdbPosterBase = 'https://image.tmdb.org/t/p/w342';
   int _selectedTab = 0;
   String? _tabSelectionQuery;
+  // The tabs as of the last results, so the selection stays on its tab when a
+  // group arrives late.
+  List<String> _shownTabKeys = const [];
   bool _focusTabsAfterResults = false;
+  bool _applyingRemoteSearch = false;
+  String _lastSearchText = '';
 
   // Tracks the current grid tab's content so async refreshes can restore focus
   // without stealing it from the search field.
   int _lastGridCount = -1;
   Object? _lastGridFirstId;
-
-  /// D-pad/keyboard focus navigation applies on TV and desktop; mobile is touch.
-  bool get _usesDpad =>
-      PlatformDetection.isTV || PlatformDetection.useDesktopUi;
 
   /// The focus node that owns the search field on this platform.
   FocusNode get _fieldNode =>
@@ -99,6 +118,11 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       _searchRepository,
       getIt<MediaServerClient>(),
       scopedParentId: widget.scopedLibraryId,
+      multiServerRepository: widget.scopedLibraryId == null &&
+              _userPreferences.get(UserPreferences.enableMultiServerLibraries) &&
+              !shouldUseOfflineCatalog()
+          ? getIt<MultiServerRepository>()
+          : null,
     );
     _vm.addListener(_onViewModelChanged);
     _initSeerr();
@@ -114,12 +138,32 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
     _searchInputFocus.addListener(_onFocusChanged);
     _voiceController.addListener(_onVoiceControllerChanged);
 
-    // Desktop keyboard/d-pad: let arrow Down/Up leave the plain text field.
-    if (PlatformDetection.useDesktopUi) {
+    if (widget.remoteSearch != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        widget.remoteSearch!.attach(_applyRemoteSearch);
+        _fieldNode.requestFocus();
+      });
+    }
+
+    // Let keyboard/remote arrows leave the normal-layout search field.
+    if (!PlatformDetection.isTV) {
       _searchInputFocus.onKeyEvent = _onSearchInputKey;
     }
     // Initial focus is granted by the RequestInitialFocus wrapper in build().
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (widget.remoteSearch != null && route is PageRoute<dynamic>) {
+      pageRouteLifecycleObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void didPushNext() => widget.remoteSearch?.close();
 
   Future<void> _initSeerr() async {
     try {
@@ -136,9 +180,16 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
 
   void _onViewModelChanged() {
     final query = _searchController.text.trim();
+    final tabKeys = _tabKeys;
+    final keptTab = _selectedTab < _shownTabKeys.length
+        ? tabKeys.indexOf(_shownTabKeys[_selectedTab])
+        : -1;
+    _shownTabKeys = tabKeys;
     if (_tabCount > 0 && query != _tabSelectionQuery) {
       _tabSelectionQuery = query;
       _selectedTab = _leadingTabCount;
+    } else if (keptTab >= 0) {
+      _selectedTab = keptTab;
     } else if (_selectedTab >= _tabCount) {
       _selectedTab = _tabCount == 0 ? 0 : _leadingTabCount;
     }
@@ -152,7 +203,25 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       });
     }
     _maybeBumpGridVersion();
+    _keepFocusedAllCardInView();
     if (mounted) setState(() {});
+  }
+
+  // A row that arrives late pushes the rows below it down, which can leave the
+  // focused card off screen.
+  void _keepFocusedAllCardInView() {
+    final focused = FocusManager.instance.primaryFocus;
+    if (focused == null || !_allRowNodes.containsValue(focused)) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final cardContext = focused.context;
+      if (!mounted || cardContext == null) return;
+      unawaited(
+        Scrollable.ensureVisible(
+          cardContext,
+          alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+        ),
+      );
+    });
   }
 
   // Detect when the current grid tab's content changed (async results arriving)
@@ -196,6 +265,10 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   }
 
   void _onSearchTextChanged() {
+    if (!_applyingRemoteSearch && _searchController.text != _lastSearchText) {
+      widget.remoteSearch?.close();
+    }
+    _lastSearchText = _searchController.text;
     _vm.searchDebounced(_searchController.text);
     if (mounted) setState(() {});
   }
@@ -206,6 +279,22 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       parentId: widget.scopedLibraryId,
       limit: 5,
     );
+  }
+
+  void _applyRemoteSearch(String text) {
+    if (!mounted) return;
+    _applyingRemoteSearch = true;
+    try {
+      // A native editor has its own snapshot. Dismiss it before applying phone
+      // text so a later native completion can't replace the newer query.
+      _searchTvFieldKey.currentState?.closeKeyboard(submit: false);
+      _searchController.value = TextEditingValue(
+        text: text,
+        selection: TextSelection.collapsed(offset: text.length),
+      );
+    } finally {
+      _applyingRemoteSearch = false;
+    }
   }
 
   Future<void> _saveRecentSearch(String query) async {
@@ -269,6 +358,16 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
     return hasContent ? _leadingTabCount + 1 + _vm.results.length : 0;
   }
 
+  // Names the tabs in the order _buildResults labels them.
+  List<String> get _tabKeys => _tabCount == 0
+      ? const []
+      : [
+          if (_hasSeerr) 'seerr',
+          if (_hasGames) 'games',
+          'all',
+          for (final group in _vm.results) group.itemTypes.first,
+        ];
+
   // How many special tabs sit before the All tab. This is also the All index.
   int get _leadingTabCount => (_hasSeerr ? 1 : 0) + (_hasGames ? 1 : 0);
 
@@ -309,7 +408,6 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   }
 
   void _focusFirstResult() {
-    if (!_usesDpad) return;
     if (_tabIsAll(_selectedTab)) {
       _focusAllCard(0, 0);
     } else {
@@ -468,6 +566,8 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
 
   @override
   void dispose() {
+    pageRouteLifecycleObserver.unsubscribe(this);
+    widget.remoteSearch?.close();
     _vm.removeListener(_onViewModelChanged);
     _searchController.removeListener(_onSearchTextChanged);
     _voiceFocus.removeListener(_onFocusChanged);
@@ -587,7 +687,13 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   }
 
   KeyEventResult _onVoiceKey(FocusNode node, KeyEvent event) {
-    if (!PlatformDetection.isTV) return KeyEventResult.ignored;
+    if (!PlatformDetection.isTV) {
+      if (isActivateKey(event)) {
+        _toggleVoiceSearch();
+        return KeyEventResult.handled;
+      }
+      return KeyEventResult.ignored;
+    }
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
       return KeyEventResult.ignored;
     }
@@ -601,11 +707,6 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       return KeyEventResult.handled;
     }
     if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-      return _tryFocusSidebar()
-          ? KeyEventResult.handled
-          : KeyEventResult.ignored;
-    }
-    if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
       _searchFocus.requestFocus();
       return KeyEventResult.handled;
     }
@@ -639,11 +740,12 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       return KeyEventResult.handled;
     }
     if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-      if (PlatformDetection.isAppleTV) {
-        return _tryFocusSidebar()
-            ? KeyEventResult.handled
-            : KeyEventResult.ignored;
-      }
+      return _tryFocusSidebar()
+          ? KeyEventResult.handled
+          : KeyEventResult.ignored;
+    }
+    if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
+        !PlatformDetection.isAppleTV) {
       _voiceFocus.requestFocus();
       return KeyEventResult.handled;
     }
@@ -681,7 +783,7 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   }
 
   String? _imageUrl(AggregatedItem item, {int? maxWidth, int? maxHeight}) {
-    final api = _vm.imageApi;
+    final api = _vm.imageApiFor(item);
     final type = item.type;
     if (type == 'Episode' || type == 'Program' || type == 'Recording') {
       if (item.backdropImageTags.isNotEmpty) {
@@ -717,35 +819,27 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
     return item.subtitle;
   }
 
-  Widget _buildVoiceActivation() {
-    final hasFocus = _usesDpad && _voiceFocus.hasFocus;
+  Widget _buildVoiceActivation(Color idleColor) {
+    final hasFocus = _voiceFocus.hasFocus;
     final isListening = _voiceController.isListening;
     final isInitializing = _voiceController.isInitializing;
+    final size = PlatformDetection.isTV ? 52.0 : 40.0;
     final backgroundColor = isListening
         ? const Color(0xFF8B1A1A)
-        : (hasFocus
-              ? AppColorScheme.buttonFocused
-              : AppColorScheme.surfaceVariant);
+        : (hasFocus ? AppColorScheme.buttonFocused : Colors.transparent);
     final iconColor = isListening
         ? AppColorScheme.onAccent
-        : (hasFocus
-              ? AppColorScheme.onButtonFocused
-              : AppColorScheme.onSurface);
+        : (hasFocus ? AppColorScheme.onButtonFocused : idleColor);
 
     Widget button = GestureDetector(
       onTap: isInitializing ? null : _toggleVoiceSearch,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        width: 54,
-        height: 54,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           color: backgroundColor,
           shape: BoxShape.circle,
-          border: Border.fromBorderSide(
-            hasFocus
-                ? ThemeRegistry.active.borders.focusBorder
-                : ThemeRegistry.active.borders.chipBorder,
-          ),
           boxShadow: isListening
               ? [
                   BoxShadow(
@@ -769,18 +863,14 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
               : Icon(
                   isListening ? Icons.mic : Icons.mic_none,
                   color: iconColor,
-                  size: 24,
+                  size: PlatformDetection.isTV ? 28 : 24,
                 ),
         ),
       ),
     );
 
-    if (!_usesDpad) {
-      return button;
-    }
-
-    // On TV, _onVoiceKey drives directional focus; on desktop the button just
-    // joins the Tab traversal order (the handler no-ops off-TV).
+    // TV handles directional focus itself. Other layouts use normal traversal
+    // and also take activation from a connected remote.
     return Focus(
       focusNode: _voiceFocus,
       onKeyEvent: _onVoiceKey,
@@ -791,22 +881,31 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    // On TV the mic lives inside the field's focus scope, so the field should
+    // not light up while the mic has focus.
     final searchHasFocus = PlatformDetection.isTV
-        ? _searchFocus.hasFocus
+        ? _searchFocus.hasFocus && !_voiceFocus.hasFocus
         : _searchInputFocus.hasFocus;
-    final searchBackgroundColor = searchHasFocus
-        ? AppColorScheme.buttonFocused
-        : AppColorScheme.surfaceVariant;
-    final searchTextColor = searchHasFocus
-        ? AppColorScheme.onButtonFocused
-        : AppColorScheme.onSurface;
-    final searchHintColor = searchHasFocus
-        ? AppColorScheme.onButtonFocused.withAlpha(153)
-        : AppColorScheme.onSurface.withAlpha(128);
+    final searchBorders = ThemeRegistry.active.borders;
+    final searchHintColor = AppColorScheme.onSurface.withAlpha(128);
     final searchIconColor = searchHasFocus
-        ? AppColorScheme.onButtonFocused
+        ? AppColorScheme.accent
         : AppColorScheme.onSurface.withValues(alpha: 0.7);
-    const searchBorderRadius = 28.0;
+    final searchFontSize = PlatformDetection.isTV ? 22.0 : 16.0;
+    final searchHeight = PlatformDetection.isTV ? 64.0 : 52.0;
+    final searchIcon = Icon(
+      Icons.search,
+      color: searchIconColor,
+      size: PlatformDetection.isTV ? 30 : 24,
+    );
+    final searchHint =
+        widget.scopedLibraryId != null && widget.scopedLibraryId!.isNotEmpty
+        ? l10n.searchThisLibrary
+        : l10n.searchEllipsis;
+    OutlineInputBorder searchBorder(BorderSide side) => OutlineInputBorder(
+      borderRadius: BorderRadius.circular(searchHeight / 2),
+      borderSide: side,
+    );
 
     // Vertical focus order: search field, then the tabs pill when results exist.
     // Results themselves are a 2D grid handled by their own key handlers.
@@ -822,6 +921,7 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
     final scaffold = Scaffold(
       backgroundColor: AppColorScheme.background,
       body: NavigationLayout(
+        activeRoute: Destinations.search,
         showBackButton: true,
         pinTopToolbar: true,
         child: SafeArea(
@@ -830,127 +930,112 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
               const SizedBox(height: 30),
               if (topbar || !PlatformDetection.isTV)
                 const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 48),
-                child: Row(
-                  children: [
-                    if (!PlatformDetection.isAppleTV) ...[
-                      _buildVoiceActivation(),
-                      const SizedBox(width: 14),
-                    ],
-                    Expanded(
-                      child: PlatformDetection.isTV
-                          ? Focus(
-                              focusNode: _searchFocus,
-                              onKeyEvent: _onSearchKey,
+              Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: PlatformDetection.isTV ? 820 : 640,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: PlatformDetection.isTV
+                        ? Focus(
+                            focusNode: _searchFocus,
+                            onKeyEvent: _onSearchKey,
+                            child: SizedBox(
+                              height: searchHeight,
                               child: CustomTVTextField(
                                 key: _searchTvFieldKey,
                                 controller: _searchController,
-                                isFocused: _searchFocus.hasFocus,
+                                isFocused: searchHasFocus,
                                 inputPurpose: InputPurpose.search,
                                 suggestionsBuilder: _fetchKeyboardSuggestions,
                                 recentSuggestions: _recentSearches,
                                 preferSystemIme: _userPreferences.get(
                                   UserPreferences.preferSystemImeKeyboard,
                                 ),
-                                hint:
-                                    widget.scopedLibraryId != null &&
-                                        widget.scopedLibraryId!.isNotEmpty
-                                    ? l10n.searchThisLibrary
-                                    : l10n.searchEllipsis,
+                                hint: searchHint,
                                 textStyle: TextStyle(
-                                  color: searchTextColor,
-                                  fontSize: 20,
+                                  color: AppColorScheme.onSurface,
+                                  fontSize: searchFontSize,
                                 ),
                                 hintStyle: TextStyle(
                                   color: searchHintColor,
-                                  fontSize: 20,
+                                  fontSize: searchFontSize,
                                 ),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: searchIconColor,
-                                  size: 30,
-                                ),
+                                prefixIcon: searchIcon,
+                                suffixIcon: PlatformDetection.isAppleTV
+                                    ? null
+                                    : _buildVoiceActivation(searchIconColor),
                                 filled: true,
-                                fillColor: searchBackgroundColor,
-                                borderRadius: searchBorderRadius,
-                                borderColor: AppColorScheme.scrim.withValues(
-                                  alpha: 0,
-                                ),
-                                focusedBorderColor: AppColorScheme.scrim
-                                    .withValues(alpha: 0),
-                                borderWidth: 0,
-                                focusedBorderWidth: 0,
+                                fillColor: AppColorScheme.surfaceVariant,
+                                borderRadius: searchHeight / 2,
+                                borderColor: searchBorders.chipBorder.color,
+                                focusedBorderColor:
+                                    searchBorders.focusBorder.color,
+                                borderWidth: searchBorders.chipBorder.width,
+                                focusedBorderWidth:
+                                    searchBorders.focusBorder.width,
+                                // Leaves room for the 52 px mic inside the
+                                // 2 px focus border.
                                 contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: 12,
+                                  horizontal: 18,
+                                  vertical: 4,
                                 ),
                                 popParentOnKeyboardClose: false,
                                 onFieldSubmitted: _onSearchSubmitted,
                               ),
-                            )
-                          : TextField(
-                              controller: _searchController,
-                              focusNode: _searchInputFocus,
-                              autofocus: true,
-                              onSubmitted: _onSearchSubmitted,
-                              style: TextStyle(
-                                color: searchTextColor,
-                                fontSize: 20,
+                            ),
+                          )
+                        : TextField(
+                            controller: _searchController,
+                            focusNode: _searchInputFocus,
+                            autofocus: true,
+                            onSubmitted: _onSearchSubmitted,
+                            style: TextStyle(
+                              color: AppColorScheme.onSurface,
+                              fontSize: searchFontSize,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: searchHint,
+                              hintStyle: TextStyle(color: searchHintColor),
+                              filled: true,
+                              fillColor: AppColorScheme.surfaceVariant,
+                              enabledBorder: searchBorder(
+                                searchBorders.chipBorder,
                               ),
-                              decoration: InputDecoration(
-                                hintText:
-                                    widget.scopedLibraryId != null &&
-                                        widget.scopedLibraryId!.isNotEmpty
-                                    ? l10n.searchThisLibrary
-                                    : l10n.searchEllipsis,
-                                hintStyle: TextStyle(color: searchHintColor),
-                                filled: true,
-                                fillColor: searchBackgroundColor,
-                                enabledBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(searchBorderRadius),
-                                  ),
-                                  borderSide: BorderSide.none,
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(searchBorderRadius),
-                                  ),
-                                  borderSide: BorderSide.none,
-                                ),
-                                border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(searchBorderRadius),
-                                  ),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 14,
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: searchIconColor,
-                                  size: 30,
-                                ),
-                                prefixIconConstraints: const BoxConstraints(
-                                  minWidth: 54,
-                                  minHeight: 54,
-                                ),
-                                suffixIcon: _searchController.text.isNotEmpty
-                                    ? IconButton(
-                                        icon: Icon(
-                                          Icons.clear,
-                                          color: searchIconColor,
-                                        ),
-                                        onPressed: _searchController.clear,
-                                      )
-                                    : null,
+                              focusedBorder: searchBorder(
+                                searchBorders.focusBorder,
+                              ),
+                              border: searchBorder(searchBorders.chipBorder),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 16,
+                              ),
+                              prefixIcon: searchIcon,
+                              prefixIconConstraints: const BoxConstraints(
+                                minWidth: 48,
+                                minHeight: 48,
+                              ),
+                              suffixIcon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (_searchController.text.isNotEmpty)
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.close,
+                                        color: searchIconColor,
+                                        size: 20,
+                                      ),
+                                      onPressed: _searchController.clear,
+                                      visualDensity: VisualDensity.compact,
+                                    ),
+                                  _buildVoiceActivation(searchIconColor),
+                                  const SizedBox(width: 6),
+                                ],
                               ),
                             ),
-                    ),
-                  ],
+                          ),
+                  ),
                 ),
               ),
               Expanded(child: _buildBody()),
@@ -1071,27 +1156,31 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
     );
   }
 
-  FocusNode _allCardNode(int row, int col) => _allRowNodes.putIfAbsent(
-    '$row:$col',
-    () => FocusNode(debugLabel: 'search_all_$row:$col'),
-  );
+  FocusNode _allCardNode(int row, int col) {
+    final id = '${_allRowIds[row]}:$col';
+    return _allRowNodes.putIfAbsent(
+      id,
+      () => FocusNode(debugLabel: 'search_all_$id'),
+    );
+  }
 
   GlobalKey _allRowKey(int row) =>
-      _allRowKeys.putIfAbsent(row, () => GlobalKey());
+      _allRowKeys.putIfAbsent(_allRowIds[row], () => GlobalKey());
 
   void _focusAllCard(int row, int col, {bool changedRow = true}) {
+    if (row >= _allRowIds.length) return;
     final node = _allCardNode(row, col);
+    final rowKey = _allRowKey(row);
     if (node.context != null) {
       node.requestFocus();
-      _ensureAllCardVisible(row, node, changedRow: changedRow);
+      _ensureAllCardVisible(rowKey, node, changedRow: changedRow);
       return;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final target = _allCardNode(row, col);
-      if (target.canRequestFocus) {
-        target.requestFocus();
-        _ensureAllCardVisible(row, target, changedRow: changedRow);
+      if (node.canRequestFocus) {
+        node.requestFocus();
+        _ensureAllCardVisible(rowKey, node, changedRow: changedRow);
       }
     });
   }
@@ -1100,7 +1189,7 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
   // outer list vertically when the row actually changed. Scrolling vertically on
   // every left/right press is what makes the page bounce up and down.
   void _ensureAllCardVisible(
-    int row,
+    GlobalKey rowKey,
     FocusNode node, {
     required bool changedRow,
   }) {
@@ -1109,7 +1198,7 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       _revealInNearestScrollable(cardContext, alignment: 0.5);
     }
     if (!changedRow) return;
-    final rowContext = _allRowKey(row).currentContext;
+    final rowContext = rowKey.currentContext;
     if (rowContext != null) {
       unawaited(
         Scrollable.ensureVisible(
@@ -1200,6 +1289,11 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
 
     final hasSeerr = _vm.seerrResults.isNotEmpty;
     final hasGames = _vm.gameResults.isNotEmpty;
+    _allRowIds = [
+      for (final g in groups) g.itemTypes.first,
+      if (hasSeerr) 'seerr',
+      if (hasGames) 'games',
+    ];
     // Library groups come first, then the Seerr and Games rows when present.
     final rowLens = <int>[
       for (final g in groups) g.items.length,
@@ -1281,10 +1375,13 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       );
     }
 
-    return ListView(
-      controller: _resultsScrollController,
-      padding: EdgeInsets.fromLTRB(horizontalPadding, 8, 0, 32),
-      children: rows,
+    return BottomNavPadded(
+      fallback: 32,
+      builder: (context, bottom) => ListView(
+        controller: _resultsScrollController,
+        padding: EdgeInsets.fromLTRB(horizontalPadding, 8, 0, bottom),
+        children: rows,
+      ),
     );
   }
 
@@ -1304,10 +1401,8 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       ar: ar,
       focusColor: focusColor,
       cardFocusExpansion: cardFocusExpansion,
-      focusNode: _usesDpad ? _allCardNode(row, col) : null,
-      onNavKey: _usesDpad
-          ? (node, event) => _onAllCardKey(row, col, rowLens, event)
-          : null,
+      focusNode: _allCardNode(row, col),
+      onNavKey: (node, event) => _onAllCardKey(row, col, rowLens, event),
     );
   }
 
@@ -1324,10 +1419,8 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       width: cardWidth,
       focusColor: focusColor,
       cardFocusExpansion: cardFocusExpansion,
-      focusNode: _usesDpad ? _allCardNode(row, col) : null,
-      onNavKey: _usesDpad
-          ? (node, event) => _onAllCardKey(row, col, rowLens, event)
-          : null,
+      focusNode: _allCardNode(row, col),
+      onNavKey: (node, event) => _onAllCardKey(row, col, rowLens, event),
     );
   }
 
@@ -1344,10 +1437,8 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       width: cardWidth,
       focusColor: focusColor,
       cardFocusExpansion: cardFocusExpansion,
-      focusNode: _usesDpad ? _allCardNode(row, col) : null,
-      onNavKey: _usesDpad
-          ? (node, event) => _onAllCardKey(row, col, rowLens, event)
-          : null,
+      focusNode: _allCardNode(row, col),
+      onNavKey: (node, event) => _onAllCardKey(row, col, rowLens, event),
     );
   }
 
@@ -1369,10 +1460,26 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       MediaQuery.devicePixelRatioOf(context),
       ArtworkShape.forAspectRatio(ar),
     );
+    final serverName = _vm.serverNameFor(item);
+    // A person's round portrait would clip the badge, so their server goes on
+    // the line under the name instead.
+    final serverOnSubtitle = serverName != null && item.type == 'Person';
     return MediaCard(
       title: item.name,
-      subtitle: _subtitle(item),
+      subtitle: serverOnSubtitle ? serverName : _subtitle(item),
       imageUrl: _imageUrl(item, maxWidth: requestWidth),
+      imageOverlays: [
+        if (serverName != null && !serverOnSubtitle)
+          Positioned(
+            left: 6,
+            right: 6,
+            bottom: (item.playedPercentage ?? 0) > 0 ? 16 : 6,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: _ServerBadge(name: serverName),
+            ),
+          ),
+      ],
       width: width,
       aspectRatio: ar,
       isFavorite: item.isFavorite,
@@ -1548,15 +1655,13 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       ar: ar,
       focusColor: focusColor,
       cardFocusExpansion: cardFocusExpansion,
-      focusNode: _usesDpad ? getGridItemFocusNode(index) : null,
-      onNavKey: _usesDpad
-          ? (node, event) => _onGridKey(
-              index: index,
-              columns: columns,
-              count: count,
-              event: event,
-            )
-          : null,
+      focusNode: getGridItemFocusNode(index),
+      onNavKey: (node, event) => _onGridKey(
+        index: index,
+        columns: columns,
+        count: count,
+        event: event,
+      ),
     );
   }
 
@@ -1573,15 +1678,13 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       width: cellWidth,
       focusColor: focusColor,
       cardFocusExpansion: cardFocusExpansion,
-      focusNode: _usesDpad ? getGridItemFocusNode(index) : null,
-      onNavKey: _usesDpad
-          ? (node, event) => _onGridKey(
-              index: index,
-              columns: columns,
-              count: count,
-              event: event,
-            )
-          : null,
+      focusNode: getGridItemFocusNode(index),
+      onNavKey: (node, event) => _onGridKey(
+        index: index,
+        columns: columns,
+        count: count,
+        event: event,
+      ),
     );
   }
 
@@ -1626,15 +1729,44 @@ class _SearchScreenState extends State<SearchScreen> with GridFocusNodeMixin {
       width: cellWidth,
       focusColor: focusColor,
       cardFocusExpansion: cardFocusExpansion,
-      focusNode: _usesDpad ? getGridItemFocusNode(index) : null,
-      onNavKey: _usesDpad
-          ? (node, event) => _onGridKey(
-              index: index,
-              columns: columns,
-              count: count,
-              event: event,
-            )
-          : null,
+      focusNode: getGridItemFocusNode(index),
+      onNavKey: (node, event) => _onGridKey(
+        index: index,
+        columns: columns,
+        count: count,
+        event: event,
+      ),
+    );
+  }
+}
+
+class _ServerBadge extends StatelessWidget {
+  const _ServerBadge({required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    context.dependOnInheritedWidgetOfExactType<AppThemeScope>();
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColorScheme.scrim.withValues(alpha: 0.75),
+        borderRadius: AppRadius.circular(4),
+        boxShadow: kMediaBadgeShadow,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        child: Text(
+          name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: AppColorScheme.onBadge,
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     );
   }
 }

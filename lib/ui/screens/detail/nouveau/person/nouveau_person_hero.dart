@@ -6,6 +6,7 @@ import 'package:server_core/server_core.dart';
 import '../../../../../data/models/aggregated_item.dart';
 import '../../../../../data/viewmodels/item_detail_view_model.dart';
 import '../../../../../l10n/app_localizations.dart';
+import '../../../../../preference/detail_section_layout.dart';
 import '../../../../../preference/user_preferences.dart';
 import '../../../../../util/platform_detection.dart';
 import '../../../../widgets/focus/focusable_wrapper.dart';
@@ -14,12 +15,16 @@ import '../../../../widgets/offline_aware_image.dart';
 import '../../../../widgets/overlay_sheet.dart';
 import '../../../../widgets/seerr/seerr_image_urls.dart';
 import '../../item_detail_screen.dart';
+import '../../person_links_row.dart';
 
 class NouveauPersonHero extends StatefulWidget {
   final AggregatedItem item;
   final ItemDetailViewModel viewModel;
   final ImageApi imageApi;
   final UserPreferences prefs;
+
+  /// Gates the biography and the birthplace.
+  final DetailSectionVisibility visibility;
 
   final FocusNode? initialFocusNode;
 
@@ -32,6 +37,7 @@ class NouveauPersonHero extends StatefulWidget {
     required this.viewModel,
     required this.imageApi,
     required this.prefs,
+    this.visibility = DetailSectionVisibility.all,
     this.initialFocusNode,
     this.onNavigateDown,
     this.onExternalFocusEntry,
@@ -105,11 +111,13 @@ class NouveauPersonHeroState extends State<NouveauPersonHero> {
   }
 
   /// The biography only takes focus when it overflows, so on a short one the
-  /// actions are the top of the page and Up belongs to the navbar.
+  /// actions are the top of the page and Up belongs to the navbar. The node
+  /// keeps its last context once a hidden biography is gone, hence the mounted
+  /// check.
   void _focusAbove() {
     if (_overviewFocusable &&
         _overviewFocusNode.canRequestFocus &&
-        _overviewFocusNode.context != null) {
+        (_overviewFocusNode.context?.mounted ?? false)) {
       _overviewFocusNode.requestFocus();
 
       return;
@@ -281,6 +289,8 @@ class NouveauPersonHeroState extends State<NouveauPersonHero> {
 
     final l10n = AppLocalizations.of(context);
 
+    final canFavorite = widget.viewModel.supportsPersonFavorites;
+
     final overviewStyle = theme.textTheme.bodyLarge?.copyWith(
       color: foreground.withValues(alpha: 0.76),
       height: compactLandscape ? 1.32 : 1.42,
@@ -360,25 +370,27 @@ class NouveauPersonHeroState extends State<NouveauPersonHero> {
           spacing: 12,
           runSpacing: 10,
           children: [
-            _PersonHeroAction(
-              focusNode: _favoriteFocusNode,
-              icon: Icons.favorite_rounded,
-              label: widget.item.isFavorite ? l10n.favorited : l10n.favorite,
-              isActive: widget.item.isFavorite,
-              activeColor: const Color(0xFFFF4757),
-              compact: compact,
-              compactLandscape: compactLandscape,
-              onPressed: widget.viewModel.toggleFavorite,
-              onNavigateUp: _focusAbove,
-              onNavigateLeft: NavigationLayout.focusNavbar,
-              onNavigateRight: () {
-                _displayFocusNode.requestFocus();
-              },
-              onNavigateDown: widget.onNavigateDown,
-            ),
+            if (canFavorite)
+              _PersonHeroAction(
+                focusNode: _favoriteFocusNode,
+                icon: Icons.favorite_rounded,
+                label: widget.item.isFavorite ? l10n.favorited : l10n.favorite,
+                isActive: widget.item.isFavorite,
+                activeColor: const Color(0xFFFF4757),
+                compact: compact,
+                compactLandscape: compactLandscape,
+                onPressed: widget.viewModel.toggleFavorite,
+                onNavigateUp: _focusAbove,
+                onNavigateLeft: NavigationLayout.focusNavbar,
+                onNavigateRight: () {
+                  _displayFocusNode.requestFocus();
+                },
+                onNavigateDown: widget.onNavigateDown,
+              ),
 
             _PersonHeroAction(
-              focusNode: _displayFocusNode,
+              // With no heart, Display takes over its focus.
+              focusNode: canFavorite ? _displayFocusNode : _favoriteFocusNode,
               icon: Icons.tune_rounded,
               label: l10n.display,
               compact: compact,
@@ -387,13 +399,21 @@ class NouveauPersonHeroState extends State<NouveauPersonHero> {
                 _showDisplaySettings(context);
               },
               onNavigateUp: _focusAbove,
-              onNavigateLeft: () {
-                _favoriteFocusNode.requestFocus();
-              },
+              onNavigateLeft: canFavorite
+                  ? () {
+                      _favoriteFocusNode.requestFocus();
+                    }
+                  : NavigationLayout.focusNavbar,
               onNavigateRight: () {},
               onNavigateDown: widget.onNavigateDown,
             ),
           ],
+        ),
+        PersonLinksRow(
+          item: widget.item,
+          accounts: widget.viewModel.personAccounts,
+          alignment: WrapAlignment.start,
+          padding: const EdgeInsets.only(top: 16),
         ),
       ],
     );
@@ -403,11 +423,17 @@ class NouveauPersonHeroState extends State<NouveauPersonHero> {
   Widget build(BuildContext context) {
     final imageUrl = _profileImageUrl();
 
-    final overview = widget.item.overview?.trim() ?? '';
+    final visibility = widget.visibility;
+
+    final overview = visibility.shows(DetailSection.biography)
+        ? widget.item.overview?.trim() ?? ''
+        : '';
 
     final dateParts = _dateParts(context);
 
-    final location = widget.item.productionLocations.isNotEmpty
+    final location =
+        visibility.shows(DetailSection.birthplace) &&
+            widget.item.productionLocations.isNotEmpty
         ? widget.item.productionLocations.first.trim()
         : '';
 

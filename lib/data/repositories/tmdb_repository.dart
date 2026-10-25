@@ -8,10 +8,50 @@ import 'package:server_core/server_core.dart';
 /// logo, an authenticated URL to that logo image.
 typedef StudioCompany = ({String name, String? imageUrl});
 
+/// A person's IMDb id, official site and social accounts as TMDB lists them.
+/// Each account is the handle or id, null when TMDB has none.
+typedef TmdbPersonAccounts = ({
+  String? imdbId,
+  String? homepage,
+  String? instagram,
+  String? twitter,
+  String? facebook,
+  String? tiktok,
+  String? youtube,
+});
+
+/// A TMDB user review. The plugin has already turned its text into markdown.
+typedef TmdbReview = ({
+  String author,
+  double? rating,
+  String content,
+  DateTime? createdAt,
+  String? avatarUrl,
+  String? url,
+});
+
+/// The reviews in a plugin answer, leaving out any without text.
+@visibleForTesting
+List<TmdbReview> parseTmdbReviews(Map<String, dynamic> response) => [
+  for (final r in (response['reviews'] as List?) ?? const [])
+    if (r is Map && r['content'] is String && (r['content'] as String).isNotEmpty)
+      (
+        author: r['author'] is String ? r['author'] as String : '',
+        rating: r['rating'] is num ? (r['rating'] as num).toDouble() : null,
+        content: r['content'] as String,
+        createdAt: r['createdAt'] is String
+            ? DateTime.tryParse(r['createdAt'] as String)
+            : null,
+        avatarUrl: r['avatarUrl'] is String ? r['avatarUrl'] as String : null,
+        url: r['url'] is String ? r['url'] as String : null,
+      ),
+];
+
 class TmdbRepository {
   static const _maxEpisodeCacheEntries = 256;
   static const _maxSeasonCacheEntries = 64;
   static const _maxCompaniesCacheEntries = 128;
+  static const _maxReviewsCacheEntries = 64;
 
   final MediaServerClient _client;
 
@@ -20,6 +60,7 @@ class TmdbRepository {
   final _episodeCache = <String, double>{};
   final _seasonCache = <String, Map<int, double>>{};
   final _companiesCache = <String, List<StudioCompany>>{};
+  final _reviewsCache = <String, List<TmdbReview>>{};
   final _pendingEpisodes = <String, Completer<double?>>{};
   final _pendingSeasons = <String, Completer<Map<int, double>?>>{};
   final _pendingCompanies = <String, Completer<List<StudioCompany>?>>{};
@@ -82,6 +123,29 @@ class TmdbRepository {
     final token = _client.accessToken;
     if (token == null) return null;
     return '${_client.baseUrl}/Moonfin/Tmdb/StudioImage/$companyId?${_client.serverType.tokenQueryParam}=$token';
+  }
+
+  /// The plugin's titled wide image for a movie or show the server doesn't
+  /// have. [type] is movie or tv, and [imdbId] only counts when there is no
+  /// [tmdbId].
+  String? thumbUrl({required String type, String? tmdbId, String? imdbId}) {
+    final token = _client.accessToken;
+    if (token == null) return null;
+    final MapEntry<String, String> id;
+    if (tmdbId != null && tmdbId.isNotEmpty) {
+      id = MapEntry('tmdbId', tmdbId);
+    } else if (imdbId != null && imdbId.isNotEmpty) {
+      id = MapEntry('imdbId', imdbId);
+    } else {
+      return null;
+    }
+    return Uri.parse('${_client.baseUrl}/Moonfin/Tmdb/Thumb').replace(
+      queryParameters: {
+        'type': type,
+        id.key: id.value,
+        _client.serverType.tokenQueryParam: token,
+      },
+    ).toString();
   }
 
   Future<double?> getEpisodeRating({
@@ -186,6 +250,66 @@ class TmdbRepository {
     }
   }
 
+  /// Fetches a person's accounts from the Moonfin plugin, which asks TMDB and
+  /// caches the answer. Returns null when the plugin call fails.
+  Future<TmdbPersonAccounts?> getPersonAccounts(String tmdbId) async {
+    try {
+      final response = await _get('/Moonfin/Tmdb/PersonLinks', {
+        'tmdbId': tmdbId,
+      });
+      if (response == null) return null;
+
+      String? text(String key) {
+        final value = response[key];
+        if (value is! String) return null;
+        final trimmed = value.trim();
+        return trimmed.isEmpty ? null : trimmed;
+      }
+
+      return (
+        imdbId: text('imdbId'),
+        homepage: text('homepage'),
+        instagram: text('instagram'),
+        twitter: text('twitter'),
+        facebook: text('facebook'),
+        tiktok: text('tiktok'),
+        youtube: text('youtube'),
+      );
+    } catch (e) {
+      debugPrint('[Moonfin] TMDB person links fetch failed: $e');
+      return null;
+    }
+  }
+
+  /// TMDB's user reviews for a movie or show, in [language] when it has any
+  /// in it. Null when the plugin call fails, so a later visit asks again.
+  Future<List<TmdbReview>?> getReviews({
+    required String tmdbId,
+    required String type,
+    String? language,
+  }) async {
+    final cacheKey = '$type:$tmdbId:$language';
+    final cached = _reviewsCache[cacheKey];
+    if (cached != null) return cached;
+    try {
+      final response = await _get('/Moonfin/Tmdb/Reviews', {
+        'tmdbId': tmdbId,
+        'type': type,
+        'language': ?language,
+      });
+      if (response == null) return null;
+      final reviews = parseTmdbReviews(response);
+      if (_reviewsCache.length >= _maxReviewsCacheEntries) {
+        _reviewsCache.remove(_reviewsCache.keys.first);
+      }
+      _reviewsCache[cacheKey] = reviews;
+      return reviews;
+    } catch (e) {
+      debugPrint('[Moonfin] TMDB reviews fetch failed: $e');
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>?> _get(
     String path,
     Map<String, dynamic> query,
@@ -214,6 +338,7 @@ class TmdbRepository {
     _episodeCache.clear();
     _seasonCache.clear();
     _companiesCache.clear();
+    _reviewsCache.clear();
     _pendingEpisodes.clear();
     _pendingSeasons.clear();
     _pendingCompanies.clear();

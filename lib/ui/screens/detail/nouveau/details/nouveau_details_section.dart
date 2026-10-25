@@ -10,7 +10,9 @@ import 'package:server_core/server_core.dart';
 import '../../../../../data/models/aggregated_item.dart';
 import '../../../../../data/viewmodels/item_detail_view_model.dart';
 import '../../../../../data/viewmodels/seerr_media_detail_view_model.dart';
+import '../../../../../data/services/book_reader_service.dart';
 import '../../../../../l10n/app_localizations.dart';
+import '../../../../../preference/detail_section_layout.dart';
 import '../../../../../preference/preference_constants.dart';
 import '../../../../../preference/user_preferences.dart';
 import '../../../../../util/detail_playback_info.dart';
@@ -22,6 +24,7 @@ import '../../../../widgets/navigation_layout.dart';
 import '../../../../widgets/seerr/seerr_item_chips.dart';
 import '../../../../widgets/seerr/seerr_item_status.dart';
 import '../../../../widgets/seerr/seerr_stats_card.dart';
+import '../../../../widgets/seerr/seerr_streaming_row.dart';
 import '../../item_detail_screen.dart' show selectedMediaSourceForItem;
 import '../shared/nouveau_spacing.dart';
 
@@ -29,6 +32,11 @@ class NouveauDetailsSection extends StatefulWidget {
   final AggregatedItem item;
   final ItemDetailViewModel viewModel;
   final Map<String, dynamic>? selectedMediaSource;
+
+  /// Studios, the Seerr pieces and the media info each have a switch. A hidden
+  /// one reads as empty, and with all of them off the section draws nothing
+  /// and drops out of the focus chain.
+  final DetailSectionVisibility visibility;
 
   /// The section background is full-bleed.
   ///
@@ -42,6 +50,7 @@ class NouveauDetailsSection extends StatefulWidget {
     required this.item,
     required this.viewModel,
     required this.selectedMediaSource,
+    this.visibility = DetailSectionVisibility.all,
     required this.contentInsets,
     this.onNavigateUp,
     this.onNavigateDown,
@@ -101,18 +110,29 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
 
   SeerrMediaDetailState? get _seerrState => seerrItemTabState(_vm);
 
-  bool get _hasSeerrChips {
-    final state = _seerrState;
+  SeerrDetailPieces get _seerrPieces {
+    if (!mounted) {
+      return SeerrDetailPieces.none;
+    }
 
-    return state != null && SeerrItemChips.hasContent(state);
+    return SeerrDetailPieces.resolve(
+      _seerrState,
+      widget.visibility,
+      AppLocalizations.of(context),
+    );
   }
 
-  bool _hasSeerrStats(BuildContext context) {
-    final state = _seerrState;
+  bool get _hasSeerrChips => _seerrPieces.chips;
 
-    return state != null &&
-        SeerrStatsCard.hasContent(state, AppLocalizations.of(context));
+  bool get _hasSeerrFacts {
+    final pieces = _seerrPieces;
+    return pieces.stats || pieces.streaming;
   }
+
+  // A node keeps its last context after its widget is gone, so a group that
+  // was hidden would still look focusable without the mounted check.
+  bool _canFocus(FocusNode node) =>
+      node.canRequestFocus && (node.context?.mounted ?? false);
 
   GlobalKey? get topRevealKey {
     final studios = _studioNames(widget.item);
@@ -128,7 +148,12 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
     return _readingContentKey;
   }
 
-  GlobalKey? get bottomRevealKey {
+  /// A book has a file but no media source, so it shows its file details on
+  /// its own, under the same Media Info setting.
+  bool _showsBookFile(AggregatedItem item) =>
+      item.type == 'Book' && widget.visibility.shows(DetailSection.mediaInfo);
+
+  bool get _hasTechnicalDetails {
     final targetItem = _getRelevantEpisode(widget.item) ?? widget.item;
 
     final isPlayable =
@@ -136,12 +161,12 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
         targetItem.type != 'Season' &&
         targetItem.type != 'Person';
 
-    final hasTechnicalDetails =
-        isPlayable && _mediaSourceFor(targetItem) != null;
+    return isPlayable &&
+        (_mediaSourceFor(targetItem) != null || _showsBookFile(targetItem));
+  }
 
-    final hasStats = mounted && _hasSeerrStats(context);
-
-    if (hasStats || hasTechnicalDetails) {
+  GlobalKey? get bottomRevealKey {
+    if (_hasSeerrFacts || _hasTechnicalDetails) {
       return _readingContentKey;
     }
 
@@ -184,16 +209,14 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
       final key = _studioKey(0, studios.first);
       final node = _studioFocusNodes[key];
 
-      return node != null && node.canRequestFocus && node.context != null;
+      return node != null && _canFocus(node);
     }
 
     if (_hasSeerrChips) {
-      return _seerrChipsFocusNode.canRequestFocus &&
-          _seerrChipsFocusNode.context != null;
+      return _canFocus(_seerrChipsFocusNode);
     }
 
-    return _readingFocusNode.canRequestFocus &&
-        _readingFocusNode.context != null;
+    return _canFocus(_readingFocusNode);
   }
 
   bool focusTop() {
@@ -204,16 +227,13 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
       return true;
     }
 
-    if (_hasSeerrChips &&
-        _seerrChipsFocusNode.canRequestFocus &&
-        _seerrChipsFocusNode.context != null) {
+    if (_hasSeerrChips && _canFocus(_seerrChipsFocusNode)) {
       _seerrChipsFocusNode.requestFocus();
 
       return true;
     }
 
-    if (_readingFocusNode.canRequestFocus &&
-        _readingFocusNode.context != null) {
+    if (_canFocus(_readingFocusNode)) {
       _readingFocusNode.requestFocus();
 
       return true;
@@ -223,29 +243,14 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
   }
 
   bool focusBottom() {
-    final targetItem = _getRelevantEpisode(widget.item) ?? widget.item;
-
-    final isPlayable =
-        targetItem.type != 'Series' &&
-        targetItem.type != 'Season' &&
-        targetItem.type != 'Person';
-
-    final hasTechnicalDetails =
-        isPlayable && _mediaSourceFor(targetItem) != null;
-
-    final hasStats = mounted && _hasSeerrStats(context);
-
-    if ((hasStats || hasTechnicalDetails) &&
-        _readingFocusNode.canRequestFocus &&
-        _readingFocusNode.context != null) {
+    if ((_hasSeerrFacts || _hasTechnicalDetails) &&
+        _canFocus(_readingFocusNode)) {
       _readingFocusNode.requestFocus();
 
       return true;
     }
 
-    if (_hasSeerrChips &&
-        _seerrChipsFocusNode.canRequestFocus &&
-        _seerrChipsFocusNode.context != null) {
+    if (_hasSeerrChips && _canFocus(_seerrChipsFocusNode)) {
       _seerrChipsFocusNode.requestFocus();
 
       return true;
@@ -287,12 +292,20 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
   }
 
   Map<String, dynamic>? _mediaSourceFor(AggregatedItem item) {
+    if (!widget.visibility.shows(DetailSection.mediaInfo)) {
+      return null;
+    }
+
     final selectedSourceId = widget.selectedMediaSource?['Id']?.toString();
 
     return selectedMediaSourceForItem(item, selectedSourceId);
   }
 
   List<String> _studioNames(AggregatedItem item) {
+    if (!widget.visibility.shows(DetailSection.studios)) {
+      return const [];
+    }
+
     final names = <String>[];
     final seen = <String>{};
 
@@ -394,17 +407,13 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
           return KeyEventResult.handled;
         }
 
-        if (hasSeerrChips &&
-            _seerrChipsFocusNode.canRequestFocus &&
-            _seerrChipsFocusNode.context != null) {
+        if (hasSeerrChips && _canFocus(_seerrChipsFocusNode)) {
           _seerrChipsFocusNode.requestFocus();
 
           return KeyEventResult.handled;
         }
 
-        if (hasReadingContent &&
-            _readingFocusNode.canRequestFocus &&
-            _readingFocusNode.context != null) {
+        if (hasReadingContent && _canFocus(_readingFocusNode)) {
           _readingFocusNode.requestFocus();
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -430,7 +439,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
   }
 
   void _requestStudioFocus(FocusNode node, {required bool scrollIfNeeded}) {
-    if (!node.canRequestFocus || node.context == null) {
+    if (!_canFocus(node)) {
       return;
     }
 
@@ -582,7 +591,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
     final result = <MapEntry<FocusNode, Offset>>[];
 
     for (final node in _studioFocusNodes.values) {
-      if (!node.canRequestFocus || node.context == null) {
+      if (!_canFocus(node)) {
         continue;
       }
 
@@ -751,7 +760,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
 
     final node = _studioFocusNodes[key];
 
-    if (node == null || !node.canRequestFocus || node.context == null) {
+    if (node == null || !_canFocus(node)) {
       return false;
     }
 
@@ -773,7 +782,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
     if (rememberedKey != null) {
       final node = _studioFocusNodes[rememberedKey];
 
-      if (node != null && node.canRequestFocus && node.context != null) {
+      if (node != null && _canFocus(node)) {
         _requestStudioFocus(node, scrollIfNeeded: scrollIfNeeded);
 
         return true;
@@ -794,7 +803,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
 
     final node = _studioFocusNodes[key];
 
-    if (node == null || !node.canRequestFocus || node.context == null) {
+    if (node == null || !_canFocus(node)) {
       return false;
     }
 
@@ -804,9 +813,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
   }
 
   bool _focusSeerrChips() {
-    if (!_hasSeerrChips ||
-        !_seerrChipsFocusNode.canRequestFocus ||
-        _seerrChipsFocusNode.context == null) {
+    if (!_hasSeerrChips || !_canFocus(_seerrChipsFocusNode)) {
       return false;
     }
 
@@ -816,8 +823,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
   }
 
   bool _focusReading() {
-    if (!_readingFocusNode.canRequestFocus ||
-        _readingFocusNode.context == null) {
+    if (!_canFocus(_readingFocusNode)) {
       return false;
     }
 
@@ -914,6 +920,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
         mediaSourceId: requestedMediaSourceId,
         audioStreamIndex: requestedAudioIndex,
         subtitleStreamIndex: requestedSubtitleIndex,
+        hasOtherVersions: item.mediaSources.length > 1,
       );
 
       if (!mounted || requestSerial != _playbackInfoRequestSerial) {
@@ -1017,23 +1024,20 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
 
     final mediaSource = isPlayable ? _mediaSourceFor(targetItem) : null;
 
-    final hasTechnicalDetails = mediaSource != null;
+    final hasTechnicalDetails =
+        mediaSource != null || _showsBookFile(targetItem);
 
     final seerrState = _seerrState;
 
-    final hasSeerrChips =
-        seerrState != null && SeerrItemChips.hasContent(seerrState);
-
-    final hasSeerrStats =
-        seerrState != null &&
-        SeerrStatsCard.hasContent(seerrState, AppLocalizations.of(context));
+    final seerrPieces = _seerrPieces;
 
     final hasStudios = studios.isNotEmpty;
 
     if (!hasTechnicalDetails &&
         !hasStudios &&
-        !hasSeerrChips &&
-        !hasSeerrStats) {
+        !seerrPieces.chips &&
+        !seerrPieces.stats &&
+        !seerrPieces.streaming) {
       return const SizedBox.shrink();
     }
 
@@ -1055,6 +1059,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
       mediaSource: mediaSource,
       studios: studios,
       seerrState: seerrState,
+      seerrPieces: seerrPieces,
     );
   }
 
@@ -1064,6 +1069,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
     required Map<String, dynamic>? mediaSource,
     required List<String> studios,
     required SeerrMediaDetailState? seerrState,
+    required SeerrDetailPieces seerrPieces,
   }) {
     final theme = Theme.of(context);
 
@@ -1071,17 +1077,18 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
 
     final foreground = AppColorScheme.onSurface;
 
-    final hasTechnicalDetails = mediaSource != null;
+    final hasTechnicalDetails = mediaSource != null || _showsBookFile(item);
 
     final hasStudios = studios.isNotEmpty;
 
-    final hasSeerrChips =
-        seerrState != null && SeerrItemChips.hasContent(seerrState);
+    final hasSeerrChips = seerrState != null && seerrPieces.chips;
 
-    final hasSeerrStats =
-        seerrState != null && SeerrStatsCard.hasContent(seerrState, l10n);
+    final hasSeerrStats = seerrState != null && seerrPieces.stats;
 
-    final hasReadingContent = hasSeerrStats || hasTechnicalDetails;
+    final hasSeerrStreaming = seerrState != null && seerrPieces.streaming;
+
+    final hasReadingContent =
+        hasSeerrStats || hasSeerrStreaming || hasTechnicalDetails;
 
     var fileName = '';
     var formattedSize = '';
@@ -1226,6 +1233,10 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
             : null,
         activeAudioIndex: activeAudioIndex,
       );
+    } else if (_showsBookFile(item)) {
+      fileName = BookReaderService.fileName(item);
+
+      container = BookReaderService.detectExtension(item) ?? '';
     }
 
     final baseBackground = theme.scaffoldBackgroundColor.withValues(alpha: 1.0);
@@ -1395,10 +1406,26 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
                             SeerrStatsCard(state: seerrState),
                           ],
 
-                          if (hasTechnicalDetails) ...[
+                          if (hasSeerrStreaming) ...[
                             SizedBox(
                               height:
                                   hasSeerrStats || hasSeerrChips || hasStudios
+                                  ? 26
+                                  : NouveauSpacing.detailsTitleToContent,
+                            ),
+
+                            SeerrStreamingRow(
+                              providers: seerrState.streamingProviders,
+                            ),
+                          ],
+
+                          if (hasTechnicalDetails) ...[
+                            SizedBox(
+                              height:
+                                  hasSeerrStats ||
+                                      hasSeerrStreaming ||
+                                      hasSeerrChips ||
+                                      hasStudios
                                   ? 46
                                   : NouveauSpacing.detailsTitleToContent,
                             ),
@@ -1409,6 +1436,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
                                 fileName: fileName,
                                 formattedSize: formattedSize,
                                 container: container,
+                                includePlaybackCapability: mediaSource != null,
                                 videoDetails: videoDetails,
                                 audioStreams: audioStreams,
                                 subtitleStreams: subtitleStreams,
@@ -1422,6 +1450,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
                                 fileName: fileName,
                                 formattedSize: formattedSize,
                                 container: container,
+                                includePlaybackCapability: mediaSource != null,
                                 videoDetails: videoDetails,
                                 audioStreams: audioStreams,
                                 subtitleStreams: subtitleStreams,
@@ -1596,6 +1625,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
     required String fileName,
     required String formattedSize,
     required String container,
+    required bool includePlaybackCapability,
     required List<String> videoDetails,
     required List<Map<String, dynamic>> audioStreams,
     required List<Map<String, dynamic>> subtitleStreams,
@@ -1618,55 +1648,58 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
               fileName: fileName,
               formattedSize: formattedSize,
               container: container,
-              includePlaybackCapability: true,
+              includePlaybackCapability: includePlaybackCapability,
             ),
           ),
         ),
 
-        _columnDivider(),
+        // A book has no streams, so its file details take the whole row.
+        if (includePlaybackCapability) ...[
+          _columnDivider(),
 
-        Expanded(
-          flex: 10,
-          child: _buildGroup(
-            context,
-            title: l10n.video,
-            child: _buildVideoContent(context, videoDetails),
-          ),
-        ),
-
-        _columnDivider(),
-
-        Expanded(
-          flex: 11,
-          child: _buildGroup(
-            context,
-            title: l10n.audio,
-            child: _buildTrackList(
+          Expanded(
+            flex: 10,
+            child: _buildGroup(
               context,
-              streams: audioStreams,
-              activeIndex: activeAudioIndex,
-              formatLanguage: formatLanguage,
-              includeForced: false,
+              title: l10n.video,
+              child: _buildVideoContent(context, videoDetails),
             ),
           ),
-        ),
 
-        _columnDivider(),
+          _columnDivider(),
 
-        Expanded(
-          flex: 11,
-          child: _buildGroup(
-            context,
-            title: l10n.subtitles,
-            child: _buildTrackList(
+          Expanded(
+            flex: 11,
+            child: _buildGroup(
               context,
-              streams: subtitleStreams,
-              activeIndex: activeSubtitleIndex,
-              formatLanguage: formatLanguage,
-              includeForced: true,
+              title: l10n.audio,
+              child: _buildTrackList(
+                context,
+                streams: audioStreams,
+                activeIndex: activeAudioIndex,
+                formatLanguage: formatLanguage,
+                includeForced: false,
+              ),
             ),
           ),
-        ),
+
+          _columnDivider(),
+
+          Expanded(
+            flex: 11,
+            child: _buildGroup(
+              context,
+              title: l10n.subtitles,
+              child: _buildTrackList(
+                context,
+                streams: subtitleStreams,
+                activeIndex: activeSubtitleIndex,
+                formatLanguage: formatLanguage,
+                includeForced: true,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -1676,6 +1709,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
     required String fileName,
     required String formattedSize,
     required String container,
+    required bool includePlaybackCapability,
     required List<String> videoDetails,
     required List<Map<String, dynamic>> audioStreams,
     required List<Map<String, dynamic>> subtitleStreams,
@@ -1694,7 +1728,7 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
           fileName: fileName,
           formattedSize: formattedSize,
           container: container,
-          includePlaybackCapability: true,
+          includePlaybackCapability: includePlaybackCapability,
         ),
       ),
 
@@ -1791,13 +1825,17 @@ class NouveauDetailsSectionState extends State<NouveauDetailsSection> {
 
         const SizedBox(height: 7),
 
-        Text(
-          l10n.fileSizeFormat(formattedSize, container),
-          style: textTheme.bodySmall?.copyWith(
-            color: foreground.withValues(alpha: 0.5),
-            height: 1.3,
+        // A book whose file name has no extension has nothing to show here.
+        if (formattedSize.isNotEmpty || container.isNotEmpty)
+          Text(
+            formattedSize.isEmpty
+                ? l10n.formatExtension(container)
+                : l10n.fileSizeFormat(formattedSize, container),
+            style: textTheme.bodySmall?.copyWith(
+              color: foreground.withValues(alpha: 0.5),
+              height: 1.3,
+            ),
           ),
-        ),
 
         if (includePlaybackCapability) ...[
           const SizedBox(height: 12),

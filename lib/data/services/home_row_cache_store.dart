@@ -21,7 +21,7 @@ class HomeRowCacheStore {
 
   /// Rows whose items are only true for the minutes they describe. Replaying
   /// them from disk paints programs that already ended.
-  static bool _isTimeBound(HomeRowType rowType) =>
+  static bool isTimeBound(HomeRowType rowType) =>
       rowType == HomeRowType.liveTvOnNow;
 
   Future<File> _file() async {
@@ -54,7 +54,7 @@ class HomeRowCacheStore {
         if (raw is! Map) continue;
         final row = _rowFromJson(raw.cast<String, dynamic>());
         // Drop time-bound rows a build before this one may have written.
-        if (row != null && !_isTimeBound(row.rowType)) rows.add(row);
+        if (row != null && !isTimeBound(row.rowType)) rows.add(row);
       }
       return rows.isEmpty ? null : rows;
     } catch (_) {
@@ -62,22 +62,43 @@ class HomeRowCacheStore {
     }
   }
 
-  /// Persists the populated, non-placeholder rows under [cacheKey].
-  Future<void> write(String cacheKey, List<HomeRow> rows) async {
+  Future<void> _lastWrite = Future.value();
+
+  /// Persists the populated, non-placeholder rows under [cacheKey]. With none
+  /// to save, the rows already saved for that key are dropped, or every cold
+  /// start would paint them again until they aged out.
+  ///
+  /// Writes land in the order they were asked for, so an older set of rows
+  /// that took longer to encode never lands on top of a newer one.
+  Future<void> write(String cacheKey, List<HomeRow> rows) {
+    final serializable = rows
+        .where(
+          (r) => !r.isLoading && r.items.isNotEmpty && !isTimeBound(r.rowType),
+        )
+        .map(_rowToJson)
+        .toList(growable: false);
+    if (serializable.isEmpty) {
+      return _lastWrite = _lastWrite.then((_) => _clear(cacheKey));
+    }
+    final envelope = {
+      'key': cacheKey,
+      'savedAt': DateTime.now().millisecondsSinceEpoch,
+      'rows': serializable,
+    };
+    return _lastWrite = _lastWrite.then((_) => _writeEnvelope(envelope));
+  }
+
+  /// Rows saved under another key, such as the online home while offline,
+  /// stay put.
+  Future<void> _clear(String cacheKey) async {
     try {
-      final serializable = rows
-          .where(
-            (r) =>
-                !r.isLoading && r.items.isNotEmpty && !_isTimeBound(r.rowType),
-          )
-          .map(_rowToJson)
-          .toList(growable: false);
-      if (serializable.isEmpty) return;
-      final envelope = {
-        'key': cacheKey,
-        'savedAt': DateTime.now().millisecondsSinceEpoch,
-        'rows': serializable,
-      };
+      if (await read(cacheKey) == null) return;
+      await (await _file()).delete();
+    } catch (_) {}
+  }
+
+  Future<void> _writeEnvelope(Map<String, Object> envelope) async {
+    try {
       final payload = await Isolate.run(() => jsonEncode(envelope));
       final file = await _file();
       await file.writeAsString(payload, flush: true);

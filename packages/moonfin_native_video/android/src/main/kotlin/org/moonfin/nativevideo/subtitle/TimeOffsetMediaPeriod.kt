@@ -31,12 +31,27 @@ import java.io.IOException
 internal class TimeOffsetMediaPeriod(
     val wrappedMediaPeriod: MediaPeriod,
     initialOffsetUs: Long,
+    private val onLoadingChanged: () -> Unit = {},
 ) : MediaPeriod, MediaPeriod.Callback {
 
     @Volatile
     private var timeOffsetUs = initialOffsetUs
 
     private var callback: MediaPeriod.Callback? = null
+    private var trackSelected = false
+    var isSubtitleLoading = false
+        private set
+
+    private fun updateSubtitleLoading(
+        bufferedPositionUs: Long = wrappedMediaPeriod.bufferedPositionUs,
+    ) {
+        // A selected subtitle is still pending between retries, when isLoading
+        // may be false. End-of-source marks completion without waiting for a cue.
+        val loading = trackSelected && bufferedPositionUs != C.TIME_END_OF_SOURCE
+        if (isSubtitleLoading == loading) return
+        isSubtitleLoading = loading
+        onLoadingChanged()
+    }
 
     /**
      * Applies to every read and position from now on. Data the renderer has
@@ -89,22 +104,30 @@ internal class TimeOffsetMediaPeriod(
                 else -> current
             }
         }
+        trackSelected = childStreams.any { it != null }
+        updateSubtitleLoading()
         return startPositionUs + offset
     }
 
     override fun discardBuffer(positionUs: Long, toKeyframe: Boolean) =
         wrappedMediaPeriod.discardBuffer(positionUs - timeOffsetUs, toKeyframe)
 
+    // A subtitle file only reports a discontinuity when a download with no
+    // known length fails and starts over from zero, and passing it up would
+    // make the merged period seek the video back to zero too. The child is
+    // still asked, since it holds its samples back until it's read.
     override fun readDiscontinuity(): Long {
-        val discontinuityUs = wrappedMediaPeriod.readDiscontinuity()
-        return if (discontinuityUs == C.TIME_UNSET) C.TIME_UNSET else discontinuityUs + timeOffsetUs
+        wrappedMediaPeriod.readDiscontinuity()
+        return C.TIME_UNSET
     }
 
     override fun seekToUs(positionUs: Long): Long {
         val offset = timeOffsetUs
         // The merging period insists every child answers a seek with the exact
         // position it was given, so the offset has to come off and go back on.
-        return wrappedMediaPeriod.seekToUs(positionUs - offset) + offset
+        val seekPositionUs = wrappedMediaPeriod.seekToUs(positionUs - offset) + offset
+        updateSubtitleLoading()
+        return seekPositionUs
     }
 
     override fun getAdjustedSeekPositionUs(positionUs: Long, seekParameters: SeekParameters): Long {
@@ -114,10 +137,16 @@ internal class TimeOffsetMediaPeriod(
 
     override fun getBufferedPositionUs(): Long {
         val bufferedUs = wrappedMediaPeriod.bufferedPositionUs
+        updateSubtitleLoading(bufferedUs)
         return if (bufferedUs == C.TIME_END_OF_SOURCE) C.TIME_END_OF_SOURCE else bufferedUs + timeOffsetUs
     }
 
     override fun getNextLoadPositionUs(): Long {
+        // While its one request is out, a subtitle file reports the position
+        // it started from. The merging period only lets the video load past
+        // the lowest position any child reports, so a server slow to hand the
+        // file over would hold the picture there until it arrived.
+        if (wrappedMediaPeriod.isLoading) return C.TIME_END_OF_SOURCE
         val nextLoadUs = wrappedMediaPeriod.nextLoadPositionUs
         return if (nextLoadUs == C.TIME_END_OF_SOURCE) C.TIME_END_OF_SOURCE else nextLoadUs + timeOffsetUs
     }
@@ -146,6 +175,7 @@ internal class TimeOffsetMediaPeriod(
     }
 
     override fun onContinueLoadingRequested(source: MediaPeriod) {
+        updateSubtitleLoading()
         callback?.onContinueLoadingRequested(this)
     }
 }

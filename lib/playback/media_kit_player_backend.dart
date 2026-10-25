@@ -17,7 +17,11 @@ import 'device_profile_builder.dart';
 import 'hdr_output_controller.dart';
 import 'known_defects.dart';
 import 'letterbox_croppers.dart';
+import 'mpv_client_certificate.dart';
 import 'mpv_letterbox_crop.dart';
+import 'mpv_frame_sample.dart';
+import 'mpv_frame_sampler.dart';
+import 'pending_subtitle_choice.dart';
 import 'server_transcode_capabilities.dart';
 
 class _ParsedMpvConfCacheEntry {
@@ -172,7 +176,8 @@ class _MediaKitDeviceProfileCapabilities {
   }
 }
 
-class MediaKitPlayerBackend extends PlayerBackend {
+class MediaKitPlayerBackend extends PlayerBackend
+    implements SubtitleLoadingBackend {
   static const Duration _linuxHwdecFirstFrameTimeout = Duration(
     milliseconds: 1500,
   );
@@ -194,8 +199,11 @@ class MediaKitPlayerBackend extends PlayerBackend {
   bool _audioPassthroughApplyQueued = false;
   bool _isDisposed = false;
   late final MpvLetterboxCropper _letterboxCropper;
+  late final _MediaKitLetterboxHost _letterboxHost;
+  StreamSubscription<MpvCropGeometry?>? _letterboxGeometrySub;
   String? _appliedCustomMpvConfPath;
   DateTime? _appliedCustomMpvConfMtime;
+  bool _desktopRenderQualityApplied = false;
   static final Map<String, _ParsedMpvConfCacheEntry> _parsedMpvConfCache =
       <String, _ParsedMpvConfCacheEntry>{};
 
@@ -221,11 +229,64 @@ class MediaKitPlayerBackend extends PlayerBackend {
   }
 
   bool _isStale = false;
+  // Held the way media_kit normalizes it, since that is what its playlist
+  // reports back. A Windows path comes back with forward slashes.
   String? _currentUrl;
 
   // The viewer asked for no subtitles. Held here so the deferred visibility
   // pass can tell a fresh source apart from a choice it must not undo.
   bool _subtitlesDisabled = false;
+
+  String? _selectedExternalSubtitleUrl;
+  bool _isSubtitleLoading = false;
+  final _subtitleLoadingStream = StreamController<bool>.broadcast();
+
+  @override
+  bool get isSubtitleLoading => _isSubtitleLoading;
+
+  @override
+  Stream<bool> get subtitleLoadingStream => _subtitleLoadingStream.stream;
+
+  void _setSubtitleLoading(bool loading) {
+    if (_isDisposed || _isSubtitleLoading == loading) return;
+    _isSubtitleLoading = loading;
+    _subtitleLoadingStream.add(loading);
+  }
+
+  void _setSelectedExternalSubtitle(String? url) {
+    _selectedExternalSubtitleUrl = url;
+    _setSubtitleLoading(url != null);
+  }
+
+  bool _isSelectedExternalSubtitle(String url) =>
+      _selectedExternalSubtitleUrl == url;
+
+  // Bumped by every subtitle choice and every new or stopped source, so a
+  // selection or retry still waiting on mpv can tell it was replaced.
+  int _subtitleSelectionGeneration = 0;
+  ({int ordinal, int generation, Future<void> Function() select})?
+      _pendingEmbeddedSubtitle;
+
+  // Retained after a source ends so late mpv failures still read as subtitle
+  // errors. The generation distinguishes that history from URLs registered
+  // by the current source.
+  final _externalSubtitles =
+      <String, ({String? title, String? language, int sourceGeneration})>{};
+  final _externalSubtitleLoads = <String, Future<void>>{};
+  final _pendingSubtitleChoice = PendingSubtitleChoice();
+
+  static const _externalSubtitleRetries = 5;
+  static const _externalSubtitleRetryDelay = Duration(seconds: 10);
+
+  void _resetSubtitleState() {
+    _subtitleSelectionGeneration++;
+    _pendingEmbeddedSubtitle = null;
+    _externalSubtitleLoads.clear();
+    _pendingSubtitleChoice.nextSource();
+  }
+
+  bool _isLatestSubtitleSelection(int generation) =>
+      !_isDisposed && generation == _subtitleSelectionGeneration;
 
   // Captions mpv found inside the video, cached from the async track-list
   // property so the sync getter can serve them. An EmbeddedCaptionTrack id is
@@ -243,9 +304,52 @@ class MediaKitPlayerBackend extends PlayerBackend {
   VideoParams? _decodedVideoParams;
   StreamSubscription<VideoParams>? _videoParamsSub;
 
+  /// Bumped by every open, stop and dispose, so a play() still awaiting an
+  /// earlier step can tell it has been overtaken and leave the player alone.
+  int _playbackGeneration = 0;
+
+  /// MediaKit reports playing=true as soon as it asks mpv to play, before mpv
+  /// has loaded anything. On a live video that made the manager treat the
+  /// whole startup as playback and arm its short stall timeout, so the
+  /// playing signal is held until mpv reports core-idle=no. Null is no gate,
+  /// false hides playing while a source opens or stops, true waits for
+  /// core-idle=no.
+  bool? _liveStartupGate;
+  late final Future<bool> _liveStartupObserverReady;
+  final _playingGateChangedController = StreamController<void>.broadcast();
+
+  bool _ownsPlayback(int generation) =>
+      !_isDisposed && generation == _playbackGeneration;
+
+  void _releaseLiveStartupGate() {
+    if (_liveStartupGate != true) return;
+    _liveStartupGate = null;
+    // playing=true may have already fired, so refresh the public stream.
+    _playingGateChangedController.add(null);
+  }
+
+  Future<bool> _installLiveStartupObserver() async {
+    final native = _player.platform;
+    if (native is! NativePlayer) return false;
+
+    try {
+      final dynamic dyn = native;
+      await dyn.observeProperty('core-idle', (String value) async {
+        if (value == 'no') _releaseLiveStartupGate();
+      });
+      return true;
+    } catch (_) {
+      // Without the observer a live startup runs ungated.
+      return false;
+    }
+  }
+
   late final Stream<bool> _playingStream = _mergeWithStale<bool>(
     _player.stream.playing,
-    () => _isStale ? false : _player.state.playing,
+    () => _isStale || _liveStartupGate != null
+        ? false
+        : _player.state.playing,
+    extraTrigger: _playingGateChangedController.stream,
   );
 
   late final Stream<bool> _bufferingStream = _mergeWithStale<bool>(
@@ -415,6 +519,10 @@ class MediaKitPlayerBackend extends PlayerBackend {
 
   static bool get _useNativeSurface => PlatformDetection.useNativeVideoSurface;
 
+  @visibleForTesting
+  MediaKitPlayerBackend.forTesting(Player player, UserPreferences prefs)
+      : this._(player, null, prefs, null, false);
+
   MediaKitPlayerBackend._(
     this._player,
     this._videoController,
@@ -422,15 +530,27 @@ class MediaKitPlayerBackend extends PlayerBackend {
     this._onNativeHandleReady,
     this._hwDecodingEnabled,
   ) {
+    _liveStartupObserverReady = _installLiveStartupObserver();
+    _letterboxHost = _MediaKitLetterboxHost(this);
     _letterboxCropper = MpvLetterboxCropper(
-      _MediaKitLetterboxHost(this),
+      _letterboxHost,
       supported: letterboxCropAvailable(),
     );
+    // The desktop texture keeps the source size under video-crop, so mpv
+    // letterboxes the cropped picture inside it and the bars come back.
+    // Sizing the texture to the crop lets the picture fit any window.
+    if (!PlatformDetection.useNativeVideoSurface) {
+      _letterboxGeometrySub = _letterboxCropper.geometryStream.listen(
+        (geometry) => unawaited(_sizeTextureToCrop(geometry)),
+      );
+    }
     _prefs.addListener(_onPreferencesChanged);
-    _ccTracksSub = _player.stream.tracks.listen(
-      (_) => unawaited(_refreshEmbeddedCaptionTracks()),
-    );
+    _ccTracksSub = _player.stream.tracks.listen((_) {
+      unawaited(_refreshEmbeddedCaptionTracks());
+      unawaited(_retryPendingEmbeddedSubtitle());
+    });
     _videoParamsSub = _player.stream.videoParams.listen(_onVideoParams);
+    hdrOutput.status.addListener(_refreshSubtitleFontSize);
   }
 
   factory MediaKitPlayerBackend(
@@ -595,6 +715,7 @@ class MediaKitPlayerBackend extends PlayerBackend {
       maxBitrateMbps: maxBitrate,
       audioCapabilityProfile: audioCapabilityProfile,
       audioFallbackCodec: _prefs.resolveAudioFallbackCodec(),
+      transcodeAudioCodecs: _prefs.resolveTranscodeAudioCodecs(),
       ac3PassthroughEnabled: _prefs.resolveAc3PassthroughEnabled(),
       eac3PassthroughEnabled: _prefs.resolveEac3PassthroughEnabled(),
       dtsCorePassthroughEnabled: _prefs.resolveDtsCorePassthroughEnabled(),
@@ -657,15 +778,38 @@ class MediaKitPlayerBackend extends PlayerBackend {
         : payload['url']?.toString() ?? '';
     if (url.isEmpty) return;
 
-    _currentUrl = url;
+    final generation = ++_playbackGeneration;
+    _liveStartupGate = null;
+
+    _resetSubtitleState();
+    _setSelectedExternalSubtitle(
+      payload['selectedExternalSubtitleUrl'] as String?,
+    );
+    final subtitleGeneration = _subtitleSelectionGeneration;
+    final media = Media(url);
+    _currentUrl = media.uri;
     _isStale = true;
     _embeddedCaptionTracks = const [];
     _ccTrackSids = const [];
+
+    final gateLiveVideo =
+        payload['isLive'] == true &&
+        payload['mediaType']?.toString().trim().toLowerCase() == 'video' &&
+        (await _liveStartupObserverReady);
+    if (!_ownsPlayback(generation)) return;
 
     await _notifyNativeHandleReady();
     await _configureAppleMobileLibassFont();
     await _configureAndroidLibassFonts();
     await _applyAudioPassthroughOptions();
+    // Applied once and before the custom mpv.conf, which is only re-applied
+    // when it changes, so the user's own values still win.
+    if (!_desktopRenderQualityApplied &&
+        (PlatformDetection.isWindows || PlatformDetection.isLinux) &&
+        _player.platform is NativePlayer) {
+      _desktopRenderQualityApplied = true;
+      await _applyDesktopRenderQuality(_player.platform as NativePlayer);
+    }
     await _applyCustomMpvConfIfEnabled();
     await _applyAssOverrideMode();
 
@@ -679,12 +823,43 @@ class MediaKitPlayerBackend extends PlayerBackend {
       await _nativeSetProperty(native, 'sub-ass', 'yes');
     }
 
-    final media = Media(url);
+    if (!_ownsPlayback(generation)) return;
+
     final openPaused = !autoPlay || startPosition > Duration.zero;
+    if (gateLiveVideo) {
+      _liveStartupGate = false;
+      // Hide any playing=true left over from the previous source.
+      _playingGateChangedController.add(null);
+    }
+
     // Whatever mpv reported for the previous title must not answer for this
     // one; the listener repopulates it once this file is loaded.
     _decodedVideoParams = null;
-    await _player.open(media, play: !openPaused);
+    _handBackChecked = false;
+    await _prepareNativeWindowForOpen(payload);
+    if (!_ownsPlayback(generation)) return;
+    await applyMpvClientCertificate(_player, media.uri);
+    try {
+      await _player.open(media, play: !openPaused);
+    } catch (_) {
+      if (_isLatestSubtitleSelection(subtitleGeneration)) {
+        _setSelectedExternalSubtitle(null);
+      }
+      rethrow;
+    }
+    if (!_ownsPlayback(generation)) return;
+
+    if (gateLiveVideo) {
+      _liveStartupGate = true;
+      // The core may have gone active before the gate went up, and the
+      // observer only releases a gate that is already up.
+      final platform = _player.platform;
+      final coreIdle = platform == null
+          ? null
+          : await _tryNativeGetProperty(platform, 'core-idle');
+      if (!_ownsPlayback(generation)) return;
+      if (coreIdle == 'no') _releaseLiveStartupGate();
+    }
     _updateStaleState();
     await _applyLinuxHwdecFallbackIfNeeded(media, openPaused: openPaused);
     if (!_useLibass) {
@@ -692,68 +867,232 @@ class MediaKitPlayerBackend extends PlayerBackend {
     }
     await _maybeEngageNativeHdr();
     unawaited(() async {
-      await _letterboxCropper.setEnabled(
-        _prefs.get(UserPreferences.cropBlackBars),
-      );
-      await _letterboxCropper.onSourceOpened(url);
+      await _configureLetterboxCropper();
+      await _letterboxCropper.onSourceOpened(media.uri);
     }());
   }
 
-  /// Gives mpv its own D3D11 window when the content is HDR and the display is
-  /// already in HDR mode, so the stream reaches the screen untouched instead
-  /// of being flattened into media_kit's 8-bit texture.
+  /// Gives mpv its own D3D11 window for every video: HDR reaches the screen
+  /// untouched instead of being flattened into media_kit's 8-bit texture, and
+  /// mpv paces frames against the display. [UserPreferences.videoRenderer]
+  /// can keep SDR, or everything, on the texture.
   ///
-  /// Runs after `open`, because the decision needs `video-params`, which only
-  /// exist once a file is loaded.
+  /// The main path is [_prepareNativeWindowForOpen], before the file opens.
+  /// This is the correction once mpv has decoded it: confirm the renderer
+  /// took, hand back a title the setting keeps on the texture, and engage an
+  /// HDR title the server called SDR.
   Future<void> _maybeEngageNativeHdr() async {
     if (!PlatformDetection.supportsNativeHdrWindow) return;
+    // Nothing to engage or hand back: Live TV and audio return here without
+    // waiting on a release they have nothing to do with.
+    if (!hdrOutput.presenterActive && !hdrOutput.isEngaged) return;
+    // A screen that claims while its predecessor is still releasing must not
+    // engage a window that release is about to destroy.
+    await _nativeRelease;
     final native = _player.platform;
     if (native is! NativePlayer) return;
-    // The controller answers every cheap gate - engaged, failed, no
-    // presenter, preference off - before it invokes either callback, so the
-    // video-params wait below is never paid on an audio track: music and
-    // audiobooks share this singleton but never mount a presenter.
+    if (_decodedVideoParams == null) return;
+    if (_voVerificationPending && hdrOutput.isEngaged) {
+      _voVerificationPending = false;
+      final handle = hdrOutput.window.handle;
+      // Video params can be published a moment before the renderer is built,
+      // and reading `current-vo` in that gap would mistake it for a refusal.
+      // `vo-configured` says the renderer is up; bounded, so a renderer that
+      // never comes up is still caught below.
+      for (var i = 0; i < 40; i++) {
+        if (await _tryNativeGetProperty(native, 'vo-configured') == 'yes') {
+          break;
+        }
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+      // Released, or released and engaged afresh, during the wait: this
+      // check belonged to a window that is gone, and reading the new one
+      // mid-handover would tear it down.
+      if (!hdrOutput.isEngaged || hdrOutput.window.handle != handle) return;
+      if (await _tryNativeGetProperty(native, 'current-vo') != 'gpu-next') {
+        // mpv would not build gpu-next on the window before the file opened.
+        // Fall back to engaging now that it has, as before.
+        debugPrint('[HDR] gpu-next refused before open; retrying after load');
+        await _queueNativeRelease(_standDownNativeWindow);
+      }
+    }
+    final renderer = _prefs.get(UserPreferences.videoRenderer);
+    // Once per title: a passing params event that reads SDR mid-playback must
+    // not tear the window down and build it again.
+    if (hdrOutput.isEngaged &&
+        !_handBackChecked &&
+        renderer != VideoRenderer.nativeWindow) {
+      _handBackChecked = true;
+      if (!renderer.usesNativeWindow(isHdr: isPlayingHdrContent)) {
+        await _queueNativeRelease(_standDownNativeWindow);
+        return;
+      }
+    }
+    // Music and audiobooks share this singleton but never mount a presenter,
+    // so the controller refuses them before anything is created.
     await hdrOutput.maybeEngage(
-      preferenceEnabled: _prefs.get(UserPreferences.nativeHdrOutput),
-      isHdrContent: _isHdrContent,
-      displayInHdrMode: AutoHdrSwitcher.isDisplayHdrEnabled,
+      renderer: renderer,
+      isHdrContent: isPlayingHdrContent,
       engageMpv: (handle) => _handOverToNativeWindow(native, handle),
     );
   }
 
-  /// Tracks what mpv decoded, and reopens the HDR decision when the facts it
-  /// depends on arrive after it was made.
+  /// Puts mpv on the native window before the file opens, so the first frame
+  /// is already gpu-next and nothing flashes over from the texture.
   ///
-  /// The decision runs at two fixed moments - the tail of `play()` and the
-  /// presenting screen's mount - and waits a bounded time for mpv's
-  /// `video-params`. A 4K remux over the network regularly takes longer than
-  /// that to demux and decode its first frame, and when it does the wait
-  /// times out, the title is filed as SDR, and nothing would ever ask again.
-  /// mpv reporting PQ or HLG for the current file is the moment the question
-  /// can actually be answered, so that is when it is asked again. Cheap when
-  /// nothing changed: the controller refuses without a presenter, and an
-  /// engaged, failed or disabled session is not revisited.
+  /// Only for a main video: Live TV and audio share this singleton and render
+  /// the texture. [UserPreferences.videoRenderer] can keep the title on the
+  /// texture, going by the server's range type until mpv has decoded the
+  /// file. The correction in [_maybeEngageNativeHdr] covers a server that was
+  /// wrong.
+  Future<void> _prepareNativeWindowForOpen(
+    Map<dynamic, dynamic> payload,
+  ) async {
+    if (!PlatformDetection.supportsNativeHdrWindow) return;
+    final native = _player.platform;
+    if (native is! NativePlayer) return;
+    final isMainVideo =
+        payload['mediaType']?.toString().trim().toLowerCase() == 'video' &&
+        payload['isLive'] != true &&
+        payload['preview'] != true;
+    if (!isMainVideo) {
+      // Live TV and audio render the texture, so they must not open onto a
+      // window a main video engaged for a screen that never came.
+      await _standDownOrphanedNativeWindow();
+      return;
+    }
+    await _nativeRelease;
+    // A handover from a superseded play() still in flight would read as not
+    // engaged, and land on the window after this title has opened.
+    await hdrOutput.settled;
+
+    final renderer = _prefs.get(UserPreferences.videoRenderer);
+    final serverHdr = isHdrRangeType(payload['videoRangeType']?.toString());
+    if (!renderer.usesNativeWindow(isHdr: serverHdr)) {
+      // A title after one that engaged in the same screen starts on the
+      // texture instead of moving there after its first frames.
+      if (hdrOutput.isEngaged) {
+        _handBackChecked = true;
+        await _queueNativeRelease(_standDownNativeWindow);
+      }
+      return;
+    }
+    if (hdrOutput.isEngaged) return;
+
+    await hdrOutput.maybeEngage(
+      renderer: renderer,
+      isHdrContent: serverHdr,
+      beforePresenter: true,
+      engageMpv: (handle) =>
+          _handOverToNativeWindow(native, handle, fileLoaded: false),
+    );
+    // Even when this play() has been superseded meanwhile: a main video that
+    // follows inherits the engagement and needs the check and the watchdog,
+    // and a stop() or a Live TV or audio play() that follows stands it down
+    // through [_standDownOrphanedNativeWindow], having waited this one out.
+    if (!hdrOutput.isEngaged) return;
+    _voVerificationPending = true;
+    _armPresenterWatchdog();
+  }
+
+  /// Stands down a window engaged ahead of a player screen that never
+  /// mounted - the viewer backed out, or something other than a main video
+  /// is about to play. Waits out a handover still in flight first, since it
+  /// reads as not engaged until it lands. Leaves a presented session alone.
+  Future<void> _standDownOrphanedNativeWindow() async {
+    if (!PlatformDetection.supportsNativeHdrWindow) return;
+    await hdrOutput.settled;
+    if (hdrOutput.isEngaged && !hdrOutput.presenterActive) {
+      await _queueNativeRelease(_standDownNativeWindow);
+    }
+  }
+
+  /// Vouched for a screen that has not mounted yet. If it never does, nothing
+  /// would ever release the window. Counted from load, not from open: the
+  /// screen can be pushed only once the media is ready, and a slow remux
+  /// would otherwise lose the window and flash back over to it.
+  void _armPresenterWatchdog([int loadingChecks = 0]) {
+    _presenterWatchdog?.cancel();
+    _presenterWatchdog = Timer(const Duration(seconds: 10), () {
+      _presenterWatchdog = null;
+      if (!hdrOutput.isEngaged || hdrOutput.presenterActive) return;
+      // Still loading: wait on, but not forever for a file that never loads.
+      if (_decodedVideoParams == null && loadingChecks < 6) {
+        _armPresenterWatchdog(loadingChecks + 1);
+        return;
+      }
+      unawaited(_queueNativeRelease(_standDownNativeWindow));
+    });
+  }
+
+  /// Engaged before the file opened, when `current-vo` cannot be read yet;
+  /// [_maybeEngageNativeHdr] checks it once the file is loaded.
+  bool _voVerificationPending = false;
+
+  /// Whether this title has had its [VideoRenderer] hand-back check.
+  bool _handBackChecked = false;
+
+  Timer? _presenterWatchdog;
+
+  /// Tracks what mpv decoded, and decides engagement once a file has loaded:
+  /// the tail of `play()` and the screen's mount can both come before the
+  /// first frame, which a 4K remux over the network takes a while to demux.
+  /// Cheap when nothing changed: the controller refuses without a presenter,
+  /// and a failed session is not revisited. An engaged one is only until its
+  /// renderer is confirmed and its hand-back check has run.
   void _onVideoParams(VideoParams params) {
     final loaded = params.gamma != null || params.primaries != null;
     _decodedVideoParams = loaded ? params : null;
+    if (loaded) _refreshSubtitleFontSize();
     if (!loaded || !PlatformDetection.supportsNativeHdrWindow) return;
-    if (!hdrOutput.status.value.isRevisitable) return;
-    if (!isHdrVideoParams(gamma: params.gamma, primaries: params.primaries)) {
-      return;
-    }
+    final status = hdrOutput.status.value;
+    final engagedCheckDue =
+        status.isActive &&
+        (_voVerificationPending ||
+            (!_handBackChecked &&
+                _prefs.get(UserPreferences.videoRenderer) !=
+                    VideoRenderer.nativeWindow));
+    if (!status.isRevisitable && !engagedCheckDue) return;
     unawaited(_maybeEngageNativeHdr());
   }
 
-  /// Re-runs the engagement decision for the presenting screen.
+  /// Whether mpv decoded the current title as HDR. The native window carries
+  /// SDR titles too, so engagement alone does not mean HDR is playing.
+  bool get isPlayingHdrContent {
+    final params = _decodedVideoParams;
+    return params != null &&
+        isHdrVideoParams(gamma: params.gamma, primaries: params.primaries);
+  }
+
+  /// Claims the native window for the presenting screen, and runs the
+  /// post-load checks in [_maybeEngageNativeHdr] if the file has loaded.
   ///
-  /// `play()` usually runs before the video player screen has mounted, and
-  /// engagement is refused without a presenter - so the screen calls this
-  /// once it exists. No-ops when already engaged, failed, or disabled.
+  /// A main video usually engaged ahead of the screen in `play()`; the claim
+  /// is what keeps the presenter watchdog from standing it down. Anything
+  /// that did not engage ahead - an HDR title the server called SDR under
+  /// [VideoRenderer.nativeHdrOnly] - gets its decision here or on load.
   ///
   /// Claims by identity - see [HdrOutputController.presenter].
   Future<void> ensureNativeHdrForPresenter(Object presenter) {
     hdrOutput.presenter = presenter;
     return _maybeEngageNativeHdr();
+  }
+
+  /// Moves the native HDR session from one presenter to another without
+  /// touching mpv, so the video player screen can hand it to the mini player
+  /// and take it back. Releasing instead would swap mpv to the texture and
+  /// back, a black frame each way, and the window would have to be rebuilt.
+  ///
+  /// Only the current presenter can hand over; anything else is ignored.
+  /// Returns whether the session moved.
+  bool transferNativeHdrPresenter({
+    required Object from,
+    required Object to,
+  }) {
+    if (!identical(hdrOutput.presenter, from)) return false;
+    hdrOutput.presenter = to;
+    hdrOutput.window.transferOwnership(from: from, to: to);
+    return true;
   }
 
   /// Hands the native HDR path back when the presenting screen goes away.
@@ -764,13 +1103,61 @@ class MediaKitPlayerBackend extends PlayerBackend {
   /// and the mini player share this singleton and can only render the
   /// texture, so leaving mpv on a window nothing presents would black them
   /// out for the rest of the process.
-  Future<void> releaseNativeHdrPresenter(Object presenter) async {
+  Future<void> releaseNativeHdrPresenter(Object presenter) {
     // A release from a screen that already handed over is not a release.
-    if (!identical(hdrOutput.presenter, presenter)) return;
+    if (!identical(hdrOutput.presenter, presenter)) return Future.value();
+    // Before any await, so a successor claiming meanwhile is not wiped.
+    hdrOutput.presenter = null;
+    return _queueNativeRelease(_releaseNativeHdr);
+  }
+
+  /// The last release or hand-back queued, or null. Engagement waits on it,
+  /// so nothing hands mpv a window that is about to be destroyed. Never
+  /// completes with an error, so waiting on it cannot fail `play()`.
+  Future<void>? _nativeRelease;
+
+  /// Runs [run] after any release already queued. Chained, not replaced: a
+  /// release that started during a hand-back would otherwise see nothing
+  /// engaged and destroy the window while the hand-back is still restoring,
+  /// and engagement would wait on the release alone.
+  ///
+  /// With nothing queued, [run] starts synchronously, so its own synchronous
+  /// head (the reset that flips `isEngaged`) lands before the caller resumes.
+  Future<void> _queueNativeRelease(Future<void> Function() run) {
+    final previous = _nativeRelease;
+    late final Future<void> release;
+    release =
+        (previous == null ? Future.sync(run) : previous.then((_) => run()))
+            .catchError((Object error) {
+              debugPrint('[HDR] native window release failed: $error');
+            })
+            .whenComplete(() {
+              if (identical(_nativeRelease, release)) _nativeRelease = null;
+            });
+    _nativeRelease = release;
+    return release;
+  }
+
+  Future<void> _releaseNativeHdr() async {
     // Same lifetime as the native path: the overlay must not follow mpv into
     // Live TV or the mini player.
     await _hideMpvStats();
-    hdrOutput.presenter = null;
+    // A handover still in flight reports active only once it lands. Let it
+    // land first, so the cleanup below undoes it instead of running ahead of
+    // it and leaving mpv on a destroyed window. No new decision can start in
+    // the meantime: the presenter is gone, and a successor waits on this.
+    await hdrOutput.settled;
+    // A successor screen that claimed during the wait inherits the session.
+    if (hdrOutput.presenterActive) return;
+    await _standDownNativeWindow();
+  }
+
+  /// Puts mpv back on media_kit's texture and destroys the native window,
+  /// leaving the controller undecided.
+  Future<void> _standDownNativeWindow() async {
+    _voVerificationPending = false;
+    _presenterWatchdog?.cancel();
+    _presenterWatchdog = null;
     _renegotiateSettleTimer?.cancel();
     _renegotiateSettleTimer = null;
     // A leftover deadline would make the next real trigger look covered.
@@ -806,8 +1193,9 @@ class MediaKitPlayerBackend extends PlayerBackend {
   /// The two can differ: drag the window onto an SDR monitor mid-playback and
   /// the screen shows SDR while the session stays engaged. The monitor's own
   /// HDR state is the authority - whichever side does the conversion, an SDR
-  /// display is not showing HDR - and mpv's `target-params`, its account of
-  /// the output target after every conversion, refines it where available.
+  /// display is not showing HDR - and mpv's `video-target-params`, its
+  /// account of the output target after every conversion, refines it where
+  /// available.
   ///
   /// Null when there is nothing to say (not engaged, no native player), so
   /// callers can fall back to the session-level status.
@@ -869,7 +1257,7 @@ class MediaKitPlayerBackend extends PlayerBackend {
   Future<(bool?, bool?)> _readHdrOutputState(NativePlayer native) async {
     final (displayHdr, gamma) = await (
       AutoHdrSwitcher.displayHdrState(),
-      _tryNativeGetProperty(native, 'target-params/gamma'),
+      _readTargetGamma(native),
     ).wait;
     final bool? outputtingHdr = gamma == null
         ? null
@@ -878,37 +1266,27 @@ class MediaKitPlayerBackend extends PlayerBackend {
     return (displayHdr, outputtingHdr);
   }
 
-  /// What mpv actually decoded, rather than what the server claimed.
-  ///
-  /// media_kit already observes `video-params` and pushes it into
-  /// [Player.stream.videoParams], so this waits on that stream rather than
-  /// polling properties over FFI. It reacts the moment mpv reports instead of
-  /// on a 100 ms granularity, and costs nothing while it waits.
-  ///
-  /// Only params reported for the current file count - see
-  /// [_decodedVideoParams]. The wait is bounded because this is also reached
-  /// for audio, where params never come; when a video simply takes longer,
-  /// [_onVideoParams] reopens the decision on arrival, so a timeout here is
-  /// a deferral rather than a verdict.
-  Future<bool> _isHdrContent() async {
-    var params = _decodedVideoParams;
-    params ??= await _player.stream.videoParams
-        .firstWhere((p) => p.gamma != null || p.primaries != null)
-        .timeout(
-          const Duration(seconds: 2),
-          onTimeout: () => const VideoParams(),
-        );
-    return isHdrVideoParams(gamma: params.gamma, primaries: params.primaries);
-  }
+  /// mpv's output transfer function, after every conversion. libmpv 0.41 only
+  /// has `video-target-params`; the older `target-params` is a fallback.
+  Future<String?> _readTargetGamma(NativePlayer native) async =>
+      await _tryNativeGetProperty(native, 'video-target-params/gamma') ??
+      await _tryNativeGetProperty(native, 'target-params/gamma');
 
   /// Points mpv at the native window and switches it to the libplacebo
   /// renderer over D3D11. All of these are settable after `mpv_initialize`,
   /// so this happens mid-session without a second Player.
-  Future<bool> _handOverToNativeWindow(NativePlayer native, int handle) async {
+  Future<bool> _handOverToNativeWindow(
+    NativePlayer native,
+    int handle, {
+    bool fileLoaded = true,
+  }) async {
     // Swapping the video output tears down mpv's subtitle renderer and drops
     // the active track, so the selection is carried across by hand on every
     // path - re-selecting in the menu would not bring it back.
     String? sid;
+    // SDR displays engage too, where passthrough would wash the picture out.
+    // Started now to overlap the reads below.
+    final displayHdr = AutoHdrSwitcher.displayHdrState();
     try {
       sid = await _tryNativeGetProperty(native, 'sid');
 
@@ -919,25 +1297,29 @@ class MediaKitPlayerBackend extends PlayerBackend {
       await _nativeSetProperty(native, 'wid', handle.toString());
       await _nativeSetProperty(native, 'gpu-api', 'd3d11');
       // Before `vo`, not after: the swapchain colorspace is negotiated at
-      // creation. Named rather than a literal because engagement is gated on
-      // the display being in HDR mode (HdrOutputController._decide).
-      await _applyPassthroughHint(native, displayHdr: true);
+      // creation.
+      await _applyPassthroughHint(native, displayHdr: await displayHdr);
       await _nativeSetProperty(native, 'vo', 'gpu-next');
       await _applyDesktopRenderQuality(native);
       // The quality overrides above replace keys a custom mpv.conf may also
       // set, and the conf was applied before this. Re-apply it so the user's
       // values win, which is what the allowlist promised them.
-      await _applyCustomMpvConfIfEnabled(force: true);
+      await _reapplyCustomMpvConfOverNativeWindow(native);
 
-      // If the renderer refused, `current-vo` still reads as the old one and
-      // the window would sit black over the player.
-      final vo = await _tryNativeGetProperty(native, 'current-vo');
-      if (vo != 'gpu-next') {
-        await _restoreTexturePath(native, sid: sid);
-        return false;
+      // Before a file opens mpv has no renderer at all, so `current-vo` is
+      // empty whatever it will build - checking it here is what used to fail
+      // an engagement at screen mount. [_maybeEngageNativeHdr] checks it once
+      // the file has loaded, and nothing is selected yet to carry across.
+      if (fileLoaded) {
+        // If the renderer refused, `current-vo` still reads as the old one
+        // and the window would sit black over the player.
+        final vo = await _tryNativeGetProperty(native, 'current-vo');
+        if (vo != 'gpu-next') {
+          await _restoreTexturePath(native, sid: sid);
+          return false;
+        }
+        await _restoreSubtitleState(native, sid);
       }
-
-      await _restoreSubtitleState(native, sid);
       // From here on, a crossing between an HDR and an SDR monitor recreates
       // the renderer: `wid`-mode mpv negotiates the swapchain colorspace only
       // at creation, and a resize does not re-ask.
@@ -1049,19 +1431,30 @@ class MediaKitPlayerBackend extends PlayerBackend {
     }
     final native = _player.platform;
     if (native is! NativePlayer) return;
+    // Engaged ahead of a file still loading: there is no renderer to cycle,
+    // and `current-vo` reads empty, which the check below would take for a
+    // refusal and fail the session. mpv builds the renderer at load with
+    // whatever hint is set, so setting the hint is the whole renegotiation.
+    if (_voVerificationPending && _decodedVideoParams == null) {
+      await _applyPassthroughHint(
+        native,
+        displayHdr: await AutoHdrSwitcher.displayHdrState(),
+      );
+      return;
+    }
     _renegotiating = true;
     String? sid;
     try {
       // Only when the answer would change. A crossing between two SDR screens
       // or two HDR screens renegotiates to the same result, and the cycle is
-      // a visible blink - skipping it makes those crossings seamless. Skip
-      // only when BOTH sides are known: a failed display query mid-topology
-      // change must not read as "SDR", and an unreadable mpv output must not
-      // read as anything. When in doubt, cycle.
+      // a visible blink - skipping it makes those crossings seamless.
       final (displayHdr, outputtingHdr) = await _readHdrOutputState(native);
-      if (displayHdr != null &&
-          outputtingHdr != null &&
-          outputtingHdr == displayHdr) {
+      if (renegotiationUnchanged(
+        displayHdr: displayHdr,
+        outputtingHdr: outputtingHdr,
+        hintOn: _passthroughHintOn,
+        hdrContent: isPlayingHdrContent,
+      )) {
         return;
       }
 
@@ -1077,7 +1470,7 @@ class MediaKitPlayerBackend extends PlayerBackend {
       await _nativeSetProperty(native, 'vo', 'gpu-next');
       // The hint is in the mpv.conf allowlist and was just overwritten. The
       // handover re-applies the conf for the same reason.
-      await _applyCustomMpvConfIfEnabled(force: true);
+      await _reapplyCustomMpvConfOverNativeWindow(native);
       // The renderer can refuse to come back on the new adapter. Without this
       // check vo stays null and the session keeps claiming HDR over a black
       // picture - the same verification the original handover does.
@@ -1172,6 +1565,26 @@ class MediaKitPlayerBackend extends PlayerBackend {
   /// can hold the last answer instead of guessing.
   bool _passthroughHintOn = false;
 
+  /// Whether recreating the renderer would change nothing, so the blink can be
+  /// skipped.
+  ///
+  /// The hint is what a cycle changes, so it must match a known display. An
+  /// SDR title needs nothing more - on an HDR display mpv targets PQ for it
+  /// too, so its output proves nothing. An HDR title must also be reaching the
+  /// display as HDR. When in doubt, cycle.
+  @visibleForTesting
+  static bool renegotiationUnchanged({
+    required bool? displayHdr,
+    required bool? outputtingHdr,
+    required bool hintOn,
+    required bool hdrContent,
+  }) {
+    if (displayHdr == null) return false;
+    if (hintOn != displayHdr) return false;
+    if (!hdrContent) return true;
+    return outputtingHdr != null && outputtingHdr == displayHdr;
+  }
+
   /// The single owner of `target-colorspace-hint`, which suppresses
   /// tone-mapping - right only where the display is in HDR mode. DXGI accepts
   /// G2084 on an SDR swapchain on plenty of drivers, so leaving it on hands PQ
@@ -1196,14 +1609,26 @@ class MediaKitPlayerBackend extends PlayerBackend {
     );
   }
 
+  /// Re-applies a custom mpv.conf so its values win over the renderer's,
+  /// except `target-colorspace-hint=yes` on a display not in HDR mode, where
+  /// it would wash the picture out.
+  Future<void> _reapplyCustomMpvConfOverNativeWindow(
+    NativePlayer native,
+  ) async {
+    await _applyCustomMpvConfIfEnabled(force: true);
+    if (!_passthroughHintOn) {
+      await _nativeSetProperty(native, 'target-colorspace-hint', 'no');
+    }
+  }
+
   /// Undoes the defaults media_kit applies to every native platform.
   ///
   /// It sets `dither=no`, `scale=bilinear`, `dscale=bilinear`,
   /// `hdr-compute-peak=no` and `sigmoid-upscaling=no` regardless of platform.
-  /// Those are phone performance choices; on a desktop GPU driving an HDR
-  /// display they are all wrong, and `dither=no` alone visibly bands dark
-  /// gradients. The caller re-applies any custom mpv.conf afterwards, so a
-  /// user who set these keys themselves still wins.
+  /// Those are phone performance choices that a desktop GPU doesn't need, and
+  /// `dither=no` alone visibly bands dark gradients. The caller re-applies any
+  /// custom mpv.conf afterwards, so a user who set these keys themselves still
+  /// wins.
   Future<void> _applyDesktopRenderQuality(NativePlayer native) async {
     await _nativeSetProperty(native, 'dither', 'fruit');
     await _nativeSetProperty(native, 'dither-depth', 'auto');
@@ -1356,14 +1781,34 @@ class MediaKitPlayerBackend extends PlayerBackend {
     } catch (_) {}
   }
 
+  Future<void> _sizeTextureToCrop(MpvCropGeometry? geometry) async {
+    final controller = _videoController;
+    if (controller == null || _isDisposed) return;
+    try {
+      await controller.setSize(
+        width: geometry?.rect.w,
+        height: geometry?.rect.h,
+      );
+    } catch (_) {
+      // The controller can be torn down while a resize is in flight.
+    }
+    _refreshSubtitleFontSize();
+  }
+
+  Future<void> _configureLetterboxCropper() async {
+    final seconds = _prefs.get(UserPreferences.cropBlackBarsIntervalSeconds);
+    await _letterboxCropper.setRecropInterval(Duration(seconds: seconds));
+    await _letterboxCropper.setEnabled(
+      _prefs.get(UserPreferences.cropBlackBars),
+    );
+  }
+
   void _onPreferencesChanged() {
     if (_isDisposed) {
       return;
     }
 
-    unawaited(
-      _letterboxCropper.setEnabled(_prefs.get(UserPreferences.cropBlackBars)),
-    );
+    unawaited(_configureLetterboxCropper());
 
     if (_audioPassthroughApplyInProgress) {
       _audioPassthroughApplyQueued = true;
@@ -1852,8 +2297,14 @@ class MediaKitPlayerBackend extends PlayerBackend {
 
   @override
   Future<void> stop() async {
+    ++_playbackGeneration;
+    _resetSubtitleState();
+    _setSelectedExternalSubtitle(null);
     _isStale = true;
+    // An earlier open() may still emit playing=true before stop() finishes.
+    _liveStartupGate = false;
     await _player.stop();
+    await _standDownOrphanedNativeWindow();
   }
 
   Future<void> setVideoEnabled(bool enabled) async {
@@ -1956,10 +2407,58 @@ class MediaKitPlayerBackend extends PlayerBackend {
     return false;
   }
 
+  /// mpv 0.41 logs these when the frame sampler's software screenshot meets
+  /// a frame libswscale can't read. Playback is fine, so they're dropped
+  /// while a sample is in flight. At any other time they're real errors.
+  bool _isScreenshotScalerNoise(String message) {
+    if (!_letterboxHost.sampledRecently) return false;
+    final lower = message.toLowerCase();
+    return lower.contains('libswscale initialization failed') ||
+        lower.contains('not supported by libswscale');
+  }
+
+  // A subtitle that fails to load leaves the video playing, so it's reported
+  // apart from video errors and the manager only logs it.
+  Map<String, dynamic> _errorEvent(String message) {
+    final subtitleUrl = externalSubtitleInError(
+      message,
+      _externalSubtitles.keys,
+    );
+    if (subtitleUrl == null) return {'event': 'error', 'message': message};
+    return {
+      'event': 'subtitleError',
+      'message':
+          'Could not load subtitle file: ${subtitleUrl.split('?').first}',
+    };
+  }
+
+  // mpv names the failed file in its error, sometimes decoded, so the match
+  // uses the URL without its query.
+  @visibleForTesting
+  static String? externalSubtitleInError(
+    String message,
+    Iterable<String> subtitleUrls,
+  ) {
+    for (final url in subtitleUrls) {
+      final withoutQuery = url.split('?').first;
+      if (withoutQuery.isEmpty) continue;
+      if (message.contains(withoutQuery)) return url;
+      try {
+        if (message.contains(Uri.decodeFull(withoutQuery))) return url;
+      } catch (_) {
+        // A % that isn't a valid escape, like one in a local filename.
+      }
+    }
+    return null;
+  }
+
   @override
   Stream<Map<String, dynamic>>? get errorStream => _player.stream.error
-      .where((err) => !_isTransientReconnectError(err))
-      .map((err) => <String, dynamic>{'event': 'error', 'message': err});
+      .where(
+        (err) =>
+            !_isTransientReconnectError(err) && !_isScreenshotScalerNoise(err),
+      )
+      .map(_errorEvent);
 
   @override
   Future<void> setPlaybackSpeed(double speed) async {
@@ -2069,104 +2568,215 @@ class MediaKitPlayerBackend extends PlayerBackend {
     String? externalSubtitleUrl,
   }) async {
     if (mpvTrackId < 1) return;
+    final generation = ++_subtitleSelectionGeneration;
+    _pendingEmbeddedSubtitle = null;
+    bool isCurrentSelection() => _isLatestSubtitleSelection(generation);
+    _setSelectedExternalSubtitle(
+      isExternalSubtitle ? externalSubtitleUrl : null,
+    );
     _subtitlesDisabled = false;
     try {
       final native = _player.platform as NativePlayer;
       final trackListBefore = await _tryNativeGetProperty(native, 'track-list');
+      if (!isCurrentSelection()) return;
       // The CC track mpv creates from in-video captions has no server stream,
       // so it must not shift the positions this mapping hands out.
       final subEntries = _extractTrackEntries(
         trackListBefore,
         type: 'sub',
       ).where((e) => !_isClosedCaptionCodec(e.codec)).toList();
-      final subtitleIds = subEntries.map((e) => e.id).toList();
 
       // Resolve the 1-based position to a real mpv sid. External tracks are
       // matched by the URL they were sub-added from, so a scrambled add order
       // (external added before a slow embedded demux finished) can't select
       // the wrong track. Embedded positions count only demuxed tracks for the
       // same reason.
-      String? resolvedSid;
-      if (isExternalSubtitle && externalSubtitleUrl != null) {
-        for (final entry in subEntries) {
-          if (entry.external &&
-              _externalFilenameMatches(
-                entry.externalFilename,
-                externalSubtitleUrl,
-              )) {
-            resolvedSid = entry.id.toString();
-            break;
-          }
-        }
-        // If the URL match missed, pick among external tracks only, using the
-        // live demuxed embedded count so a miscounted ordinal can't shift into
-        // or across embedded tracks.
-        if (resolvedSid == null) {
-          final liveEmbedded = subEntries.where((e) => !e.external).length;
-          final externals = subEntries.where((e) => e.external).toList();
-          final externalPos = mpvTrackId - 1 - liveEmbedded;
-          if (externalPos >= 0 && externalPos < externals.length) {
-            resolvedSid = externals[externalPos].id.toString();
-          }
-        }
-      } else if (!isExternalSubtitle) {
+      final String? sidToApply;
+      if (isExternalSubtitle) {
+        sidToApply = externalSubtitleUrl == null
+            ? null
+            : _externalSubtitleSid(trackListBefore, externalSubtitleUrl);
+      } else {
         final embedded = subEntries.where((e) => !e.external).toList();
-        if (mpvTrackId <= embedded.length) {
-          resolvedSid = embedded[mpvTrackId - 1].id.toString();
-        }
+        sidToApply = mpvTrackId <= embedded.length
+            ? embedded[mpvTrackId - 1].id.toString()
+            : null;
       }
-      final sidToApply =
-          resolvedSid ??
-          ((mpvTrackId <= subtitleIds.length)
-              ? subtitleIds[mpvTrackId - 1].toString()
-              : mpvTrackId.toString());
-      final subtitleTracks = _player.state.tracks.subtitle;
-      final playableSubtitleTracks = subtitleTracks
-          .where((t) => t.id != 'auto' && t.id != 'no' && !_isCcSid(t.id))
-          .toList();
+      // A track that isn't there stays off. Falling back to a list position
+      // can land on another language.
+      if (sidToApply == null) {
+        if (!isExternalSubtitle) {
+          _pendingEmbeddedSubtitle = (
+            ordinal: mpvTrackId,
+            generation: generation,
+            select: () => setSubtitleTrack(
+              mpvTrackId,
+              isBitmapSubtitle: isBitmapSubtitle,
+              subtitleCodec: subtitleCodec,
+            ),
+          );
+        }
+        await _player.setSubtitleTrack(SubtitleTrack.no());
+        if (!isCurrentSelection()) return;
+        await _nativeSetProperty(native, 'sid', 'no');
+        if (!isCurrentSelection()) return;
+        await _nativeSetProperty(native, 'secondary-sid', 'no');
+        if (!isCurrentSelection()) return;
+        // Recheck after registering: discovery may have completed while the
+        // original track-list read was in flight.
+        if (!isExternalSubtitle) {
+          unawaited(_retryPendingEmbeddedSubtitle());
+        }
+        if (isExternalSubtitle && externalSubtitleUrl != null) {
+          Future<void> selectTrack() => setSubtitleTrack(
+            mpvTrackId,
+            isBitmapSubtitle: isBitmapSubtitle,
+            subtitleCodec: subtitleCodec,
+            isExternalSubtitle: true,
+            externalSubtitleUrl: externalSubtitleUrl,
+          );
+          if (_externalSubtitles[externalSubtitleUrl]?.sourceGeneration !=
+              _pendingSubtitleChoice.source) {
+            _pendingSubtitleChoice.hold(
+              externalSubtitleUrl,
+              isCurrent: isCurrentSelection,
+              select: selectTrack,
+            );
+          } else {
+            unawaited(
+              _retryExternalSubtitle(
+                externalSubtitleUrl,
+                isCurrentSelection: isCurrentSelection,
+                selectTrack: selectTrack,
+              ),
+            );
+          }
+        }
+        return;
+      }
 
+      // media_kit's own track list can lag behind mpv's, so a track it
+      // doesn't know yet is selected by the sid mpv reported.
+      final target =
+          _player.state.tracks.subtitle
+              .where((t) => t.id == sidToApply)
+              .firstOrNull ??
+          SubtitleTrack(sidToApply, null, null);
+      await _player.setSubtitleTrack(target);
+      if (!isCurrentSelection()) return;
       var sidAfter = await _tryNativeGetProperty(native, 'sid');
-
-      SubtitleTrack? target;
-      for (final t in playableSubtitleTracks) {
-        if (t.id == sidToApply) {
-          target = t;
-          break;
-        }
-      }
-      target ??= (mpvTrackId <= playableSubtitleTracks.length && mpvTrackId > 0)
-          ? playableSubtitleTracks[mpvTrackId - 1]
-          : null;
-      if (target != null) {
-        await _player.setSubtitleTrack(target);
-        sidAfter = await _tryNativeGetProperty(native, 'sid');
-      }
+      if (!isCurrentSelection()) return;
 
       if (sidAfter != sidToApply) {
         await _nativeSetProperty(native, 'sid', sidToApply);
+        if (!isCurrentSelection()) return;
         sidAfter = await _tryNativeGetProperty(native, 'sid');
+        if (!isCurrentSelection()) return;
       }
       if (sidAfter != sidToApply) {
         await _nativeCommand(native, ['set_property', 'sid', sidToApply]);
+        if (!isCurrentSelection()) return;
         sidAfter = await _tryNativeGetProperty(native, 'sid');
+        if (!isCurrentSelection()) return;
       }
 
       await _nativeSetProperty(native, 'secondary-sid', 'no');
+      if (!isCurrentSelection()) return;
 
       // Moonfin never shows a Flutter subtitle overlay (media_kit disables its
       // SubtitleView when libass is on, and it stays hidden otherwise), so mpv
       // has to draw every subtitle including plain text like SRT and VTT.
       await _nativeSetProperty(native, 'sub-visibility', 'yes');
+      if (!isCurrentSelection()) return;
       await _nativeSetProperty(native, 'sub-ass', 'yes');
+      if (!isCurrentSelection()) return;
       await _applyAssOverrideMode();
+      if (!isCurrentSelection()) return;
+      // Startup can still be waiting on other sub-adds after this file loads.
+      // Finish here so the indicator stays visible until its selection is applied.
+      if (isExternalSubtitle) _setSubtitleLoading(false);
       _subtitleDebug(
         'set track=$mpvTrackId sid_requested=$sidToApply sid_after=$sidAfter '
         'codec=$subtitleCodec external=$isExternalSubtitle '
-        'bitmap=$isBitmapSubtitle mpv_sub_tracks=${subtitleIds.length}',
+        'bitmap=$isBitmapSubtitle mpv_sub_tracks=${subEntries.length}',
       );
     } catch (e) {
+      if (isExternalSubtitle && isCurrentSelection()) {
+        _setSubtitleLoading(false);
+      }
       _subtitleDebug('set track=$mpvTrackId threw: $e');
     }
+  }
+
+  static String? _externalSubtitleSid(String? trackList, String url) {
+    for (final entry in _extractTrackEntries(trackList, type: 'sub')) {
+      if (entry.external &&
+          _externalFilenameMatches(entry.externalFilename, url)) {
+        return entry.id.toString();
+      }
+    }
+    return null;
+  }
+
+  // Jellyfin can still be extracting a subtitle when mpv gives up on it, so
+  // the selected one is added again a few times while it stays selected.
+  Future<void> _retryExternalSubtitle(
+    String url, {
+    required bool Function() isCurrentSelection,
+    required Future<void> Function() selectTrack,
+  }) async {
+    final scheme = Uri.tryParse(url)?.scheme;
+    if (scheme != 'http' && scheme != 'https') {
+      if (isCurrentSelection() && _isSelectedExternalSubtitle(url)) {
+        _setSubtitleLoading(false);
+      }
+      return;
+    }
+    if (!_externalSubtitles.containsKey(url)) {
+      // The background add hasn't reached this subtitle yet. It stays
+      // loading until the held choice selects it.
+      return;
+    }
+    final native = _player.platform as NativePlayer;
+    var retries = 0;
+    while (true) {
+      await _externalSubtitleLoads[url];
+      if (!isCurrentSelection()) return;
+      final tracks = await _tryNativeGetProperty(native, 'track-list');
+      if (!isCurrentSelection()) return;
+      if (_externalSubtitleSid(tracks, url) != null) {
+        await selectTrack();
+        return;
+      }
+      if (retries++ == _externalSubtitleRetries) {
+        if (isCurrentSelection() && _isSelectedExternalSubtitle(url)) {
+          _setSubtitleLoading(false);
+        }
+        return;
+      }
+      await Future<void>.delayed(_externalSubtitleRetryDelay);
+      if (!isCurrentSelection()) return;
+      await _addExternalSubtitle(url);
+    }
+  }
+
+  Future<void> _retryPendingEmbeddedSubtitle() async {
+    final pending = _pendingEmbeddedSubtitle;
+    if (pending == null || !_isLatestSubtitleSelection(pending.generation)) {
+      return;
+    }
+    final native = _player.platform as NativePlayer;
+    final raw = await _tryNativeGetProperty(native, 'track-list');
+    if (!_isLatestSubtitleSelection(pending.generation) ||
+        _pendingEmbeddedSubtitle != pending) {
+      return;
+    }
+    final embedded = _extractTrackEntries(raw, type: 'sub')
+        .where((entry) => !entry.external && !_isClosedCaptionCodec(entry.codec));
+    if (embedded.length < pending.ordinal) return;
+    // Consume before dispatch so overlapping discovery events select once.
+    _pendingEmbeddedSubtitle = null;
+    await pending.select();
   }
 
   /// Re-reads mpv's track list for the CC track it creates once caption data
@@ -2212,24 +2822,35 @@ class MediaKitPlayerBackend extends PlayerBackend {
   @override
   Future<void> setEmbeddedCaptionTrack(int id) async {
     if (id <= 0 || id > _ccTrackSids.length) return;
+    _setSelectedExternalSubtitle(null);
+    final generation = ++_subtitleSelectionGeneration;
     _subtitlesDisabled = false;
     final platform = _player.platform;
     if (platform is! NativePlayer) return;
     final sid = _ccTrackSids[id - 1].toString();
     await _nativeSetProperty(platform, 'sid', sid);
+    if (!_isLatestSubtitleSelection(generation)) return;
     await _nativeSetProperty(platform, 'secondary-sid', 'no');
+    if (!_isLatestSubtitleSelection(generation)) return;
     await _nativeSetProperty(platform, 'sub-visibility', 'yes');
+    if (!_isLatestSubtitleSelection(generation)) return;
     await _nativeSetProperty(platform, 'sub-ass', 'yes');
   }
 
   @override
   Future<void> disableSubtitleTrack() async {
+    _setSelectedExternalSubtitle(null);
+    final generation = ++_subtitleSelectionGeneration;
+    _pendingEmbeddedSubtitle = null;
     _subtitlesDisabled = true;
     await _player.setSubtitleTrack(SubtitleTrack.no());
+    if (!_isLatestSubtitleSelection(generation)) return;
     try {
       final native = _player.platform as NativePlayer;
       await _nativeSetProperty(native, 'sid', 'no');
+      if (!_isLatestSubtitleSelection(generation)) return;
       await _nativeSetProperty(native, 'secondary-sid', 'no');
+      if (!_isLatestSubtitleSelection(generation)) return;
       await _nativeSetProperty(native, 'sub-visibility', 'no');
     } catch (_) {}
   }
@@ -2305,18 +2926,40 @@ class MediaKitPlayerBackend extends PlayerBackend {
     String? language,
     String? codec,
   }) async {
-    final native = _player.platform as NativePlayer;
-    await _nativeCommand(native, [
-      'sub-add',
-      url,
-      'auto',
-      title ?? 'external',
-      language ?? '',
-    ]);
+    final sourceGeneration = _pendingSubtitleChoice.source;
+    _externalSubtitles[url] = (
+      title: title,
+      language: language,
+      sourceGeneration: sourceGeneration,
+    );
+    await _addExternalSubtitle(url);
+    await _pendingSubtitleChoice.added(url, sourceGeneration);
+
     _subtitleDebug(
       'sub-add title=$title lang=$language codec=$codec '
       'mpv_sub_tracks=${_realSubtitleTrackCount(_player.state.tracks.subtitle)}',
     );
+  }
+
+  // The retry and the first add can overlap, so a URL that is still being
+  // added is waited on rather than added again.
+  Future<void> _addExternalSubtitle(String url) {
+    final pending = _externalSubtitleLoads[url];
+    if (pending != null) return pending;
+    final subtitle = _externalSubtitles[url];
+    final load = _nativeCommand(_player.platform as NativePlayer, [
+      'sub-add',
+      url,
+      'auto',
+      subtitle?.title ?? 'external',
+      subtitle?.language ?? '',
+    ]);
+    _externalSubtitleLoads[url] = load;
+    return load.whenComplete(() {
+      if (identical(_externalSubtitleLoads[url], load)) {
+        _externalSubtitleLoads.remove(url);
+      }
+    });
   }
 
   int? _lastTextColor;
@@ -2356,11 +2999,11 @@ class MediaKitPlayerBackend extends PlayerBackend {
     }
     final backgroundColor = _lastBackgroundColor;
     if (backgroundColor != null) {
-      await _nativeSetProperty(
-        native,
-        'sub-back-color',
-        _argbToMpvColor(backgroundColor),
-      );
+      for (final entry in subtitleBackgroundMpvProperties(
+        backgroundColor,
+      ).entries) {
+        await _nativeSetProperty(native, entry.key, entry.value);
+      }
     }
     final strokeColor = _lastStrokeColor;
     if (strokeColor != null) {
@@ -2371,11 +3014,7 @@ class MediaKitPlayerBackend extends PlayerBackend {
       );
       await _nativeSetProperty(native, 'sub-border-size', '2');
     }
-    final fontSize = _lastFontSize;
-    if (fontSize != null) {
-      final mpvSize = ((fontSize / 24.0) * 55.0).round().clamp(24, 120);
-      await _nativeSetProperty(native, 'sub-font-size', mpvSize.toString());
-    }
+    await _writeSubtitleFontSize(native);
     final fontWeight = _lastFontWeight;
     if (fontWeight != null) {
       // mpv holds this across titles, so it has to be written either way or a
@@ -2394,6 +3033,67 @@ class MediaKitPlayerBackend extends PlayerBackend {
     // Last, because it decides whether the colors above reach an ASS subtitle
     // at all.
     await _applyAssOverrideMode();
+  }
+
+  Future<void> _writeSubtitleFontSize(NativePlayer native) async {
+    final fontSize = _lastFontSize;
+    if (fontSize == null) return;
+    final mpvSize =
+        (fontSize / 24.0 * 55.0).clamp(24.0, 120.0) * _textSubtitleScale;
+    await _nativeSetProperty(
+      native,
+      'sub-font-size',
+      mpvSize.round().toString(),
+    );
+  }
+
+  void _refreshSubtitleFontSize() {
+    if (_isDisposed) return;
+    unawaited(() async {
+      try {
+        await _writeSubtitleFontSize(_player.platform as NativePlayer);
+      } catch (_) {}
+    }());
+  }
+
+  /// A native window or surface draws the black bars too, so mpv already
+  /// sizes text against the screen there. A crop is left alone because mpv
+  /// lays subtitles out on the uncropped frame.
+  double get _textSubtitleScale {
+    final params = _decodedVideoParams;
+    final width = params?.dw;
+    final height = params?.dh;
+    if (_useNativeSurface ||
+        hdrOutput.isEngaged ||
+        _letterboxCropper.geometry != null ||
+        width == null ||
+        height == null ||
+        height <= 0) {
+      return 1;
+    }
+    // The screen shape is only read when the size is written, so a window
+    // resized wider than 16:9 waits for the next title or style change.
+    final screen = PlatformDispatcher.instance.implicitView?.physicalSize;
+    return textSubtitleFrameScale(
+      frameAspect: width / height,
+      screenAspect: screen == null || screen.height <= 0
+          ? 16 / 9
+          : screen.width / screen.height,
+    );
+  }
+
+  /// How much to enlarge text subtitles on a frame wider than the screen.
+  ///
+  /// mpv sizes text subtitles against the frame it draws into, and the
+  /// texture is the video alone, so a scope title gets smaller text than a
+  /// 16:9 one. This brings it back to the size a 16:9 title gets on the same
+  /// screen, and leaves frames no wider than that alone.
+  static double textSubtitleFrameScale({
+    required double frameAspect,
+    required double screenAspect,
+  }) {
+    final reference = screenAspect > 16 / 9 ? screenAspect : 16 / 9;
+    return frameAspect > reference ? frameAspect / reference : 1;
   }
 
   @override
@@ -2428,10 +3128,28 @@ class MediaKitPlayerBackend extends PlayerBackend {
         '${b.toRadixString(16).padLeft(2, '0')}';
   }
 
-  Stream<T> _mergeWithStale<T>(Stream<T> source, T Function() getValue) {
+  /// mpv uses sub-back-color for a shadow until a background box is selected.
+  /// Reset both style and padding when the background becomes transparent.
+  static Map<String, String> subtitleBackgroundMpvProperties(int color) {
+    final hasBackground = ((color >> 24) & 0xff) != 0;
+    return {
+      'sub-back-color': _argbToMpvColor(color),
+      'sub-border-style': hasBackground
+          ? 'background-box'
+          : 'outline-and-shadow',
+      'sub-shadow-offset': hasBackground ? '4' : '0',
+    };
+  }
+
+  Stream<T> _mergeWithStale<T>(
+    Stream<T> source,
+    T Function() getValue, {
+    Stream<void>? extraTrigger,
+  }) {
     late StreamController<T> controller;
     StreamSubscription<T>? sourceSub;
     StreamSubscription<Playlist>? playlistSub;
+    StreamSubscription<void>? extraSub;
 
     controller = StreamController<T>.broadcast(
       onListen: () {
@@ -2444,11 +3162,13 @@ class MediaKitPlayerBackend extends PlayerBackend {
 
         sourceSub = source.listen((_) => checkAndPush());
         playlistSub = _player.stream.playlist.listen((_) => checkAndPush());
+        extraSub = extraTrigger?.listen((_) => checkAndPush());
         checkAndPush();
       },
       onCancel: () {
         sourceSub?.cancel();
         playlistSub?.cancel();
+        extraSub?.cancel();
       },
     );
     return controller.stream;
@@ -2456,18 +3176,55 @@ class MediaKitPlayerBackend extends PlayerBackend {
 
   @override
   void dispose() {
+    _setSelectedExternalSubtitle(null);
     _isDisposed = true;
+    ++_playbackGeneration;
+    _liveStartupGate = null;
+    _presenterWatchdog?.cancel();
+    _renegotiateSettleTimer?.cancel();
+    _letterboxGeometrySub?.cancel();
+    hdrOutput.status.removeListener(_refreshSubtitleFontSize);
+    _pendingEmbeddedSubtitle = null;
     _letterboxCropper.cancel();
     _prefs.removeListener(_onPreferencesChanged);
     _ccTracksSub?.cancel();
     _videoParamsSub?.cancel();
     _tracksChangedController.close();
+    _playingGateChangedController.close();
+    _subtitleLoadingStream.close();
     _player.dispose();
   }
 }
 
-class _MediaKitLetterboxHost implements MpvLetterboxHost {
+class _MediaKitLetterboxHost implements MpvLetterboxHost, MpvFrameSampleHost {
   _MediaKitLetterboxHost(this._backend);
+
+  final _frameSampler = MpvFrameSampler();
+  bool _sampling = false;
+  DateTime? _sampleEnded;
+
+  /// A capture is running or just finished. mpv reports a scaler failure a
+  /// moment after the shot, so the window runs past the capture.
+  bool get sampledRecently {
+    if (_sampling) return true;
+    final ended = _sampleEnded;
+    return ended != null &&
+        DateTime.now().difference(ended) < const Duration(seconds: 2);
+  }
+
+  @override
+  Future<MpvFrameSample?> sampleFrame(int width, int height) async {
+    if (_backend._isDisposed) return null;
+    final handle = await _backend._player.handle;
+    if (_backend._isDisposed) return null;
+    _sampling = true;
+    try {
+      return await _frameSampler.capture(handle, width, height);
+    } finally {
+      _sampling = false;
+      _sampleEnded = DateTime.now();
+    }
+  }
 
   final MediaKitPlayerBackend _backend;
 

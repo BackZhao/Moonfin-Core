@@ -11,7 +11,10 @@ import 'package:jellyfin_preference/jellyfin_preference.dart';
 import 'package:server_core/server_core.dart';
 
 import '../../data/repositories/seerr_repository.dart';
+import 'seerr/seerr_discover_sliders.dart';
+import 'incomplete_recordings_service.dart';
 import 'server_messages_service.dart';
+import 'settings_stream_transport.dart';
 import 'storage_path_service.dart';
 import 'synced_fields.dart';
 import '../../ui/widgets/navigation_layout.dart';
@@ -29,8 +32,8 @@ enum _PluginAvailabilityStatus { available, unavailable, unknown }
 /// Without them the socket falls back to whatever the system allows, which is
 /// minutes on a link that drops connection attempts. Sign-in waits on the
 /// themes call before it reads the profile that decides which home rows exist,
-/// so a request left hanging there holds the whole profile back.
-@visibleForTesting
+/// so a request left hanging there holds the whole profile back. The
+/// incomplete recordings service shares them.
 BaseOptions pluginRequestOptions() => BaseOptions(
   connectTimeout: const Duration(seconds: 8),
   receiveTimeout: const Duration(seconds: 30),
@@ -57,13 +60,17 @@ class PluginSyncService extends ChangeNotifier {
       ? GetIt.instance<ServerMessagesService>()
       : null;
 
+  IncompleteRecordingsService? get _incompleteRecordings =>
+      GetIt.instance.isRegistered<IncompleteRecordingsService>()
+      ? GetIt.instance<IncompleteRecordingsService>()
+      : null;
+
   bool _pluginAvailable = false;
   bool get pluginAvailable => _pluginAvailable;
 
   String? _pluginVersion;
   String? get pluginVersion => _pluginVersion;
 
-  String? _selectedCustomizationProfile;
   int _syncRetryCount = 0;
   Timer? _syncRetryTimer;
 
@@ -80,6 +87,21 @@ class PluginSyncService extends ChangeNotifier {
   bool get mdblistAvailable => _mdblistAvailable;
   bool _tmdbAvailable = false;
   bool get tmdbAvailable => _tmdbAvailable;
+
+  /// Whether the plugin can hand out the titled TMDB thumb for a title the
+  /// server doesn't have. An older plugin, or one without a TMDB key, can't.
+  bool _tmdbThumbsSupported = false;
+  bool get tmdbThumbsAvailable =>
+      _pluginAvailable && _tmdbAvailable && _tmdbThumbsSupported;
+
+  /// Whether the plugin can look up a person's social accounts on TMDB. It
+  /// uses the user's own TMDB key before the server's, so the admin key alone
+  /// doesn't decide it.
+  bool _tmdbPersonLinksSupported = false;
+  bool get tmdbPersonLinksAvailable =>
+      _pluginAvailable && _tmdbPersonLinksSupported;
+  bool _tmdbReviewsSupported = false;
+  bool get tmdbReviewsAvailable => _pluginAvailable && _tmdbReviewsSupported;
   bool _recommendationsSupported = false;
   bool get recommendationsSupported =>
       _pluginAvailable && _recommendationsSupported;
@@ -89,14 +111,18 @@ class PluginSyncService extends ChangeNotifier {
   bool _clientLogSupported = false;
   bool get clientLogSupported => _pluginAvailable && _clientLogSupported;
   String? _activeThemeCacheServerId;
-  void Function(
-    String title,
-    String body,
-    String route, {
-    String? requestId,
-    bool isRequest,
-  })?
-  onSeerrNotification;
+
+  final _seerrNotifications =
+      StreamController<SeerrNotificationEvent>.broadcast();
+
+  /// Seerr notifications the plugin pushed. Each listener holds its own
+  /// subscription, so one going away never silences another.
+  Stream<SeerrNotificationEvent> get seerrNotifications =>
+      _seerrNotifications.stream;
+
+  /// The server writes a heartbeat after 30 seconds without events, so a
+  /// stream quiet for this long has missed more than one and counts as dead.
+  static const Duration _settingsStreamIdleTimeout = Duration(seconds: 75);
   CancelToken? _settingsStreamCancelToken;
   StreamSubscription<String>? _settingsStreamSubscription;
   bool _settingsStreamReconnectPending = false;
@@ -198,7 +224,11 @@ class PluginSyncService extends ChangeNotifier {
     return value is String ? value : null;
   }
 
-  void resetState({bool notify = true, bool stopStream = true}) {
+  void resetState({
+    bool notify = true,
+    bool stopStream = true,
+    bool keepIncompleteRecordings = false,
+  }) {
     _syncRetryTimer?.cancel();
     if (stopStream) {
       _stopSettingsStream();
@@ -213,8 +243,12 @@ class PluginSyncService extends ChangeNotifier {
     _seerrInfoAvailable = false;
     _mdblistAvailable = false;
     _tmdbAvailable = false;
+    _tmdbThumbsSupported = false;
+    _tmdbPersonLinksSupported = false;
+    _tmdbReviewsSupported = false;
     _recommendationsSupported = false;
     _clientLogSupported = false;
+    if (!keepIncompleteRecordings) _incompleteRecordings?.setSupported(false);
     _activeThemeCacheServerId = null;
     if (notify) {
       _setLocalSeerrEnabled(false);
@@ -239,11 +273,18 @@ class PluginSyncService extends ChangeNotifier {
   Future<_PluginAvailabilityStatus> _refreshAvailabilityStatus(
     MediaServerClient client,
   ) async {
-    resetState(notify: false, stopStream: false);
+    // A re-ping of the same session keeps the incomplete recordings it has
+    // unless the answer says the plugin no longer offers them.
+    resetState(
+      notify: false,
+      stopStream: false,
+      keepIncompleteRecordings: true,
+    );
 
     try {
       final pingResult = await _ping(client);
       if (pingResult == null) {
+        _incompleteRecordings?.setSupported(false);
         _stopSettingsStream();
         notifyListeners();
         return _PluginAvailabilityStatus.unknown;
@@ -251,6 +292,7 @@ class PluginSyncService extends ChangeNotifier {
 
       final installed = _readBool(pingResult, 'installed');
       if (installed != null && !installed) {
+        _incompleteRecordings?.setSupported(false);
         _stopSettingsStream();
         _setLocalSeerrEnabled(false);
         notifyListeners();
@@ -259,6 +301,7 @@ class PluginSyncService extends ChangeNotifier {
 
       final syncEnabled = _readBool(pingResult, 'settingsSyncEnabled');
       if (syncEnabled != null && !syncEnabled) {
+        _incompleteRecordings?.setSupported(false);
         _stopSettingsStream();
         _setLocalSeerrEnabled(false);
         notifyListeners();
@@ -271,6 +314,12 @@ class PluginSyncService extends ChangeNotifier {
       _seerrEnabled = _readBool(pingResult, 'seerrEnabled') ?? false;
       _mdblistAvailable = _readBool(pingResult, 'mdblistAvailable') ?? false;
       _tmdbAvailable = _readBool(pingResult, 'tmdbAvailable') ?? false;
+      _tmdbThumbsSupported =
+          _readBool(pingResult, 'tmdbThumbsSupported') ?? false;
+      _tmdbPersonLinksSupported =
+          _readBool(pingResult, 'tmdbPersonLinksSupported') ?? false;
+      _tmdbReviewsSupported =
+          _readBool(pingResult, 'tmdbReviewsSupported') ?? false;
       _recommendationsSupported =
           _readBool(pingResult, 'recommendationsSupported') ?? false;
       // Older plugins leave this out, which reads as false and hides the button.
@@ -278,6 +327,11 @@ class PluginSyncService extends ChangeNotifier {
         _readBool(pingResult, 'messagesSupported') ?? false,
       );
       _clientLogSupported = _readBool(pingResult, 'clientLogSupported') ?? false;
+      // The Emby port and older plugins leave this out, which hides the feature.
+      _incompleteRecordings?.setSupported(
+        _readBool(pingResult, 'incompleteRecordingsSupported') ?? false,
+        extended: _readBool(pingResult, 'extendedCompleteShowingsSupported') ?? false,
+      );
 
       final seerrConfig = await _fetchSeerrConfig(client);
       if (seerrConfig != null) {
@@ -325,8 +379,13 @@ class PluginSyncService extends ChangeNotifier {
   }
 
   String get currentDeviceProfile => _profileName;
-  String get selectedCustomizationProfile =>
-      _selectedCustomizationProfile ?? _profileName;
+
+  /// The profile this device pulls from and pushes to. A picked profile stays
+  /// until the user picks again.
+  String get syncProfile {
+    final saved = _prefs.get(UserPreferences.pluginSyncProfile);
+    return supportedProfiles.contains(saved) ? saved : _profileName;
+  }
 
   bool isSyncInitializedForServer(
     MediaServerClient client, {
@@ -338,10 +397,24 @@ class PluginSyncService extends ChangeNotifier {
     return _prefs.get(syncInitializedPref);
   }
 
-  void setSelectedCustomizationProfile(String profile) {
+  /// Picking the device's own profile goes back to following it.
+  Future<void> setSyncProfile(String profile) async {
     if (!supportedProfiles.contains(profile)) return;
-    if (_selectedCustomizationProfile == profile) return;
-    _selectedCustomizationProfile = profile;
+    if (profile == syncProfile) return;
+    // Picking only changes where sync points. Without a snapshot the next
+    // preference write of any kind would push this device's settings over the
+    // picked profile, so only a real settings edit sends anything.
+    if (GetIt.instance.isRegistered<MediaServerClient>()) {
+      final client = GetIt.instance<MediaServerClient>();
+      _lastSyncedProfileJson[_snapshotKey(client, profile)] = jsonEncode(
+        _buildProfileFromLocal(),
+      );
+    }
+    if (profile == _profileName) {
+      await _prefs.removePreference(UserPreferences.pluginSyncProfile);
+    } else {
+      await _prefs.set(UserPreferences.pluginSyncProfile, profile);
+    }
     notifyListeners();
   }
 
@@ -379,12 +452,13 @@ class PluginSyncService extends ChangeNotifier {
             availability == _PluginAvailabilityStatus.available) {
           await _refreshCustomThemes(client, serverId: serverId);
 
-          final resolved = await _fetchResolvedProfile(client, _profileName);
+          final profile = syncProfile;
+          final resolved = await _fetchResolvedProfile(client, profile);
           if (resolved != null) {
-            await _applyServerSettings(client, _profileName, resolved);
+            await _applyServerSettings(client, profile, resolved);
           }
 
-          await _startSettingsStream(client);
+          unawaited(_startSettingsStream(client));
         }
 
         if (availability == _PluginAvailabilityStatus.unknown) {
@@ -406,16 +480,17 @@ class PluginSyncService extends ChangeNotifier {
 
       await _refreshCustomThemes(client, serverId: serverId);
 
-      final resolved = await _fetchResolvedProfile(client, _profileName);
+      final profile = syncProfile;
+      final resolved = await _fetchResolvedProfile(client, profile);
       if (resolved == null) {
         return;
       }
 
       await _prefs.set(UserPreferences.pluginSyncEnabled, true);
 
-      await _applyServerSettings(client, _profileName, resolved);
+      await _applyServerSettings(client, profile, resolved);
       await _prefs.set(syncInitializedPref, true);
-      await _startSettingsStream(client);
+      unawaited(_startSettingsStream(client));
     } catch (_) {
       resetState();
     } finally {
@@ -527,16 +602,17 @@ class PluginSyncService extends ChangeNotifier {
       final route = _eventValue(parsed, 'route');
       final kind = _eventValue(parsed, 'kind');
       final requestIdRaw = _eventValue(parsed, 'requestId');
-      final requestId = requestIdRaw is String ? requestIdRaw : null;
-      if (route is String && route.trim().isNotEmpty) {
-        onSeerrNotification?.call(
-          title is String ? title : '',
-          body is String ? body : '',
-          route.trim(),
-          requestId: requestId,
+      // A summary of several library additions has no single page to open,
+      // so an empty route still comes through.
+      _seerrNotifications.add(
+        SeerrNotificationEvent(
+          title: title is String ? title : '',
+          body: body is String ? body : '',
+          route: route is String ? route.trim() : '',
+          requestId: requestIdRaw is String ? requestIdRaw : null,
           isRequest: kind == 'request',
-        );
-      }
+        ),
+      );
       return;
     }
 
@@ -550,15 +626,19 @@ class PluginSyncService extends ChangeNotifier {
       return;
     }
 
-    final resolved = await _fetchResolvedProfile(client, _profileName);
+    final profile = syncProfile;
+    final resolved = await _fetchResolvedProfile(client, profile);
     if (resolved == null) {
       return;
     }
 
-    await _applyServerSettings(client, _profileName, resolved);
+    await _applyServerSettings(client, profile, resolved);
     notifyListeners();
   }
 
+  /// Sign-in leaves this running rather than waiting on it. The server can
+  /// hold the first reply back until its heartbeat, and the stream reconnects
+  /// on its own.
   Future<void> _startSettingsStream(MediaServerClient client) async {
     // Emby servers have no SSE endpoint, so plugin events arrive over the
     // session websocket instead. Don't loop on 501 reconnects here.
@@ -581,13 +661,12 @@ class PluginSyncService extends ChangeNotifier {
     _settingsStreamCancelToken = cancelToken;
 
     try {
-      final response = await _dio.get<ResponseBody>(
+      final body = await openSettingsStream(
+        _dio,
         '${client.baseUrl}/Moonfin/Settings/Stream',
-        options: Options(headers: headers, responseType: ResponseType.stream),
+        headers: headers,
         cancelToken: cancelToken,
-      );
-
-      final body = response.data;
+      ).timeout(_settingsStreamIdleTimeout);
       if (body == null) {
         if (!cancelToken.isCancelled) {
           _scheduleSettingsStreamReconnect(client);
@@ -597,8 +676,10 @@ class PluginSyncService extends ChangeNotifier {
 
       _settingsStreamReconnectAttempt = 0;
 
-      _settingsStreamSubscription = body.stream
-          .cast<List<int>>()
+      // A timeout arrives as an error, which reconnects straight away rather
+      // than waiting on a dead connection to finish closing.
+      _settingsStreamSubscription = body
+          .timeout(_settingsStreamIdleTimeout)
           .transform(utf8.decoder)
           .transform(const LineSplitter())
           .listen(
@@ -633,6 +714,8 @@ class PluginSyncService extends ChangeNotifier {
     }
   }
 
+  /// Signs this user in to Seerr through the plugin, and returns whether that
+  /// brought Seerr up, which is when the home has to load its rows again.
   Future<bool> configureSeerr(
     MediaServerClient client, {
     String? username,
@@ -642,6 +725,17 @@ class PluginSyncService extends ChangeNotifier {
     if (token == null || token.isEmpty) return false;
 
     final seerrRepo = await GetIt.instance.getAsync<SeerrRepository>();
+
+    // A session the plugin kept from an earlier sign in is already live, and
+    // the home loads its rows with it. Signing in again would swap the Seerr
+    // client under those loads and reload the home for nothing.
+    if (_pluginAvailable) {
+      await seerrRepo.ensureInitialized();
+      if (seerrRepo.isAvailable) {
+        await _enableSeerrOnceSignedIn(client);
+        return false;
+      }
+    }
 
     // A cold start can reach this before the server answers the plugin ping, or
     // before the plugin's Seerr session comes up after the restored token is
@@ -669,14 +763,7 @@ class PluginSyncService extends ChangeNotifier {
           username: username,
           password: password,
         );
-        if (seerrRepo.isAvailable &&
-            !_prefs.get(UserPreferences.seerrEnabled)) {
-          _setLocalSeerrEnabled(true);
-          await pushSettingsForProfile(
-            client,
-            profile: selectedCustomizationProfile,
-          );
-        }
+        if (seerrRepo.isAvailable) await _enableSeerrOnceSignedIn(client);
         await _refreshAvailabilityStatus(client);
       } catch (_) {
         continue;
@@ -688,13 +775,19 @@ class PluginSyncService extends ChangeNotifier {
     return seerrRepo.isAvailable;
   }
 
+  Future<void> _enableSeerrOnceSignedIn(MediaServerClient client) async {
+    if (_prefs.get(UserPreferences.seerrEnabled)) return;
+    _setLocalSeerrEnabled(true);
+    await pushSettings(client);
+  }
+
   Future<void> pushSettings(
     MediaServerClient client, {
     bool force = false,
   }) async {
     await pushSettingsForProfile(
       client,
-      profile: selectedCustomizationProfile,
+      profile: syncProfile,
       force: force,
     );
   }
@@ -1071,6 +1164,31 @@ class PluginSyncService extends ChangeNotifier {
     return null;
   }
 
+  /// The seasonal Home row Moonbase built for this user. [country] is the
+  /// viewer's two letter code, ZZ for "other", or null to let the server fall
+  /// back to its own.
+  Future<Map<String, dynamic>?> fetchSeasonalRow(
+    MediaServerClient client, {
+    String? country,
+  }) async {
+    final headers = _authHeaders(client);
+    if (headers == null) return null;
+
+    try {
+      final response = await _dio.get(
+        '${client.baseUrl}/Moonfin/Seasonal/Row',
+        queryParameters: {'country': ?country},
+        options: Options(headers: headers),
+      );
+      if (response.data is Map<String, dynamic>) {
+        return response.data as Map<String, dynamic>;
+      }
+    } catch (e) {
+      debugPrint('[PluginSyncService] fetchSeasonalRow failed: $e');
+    }
+    return null;
+  }
+
   Future<dynamic> _fetchThemesPayload(MediaServerClient client) async {
     final headers = _authHeaders(client);
     if (headers == null) return null;
@@ -1334,6 +1452,7 @@ class PluginSyncService extends ChangeNotifier {
     _applySinceYouWatchedNumRows(resolved);
     _applyMediaBarMode(resolved);
     _applyMediaBarContentType(resolved);
+    _applyHomeRowImageTypes(resolved);
     if (resolved['mdblistRatingSources'] is List) {
       final sources = (resolved['mdblistRatingSources'] as List)
           .cast<String>()
@@ -1387,6 +1506,18 @@ class PluginSyncService extends ChangeNotifier {
         );
         for (final custom in existingCustom) {
           sections.add(custom.copyWith(order: order++));
+        }
+        // Seerr slider rows go missing when a client from before them saves
+        // the layout, since it drops sections it can't read. They can't be
+        // removed by hand, so a missing one was lost rather than deleted.
+        final incomingSliders = sections
+            .where(isSeerrSliderSection)
+            .map((s) => s.stableId)
+            .toSet();
+        for (final slider in _prefs.homeSectionsConfig.where(
+          (c) => isSeerrSliderSection(c) && !incomingSliders.contains(c.stableId),
+        )) {
+          sections.add(slider.copyWith(order: order++));
         }
         _appendDisabledBuiltinSections(sections, order);
         await _raiseSinceYouWatchedRowCount(sections);
@@ -1556,6 +1687,13 @@ class PluginSyncService extends ChangeNotifier {
         );
         continue;
       }
+      if (type == prefs.HomeSectionType.seasonal) {
+        final localEnabled = _prefs.get(UserPreferences.seasonalRowEnabled);
+        sections.add(
+          HomeSectionConfig(type: type, enabled: localEnabled, order: order++),
+        );
+        continue;
+      }
       sections.add(
         HomeSectionConfig(type: type, enabled: false, order: order++),
       );
@@ -1576,6 +1714,8 @@ class PluginSyncService extends ChangeNotifier {
   /// disabled rather than being re-derived from a toggle preference that
   /// defaults to on. The preferences stay untouched because the profile's own
   /// synced fields already set them, and writing false would push that back.
+  /// The seasonal row is the exception: a layout that leaves it out still
+  /// travels with its synced toggle, so the toggle decides.
   int _appendDisabledBuiltinSections(
     List<HomeSectionConfig> sections,
     int order,
@@ -1585,8 +1725,10 @@ class PluginSyncService extends ChangeNotifier {
       if (type == prefs.HomeSectionType.none || present.contains(type)) {
         continue;
       }
+      final enabled = type == prefs.HomeSectionType.seasonal &&
+          _prefs.get(UserPreferences.seasonalRowEnabled);
       sections.add(
-        HomeSectionConfig(type: type, enabled: false, order: order++),
+        HomeSectionConfig(type: type, enabled: enabled, order: order++),
       );
     }
     return order;
@@ -1620,7 +1762,8 @@ class PluginSyncService extends ChangeNotifier {
       case SyncCodec.textAsInt:
         _applyInt(data, field.serverKey, field.pref);
       case SyncCodec.text:
-        _applyString(data, field.serverKey, field.pref);
+        _applyString(data, field.serverKey, field.pref,
+            normalize: field.normalize);
       case SyncCodec.enumName:
         _applyString(data, field.serverKey, field.pref,
             enumValues: field.enumValues);
@@ -1711,6 +1854,20 @@ class PluginSyncService extends ChangeNotifier {
     );
   }
 
+  // Rows the list leaves out keep their local value, since it only names rows someone
+  // picked a type for.
+  void _applyHomeRowImageTypes(Map<String, dynamic> data) {
+    final value = _readString(data, 'homeRowImageTypes');
+    if (value == null) return;
+
+    decodeHomeRowImageTypes(value).forEach((type, imageType) {
+      _store.set(
+        _prefs.getEffectivePreference(UserPreferences.homeRowImageType(type)),
+        imageType,
+      );
+    });
+  }
+
   void _applyBool(
     Map<String, dynamic> data,
     String serverKey,
@@ -1789,9 +1946,14 @@ class PluginSyncService extends ChangeNotifier {
     Preference<T> pref, {
     List<Enum>? enumValues,
     bool intFromString = false,
+    String? Function(String value)? normalize,
   }) {
-    final value = data[serverKey];
+    var value = data[serverKey];
     if (value == null) return;
+    if (normalize != null && value is String) {
+      value = normalize(value);
+      if (value == null) return;
+    }
 
     final effective = _prefs.getEffectivePreference(pref);
 
@@ -1927,6 +2089,17 @@ class PluginSyncService extends ChangeNotifier {
       payload['tmdbApiKey'] = tmdbKey;
     }
 
+    // Only the rows the user picked a type for, so someone who never picked one keeps
+    // getting the admin defaults.
+    final homeRowImageTypes = encodeHomeRowImageTypes({
+      for (final type in prefs.HomeSectionType.values)
+        if (_prefs.containsPreference(UserPreferences.homeRowImageType(type)))
+          type: _prefs.get(UserPreferences.homeRowImageType(type)),
+    });
+    if (homeRowImageTypes != null) {
+      payload['homeRowImageTypes'] = homeRowImageTypes;
+    }
+
     return payload;
   }
 
@@ -1961,54 +2134,12 @@ class PluginSyncService extends ChangeNotifier {
 
 
 
-  bool _isTmdbSectionType(prefs.HomeSectionType type) {
-    return type == prefs.HomeSectionType.tmdbPopularMovies ||
-        type == prefs.HomeSectionType.tmdbTopRatedMovies ||
-        type == prefs.HomeSectionType.tmdbNowPlayingMovies ||
-        type == prefs.HomeSectionType.tmdbUpcomingMovies ||
-        type == prefs.HomeSectionType.tmdbPopularTv ||
-        type == prefs.HomeSectionType.tmdbTopRatedTv ||
-        type == prefs.HomeSectionType.tmdbAiringTodayTv ||
-        type == prefs.HomeSectionType.tmdbOnTheAirTv ||
-        type == prefs.HomeSectionType.tmdbTrendingMovieDaily ||
-        type == prefs.HomeSectionType.tmdbTrendingMovieWeekly ||
-        type == prefs.HomeSectionType.tmdbTrendingTvDaily ||
-        type == prefs.HomeSectionType.tmdbTrendingTvWeekly ||
-        type == prefs.HomeSectionType.tmdbTrendingAllWeekly;
-  }
+  bool _isTmdbSectionType(prefs.HomeSectionType type) =>
+      UserPreferences.isTmdbSectionType(type);
 
-  Preference<bool> _tmdbPrefForType(prefs.HomeSectionType type) {
-    switch (type) {
-      case prefs.HomeSectionType.tmdbPopularMovies:
-        return UserPreferences.tmdbPopularMoviesEnabled;
-      case prefs.HomeSectionType.tmdbTopRatedMovies:
-        return UserPreferences.tmdbTopRatedMoviesEnabled;
-      case prefs.HomeSectionType.tmdbNowPlayingMovies:
-        return UserPreferences.tmdbNowPlayingMoviesEnabled;
-      case prefs.HomeSectionType.tmdbUpcomingMovies:
-        return UserPreferences.tmdbUpcomingMoviesEnabled;
-      case prefs.HomeSectionType.tmdbPopularTv:
-        return UserPreferences.tmdbPopularTvEnabled;
-      case prefs.HomeSectionType.tmdbTopRatedTv:
-        return UserPreferences.tmdbTopRatedTvEnabled;
-      case prefs.HomeSectionType.tmdbAiringTodayTv:
-        return UserPreferences.tmdbAiringTodayTvEnabled;
-      case prefs.HomeSectionType.tmdbOnTheAirTv:
-        return UserPreferences.tmdbOnTheAirTvEnabled;
-      case prefs.HomeSectionType.tmdbTrendingMovieDaily:
-        return UserPreferences.tmdbTrendingMovieDailyEnabled;
-      case prefs.HomeSectionType.tmdbTrendingMovieWeekly:
-        return UserPreferences.tmdbTrendingMovieWeeklyEnabled;
-      case prefs.HomeSectionType.tmdbTrendingTvDaily:
-        return UserPreferences.tmdbTrendingTvDailyEnabled;
-      case prefs.HomeSectionType.tmdbTrendingTvWeekly:
-        return UserPreferences.tmdbTrendingTvWeeklyEnabled;
-      case prefs.HomeSectionType.tmdbTrendingAllWeekly:
-        return UserPreferences.tmdbTrendingAllWeeklyEnabled;
-      default:
-        throw ArgumentError('Not a TMDB section type: $type');
-    }
-  }
+  Preference<bool> _tmdbPrefForType(prefs.HomeSectionType type) =>
+      UserPreferences.tmdbSectionEnabled[type] ??
+      (throw ArgumentError('Not a TMDB section type: $type'));
 
   Preference<bool>? _rowEnabledPreference(prefs.HomeSectionType type) {
     if (_isTmdbSectionType(type)) return _tmdbPrefForType(type);
@@ -2030,6 +2161,7 @@ class PluginSyncService extends ChangeNotifier {
       prefs.HomeSectionType.sonarrCalendar =>
         UserPreferences.enableSonarrCalendar,
       prefs.HomeSectionType.rewatch => UserPreferences.displayRewatchRow,
+      prefs.HomeSectionType.seasonal => UserPreferences.seasonalRowEnabled,
       prefs.HomeSectionType.sinceYouWatched1 =>
         UserPreferences.sinceYouWatched1Enabled,
       prefs.HomeSectionType.sinceYouWatched2 =>
@@ -2050,6 +2182,26 @@ class PluginSyncService extends ChangeNotifier {
     _pushDebounceTimer?.cancel();
     _syncRetryTimer?.cancel();
     _stopSettingsStream();
+    unawaited(_seerrNotifications.close());
     super.dispose();
   }
+}
+
+/// A Seerr notification the plugin pushed to this user.
+class SeerrNotificationEvent {
+  const SeerrNotificationEvent({
+    required this.title,
+    required this.body,
+    required this.route,
+    this.requestId,
+    this.isRequest = false,
+  });
+
+  final String title;
+  final String body;
+
+  /// Where a tap goes, or empty when there's nowhere to go.
+  final String route;
+  final String? requestId;
+  final bool isRequest;
 }

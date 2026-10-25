@@ -15,6 +15,7 @@ import 'anime_marker_badge.dart';
 import 'bounded_network_image.dart';
 import 'focus/glass_focus_halo.dart';
 import 'marquee_text.dart';
+import 'live_tv/incomplete_recording.dart';
 import 'media_badge.dart';
 import 'seerr/seerr_status_dot.dart';
 import '../mixins/focus_state_mixin.dart';
@@ -48,6 +49,39 @@ class MediaCard extends StatefulWidget {
   /// card decodes the image a second time.
   static int decodeMaxWidthFor(double aspectRatio) =>
       aspectRatio > 1.2 ? 960 : 640;
+
+  static const double _labelGap = 6;
+
+  static TextStyle _labelBaseStyle(BuildContext context) =>
+      Theme.of(context).textTheme.bodySmall ?? const TextStyle(fontSize: 12);
+
+  static double _titleFontSize(TextStyle base) => (base.fontSize ?? 12) + 1.0;
+
+  static double _lineHeight(TextScaler scaler, TextStyle style) =>
+      (scaler.scale(style.fontSize ?? 12) * (style.height ?? 1.2)) + 2;
+
+  /// How tall a titled card of [width] lays out, so a row can fit the cards it
+  /// holds. Assumes a card that isn't a banner and takes its subtitle as a
+  /// plain string.
+  ///
+  /// Focus growth isn't counted, since a titled card grows upward from the
+  /// bottom of its artwork and its bottom edge stays put.
+  static double layoutHeight(
+    BuildContext context, {
+    required double width,
+    required double aspectRatio,
+    bool hasSubtitle = false,
+  }) {
+    final scaler = MediaQuery.textScalerOf(context);
+    final base = _labelBaseStyle(context);
+    var height = width / aspectRatio + _labelGap;
+    height += _lineHeight(
+      scaler,
+      base.copyWith(fontSize: _titleFontSize(base)),
+    );
+    if (hasSubtitle) height += _lineHeight(scaler, base);
+    return height;
+  }
 
   final String? title;
   final String? subtitle;
@@ -91,6 +125,10 @@ class MediaCard extends StatefulWidget {
   /// The item behind the subbed/dubbed pill. Set only for standalone items such as
   /// movies, which have no series to inherit a verdict from.
   final String? animeMarkerItemId;
+
+  /// The item behind the Incomplete badge, for cards that can show a Live TV
+  /// recording. The badge draws nothing unless the item is incomplete.
+  final String? recordingItemId;
 
   /// Extra widgets layered over the poster image (inside its clip), e.g.
   /// format badges. Position each with [Positioned].
@@ -139,6 +177,7 @@ class MediaCard extends StatefulWidget {
     this.isGenreFallback = false,
     this.isBanner = false,
     this.animeMarkerItemId,
+    this.recordingItemId,
   });
 
   /// The genre name grows with the card, so it reads well both on a poster
@@ -304,8 +343,7 @@ class _MediaCardState extends State<MediaCard> with FocusStateMixin {
   @override
   Widget build(BuildContext context) {
     final isNeon = ThemeRegistry.active.id == ThemeRegistry.neonPulseId;
-    final baseTextStyle =
-        Theme.of(context).textTheme.bodySmall ?? const TextStyle(fontSize: 12);
+    final baseTextStyle = MediaCard._labelBaseStyle(context);
     final subtitleColor =
         widget.subtitleColor ??
         (isNeon
@@ -316,7 +354,7 @@ class _MediaCardState extends State<MediaCard> with FocusStateMixin {
           widget.titleColor ??
           (isNeon ? AppColorScheme.accent : AppColorScheme.onSurface),
       fontWeight: FontWeight.bold,
-      fontSize: (baseTextStyle.fontSize ?? 12) + 1.0,
+      fontSize: MediaCard._titleFontSize(baseTextStyle),
       shadows: const [Shadow(blurRadius: 4, color: Colors.black54)],
     );
     final subtitleStyle = baseTextStyle.copyWith(
@@ -324,15 +362,8 @@ class _MediaCardState extends State<MediaCard> with FocusStateMixin {
       shadows: const [Shadow(blurRadius: 4, color: Colors.black54)],
     );
     final textScaler = MediaQuery.textScalerOf(context);
-
-    double lineHeightFor(TextStyle style) {
-      final fontSize = style.fontSize ?? 12;
-      final height = style.height ?? 1.2;
-      return (textScaler.scale(fontSize) * height) + 2;
-    }
-
-    final titleLineHeight = lineHeightFor(titleStyle);
-    final subtitleLineHeight = lineHeightFor(subtitleStyle);
+    final titleLineHeight = MediaCard._lineHeight(textScaler, titleStyle);
+    final subtitleLineHeight = MediaCard._lineHeight(textScaler, subtitleStyle);
     final externallyDriven = widget.externalIsFocused != null;
     final hasNodeFocus = widget.focusNode?.hasFocus ?? false;
     final effectiveFocused = externallyDriven
@@ -397,13 +428,14 @@ class _MediaCardState extends State<MediaCard> with FocusStateMixin {
                       imageOverlays: widget.imageOverlays,
                       overlayOccupiesTopLeft: widget.overlayOccupiesTopLeft,
                       animeMarkerItemId: widget.animeMarkerItemId,
+                      recordingItemId: widget.recordingItemId,
                       isGenreFallback: widget.isGenreFallback,
                     ),
                   ),
                 ),
                 if (widget.isBanner) ...[
                   if (widget.title != null) ...[
-                    const SizedBox(height: 6),
+                    const SizedBox(height: MediaCard._labelGap),
                     SizedBox(
                       height: titleLineHeight,
                       width: cardWidth,
@@ -420,7 +452,7 @@ class _MediaCardState extends State<MediaCard> with FocusStateMixin {
                   ],
                 ] else ...[
                   if (widget.title != null) ...[
-                    const SizedBox(height: 6),
+                    const SizedBox(height: MediaCard._labelGap),
                     SizedBox(
                       height: titleLineHeight,
                       width: cardWidth,
@@ -652,6 +684,7 @@ class _CardImage extends StatelessWidget {
   final bool overlayOccupiesTopLeft;
   final bool isGenreFallback;
   final String? animeMarkerItemId;
+  final String? recordingItemId;
 
   const _CardImage({
     this.imageUrl,
@@ -675,6 +708,7 @@ class _CardImage extends StatelessWidget {
     this.overlayOccupiesTopLeft = false,
     this.isGenreFallback = false,
     this.animeMarkerItemId,
+    this.recordingItemId,
   });
 
   /// How far the focus ring sits outside the artwork. The ring is 3px thick
@@ -803,7 +837,8 @@ class _CardImage extends StatelessWidget {
                 ),
                 if (isFavorite ||
                     _showSeerrMediaTypeBadge ||
-                    animeMarkerItemId != null)
+                    animeMarkerItemId != null ||
+                    recordingItemId != null)
                   Positioned(
                     top: overlayOccupiesTopLeft ? 32 : 6,
                     left: 6,
@@ -823,6 +858,14 @@ class _CardImage extends StatelessWidget {
                           AnimeItemAudioBadge(
                             itemId: animeMarkerItemId!,
                             scale: 0.85,
+                            padding: isFavorite || recordingItemId != null
+                                ? const EdgeInsets.only(bottom: 4)
+                                : EdgeInsets.zero,
+                          ),
+                        // Takes no space until the item turns out incomplete.
+                        if (recordingItemId != null)
+                          IncompleteRecordingBadge(
+                            itemId: recordingItemId,
                             padding: isFavorite
                                 ? const EdgeInsets.only(bottom: 4)
                                 : EdgeInsets.zero,

@@ -11,6 +11,7 @@ import 'package:server_core/server_core.dart';
 import '../../auth/repositories/session_repository.dart';
 import '../../util/platform_detection.dart';
 import 'sync_service.dart';
+import 'remove_watched_service.dart';
 
 class ConnectivityService extends ChangeNotifier {
   final Connectivity _connectivity;
@@ -45,6 +46,10 @@ class ConnectivityService extends ChangeNotifier {
 
   bool get canReachServer => _isOnline && _serverReachable;
 
+  /// Whether the reconnect sync (ratings, progress, metadata, then removing
+  /// watched downloads) is running.
+  bool get isSyncing => _inFlightSync != null;
+
   /// Whether the only link is mobile data. Read by prefetchers that should
   /// not spend a metered connection on artwork the user may never scroll to.
   /// False until the first probe answers, and false on a link the platform
@@ -66,6 +71,20 @@ class ConnectivityService extends ChangeNotifier {
 
   /// Set when a sync was skipped because the app was backgrounded.
   bool _pendingSync = false;
+
+  /// The app server id of the registered client, handed over with it by
+  /// [onServerClientReady] so the sync never pairs one server's rows with
+  /// another server's client.
+  String? _serverId;
+
+  /// The boot-time check, a sign-in and a network flip can all ask for the
+  /// sync within a second of each other, and only the progress step guards
+  /// itself, so a second chain would repeat the ratings push and the whole
+  /// metadata sweep. A request for a client that registered since the running
+  /// chain started waits for it and then runs once.
+  Future<void>? _inFlightSync;
+  MediaServerClient? _inFlightSyncClient;
+  bool _syncQueued = false;
 
   ConnectivityService({
     @visibleForTesting Connectivity? connectivity,
@@ -157,6 +176,19 @@ class ConnectivityService extends ChangeNotifier {
     getIt<SessionRepository>().onNetworkRegained();
   }
 
+  /// A server client was just registered for [serverId] (session restore,
+  /// sign-in, account or server switch). The boot-time check runs before any
+  /// client exists and a sign-in brings no reachability edge, so this is the
+  /// moment that reconciles progress recorded offline.
+  Future<void> onServerClientReady(String serverId) async {
+    _serverId = serverId;
+    if (!_isOnline) return;
+    // Straight to the probe rather than recheckNow, which would add a
+    // connectivity_plus call on Apple TV, where the service never makes one.
+    await _checkServerReachability();
+    if (_serverReachable) _triggerSync();
+  }
+
   void _triggerSync() {
     _nudgeSocket();
     // Every network flip lands here, and the full progress and metadata sync
@@ -167,23 +199,55 @@ class ConnectivityService extends ChangeNotifier {
       _pendingSync = true;
       return;
     }
+    _startSyncChain();
+  }
+
+  void _startSyncChain() {
     final getIt = GetIt.instance;
-    if (!getIt.isRegistered<SyncService>() ||
+    final serverId = _serverId;
+    if (serverId == null ||
+        !getIt.isRegistered<SyncService>() ||
         !getIt.isRegistered<MediaServerClient>()) {
+      ServerLog.network('Progress sync skipped: no server client yet');
       return;
     }
     final syncService = getIt<SyncService>();
     final client = getIt<MediaServerClient>();
-    final serverId = getIt.isRegistered<SessionRepository>()
-        ? getIt<SessionRepository>().activeServerId
-        : null;
+    if (_inFlightSync != null) {
+      if (!identical(client, _inFlightSyncClient)) _syncQueued = true;
+      return;
+    }
+    _inFlightSyncClient = client;
     // Ratings push first, so the metadata refresh at the end of the chain
     // pulls back items that already carry them.
-    syncService
+    _inFlightSync = syncService
         .syncPendingRatings(client, serverId: serverId)
-        .then((_) => syncService.syncPlaybackProgress(client))
-        .then((_) {
-          syncService.refreshMetadata(client);
+        .then(
+          (_) => syncService.syncPlaybackProgress(client, serverId: serverId),
+        )
+        .then((_) => syncService.refreshMetadata(client, serverId: serverId))
+        // Last, so it judges the played state the refresh just pulled in.
+        .then((_) async {
+          if (!getIt.isRegistered<RemoveWatchedService>()) return;
+          await getIt<RemoveWatchedService>().runSafely(
+            client,
+            serverId: serverId,
+          );
+        })
+        .catchError((Object e) {
+          ServerLog.network(
+            'Progress sync failed',
+            level: ServerLogLevel.warning,
+            error: e,
+          );
+        })
+        .whenComplete(() {
+          _inFlightSync = null;
+          _inFlightSyncClient = null;
+          if (_syncQueued) {
+            _syncQueued = false;
+            _startSyncChain();
+          }
         });
   }
 
@@ -217,9 +281,25 @@ class ConnectivityService extends ChangeNotifier {
     // the bad connection with it, so the second try needs no wait in front.
     for (var attempt = 0; attempt < _probeAttempts; attempt++) {
       try {
-        await _pingDio.get('${client.baseUrl}/System/Ping');
+        await _pingDio.get(
+          client.serverType == ServerType.plex
+              ? '${client.baseUrl}/identity'
+              : '${client.baseUrl}/System/Ping',
+          // Only the status matters. A proxy can label the plain text body as
+          // json, and failing to decode it would mark a healthy server down.
+          options: Options(responseType: ResponseType.plain),
+        );
         failure = null;
         break;
+      } on DioException catch (e) {
+        // The probe carries no token, and Emby only lets that through from its
+        // own network, so a remote server turns it down with a 401. That
+        // refusal still came from the server.
+        if (e.response?.statusCode == 401) {
+          failure = null;
+          break;
+        }
+        failure = e;
       } catch (e) {
         failure = e;
       }

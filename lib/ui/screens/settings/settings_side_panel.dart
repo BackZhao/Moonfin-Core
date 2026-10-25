@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:custom_tv_text_field/custom_tv_text_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart' show CupertinoSlider;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,9 +18,11 @@ import '../../../data/services/achievements_service.dart';
 import '../../../data/services/auto_download_service.dart';
 import '../../../data/services/plugin_sync_service.dart';
 import '../../../data/services/custom_external_lists_service.dart';
+import '../../../data/services/topshelf_service.dart';
 import '../../../data/models/media_segment.dart';
 import '../../../data/utils/media_segment_actions.dart';
 import '../../../data/repositories/seerr_repository.dart';
+import '../../../data/services/seerr/seerr_discover_sliders.dart';
 import '../../../di/providers.dart';
 import '../../../util/idiom/app_ui_idiom.dart';
 import '../../../util/insecure_certificates.dart';
@@ -36,8 +37,6 @@ import '../../../util/overlay_color_palette.dart';
 import '../../../util/game_cores.dart';
 import '../../../util/platform_detection.dart';
 import '../../../util/playback_time_label.dart';
-import '../../../util/tv_image_cache_stub.dart'
-    if (dart.library.io) '../../../util/tv_image_cache_io.dart';
 import '../../../util/app_beta.dart';
 import '../../../util/app_distribution.dart';
 import '../../../util/pin_code_util.dart';
@@ -45,6 +44,10 @@ import '../../widgets/pin_entry_dialog.dart';
 import '../../widgets/app_update_dialog.dart';
 
 import '../../../auth/store/authentication_preferences.dart';
+import '../../../auth/store/client_certificate_store.dart';
+import '../../../auth/repositories/server_repository.dart';
+import '../../../data/services/client_certificate_service.dart';
+import '../../../util/server_url.dart';
 import '../../../auth/repositories/session_repository.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../util/error_message.dart';
@@ -53,17 +56,20 @@ import '../../../playback/audio_capability_probe.dart';
 import '../../../playback/device_profile_builder.dart';
 import '../../../playback/external_player_service.dart';
 import '../../../playback/letterbox_croppers.dart';
+import '../../../preference/bottom_nav_tabs.dart';
 import '../../../preference/preference_constants.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../preference/home_section_config.dart';
 import '../../../preference/seerr_preferences.dart';
 import '../../../preference/seerr_row_config.dart';
 import '../../navigation/destinations.dart';
+import '../admin/admin_nav.dart';
 import '../setup/setup_wizard_gate.dart';
 import '../../widgets/adaptive/adaptive_dialog.dart';
 import '../../widgets/adaptive/adaptive_list_section.dart';
 import '../../widgets/keyboard_shortcuts/keyboard_shortcut_reference.dart';
 import '../../widgets/overlay_sheet.dart';
+import '../../widgets/client_certificate_dialog.dart';
 import '../../widgets/playback/playback_time_row.dart';
 import '../../widgets/playback/player_loading_overlay.dart';
 import '../../widgets/playback/loading_animation_widget.dart';
@@ -73,6 +79,7 @@ import '../../widgets/settings/button_layout_list.dart';
 import '../../widgets/settings/preference_tiles.dart';
 import '../../widgets/settings/settings_panel.dart';
 import '../../widgets/settings/settings_section_header.dart';
+import '../../widgets/bottom_nav/bottom_nav_destinations.dart';
 import '../../widgets/navigation_layout.dart';
 import '../../widgets/support_dialog.dart';
 import '../../widgets/trickplay_settings_preview.dart';
@@ -89,10 +96,10 @@ import 'home_rows_image_type_screen.dart';
 import 'emulator_cores_screen.dart';
 import 'achievements_screen.dart';
 import 'downloaded_games_screen.dart';
+import 'library_order_screen.dart';
 import 'library_settings_screen.dart';
 import 'media_bar_settings_screen.dart';
 import 'screensaver_settings_screen.dart';
-import 'local_previews_settings_screen.dart';
 import 'parental_settings_screen.dart';
 import 'pin_code_settings_screen.dart';
 import 'plugin_settings_screen.dart';
@@ -102,6 +109,7 @@ import 'settings_app_bar.dart';
 import 'subtitle_customization_screen.dart';
 import 'subtitle_settings_screen.dart';
 import '../../../preference/detail_metadata_layout.dart';
+import '../../../preference/detail_section_layout.dart';
 import '../detail/detail_buttons.dart';
 import '../playback/osd_buttons.dart';
 import '../syncplay/syncplay_screen.dart';
@@ -109,34 +117,71 @@ import '../syncplay/syncplay_screen.dart';
 part 'panel/settings_panel_infra.dart';
 part 'panel/settings_search_field.dart';
 part 'panel/settings_search_index.dart';
-part 'panel/authentication_category_screen.dart';
-part 'panel/customization_category_screen.dart';
-part 'panel/general_style_screen.dart';
+part 'panel/account_screen.dart';
+part 'panel/general_screen.dart';
+part 'panel/appearance_screen.dart';
 part 'panel/details_screen_settings_screen.dart';
 part 'panel/navigation_category_screen.dart';
+part 'panel/bottom_nav_tabs_screen.dart';
 part 'panel/home_screen_category_screen.dart';
 part 'panel/libraries_category_screen.dart';
 part 'panel/seasonal_effects_screen.dart';
-part 'panel/theme_music_screen.dart';
 part 'panel/loading_animation_screen.dart';
-part 'panel/integrations_screen.dart';
+part 'panel/services_screen.dart';
 part 'panel/external_lists_screen.dart';
 part 'panel/plugin_screen.dart';
-part 'panel/metadata_ratings_screen.dart';
 part 'panel/about_category_screen.dart';
-part 'panel/licenses_screen.dart';
 part 'panel/keyboard_shortcuts_screen.dart';
 part 'panel/playback_category_screen.dart';
 part 'panel/video_playback_screen.dart';
+part 'panel/quality_decoding_screen.dart';
 part 'panel/playback_time_layout_screen.dart';
 part 'panel/osd_buttons_screen.dart';
 part 'panel/detail_buttons_screen.dart';
 part 'panel/detail_metadata_screen.dart';
+part 'panel/detail_sections_screen.dart';
 part 'panel/audio_preferences_screen.dart';
 part 'panel/automation_queue_screen.dart';
 part 'panel/advanced_options_screen.dart';
 part 'panel/syncplay_settings_screen.dart';
 part 'panel/settings_panel_tiles.dart';
+
+bool get _showThemeEditorEntry =>
+    PlatformDetection.isWeb && webRuntimeConfig.pluginMode;
+
+Uri _resolveThemeEditorUri() {
+  final base = Uri.base;
+  final path = base.path;
+  final markerIndex = path.toLowerCase().indexOf('/moonfin/web');
+
+  final prefix = markerIndex >= 0 ? path.substring(0, markerIndex) : '';
+
+  return Uri(
+    scheme: base.scheme,
+    userInfo: base.userInfo,
+    host: base.host,
+    port: base.hasPort ? base.port : null,
+    path: '$prefix/Moonfin/Web/theme/index.html',
+  );
+}
+
+Future<void> _openThemeEditor(BuildContext context) async {
+  final uri = _resolveThemeEditorUri();
+  final ok = await launchUrl(
+    uri,
+    mode: PlatformDetection.isWeb
+        ? LaunchMode.platformDefault
+        : LaunchMode.externalApplication,
+    webOnlyWindowName: '_blank',
+  );
+
+  if (!ok && context.mounted) {
+    final l10n = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.adminCouldNotOpenUrl('$uri'))),
+    );
+  }
+}
 
 class SettingsSidePanel extends ConsumerStatefulWidget {
   const SettingsSidePanel({super.key});
@@ -151,43 +196,6 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
   final _searchFieldFocus = FocusNode(debugLabel: 'SettingsSearchField');
   final _searchTvFieldKey = GlobalKey<CustomTVTextFieldState>();
   String _query = '';
-
-  bool get _showThemeEditorEntry =>
-      PlatformDetection.isWeb && webRuntimeConfig.pluginMode;
-
-  Uri _resolveThemeEditorUri() {
-    final base = Uri.base;
-    final path = base.path;
-    final markerIndex = path.toLowerCase().indexOf('/moonfin/web');
-
-    final prefix = markerIndex >= 0 ? path.substring(0, markerIndex) : '';
-
-    return Uri(
-      scheme: base.scheme,
-      userInfo: base.userInfo,
-      host: base.host,
-      port: base.hasPort ? base.port : null,
-      path: '$prefix/Moonfin/Web/theme/index.html',
-    );
-  }
-
-  Future<void> _openThemeEditor() async {
-    final uri = _resolveThemeEditorUri();
-    final ok = await launchUrl(
-      uri,
-      mode: PlatformDetection.isWeb
-          ? LaunchMode.platformDefault
-          : LaunchMode.externalApplication,
-      webOnlyWindowName: '_blank',
-    );
-
-    if (!ok && mounted) {
-      final l10n = AppLocalizations.of(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminCouldNotOpenUrl('$uri'))),
-      );
-    }
-  }
 
   /// Turns Kids Mode off once the PIN checks out. The PIN is the whole
   /// boundary, so a missing one leaves the mode on rather than opening it up.
@@ -295,7 +303,10 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
     final l10n = AppLocalizations.of(context);
     final kidsMode = ref.watch(kidsModeProvider);
     final showAdmin =
-        !kidsMode && !PlatformDetection.isTV && ref.watch(isAdminProvider);
+        !kidsMode &&
+        !PlatformDetection.isTV &&
+        ref.watch(isAdminProvider) &&
+        adminServerSupported();
     final enablePanelAutofocus = !PlatformDetection.useMobileUi;
 
     // Kids Mode leaves one entry standing. Hiding settings outright would
@@ -324,41 +335,48 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
               ),
             _PanelEntry(
               icon: Icons.lock,
-              title: l10n.settingsAccountSecurity,
-              subtitle: l10n.settingsAccountSecuritySubtitle,
+              title: l10n.account,
+              subtitle: l10n.settingsAccountSubtitle,
               focusNode: (!showAdmin && enablePanelAutofocus)
                   ? _firstFocusNode
                   : null,
-              onTap: () =>
-                  context.pushSettingsScreen(const _AuthenticationCategoryScreen()),
+              onTap: () => context.pushSettingsScreen(const _AccountScreen()),
+            ),
+            _PanelEntry(
+              icon: Icons.tune,
+              title: l10n.general,
+              subtitle: l10n.settingsGeneralSubtitle,
+              onTap: () => context.pushSettingsScreen(const _GeneralScreen()),
             ),
             _PanelEntry(
               icon: Icons.palette,
-              title: l10n.settingsPersonalization,
-              subtitle: l10n.settingsPersonalizationSubtitle,
-              onTap: () =>
-                  context.pushSettingsScreen(const _CustomizationCategoryScreen()),
+              title: l10n.appearance,
+              subtitle: l10n.settingsAppearanceSubtitle,
+              onTap: () => context.pushSettingsScreen(const _AppearanceScreen()),
             ),
             _PanelEntry(
               icon: Icons.play_circle,
-              title: l10n.settingsPlaybackSyncplay,
-              subtitle: l10n.settingsPlaybackSyncplaySubtitle,
+              title: l10n.playback,
+              subtitle: l10n.settingsPlaybackSubtitle,
               onTap: () =>
                   context.pushSettingsScreen(const _PlaybackCategoryScreen()),
             ),
+            // The image cache lives here, so the entry stays on every native
+            // platform. The download sections inside gate themselves.
+            if (!PlatformDetection.isWeb)
+              _PanelEntry(
+                icon: Icons.download_for_offline,
+                title: l10n.storageAndDownloads,
+                subtitle: l10n.settingsStorageSubtitle,
+                onTap: () =>
+                    context.pushSettingsScreen(const DownloadSettingsScreen()),
+              ),
             _PanelEntry(
               icon: Icons.hub,
               title: l10n.integrations,
-              subtitle: l10n.settingsIntegrationsSubtitle,
-              onTap: () => context.pushSettingsScreen(const _IntegrationsScreen()),
+              subtitle: l10n.settingsServicesSubtitle,
+              onTap: () => context.pushSettingsScreen(const _ServicesScreen()),
             ),
-            if (_showThemeEditorEntry)
-              _PanelEntry(
-                icon: Icons.brush,
-                title: l10n.themeEditor,
-                subtitle: l10n.themeEditorSubtitle,
-                onTap: () => unawaited(_openThemeEditor()),
-              ),
             _PanelEntry(
               icon: Icons.info_outline,
               title: l10n.aboutTitle,
@@ -423,7 +441,7 @@ class _SettingsSidePanelState extends ConsumerState<SettingsSidePanel> {
         _closeSettingsPanel();
         context.navigateTopLevel(Destinations.admin);
       },
-      openThemeEditor: () => unawaited(_openThemeEditor()),
+      openThemeEditor: () => unawaited(_openThemeEditor(context)),
     );
     final results = _filterSettingsIndex(index, _query);
     if (results.isEmpty) {

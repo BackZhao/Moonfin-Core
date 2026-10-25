@@ -7,9 +7,11 @@ import '../../../data/viewmodels/series_recordings_view_model.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../ui/mixins/focus_state_mixin.dart';
+import '../../../util/focus/dpad_keys.dart';
 import '../../widgets/adaptive/adaptive_dialog.dart';
 import '../../widgets/overlay_sheet.dart';
 import '../../widgets/focus/request_initial_focus.dart';
+import '../../widgets/live_tv/series_recording_dialog.dart';
 import 'widgets/live_tv_section_header.dart';
 
 class LiveTvSeriesRecordingsScreen extends StatefulWidget {
@@ -143,43 +145,41 @@ class _LiveTvSeriesRecordingsScreenState
     );
   }
 
-  void _showSeriesTimerOptions(SeriesTimerItem timer) {
-    final l10n = AppLocalizations.of(context);
-    showFocusRestoringDialog(
+  Future<void> _showSeriesTimerOptions(SeriesTimerItem timer) async {
+    final option = await showSeriesTimerOptionsDialog(
       context: context,
-      builder: (ctx) => AlertDialog.adaptive(
-        backgroundColor: const Color(0xFF1A1A2E),
-        title: Text(
-          timer.name,
-          style: const TextStyle(color: Colors.white),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (timer.subtitle.isNotEmpty)
-              Text(
-                timer.subtitle,
-                style: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
-              ),
-          ],
-        ),
-        actions: [
-          adaptiveDialogAction(
-            onPressed: () => Navigator.of(ctx, rootNavigator: true).pop(),
-            child: Text(l10n.close),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx, rootNavigator: true).pop();
-              _cancelSeriesTimer(timer);
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(l10n.cancelSeriesRecording),
-          ),
-        ],
-      ),
+      name: timer.name,
+      subtitle: timer.subtitle,
     );
+    if (!mounted) return;
+    switch (option) {
+      case SeriesTimerOption.changeSettings:
+        await _changeSeriesTimer(timer);
+      case SeriesTimerOption.cancel:
+        await _cancelSeriesTimer(timer);
+      case null:
+        break;
+    }
+  }
+
+  Future<void> _changeSeriesTimer(SeriesTimerItem timer) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final changed = await changeSeriesRecordingEpisodes(
+        context: context,
+        liveTvApi: GetIt.instance<MediaServerClient>().liveTvApi,
+        seriesTimerId: timer.id,
+      );
+      if (!changed || !mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.seriesRecordingUpdated)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.failedToUpdateSeriesRecording)),
+      );
+    }
   }
 
   Future<void> _cancelSeriesTimer(SeriesTimerItem timer) async {
@@ -301,6 +301,13 @@ class _SeriesTimerCardState extends State<_SeriesTimerCard> with FocusStateMixin
         onFocusChange: (focused) {
           setFocused(focused);
           if (focused) widget.onFocused();
+        },
+        onKeyEvent: (_, event) {
+          if (isActivateKey(event)) {
+            widget.onTap();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
         },
         child: GestureDetector(
           onTap: widget.onTap,

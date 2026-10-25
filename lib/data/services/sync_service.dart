@@ -5,6 +5,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:server_core/server_core.dart';
 
+import '../../util/server_url.dart';
 import '../database/offline_database.dart';
 import '../repositories/offline_repository.dart';
 import 'pending_rating_store.dart';
@@ -67,14 +68,35 @@ class SyncService extends ChangeNotifier {
     return SyncResult(synced: synced, failed: failed);
   }
 
-  Future<SyncResult> syncPlaybackProgress(MediaServerClient client) async {
+  /// Whether [row] was downloaded from the server [client] talks to, whose
+  /// app server id is [serverId]. Most writers store that id, a few store the
+  /// server's base URL instead, so a URL-shaped id is matched the way
+  /// MediaServerClientFactory.getClientIfExists resolves one.
+  static bool _isFromServer(
+    DownloadedItem row,
+    MediaServerClient client,
+    String serverId,
+  ) =>
+      isStoredServer(row.serverId, serverId: serverId, baseUrl: client.baseUrl);
+
+  /// Pushes progress recorded offline through [client], furthest progress
+  /// winning. Only rows from [serverId] are touched: a server answers a stop
+  /// report for an item it does not have with success, so another server's
+  /// row would be marked synced without its own server ever hearing of it.
+  Future<SyncResult> syncPlaybackProgress(
+    MediaServerClient client, {
+    required String? serverId,
+  }) async {
+    if (serverId == null) return const SyncResult(synced: 0, failed: 0);
     if (_state == SyncState.syncing) {
       return const SyncResult(synced: 0, failed: 0);
     }
 
     _setState(SyncState.syncing);
 
-    final unsynced = await _offlineRepo.getUnsyncedProgress();
+    final unsynced = (await _offlineRepo.getUnsyncedProgress())
+        .where((row) => _isFromServer(row, client, serverId))
+        .toList();
     if (unsynced.isEmpty) {
       _setState(SyncState.done);
       _scheduleDoneReset();
@@ -105,7 +127,7 @@ class SyncService extends ChangeNotifier {
             await _offlineRepo.setSyncedPlaybackPosition(
               item.itemId,
               0,
-              metadataJson: _mergeUserData(item.metadataJson, userData),
+              metadataJson: mergeServerUserData(item.metadataJson, userData),
             );
             synced++;
             continue;
@@ -117,7 +139,7 @@ class SyncService extends ChangeNotifier {
             await _offlineRepo.setSyncedPlaybackPosition(
               item.itemId,
               serverTicks,
-              metadataJson: _mergeUserData(item.metadataJson, userData),
+              metadataJson: mergeServerUserData(item.metadataJson, userData),
             );
             synced++;
             continue;
@@ -131,6 +153,7 @@ class SyncService extends ChangeNotifier {
             itemId: item.itemId,
             mediaSourceId: item.itemId,
             positionTicks: item.playbackPositionTicks,
+            runTimeTicks: _runTimeTicks(item.metadataJson),
           );
           await client.playbackApi.reportPlaybackStopped(report.toJson());
         }
@@ -147,10 +170,21 @@ class SyncService extends ChangeNotifier {
     return SyncResult(synced: synced, failed: failed);
   }
 
+  static int? _runTimeTicks(String metadataJson) {
+    try {
+      return (jsonDecode(metadataJson) as Map)['RunTimeTicks'] as int?;
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Returns [metadataJson] with its `UserData` replaced by the server's, so
   /// the offline UI (which reads played/position from metadata) reflects the
   /// adopted progress immediately rather than waiting for a metadata refresh.
-  String _mergeUserData(String metadataJson, Map<String, dynamic> userData) {
+  static String mergeServerUserData(
+    String metadataJson,
+    Map<String, dynamic> userData,
+  ) {
     try {
       final decoded = jsonDecode(metadataJson) as Map<String, dynamic>;
       decoded['UserData'] = userData;
@@ -189,9 +223,16 @@ class SyncService extends ChangeNotifier {
     return result;
   }
 
-  Future<void> refreshMetadata(MediaServerClient client) async {
-    final items = await _offlineRepo.getItems();
-    for (final item in items.where((i) => i.downloadStatus == 2)) {
+  /// Refreshes the metadata of [serverId]'s completed downloads from
+  /// [client], and pulls newer server progress into rows with nothing left
+  /// to push. Other servers' rows wait for their own server.
+  Future<void> refreshMetadata(
+    MediaServerClient client, {
+    required String? serverId,
+  }) async {
+    if (serverId == null) return;
+    final items = await _offlineRepo.getItems(onlyCompleted: true);
+    for (final item in items.where((i) => _isFromServer(i, client, serverId))) {
       try {
         final serverData = await client.itemsApi.getItem(item.itemId);
         final userData = serverData['UserData'] as Map<String, dynamic>?;

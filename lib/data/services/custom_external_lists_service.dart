@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:server_core/server_core.dart';
+import '../../l10n/current_app_localizations.dart';
 import '../../preference/home_section_config.dart';
 import '../../util/platform_detection.dart';
 
@@ -20,6 +22,9 @@ class ImdbExternalListItem {
   final double? rating;
   final String? userRating;
 
+  /// The certification Moonbase looked up on TMDB, or null when it has none.
+  final String? officialRating;
+
   ImdbExternalListItem({
     required this.imdbId,
     this.tmdbId = '',
@@ -31,6 +36,7 @@ class ImdbExternalListItem {
     this.popularity,
     this.rating,
     this.userRating,
+    this.officialRating,
   });
 
   Map<String, dynamic> toJson() => {
@@ -44,6 +50,7 @@ class ImdbExternalListItem {
         'popularity': popularity,
         'rating': rating,
         'userRating': userRating,
+        'officialRating': officialRating,
       };
 
   factory ImdbExternalListItem.fromJson(Map<String, dynamic> json) =>
@@ -58,16 +65,35 @@ class ImdbExternalListItem {
         popularity: (json['popularity'] as num?)?.toDouble(),
         rating: (json['rating'] as num?)?.toDouble(),
         userRating: json['userRating'] as String?,
+        officialRating: json['officialRating'] as String?,
       );
 }
 
 class CustomExternalListsService {
-  final Dio _dio = Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 15),
-    receiveTimeout: const Duration(seconds: 15),
-  ));
+  final Dio _dio;
 
-  CustomExternalListsService();
+  /// Who the cached rows belong to. The server holds a row to the user's parental limit and
+  /// leaves the cache alone when nothing passes, so a row written for one account must not be
+  /// read back by the next one on a shared device: the signed-in user on the signed-in server
+  /// names the file. Null when nobody is signed in, which leaves the user out of the name.
+  /// Tests hand in their own.
+  final String? Function() _cacheScope;
+
+  CustomExternalListsService({String? Function()? cacheScope, Dio? dio})
+      : _cacheScope = cacheScope ?? _signedInScope,
+        _dio = dio ??
+            Dio(BaseOptions(
+              connectTimeout: const Duration(seconds: 15),
+              receiveTimeout: const Duration(seconds: 45),
+            ));
+
+  static String? _signedInScope() {
+    if (!GetIt.instance.isRegistered<MediaServerClient>()) return null;
+    final client = GetIt.instance<MediaServerClient>();
+    final userId = client.userId;
+    if (userId == null || userId.isEmpty) return null;
+    return sha1.convert(utf8.encode('${client.baseUrl}|$userId')).toString().substring(0, 16);
+  }
 
   String constructSourceUrl(String source, String type, Map<String, dynamic> params) {
     switch (source) {
@@ -99,7 +125,12 @@ class CustomExternalListsService {
     }
   }
 
-  Future<List<ImdbExternalListItem>> fetchCustomRow(HomeSectionConfig config, {bool forceRefresh = false}) async {
+  Future<List<ImdbExternalListItem>> fetchCustomRow(
+    HomeSectionConfig config, {
+    bool forceRefresh = false,
+    bool throwOnError = false,
+    String? language,
+  }) async {
     final sectionId = config.pluginSection;
     if (sectionId == null || sectionId.isEmpty) return [];
 
@@ -124,17 +155,27 @@ class CustomExternalListsService {
         ? GetIt.instance<MediaServerClient>()
         : null;
     if (client == null) {
-      return loadCustomRowFromCache(config);
+      return loadCustomRowFromCache(config, language: language);
     }
 
     final baseUrl = client.baseUrl;
     final token = client.accessToken;
     if (token == null) {
-      return loadCustomRowFromCache(config);
+      return loadCustomRowFromCache(config, language: language);
     }
 
     final paramsJson = jsonEncode(params);
     final url = '$baseUrl/Moonfin/CustomRows/Items';
+    final lang = language ?? currentAppLocale().toLanguageTag();
+
+    // The account that starts the fetch owns the answer: the scope is taken
+    // before anything is awaited, the answer is dropped when another account
+    // is signed in by the time it arrives, and the file is named by this
+    // scope and no later one. The row from before goes before the request
+    // rather than after the answer, since an empty or failed answer saves
+    // nothing and the old row must not outlive it.
+    final scope = _cacheScope();
+    await _dropLegacyCacheFor(config, scope);
 
     try {
       final response = await _dio.get(
@@ -143,6 +184,7 @@ class CustomExternalListsService {
           'source': source,
           'type': type,
           'params': paramsJson,
+          if (lang.isNotEmpty) 'language': lang,
           // The plugin bypasses and overwrites its canonical cache entry on
           // refresh=true, so all devices see the refreshed list.
           if (forceRefresh) 'refresh': 'true',
@@ -157,6 +199,11 @@ class CustomExternalListsService {
           },
         ),
       );
+
+      if (_cacheScope() != scope) {
+        debugPrint('[CustomService] Another account signed in during the fetch, answer dropped');
+        return await loadCustomRowFromCache(config, language: lang);
+      }
 
       if (response.statusCode != 200) {
         throw Exception('Custom rows controller returned status ${response.statusCode}');
@@ -181,6 +228,7 @@ class CustomExternalListsService {
         final year = (rawItem['productionYear'] ?? rawItem['ProductionYear'] ?? rawItem['year'] ?? rawItem['Year']) as int?;
         final itemType = (rawItem['type'] ?? rawItem['Type']) as String? ?? 'Movie';
         final userRating = (rawItem['userRating'] ?? rawItem['UserRating']) as String?;
+        final officialRating = (rawItem['officialRating'] ?? rawItem['OfficialRating']) as String?;
         // The popularity and rating sort options rely on these two fields.
         final rating =
             ((rawItem['rating'] ?? rawItem['Rating']) as num?)?.toDouble();
@@ -200,18 +248,20 @@ class CustomExternalListsService {
             userRating: userRating,
             rating: rating,
             popularity: popularity,
+            officialRating: officialRating,
           ));
         }
       }
 
       if (items.isNotEmpty) {
-        await saveCustomRowToCache(config, items);
+        await _saveCustomRowToCacheFor(config, items, scope, lang);
       }
 
       return _applySorting(items, config);
     } catch (e) {
+      if (throwOnError) rethrow;
       debugPrint('[CustomService] Fetch failed from server. Falling back to local cache: $e');
-      return loadCustomRowFromCache(config);
+      return loadCustomRowFromCache(config, language: lang);
     }
   }
 
@@ -219,21 +269,69 @@ class CustomExternalListsService {
 
   static const cacheMaxAge = Duration(hours: 24);
 
-  Future<File> cacheFile(HomeSectionConfig config) async {
-    final dir = PlatformDetection.isAppleTV
-        ? await getApplicationCacheDirectory()
-        : await getApplicationSupportDirectory();
-    final sanitizedSection = config.pluginSection!.replaceAll(RegExp(r'[^a-zA-Z0-9]+'), '_');
-    return File('${dir.path}/custom_chart_$sanitizedSection.json');
+  Future<Directory> _cacheDir() async => PlatformDetection.isAppleTV
+      ? await getApplicationCacheDirectory()
+      : await getApplicationSupportDirectory();
+
+  static String _sectionName(HomeSectionConfig config) =>
+      config.pluginSection!.replaceAll(RegExp(r'[^a-zA-Z0-9]+'), '_');
+
+  /// The row's file for whoever is signed in, in the given or current language.
+  Future<File> cacheFile(HomeSectionConfig config, [String? language]) =>
+      _cacheFileFor(config, _cacheScope(), language);
+
+  Future<File> _cacheFileFor(HomeSectionConfig config, String? scope, [String? language]) async {
+    final dir = await _cacheDir();
+    final suffix = scope == null ? '' : '_$scope';
+    final lang = (language ?? currentAppLocale().toLanguageTag())
+        .replaceAll(RegExp(r'[^a-zA-Z0-9]+'), '_')
+        .toLowerCase();
+    final langSuffix = lang.isNotEmpty ? '_$lang' : '';
+    return File('${dir.path}/custom_chart_${_sectionName(config)}$suffix$langSuffix.json');
   }
 
-  Future<void> saveCustomRowToCache(HomeSectionConfig config, List<ImdbExternalListItem> items) async {
+  /// The row's file from before the cache was scoped per user, which an upgrade must not keep
+  /// handing to the next account.
+  Future<File> _legacyCacheFile(HomeSectionConfig config) async {
+    final dir = await _cacheDir();
+    return File('${dir.path}/custom_chart_${_sectionName(config)}.json');
+  }
+
+  Future<void> saveCustomRowToCache(
+    HomeSectionConfig config,
+    List<ImdbExternalListItem> items, {
+    String? language,
+  }) =>
+      _saveCustomRowToCacheFor(config, items, _cacheScope(), language);
+
+  Future<void> _saveCustomRowToCacheFor(
+    HomeSectionConfig config,
+    List<ImdbExternalListItem> items,
+    String? scope,
+    String? language,
+  ) async {
     try {
-      final file = await cacheFile(config);
+      final file = await _cacheFileFor(config, scope, language);
       final jsonList = items.map((item) => item.toJson()).toList();
       await file.writeAsString(jsonEncode(jsonList), flush: true);
+      await _dropLegacyCacheFor(config, scope);
     } catch (e) {
       debugPrint('[CustomService] Failed to save custom row cache: $e');
+    }
+  }
+
+  @visibleForTesting
+  Future<void> dropLegacyCache(HomeSectionConfig config) => _dropLegacyCacheFor(config, _cacheScope());
+
+  Future<void> _dropLegacyCacheFor(HomeSectionConfig config, String? scope) async {
+    try {
+      final file = await _cacheFileFor(config, scope);
+      final legacy = await _legacyCacheFile(config);
+      if (legacy.path != file.path && legacy.existsSync()) {
+        await legacy.delete();
+      }
+    } catch (e) {
+      debugPrint('[CustomService] Failed to drop the unscoped custom row cache: $e');
     }
   }
 
@@ -243,9 +341,10 @@ class CustomExternalListsService {
   Future<List<ImdbExternalListItem>> loadCustomRowFromCache(
     HomeSectionConfig config, {
     Duration? maxAge,
+    String? language,
   }) async {
     try {
-      final file = await cacheFile(config);
+      final file = await cacheFile(config, language);
       if (file.existsSync()) {
         try {
           final lastModified = file.lastModifiedSync();
@@ -259,9 +358,14 @@ class CustomExternalListsService {
         final items = decoded
             .map((item) => ImdbExternalListItem.fromJson(item as Map<String, dynamic>))
             .toList();
-        final hasOldCache = decoded.any((item) => item is Map && !item.containsKey('backdropUrl'));
+        final hasOldCache = decoded.any((item) =>
+            item is Map && (!item.containsKey('backdropUrl') || !item.containsKey('officialRating')));
         final hasBuggyCache = items.any((item) => item.imdbId.isEmpty && item.tmdbId.isEmpty);
-        if (hasOldCache || hasBuggyCache) {
+        // Older plugins sent IMDb chart titles with the poster standing in for the backdrop
+        // and no TMDB id, so that copy is dropped to pick up both once the server has them.
+        final hasPosterBackdrops = items.any((item) =>
+            (item.backdropUrl ?? '').isNotEmpty && item.backdropUrl == item.posterUrl);
+        if (hasOldCache || hasBuggyCache || hasPosterBackdrops) {
           debugPrint('[CustomService] Invalid or buggy custom row cache detected, invalidating...');
           try {
             await file.delete();

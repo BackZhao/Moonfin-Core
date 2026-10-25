@@ -18,6 +18,7 @@ import 'package:logger/logger.dart';
 import 'package:playback_core/playback_core.dart';
 import 'package:playback_emby/playback_emby.dart';
 import 'package:playback_jellyfin/playback_jellyfin.dart';
+import 'package:playback_plex/playback_plex.dart';
 import 'package:server_core/server_core.dart';
 
 import '../../data/models/media_bar_slide_item.dart';
@@ -42,6 +43,7 @@ import '../../playback/appletv_preview_player.dart';
 import '../../playback/html_video_backend_profile.dart';
 import '../../playback/inline_preview_engine.dart';
 import '../../playback/media3_player_backend.dart';
+import '../../playback/mpv_client_certificate.dart';
 import 'bounded_network_image.dart';
 import 'fullscreen_backdrop_switcher.dart';
 import 'navigation_layout.dart';
@@ -87,6 +89,8 @@ class MediaBar extends StatefulWidget {
   final MediaBarViewModel viewModel;
   final UserPreferences prefs;
   final bool externallyPaused;
+  // Holds back the trailer only, so the slides keep advancing.
+  final bool trailerPaused;
   final double height;
   final Future<void> Function()? onNavigateDown;
   final VoidCallback? onNavigateUp;
@@ -98,6 +102,7 @@ class MediaBar extends StatefulWidget {
     required this.viewModel,
     required this.prefs,
     this.externallyPaused = false,
+    this.trailerPaused = false,
     this.height = 220,
     this.onNavigateDown,
     this.onNavigateUp,
@@ -386,6 +391,7 @@ class _MediaBarState extends State<MediaBar>
   bool _trailerShouldBeActive() {
     return mounted &&
         !widget.externallyPaused &&
+        !widget.trailerPaused &&
         !PlayerRouteObserver.instance.isPlayerActive.value &&
         _isHomeRouteCurrent() &&
         !_mainPlaybackActive;
@@ -466,6 +472,13 @@ class _MediaBarState extends State<MediaBar>
         if (_isHomeRouteActive && _currentIndex < items.length) {
           _scheduleTrailerPreview(items[_currentIndex]);
         }
+      }
+    }
+    if (widget.trailerPaused != oldWidget.trailerPaused) {
+      if (widget.trailerPaused) {
+        _cancelTrailerPreview();
+      } else {
+        _scheduleTrailerForCurrentSlide();
       }
     }
   }
@@ -706,22 +719,18 @@ class _MediaBarState extends State<MediaBar>
         _cancelTrailerPreview();
       }
     } else if (_trailerUsingMedia3) {
-      final audioEnabled = widget.prefs.get(
-        UserPreferences.mediaBarTrailerAudio,
-      );
-      _media3TrailerBackend!.setVolume(audioEnabled ? 100 : 0);
+      _media3TrailerBackend!.setVolume(_trailerVolume);
     } else if (_trailerUsingAppleTv) {
-      final audioEnabled = widget.prefs.get(
-        UserPreferences.mediaBarTrailerAudio,
-      );
-      unawaited(_appleTvTrailerPlayer?.setVolume(audioEnabled ? 100 : 0));
+      unawaited(_appleTvTrailerPlayer?.setVolume(_trailerVolume));
     } else if (_trailerPlayer != null) {
-      final audioEnabled = widget.prefs.get(
-        UserPreferences.mediaBarTrailerAudio,
-      );
-      _trailerPlayer?.setVolume(audioEnabled ? 100 : 0);
+      _trailerPlayer?.setVolume(_trailerVolume);
     }
   }
+
+  double get _trailerVolume =>
+      widget.prefs.get(UserPreferences.mediaBarTrailerAudio)
+      ? widget.prefs.get(UserPreferences.trailerVolume).toDouble()
+      : 0;
 
   void _syncHomeRouteActive() {
     final isHome = _isHomeRouteCurrent();
@@ -922,7 +931,7 @@ class _MediaBarState extends State<MediaBar>
     if (!widget.prefs.resolveMediaBarTrailerPreview()) {
       return;
     }
-    if (!_isHomeRouteActive) {
+    if (!_isHomeRouteActive || widget.trailerPaused) {
       return;
     }
     if (_mainPlaybackActive) {
@@ -1033,6 +1042,7 @@ class _MediaBarState extends State<MediaBar>
     final client = _clientForServer(item.serverId);
     String? streamUrl;
     bool useYouTubeHeaders = false;
+    String? youTubeAudioLanguage;
     String? youTubeVideoId;
     String? sponsorBlockVideoId;
     StreamResolutionResult? localRes;
@@ -1068,7 +1078,22 @@ class _MediaBarState extends State<MediaBar>
     }
 
     List<Map<String, dynamic>> remoteTrailers = item.remoteTrailers;
-    if (remoteTrailers.isEmpty) {
+    // Plex items never carry trailer links, so there's nothing to fetch and
+    // one is searched for instead.
+    if (client.serverType == ServerType.plex) {
+      if (streamUrl == null) {
+        final url = await YouTubeStreamResolver.searchTrailer(
+          item.title,
+          year: item.year,
+        );
+        if (!mounted || resolveId != _trailerResolveId) return;
+        if (url != null) {
+          remoteTrailers = [
+            {'Url': url},
+          ];
+        }
+      }
+    } else if (remoteTrailers.isEmpty) {
       try {
         final fullItem = await client.itemsApi.getItem(item.itemId);
         if (!mounted || resolveId != _trailerResolveId) return;
@@ -1091,11 +1116,13 @@ class _MediaBarState extends State<MediaBar>
             break;
           }
           if (!webOnly) {
-            streamUrl = await YouTubeStreamResolver.resolveFromUrl(
+            final stream = await YouTubeStreamResolver.resolveFromUrl(
               url,
             ).timeout(_trailerResolveTimeout, onTimeout: () => null);
+            streamUrl = stream?.url;
             if (streamUrl != null) {
               useYouTubeHeaders = true;
+              youTubeAudioLanguage = stream?.audioLanguage;
             }
           }
         } else if (!webOnly) {
@@ -1167,6 +1194,7 @@ class _MediaBarState extends State<MediaBar>
           'url': streamUrl,
           'mediaType': localRes?.mediaType ?? 'video',
           'preview': true,
+          'preferredAudioLanguage': ?youTubeAudioLanguage,
           if (localHeaders.isNotEmpty) 'headers': localHeaders,
           if (localRes?.container != null) 'container': localRes!.container,
           if (localRes?.videoRangeType != null)
@@ -1185,6 +1213,7 @@ class _MediaBarState extends State<MediaBar>
               streamUrl,
               headers: localHeaders.isNotEmpty ? localHeaders : null,
               volume: 0,
+              audioLanguage: youTubeAudioLanguage,
             )
             .timeout(_openTimeout);
         if (resolveId != _trailerResolveId || !_trailerShouldBeActive()) {
@@ -1201,6 +1230,11 @@ class _MediaBarState extends State<MediaBar>
         final media = localHeaders.isNotEmpty
             ? Media(streamUrl, httpHeaders: localHeaders)
             : Media(streamUrl);
+        await YouTubeStreamResolver.preferAudioLanguage(
+          player,
+          youTubeAudioLanguage,
+        );
+        await applyMpvClientCertificate(player, streamUrl);
         await player.open(media).timeout(_openTimeout);
         if (resolveId != _trailerResolveId || !_trailerShouldBeActive()) {
           await player.stop();
@@ -1302,11 +1336,8 @@ class _MediaBarState extends State<MediaBar>
     }
 
     if (_trailerUsingMedia3) {
-      final audioEnabled = widget.prefs.get(
-        UserPreferences.mediaBarTrailerAudio,
-      );
       try {
-        await _media3TrailerBackend!.setVolume(audioEnabled ? 100 : 0);
+        await _media3TrailerBackend!.setVolume(_trailerVolume);
         if (!mounted || resolveId != _trailerResolveId) return;
 
         await _media3TrailerBackend.resume();
@@ -1345,11 +1376,8 @@ class _MediaBarState extends State<MediaBar>
     if (_trailerUsingAppleTv) {
       final player = _appleTvTrailerPlayer;
       if (player == null) return;
-      final audioEnabled = widget.prefs.get(
-        UserPreferences.mediaBarTrailerAudio,
-      );
       try {
-        await player.setVolume(audioEnabled ? 100 : 0);
+        await player.setVolume(_trailerVolume);
         if (!mounted || resolveId != _trailerResolveId) return;
         await player.resume();
         if (resolveId != _trailerResolveId || !_trailerShouldBeActive()) {
@@ -1372,9 +1400,8 @@ class _MediaBarState extends State<MediaBar>
     final player = _trailerPlayer;
     if (player == null) return;
 
-    final audioEnabled = widget.prefs.get(UserPreferences.mediaBarTrailerAudio);
     try {
-      await player.setVolume(audioEnabled ? 100 : 0);
+      await player.setVolume(_trailerVolume);
       if (!mounted || resolveId != _trailerResolveId) return;
 
       await player.play();
@@ -1822,6 +1849,7 @@ class _MediaBarState extends State<MediaBar>
     return switch (client.serverType) {
       ServerType.jellyfin => JellyfinPlugin(client).createStreamResolver(),
       ServerType.emby => EmbyPlugin(client).createStreamResolver(),
+      ServerType.plex => PlexMediaStreamResolver(client),
     };
   }
 

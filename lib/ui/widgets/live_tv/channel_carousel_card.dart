@@ -5,6 +5,7 @@ import 'package:moonfin_design/moonfin_design.dart';
 
 import '../../screens/livetv/epg/epg_genre.dart';
 import '../offline_aware_image.dart';
+import 'live_tv_recording_icon.dart';
 
 /// One channel in the quick channel carousel. Pure presentation: the host
 /// owns scrolling, focus, and data. This only renders what it is given.
@@ -42,6 +43,7 @@ class ChannelCarouselCard extends StatelessWidget {
   final bool isLive;
   final double progress; // 0..1, meaningful only when isLive
   final bool hasTimer;
+  final bool hasSeriesTimer;
   final bool centered;
 
   /// Draws the program block as a skeleton: the schedule is still on its
@@ -55,14 +57,14 @@ class ChannelCarouselCard extends StatelessWidget {
   /// Preferred card width, and the target [layoutFor] aims at.
   ///
   /// Written against the canvas a television lays out on, which the panel
-  /// paints at about 1.45 pixels to the point. A size written in a panel's
-  /// own units lands a third short of what it was drawn for once that
-  /// multiplication is done.
+  /// paints at about 1.67 pixels to the point. A size written in a panel's
+  /// own units would draw at a different size on every TV.
   ///
-  /// The value is the width the canvas gives when four pitches fit across it,
-  /// which is the arrangement the strip reads best in. The centred card keeps
-  /// a whole neighbour either side and a half card bleeds off each edge, so
-  /// there is always something further along to scroll to.
+  /// The value sits close enough to four pitches across the canvas that
+  /// [layoutFor] settles on four, which is the arrangement the strip reads
+  /// best in. The centred card keeps a whole neighbour either side and a half
+  /// card bleeds off each edge, so there is always something further along to
+  /// scroll to.
   static const double cardWidth = 320;
   static const double cardHeight = 151;
   static const double cardSpacing = 10;
@@ -117,6 +119,7 @@ class ChannelCarouselCard extends StatelessWidget {
     required this.isLive,
     required this.progress,
     required this.hasTimer,
+    this.hasSeriesTimer = false,
     required this.centered,
     this.programLoading = false,
     this.width = cardWidth,
@@ -350,12 +353,15 @@ class ChannelCarouselCard extends StatelessWidget {
           style: nameStyle,
         ),
       ),
-      if (hasTimer) ...[
+      if (LiveTvRecordingIcon.shows(
+        hasTimer: hasTimer,
+        hasSeriesTimer: hasSeriesTimer,
+      )) ...[
         const SizedBox(width: _statusGap),
-        Icon(
-          Icons.fiber_manual_record,
+        LiveTvRecordingIcon(
+          hasTimer: hasTimer,
+          hasSeriesTimer: hasSeriesTimer,
           size: inlineIconSize,
-          color: const Color(0xFFE0685C),
         ),
       ],
       if (logoUrl != null && logoUrl!.isNotEmpty) ...[

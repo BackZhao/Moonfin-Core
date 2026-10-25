@@ -20,18 +20,18 @@ class _LibrariesCategoryScreen extends StatelessWidget {
                 onTap: () =>
                     context.pushSettingsScreen(const LibraryVisibilityScreen()),
               ),
+              _TvSettingsListTile(
+                leading: const Icon(Icons.swap_vert),
+                title: Text(l10n.libraryOrder),
+                subtitle: Text(l10n.libraryOrderSubtitle),
+                onTap: () =>
+                    context.pushSettingsScreen(const LibraryOrderScreen()),
+              ),
               SwitchPreferenceTile(
                 preference: UserPreferences.enableMultiServerLibraries,
                 title: l10n.multiServerLibraries,
                 subtitle: l10n.showLibrariesFromAllServers,
                 icon: Icons.dns,
-                onChanged: _pushPersonalizationSync,
-              ),
-              SwitchPreferenceTile(
-                preference: UserPreferences.mergeRecentRowsByType,
-                title: l10n.mergeRecentRowsByType,
-                subtitle: l10n.mergeRecentRowsByTypeDescription,
-                icon: Icons.library_books,
                 onChanged: _pushPersonalizationSync,
               ),
               SwitchPreferenceTile(
@@ -41,23 +41,54 @@ class _LibrariesCategoryScreen extends StatelessWidget {
                 icon: Icons.explore,
                 onChanged: _pushPersonalizationSync,
               ),
-              EnumPreferenceTile<RecentlyReleasedSeriesType>(
-                preference: UserPreferences.recentlyReleasedSeriesType,
-                title: l10n.recentlyReleasedSeriesType,
-                description: l10n.recentlyReleasedSeriesTypeDescription,
-                icon: Icons.ondemand_video,
-                labelOf: (v) => switch (v) {
-                  RecentlyReleasedSeriesType.series => l10n.series,
-                  RecentlyReleasedSeriesType.season => l10n.season,
-                  RecentlyReleasedSeriesType.episode => l10n.episode,
-                },
-                onChanged: _pushPersonalizationSync,
-              ),
             ],
           ),
           _SectionHeader(l10n.libraryView),
           adaptiveListSection(
             children: [
+              EnumPreferenceTile<LibraryStyle>(
+                key: const ValueKey('pref_library_style'),
+                preference: UserPreferences.libraryStyle,
+                title: l10n.libraryStyle,
+                description: PlatformDetection.useMobileUi
+                    ? l10n.libraryStyleDescriptionPhone
+                    : l10n.libraryStyleDescription,
+                icon: Icons.view_sidebar_outlined,
+                labelOf: (v) => switch (v) {
+                  LibraryStyle.classic => l10n.libraryStyleClassic,
+                  LibraryStyle.modern => l10n.libraryStyleModern,
+                  LibraryStyle.docked => l10n.libraryStyleDocked,
+                },
+                onChanged: _pushPersonalizationSync,
+              ),
+              EnumPreferenceTile<BookLibraryStyle>(
+                key: const ValueKey('pref_book_library_style'),
+                preference: UserPreferences.bookLibraryStyle,
+                title: l10n.bookLibraryStyle,
+                description: l10n.bookLibraryStyleDescription,
+                icon: Icons.auto_stories_outlined,
+                labelOf: (v) => switch (v) {
+                  BookLibraryStyle.classic => l10n.bookLibraryStyleClassic,
+                  BookLibraryStyle.readingRoom =>
+                    l10n.bookLibraryStyleReadingRoom,
+                  BookLibraryStyle.bookstore => l10n.bookLibraryStyleBookstore,
+                },
+                onChanged: _pushPersonalizationSync,
+              ),
+              EnumPreferenceTile<MusicLibraryStyle>(
+                key: const ValueKey('pref_music_library_style'),
+                preference: UserPreferences.musicLibraryStyle,
+                title: l10n.musicLibraryStyle,
+                description: l10n.musicLibraryStyleDescription,
+                icon: Icons.library_music_outlined,
+                labelOf: (v) => switch (v) {
+                  MusicLibraryStyle.classic => l10n.musicLibraryStyleClassic,
+                  MusicLibraryStyle.quickAccess =>
+                    l10n.musicLibraryStyleQuickAccess,
+                  MusicLibraryStyle.immersive => l10n.musicLibraryStyleImmersive,
+                },
+                onChanged: _pushPersonalizationSync,
+              ),
               SwitchPreferenceTile(
                 preference: UserPreferences.groupItemsIntoCollections,
                 title: l10n.groupItemsIntoCollections,
@@ -111,16 +142,17 @@ class _LibrariesCategoryScreen extends StatelessWidget {
                 onChanged: _pushPersonalizationSync,
               ),
               SwitchPreferenceTile(
+                preference: UserPreferences.hideBackdropsInLibraries,
+                title: l10n.libraryBackdrops,
+                icon: Icons.photo,
+                inverted: true,
+                onChanged: _pushPersonalizationSync,
+              ),
+              SwitchPreferenceTile(
                 preference: UserPreferences.useDetailedSubHeadings,
                 title: l10n.useDetailedSubHeadings,
                 subtitle: l10n.useDetailedSubHeadingsDescription,
                 icon: Icons.subtitles,
-                onChanged: _pushPersonalizationSync,
-              ),
-              SwitchPreferenceTile(
-                preference: UserPreferences.hideBackdropsInLibraries,
-                title: l10n.hideBackdropsInLibraries,
-                icon: Icons.hide_image_outlined,
                 onChanged: _pushPersonalizationSync,
               ),
             ],

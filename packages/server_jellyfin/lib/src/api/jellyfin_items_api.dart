@@ -454,7 +454,7 @@ class JellyfinItemsApi implements ItemsApi {
       '/Playlists/$playlistId/Items',
       queryParameters: {
         'Fields':
-            'BasicSyncInfo,PrimaryImageAspectRatio,RunTimeTicks,Artists,AlbumArtist,IndexNumber,MediaType,PlaylistItemId,BackdropImageTags,ParentBackdropImageTags,ParentBackdropItemId,SeriesName,ParentIndexNumber,Genres,Chapters,Overview,UserData,MediaStreams',
+            'BasicSyncInfo,PrimaryImageAspectRatio,RunTimeTicks,Artists,AlbumArtist,IndexNumber,MediaType,PlaylistItemId,BackdropImageTags,ParentBackdropImageTags,ParentBackdropItemId,SeriesName,ParentIndexNumber,Genres,Chapters,Overview,UserData,MediaStreams,DateCreated,SortName',
         'EnableImageTypes': 'Primary,Backdrop,Logo,Thumb',
         'ImageTypeLimit': 1,
         'StartIndex': ?startIndex,
@@ -464,6 +464,7 @@ class JellyfinItemsApi implements ItemsApi {
     return response.data as Map<String, dynamic>;
   }
 
+  /// Jellyfin makes a new playlist public unless told otherwise.
   @override
   Future<Map<String, dynamic>> createPlaylist({
     required String name,
@@ -471,7 +472,7 @@ class JellyfinItemsApi implements ItemsApi {
   }) async {
     final response = await _dio.post(
       '/Playlists',
-      data: {'Name': name, 'Ids': ?itemIds},
+      data: {'Name': name, 'Ids': ?itemIds, 'IsPublic': false},
     );
     return response.data as Map<String, dynamic>;
   }
@@ -719,6 +720,15 @@ class JellyfinItemsApi implements ItemsApi {
       return data.cast<Map<String, dynamic>>();
     }
     return const [];
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getAdditionalParts(String itemId) async {
+    final response = await _dio.get(
+      '/Videos/$itemId/AdditionalParts',
+      queryParameters: {'UserId': _getUserId()},
+    );
+    return _parseItemListResponse(response.data);
   }
 
   @override

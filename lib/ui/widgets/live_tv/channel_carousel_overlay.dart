@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:moonfin_design/moonfin_design.dart';
 import 'package:server_core/server_core.dart';
 
+import '../../../data/models/live_tv_recording_state.dart';
 import '../../../data/viewmodels/live_tv_guide_view_model.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../util/focus/dpad_keys.dart';
@@ -76,7 +77,20 @@ class ChannelCarouselPrewarm {
     DateTime Function()? now,
   }) : _now = now ?? DateTime.now,
        viewModel =
-           viewModelFactory?.call(client) ?? LiveTvGuideViewModel(client);
+           viewModelFactory?.call(client) ?? LiveTvGuideViewModel(client) {
+    liveTvRecordingRevision.addListener(_onRecordingsChanged);
+  }
+
+  /// The cached programs carry each showing's recording state, so a change
+  /// made in the player or guide re-reads them.
+  void _onRecordingsChanged() {
+    if (_disposed || !isWarm) return;
+    if (_inFlight != null) {
+      _hourlyPending = true;
+      return;
+    }
+    unawaited(_runExclusive(() => viewModel.refreshCarouselPrograms()));
+  }
 
   /// True once the lineup and its carousel programs are resident, which is
   /// what lets the overlay mount already showing cards.
@@ -108,7 +122,13 @@ class ChannelCarouselPrewarm {
   Future<void> _warm() async {
     if (_disposed || _channels.isEmpty) return;
     final ids = _channels.map((channel) => channel.id).toSet().toList();
-    await _runExclusive(() => _warmPrograms(ids));
+    final wasCold = !isWarm;
+    await _runExclusive(() async {
+      await _warmPrograms(ids);
+      // A recording changed during the first load was ignored, since nothing
+      // was warm yet to refresh.
+      if (wasCold && isWarm) await viewModel.reloadIfRecordingsChanged();
+    });
     if (_disposed) return;
     viewModel.scheduleBoundaryRefresh();
     if (_hourlyDueAt == null) _armHourly();
@@ -229,6 +249,7 @@ class ChannelCarouselPrewarm {
 
   void dispose() {
     _disposed = true;
+    liveTvRecordingRevision.removeListener(_onRecordingsChanged);
     _timer?.cancel();
     _hourlyTimer?.cancel();
     _hourlyTimer = null;
@@ -289,8 +310,8 @@ class _ChannelCarouselOverlayState extends State<ChannelCarouselOverlay>
 
   /// The header is the one place a viewer reads more than a label, so its
   /// three lines are sized for reading at ten feet. A panel paints the canvas
-  /// at about 1.45 pixels to the point, which lands the description near 26
-  /// and the metadata just past 20, and the title keeps a step on both.
+  /// at about 1.67 pixels to the point, which lands the description near 30
+  /// and the metadata near 23, and the title keeps a step on both.
   static const TextStyle _titleStyle = TextStyle(
     color: Colors.white,
     fontSize: AppTypography.fontSizeXl,
@@ -694,6 +715,10 @@ class _ChannelCarouselOverlayState extends State<ChannelCarouselOverlay>
       }
       return KeyEventResult.handled;
     }
+    // The strip only moves sideways. Left unhandled, UP falls through to the
+    // host and then to directional traversal, which pulls focus off the strip
+    // so LEFT, RIGHT and OK stop reaching it and only back gets out.
+    if (event.logicalKey.isUpKey) return KeyEventResult.handled;
     return KeyEventResult.ignored;
   }
 
@@ -752,7 +777,8 @@ class _ChannelCarouselOverlayState extends State<ChannelCarouselOverlay>
       genre: program == null ? null : epgGenreFor(program),
       isLive: program != null,
       progress: program?.progressAt(now) ?? 0,
-      hasTimer: program?.hasTimer == true || program?.hasSeriesTimer == true,
+      hasTimer: program?.hasTimer == true,
+      hasSeriesTimer: program?.hasSeriesTimer == true,
       programLoading:
           program == null &&
           _vm.loadStateFor(channel.id) != GuideChannelLoadState.loaded,
@@ -847,7 +873,7 @@ class _ChannelCarouselOverlayState extends State<ChannelCarouselOverlay>
               text: overview,
               maxLines: _overviewLines,
               style: _overviewStyle,
-              millisPerPixel: kLiveTvDescriptionMarqueeMillisPerPixel,
+              millisPerPixel: kChannelCarouselDescriptionMarqueeMillisPerPixel,
               pauseDurationMs: 1600,
               showDotSeparator: false,
             ),

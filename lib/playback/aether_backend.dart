@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:playback_core/playback_core.dart';
 
+import '../data/services/client_certificate_service.dart';
 import '../data/services/log_service.dart';
 import '../preference/preference_constants.dart';
 import '../preference/user_preferences.dart';
@@ -16,6 +17,7 @@ import 'dolby_vision_av1.dart';
 import 'engine_trust.dart';
 import 'known_defects.dart';
 import 'letterbox_croppers.dart';
+import 'lossless_audio_bridge.dart';
 import 'server_transcode_capabilities.dart';
 
 /// Playback backend driving the native AetherEngine wrapper over a method
@@ -23,7 +25,7 @@ import 'server_transcode_capabilities.dart';
 /// music, audiobooks and offline playback. Unlike the tvOS sibling there is
 /// no native player UI: Flutter owns the OSD and the video arrives through
 /// the `moonfin/aether_video` platform view.
-class AetherBackend implements PlayerBackend {
+class AetherBackend implements PlayerBackend, SubtitleLoadingBackend {
   AetherBackend(this._prefs) {
     _eventSub = _events.receiveBroadcastStream().listen(
       _handleEvent,
@@ -46,8 +48,11 @@ class AetherBackend implements PlayerBackend {
   Duration _position = Duration.zero;
   Duration _duration = Duration.zero;
   Duration _buffer = Duration.zero;
+  LiveSeekWindow? _liveSeekWindow;
   bool _isPlaying = false;
   bool _isBuffering = false;
+  bool _isSubtitleLoading = false;
+  final _subtitleLoadingStream = StreamController<bool>.broadcast();
   double _playbackSpeed = 1.0;
   double _volume = 100.0;
   double _audioDelaySeconds = 0.0;
@@ -56,6 +61,7 @@ class AetherBackend implements PlayerBackend {
   int _textTrackCount = 0;
   bool _tracksKnown = false;
   int? _activeSubtitleTrackIndex;
+  Map<String, dynamic>? _pendingEmbeddedSubtitle;
   Completer<void>? _tracksReadyCompleter;
   List<EmbeddedCaptionTrack> _embeddedCaptionTracks = const [];
   final _tracksChangedController = StreamController<void>.broadcast();
@@ -81,9 +87,35 @@ class AetherBackend implements PlayerBackend {
   final _bufferingStream = StreamController<bool>.broadcast();
   final _completedStream = StreamController<bool>.broadcast();
   final _errorStream = StreamController<Map<String, dynamic>>.broadcast();
+  final _remoteCommandStream =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final _systemVolumeStream = StreamController<double>.broadcast();
 
   @override
   Stream<Map<String, dynamic>> get errorStream => _errorStream.stream;
+
+  /// Transport presses from the system controls while music plays on the
+  /// engine's own Now Playing session, which audio_service never sees.
+  Stream<Map<String, dynamic>> get remoteCommandStream =>
+      _remoteCommandStream.stream;
+
+  /// iOS device volume changes, read without touching the audio session.
+  Stream<double> get systemVolumeStream => _systemVolumeStream.stream;
+
+  /// Fills that session in. iOS shows it in place of the audio_service entry
+  /// while music plays, so without this the card has no title or artwork.
+  Future<void> setNowPlaying({
+    required String title,
+    required String artist,
+    required String? artworkUrl,
+    required bool hasNext,
+  }) => _invoke<void>('setUiMetadata', {
+    'topTitle': title,
+    'topSubtitle': artist,
+    'logoUrl': artworkUrl ?? '',
+    'hasNext': hasNext,
+    'hasPrevious': true,
+  });
 
   Future<T?> _invoke<T>(String method, [dynamic arguments]) async {
     if (_disposed) return null;
@@ -92,6 +124,18 @@ class AetherBackend implements PlayerBackend {
     } catch (_) {
       return null;
     }
+  }
+
+  @override
+  bool get isSubtitleLoading => _isSubtitleLoading;
+
+  @override
+  Stream<bool> get subtitleLoadingStream => _subtitleLoadingStream.stream;
+
+  void _setSubtitleLoading(bool loading) {
+    if (_disposed || _isSubtitleLoading == loading) return;
+    _isSubtitleLoading = loading;
+    _subtitleLoadingStream.add(loading);
   }
 
   void _handleEvent(dynamic event) {
@@ -104,8 +148,15 @@ class AetherBackend implements PlayerBackend {
         _position = Duration(milliseconds: _toInt(map['positionMs']));
         _duration = Duration(milliseconds: _toInt(map['durationMs']));
         _buffer = Duration(milliseconds: _toInt(map['bufferedMs']));
+        _liveSeekWindow = map['liveEdgeMs'] == null
+            ? null
+            : LiveSeekWindow(
+                start: Duration(milliseconds: _toInt(map['liveWindowStartMs'])),
+                edge: Duration(milliseconds: _toInt(map['liveEdgeMs'])),
+              );
         _isPlaying = _toBool(map['isPlaying']);
         _isBuffering = _toBool(map['isBuffering']);
+        _setSubtitleLoading(_toBool(map['isSubtitleLoading']));
         if (_isPlaying) _stallSawPlayback = true;
 
         _positionStream.add(_position);
@@ -116,6 +167,7 @@ class AetherBackend implements PlayerBackend {
       case 'tracksChanged':
         _tracksKnown = true;
         _textTrackCount = _toInt(map['textTrackCount']);
+        _applyPendingEmbeddedSubtitle();
         _embeddedCaptionTracks = EmbeddedCaptionTrack.listFromWire(
           map['closedCaptionTracks'],
         );
@@ -131,10 +183,20 @@ class AetherBackend implements PlayerBackend {
         _completedStream.add(_completed);
       case 'engineLog':
         _logEngineLine(map['line']);
+      case 'play':
+      case 'pause':
+      case 'seek':
+      case 'next':
+      case 'previous':
+        _remoteCommandStream.add(map.cast<String, dynamic>());
+      case 'systemVolume':
+        final volume = map['value'];
+        if (volume is num) _systemVolumeStream.add(volume.toDouble());
       case 'playerError':
       case 'error':
         _logPlaybackError(map);
         _errorStream.add(map.cast<String, dynamic>());
+        _setSubtitleLoading(false);
         _isPlaying = false;
         _isBuffering = false;
         _completed = false;
@@ -221,19 +283,35 @@ class AetherBackend implements PlayerBackend {
         : <String, String>{};
 
     _completed = false;
+    // Until the new session ticks, the previous item's end would stand in
+    // for this one's position, and a stop then reports it as watched.
+    _position = startPosition;
+    _positionStream.add(_position);
+    _setSubtitleLoading(false);
     _tracksKnown = false;
     _textTrackCount = 0;
     _activeSubtitleTrackIndex = null;
+    _pendingEmbeddedSubtitle = null;
     _tracksReadyCompleter = null;
     _embeddedCaptionTracks = const [];
     _startStallWatchdog();
 
+    await _invoke<void>('setClientCertificates', {
+      'certificates': nativeClientCertificates(pkcs12: true),
+    });
+
+    _liveSeekWindow = null;
     await _invoke<void>('setSource', {
       'url': url,
       'headers': headers,
       'autoPlay': autoPlay,
       'startPositionMs': startPosition.inMilliseconds,
       'audioStreamIndex': (payload['audioStreamIndex'] as num?)?.toInt() ?? -1,
+      'audioBridgeLossless': usesLosslessAudioBridge(
+        _prefs.detectedAudioCapabilities,
+        maxAudioChannels: _prefs.resolveMaxAudioChannels(),
+        downmixToStereo: _prefs.get(UserPreferences.downmixToStereo),
+      ),
       'isLive': payload['isLive'] == true,
       'mediaType': payload['mediaType']?.toString() ?? 'video',
       'normalizationGainDb':
@@ -257,8 +335,20 @@ class AetherBackend implements PlayerBackend {
     await _invoke<void>('pause');
   }
 
+  // Implements rather than extends, so the interface default is not inherited.
+  @override
+  bool? get playWhenReady => null;
+
+  // No way to re-open a live source in place, so the manager escalates.
+  @override
+  Future<bool> resumeLiveEdge() async => false;
+
+  @override
+  LiveSeekWindow? get liveSeekWindow => _liveSeekWindow;
+
   @override
   Future<void> stop() async {
+    _pendingEmbeddedSubtitle = null;
     await _invoke<void>('stop');
     _stopStallWatchdog();
     if (_isPlaying) {
@@ -271,6 +361,7 @@ class AetherBackend implements PlayerBackend {
       _isBuffering = false;
       _bufferingStream.add(false);
     }
+    _setSubtitleLoading(false);
   }
 
   void _startStallWatchdog() {
@@ -355,12 +446,6 @@ class AetherBackend implements PlayerBackend {
   Stream<bool> get bufferingStream => _bufferingStream.stream;
 
   @override
-  double get subtitleAutoOffsetSeconds => 0.0;
-
-  @override
-  Stream<double>? get subtitleAutoOffsetStream => null;
-
-  @override
   Stream<bool> get completedStream => _completedStream.stream;
 
   @override
@@ -375,15 +460,19 @@ class AetherBackend implements PlayerBackend {
       maxBitrateMbps: maxBitrate,
       audioCapabilityProfile: audioCapabilityProfile,
       audioFallbackCodec: _prefs.resolveAudioFallbackCodec(),
+      transcodeAudioCodecs: _prefs.resolveTranscodeAudioCodecs(),
       ac3PassthroughEnabled: _prefs.resolveAc3PassthroughEnabled(),
       eac3PassthroughEnabled: _prefs.resolveEac3PassthroughEnabled(),
       dtsCorePassthroughEnabled: _prefs.resolveDtsCorePassthroughEnabled(),
       trueHdPassthroughEnabled: _prefs.resolveTrueHdPassthroughEnabled(),
       downmixToStereo: _prefs.get(UserPreferences.downmixToStereo),
+      maxAudioChannels: _prefs.resolveMaxAudioChannels(),
       // AetherEngine plays every advertised audio codec: AAC/AC3/EAC3(+JOC
       // Atmos)/FLAC/ALAC are stream-copied intact, and TrueHD/DTS/MP3/Opus/
       // Vorbis/PCM are bridged to EAC3 or FLAC on-device.
       universalAudioDecode: true,
+      appliesDownmixToStereo: false,
+      bridgesAudioToEac3: true,
       maxResolution: maxResolution,
       pgsDirectPlay: _prefs.get(UserPreferences.pgsDirectPlay),
       assDirectPlay: _prefs.get(UserPreferences.assDirectPlay),
@@ -391,6 +480,7 @@ class AetherBackend implements PlayerBackend {
       supportsAvcHigh10: PlatformDetection.supportsAvcHigh10,
       avcMainLevel: PlatformDetection.avcMainLevel,
       avcHigh10Level: PlatformDetection.avcHigh10Level,
+      capsAvcRefFrames: false,
       supportsHevc: PlatformDetection.supportsHevc,
       supportsHevcMain10: PlatformDetection.supportsHevcMain10,
       transcodeHevcAllowed: serverAllowsHevcTranscode(),
@@ -454,27 +544,61 @@ class AetherBackend implements PlayerBackend {
     bool isExternalSubtitle = false,
     String? externalSubtitleUrl,
   }) async {
+    _pendingEmbeddedSubtitle = null;
     _activeSubtitleTrackIndex = index;
     _log(
       'setSubtitleTrack index=$index external=$isExternalSubtitle '
       'bitmap=$isBitmapSubtitle codec=${subtitleCodec ?? 'none'} '
       'url=${externalSubtitleUrl == null ? 'none' : loggableUrl(externalSubtitleUrl)}',
     );
-    await _invoke<void>('setSubtitleTrack', {
+    final arguments = <String, dynamic>{
       'index': index,
       'isBitmapSubtitle': isBitmapSubtitle,
       'codec': subtitleCodec,
       'isExternalSubtitle': isExternalSubtitle,
       'externalSubtitleUrl': externalSubtitleUrl,
-    });
+    };
+    // Native track discovery can announce zero subtitles before demux ends.
+    // Keep the choice until its ordinal exists instead of losing it in Swift.
+    if (!isExternalSubtitle && index > _textTrackCount) {
+      _pendingEmbeddedSubtitle = arguments;
+      return;
+    }
+    await _invoke<void>('setSubtitleTrack', arguments);
+  }
+
+  void _applyPendingEmbeddedSubtitle() {
+    final pending = _pendingEmbeddedSubtitle;
+    if (_disposed ||
+        pending == null ||
+        (pending['index'] as int) > _textTrackCount) {
+      return;
+    }
+    // Consume before dispatch so repeated track events cannot reselect it.
+    _pendingEmbeddedSubtitle = null;
+    unawaited(_invoke<void>('setSubtitleTrack', pending));
   }
 
   @override
   Future<void> disableSubtitleTrack() async {
+    _pendingEmbeddedSubtitle = null;
     _activeSubtitleTrackIndex = -1;
     _log('disableSubtitleTrack');
     await _invoke<void>('disableSubtitleTrack');
   }
+
+  @override
+  Future<void> setSecondarySubtitle({String? url, String? codec}) async {}
+
+  @override
+  Future<void> setSecondarySubtitleDelay(double seconds) async {}
+
+  @override
+  Future<void> configureSecondarySubtitleStyle({
+    double? fontSize,
+    double? verticalOffset,
+    int? textColor,
+  }) async {}
 
   @override
   int? get activeSubtitleTrackIndex => _activeSubtitleTrackIndex;
@@ -611,6 +735,9 @@ class AetherBackend implements PlayerBackend {
   @override
   bool get demuxesEmbeddedSubtitles => true;
 
+  @override
+  bool get decodesHevcOnlyFromOriginalFile => false;
+
   // Same engine as the Apple TV backend, so a seek costs the same reopen.
   // Provisional pending a trace of its own.
   @override
@@ -630,6 +757,7 @@ class AetherBackend implements PlayerBackend {
 
   @override
   Future<void> setEmbeddedCaptionTrack(int id) async {
+    _pendingEmbeddedSubtitle = null;
     await _invoke<void>('setClosedCaptionTrack', {'id': id});
   }
 
@@ -638,6 +766,7 @@ class AetherBackend implements PlayerBackend {
 
   @override
   void dispose() {
+    _pendingEmbeddedSubtitle = null;
     _disposed = true;
     _prefs.removeListener(_syncAllowUntrustedTls);
     _prefs.removeListener(_syncEngineLogForwarding);
@@ -651,6 +780,9 @@ class AetherBackend implements PlayerBackend {
     _bufferingStream.close();
     _completedStream.close();
     _errorStream.close();
+    _remoteCommandStream.close();
+    _systemVolumeStream.close();
     _tracksChangedController.close();
+    _subtitleLoadingStream.close();
   }
 }

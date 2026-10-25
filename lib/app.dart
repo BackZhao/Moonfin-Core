@@ -15,9 +15,12 @@ import 'package:playback_core/playback_core.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'auth/repositories/session_repository.dart';
+import 'data/models/achievement_models.dart';
 import 'data/models/aggregated_item.dart';
+import 'data/services/achievements_service.dart';
 import 'data/services/cast/cast_service.dart';
 import 'data/services/connectivity_service.dart';
+import 'data/services/remove_watched_service.dart';
 import 'data/services/download_service.dart';
 import 'data/services/seerr_notification_service.dart';
 import 'data/services/plugin_sync_service.dart';
@@ -33,6 +36,7 @@ import 'preference/preference_constants.dart' show GlassSettledQuality;
 import 'preference/user_preferences.dart';
 import 'syncplay/syncplay_manager.dart';
 import 'ui/navigation/app_router.dart';
+import 'ui/navigation/deferred_route_pop.dart';
 import 'ui/navigation/deep_link_navigator.dart';
 import 'ui/navigation/destinations.dart';
 import 'ui/navigation/home_refresh_bus.dart';
@@ -40,12 +44,18 @@ import 'ui/theme/app_theme.dart';
 import 'ui/theme/app_theme_controller.dart';
 import 'ui/widgets/app_update_banner.dart';
 import 'ui/widgets/cast_mini_player.dart';
+import 'ui/widgets/video_mini_player.dart';
+import 'ui/screens/settings/achievements_screen.dart';
+import 'ui/widgets/floating_notification.dart';
 import 'ui/widgets/offline_banner.dart';
+import 'ui/widgets/times_up_gate.dart';
+import 'ui/widgets/settings/settings_panel.dart';
 import 'ui/widgets/server_messages_dialog.dart';
 import 'ui/widgets/exit_confirmation_dialog.dart';
 import 'ui/widgets/keyboard_shortcuts/keyboard_shortcut_reference.dart';
 import 'ui/screensaver/screensaver_controller.dart';
 import 'ui/screensaver/screensaver_host.dart';
+import 'util/achievement_icons.dart';
 import 'util/app_exit.dart';
 import 'util/focus/dpad_keys.dart';
 import 'util/focus/siri_remote_glide.dart';
@@ -60,6 +70,7 @@ import 'ui/widgets/overlay_sheet.dart';
 import 'package:moonfin_design/moonfin_design.dart';
 import 'util/focus/key_event_utils.dart';
 import 'util/focus/gamepad/gamepad_navigation_scope.dart';
+import 'util/focus/gamepad/gamepad_key_synthesizer.dart';
 import 'util/focus/open_popup.dart';
 import 'package:custom_tv_text_field/custom_tv_text_field.dart';
 
@@ -259,10 +270,7 @@ class _MoonfinAppState extends State<MoonfinApp> {
                 final hidePlayer =
                     path.startsWith('/player/') ||
                     path == '/live-tv/player' ||
-                    path == '/' ||
-                    path == '/server-select' ||
-                    path == '/server' ||
-                    path == '/login';
+                    Destinations.isSignedOutRoute(path);
 
                 final overlay = Overlay(
                   initialEntries: [
@@ -291,6 +299,7 @@ class _MoonfinAppState extends State<MoonfinApp> {
                             ),
                             if (!hidePlayer)
                               const RepaintBoundary(child: CastMiniPlayer()),
+                            if (!hidePlayer) const VideoMiniPlayer(),
                           ],
                         );
                         final glass = AppColorScheme.isGlass;
@@ -303,14 +312,20 @@ class _MoonfinAppState extends State<MoonfinApp> {
                           fit: StackFit.expand,
                           children: [
                             Positioned.fill(
-                              child: glass
-                                  ? GlassBackdrop(
-                                      animated: GlassSettings.animatedBackdrop,
-                                    )
-                                  : const SizedBox.shrink(),
+                              child: VideoMiniPlayerHoleClip(
+                                child: glass
+                                    ? GlassBackdrop(
+                                        animated:
+                                            GlassSettings.animatedBackdrop,
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
                             ),
-                            shell,
+                            TimesUpFocusGuard(child: shell),
                             if (PlatformDetection.isTV) const ScreensaverHost(),
+                            // Last, so nothing sits above it and nothing can be
+                            // reached through it while the schedule is closed.
+                            const TimesUpGate(),
                           ],
                         );
                         if (GlassSettings.usePackageRenderer) {
@@ -527,6 +542,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
   }
 
   bool _handleMouseBackNavigation() {
+    if (TimesUpGate.isShowing()) return true;
     if (_isPlayerRoute()) {
       return false;
     }
@@ -546,6 +562,8 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
       return true;
     }
 
+    if (_leaveAdminArea()) return true;
+
     if (!_exitDialogShowing) {
       _exitDialogShowing = true;
       unawaited(_showExitConfirmation());
@@ -553,6 +571,16 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
     }
 
     return false;
+  }
+
+  /// The admin area's group tabs replace the router's stack, so its top level
+  /// pages have nothing under them. Back there leaves the area for home
+  /// instead of offering to close the app.
+  bool _leaveAdminArea() {
+    final path = appRouter.routerDelegate.currentConfiguration.uri.path;
+    if (!path.startsWith(Destinations.admin)) return false;
+    appRouter.go(Destinations.home);
+    return true;
   }
 
   bool _handleMouseForwardNavigation() {
@@ -612,6 +640,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
 
   @override
   Future<bool> didPopRoute() async {
+    if (TimesUpGate.isShowing()) return true;
     if (PlatformDetection.isTV && _screensaverController.dismissIfVisible()) {
       return true;
     }
@@ -627,7 +656,7 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
       return true;
     }
     if (!appRouter.canPop()) {
-      if (!_exitDialogShowing) {
+      if (!_leaveAdminArea() && !_exitDialogShowing) {
         _exitDialogShowing = true;
         unawaited(_showExitConfirmation());
       }
@@ -693,6 +722,11 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
   }
 
   bool _onHardwareKeyEvent(KeyEvent event) {
+    // This runs before anything can mark the press, so it only clears a mark
+    // an earlier press left behind.
+    if (event is KeyDownEvent && event.logicalKey.isBackKey) {
+      DialogBackSuppressor.newBackPress();
+    }
     if (PlatformDetection.isTV &&
         _screensaverController.handleKeyEvent(event)) {
       return true;
@@ -709,6 +743,9 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
 
     final isBackspace = key == LogicalKeyboardKey.backspace;
     if (key.isBackKey) {
+      // Nothing to go back to while the schedule is closed.
+      if (TimesUpGate.isShowing()) return true;
+      final fromRemote = GamepadKeySynthesizer.isRemote(event.physicalKey);
       if (isBackspace && _isEditingText()) {
         return false;
       }
@@ -720,6 +757,13 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
         if (PlatformDetection.isAndroid && key == LogicalKeyboardKey.goBack) {
           DialogBackSuppressor.markDismissed();
         }
+        return true;
+      }
+      // Dismiss a receiving phone's keyboard before leaving its page.
+      if (fromRemote &&
+          _isEditingText() &&
+          View.of(context).viewInsets.bottom > 0) {
+        FocusManager.instance.primaryFocus?.unfocus();
         return true;
       }
       if (OverlaySheetController.closeTopSheet()) {
@@ -761,14 +805,14 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
         if (PlatformDetection.isAndroid && key == LogicalKeyboardKey.goBack) {
           return true;
         }
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          appRouter.pop();
-        });
+        scheduleRoutePop(appRouter, isMounted: () => mounted);
       } else if (!_exitDialogShowing) {
+        // A server remote only navigates, it can't quit the app it's driving.
+        if (fromRemote) return true;
         if (PlatformDetection.isAndroid && key == LogicalKeyboardKey.goBack) {
           return true;
         }
+        if (_leaveAdminArea()) return true;
         _exitDialogShowing = true;
         unawaited(_showExitConfirmation());
       }
@@ -919,11 +963,10 @@ class _GlobalShortcutScopeState extends State<_GlobalShortcutScope>
 
   @override
   void onWindowEvent(String eventName) {
-    if (eventName == 'maximize') {
-      _isMaximized = true;
-    } else if (eventName == 'unmaximize') {
-      _isMaximized = false;
-    }
+    _isMaximized = FullscreenHelper.maximizedAfterWindowEvent(
+      eventName,
+      _isMaximized,
+    );
     if (eventName == 'move' ||
         eventName == 'resize' ||
         eventName == 'moved' ||
@@ -1011,6 +1054,9 @@ class _ConnectivityListenerState extends ConsumerState<_ConnectivityListener>
   bool? _wasServerReachable;
   StreamSubscription<SyncPlayUiEvent>? _syncPlayEventsSub;
   StreamSubscription<String>? _downloadErrorSub;
+  StreamSubscription<ChatThread>? _chatMessageSub;
+  StreamSubscription<AchievementUnlocks>? _unlockSub;
+  StreamSubscription<SeerrNotificationEvent>? _seerrNotificationSub;
 
   @override
   void initState() {
@@ -1019,20 +1065,20 @@ class _ConnectivityListenerState extends ConsumerState<_ConnectivityListener>
     ref.read(syncPlayRuntimeCoordinatorProvider);
     final manager = ref.read(syncPlayManagerProvider);
     _syncPlayEventsSub = manager.uiEvents.listen(_handleSyncPlayEvent);
-    if (GetIt.instance.isRegistered<PluginSyncService>()) {
-      if (GetIt.instance.isRegistered<SeerrNotificationService>()) {
-        final notificationService =
-            GetIt.instance<SeerrNotificationService>();
-        GetIt.instance<PluginSyncService>().onSeerrNotification =
-            (title, body, route, {requestId, isRequest = false}) =>
-                notificationService.show(
-                  title,
-                  body,
-                  route,
-                  requestId: requestId,
-                  isRequest: isRequest,
-                );
-      }
+    if (GetIt.instance.isRegistered<PluginSyncService>() &&
+        GetIt.instance.isRegistered<SeerrNotificationService>()) {
+      final notificationService = GetIt.instance<SeerrNotificationService>();
+      _seerrNotificationSub = GetIt.instance<PluginSyncService>()
+          .seerrNotifications
+          .listen(
+            (event) => notificationService.show(
+              event.title,
+              event.body,
+              event.route,
+              requestId: event.requestId,
+              isRequest: event.isRequest,
+            ),
+          );
     }
     if (GetIt.instance.isRegistered<ServerMessagesService>()) {
       GetIt.instance<ServerMessagesService>().addListener(
@@ -1044,6 +1090,13 @@ class _ConnectivityListenerState extends ConsumerState<_ConnectivityListener>
         _handleDownloadError,
       );
     }
+    if (GetIt.instance.isRegistered<AchievementsService>()) {
+      final achievements = GetIt.instance<AchievementsService>();
+      _chatMessageSub = achievements.incomingMessages.listen(
+        _handleIncomingChat,
+      );
+      _unlockSub = achievements.unlocks.listen(_handleUnlocks);
+    }
   }
 
   @override
@@ -1051,9 +1104,9 @@ class _ConnectivityListenerState extends ConsumerState<_ConnectivityListener>
     WidgetsBinding.instance.removeObserver(this);
     _syncPlayEventsSub?.cancel();
     _downloadErrorSub?.cancel();
-    if (GetIt.instance.isRegistered<PluginSyncService>()) {
-      GetIt.instance<PluginSyncService>().onSeerrNotification = null;
-    }
+    _chatMessageSub?.cancel();
+    _unlockSub?.cancel();
+    _seerrNotificationSub?.cancel();
     if (GetIt.instance.isRegistered<ServerMessagesService>()) {
       GetIt.instance<ServerMessagesService>().removeListener(
         _handleServerMessagesChanged,
@@ -1075,6 +1128,11 @@ class _ConnectivityListenerState extends ConsumerState<_ConnectivityListener>
       _backgroundAwareSession?.onAppResumed();
       if (GetIt.instance.isRegistered<ConnectivityService>()) {
         GetIt.instance<ConnectivityService>().onAppResumed();
+      }
+      if (GetIt.instance.isRegistered<RemoveWatchedService>()) {
+        unawaited(
+          GetIt.instance<RemoveWatchedService>().runForSignedInServer(),
+        );
       }
     }
   }
@@ -1136,6 +1194,78 @@ class _ConnectivityListenerState extends ConsumerState<_ConnectivityListener>
         behavior: SnackBarBehavior.floating,
       ),
     );
+  }
+
+  bool _onPlayerRoute() {
+    final matches = appRouter.routerDelegate.currentConfiguration.matches;
+    final path = matches.isEmpty ? '' : matches.last.matchedLocation;
+    return Destinations.isPlayerRoute(path);
+  }
+
+  /// A banner for a chat message from a friend. Tapping it opens the chat.
+  void _handleIncomingChat(ChatThread thread) {
+    if (GetIt.instance<UserPreferences>().get(
+          UserPreferences.muteChatBannersDuringPlayback,
+        ) &&
+        _onPlayerRoute()) {
+      return;
+    }
+    final navContext = _navigatorContext();
+    if (navContext == null) return;
+    final l10n = AppLocalizations.of(navContext);
+    FloatingNotification.show(
+      navContext,
+      l10n.chatNewMessageFrom(thread.name),
+      thread.lastIsPhoto ? l10n.chatPhoto : thread.lastMessage,
+      () => SettingsPanel.open(navContext, FriendChatScreen.forThread(thread)),
+    );
+  }
+
+  /// Banners for badges the user just unlocked. The plugin's grouping setting
+  /// decides between one banner for the lot and one each, shown in turn so
+  /// they don't stack. Tapping one opens the achievements.
+  void _handleUnlocks(AchievementUnlocks unlocks) {
+    if (unlocks.muteDuringPlayback && _onPlayerRoute()) return;
+    final navContext = _navigatorContext();
+    if (navContext == null) return;
+    final l10n = AppLocalizations.of(navContext);
+    final badges = unlocks.badges;
+
+    void show(String title, String body, IconData icon) {
+      final context = _navigatorContext();
+      if (context == null) return;
+      FloatingNotification.show(
+        context,
+        title,
+        body,
+        () => SettingsPanel.open(context, const AchievementsScreen()),
+        icon: icon,
+      );
+    }
+
+    if (unlocks.grouped && badges.length > 1) {
+      final top = badges.reduce((a, b) => b.score > a.score ? b : a);
+      final names = badges.take(3).map((b) => b.title).join(', ');
+      show(
+        l10n.achievementsUnlockedCount(badges.length),
+        badges.length > 3
+            ? '$names ${l10n.achievementsUnlockedMore(badges.length - 3)}'
+            : names,
+        achievementIcon(top.icon),
+      );
+      return;
+    }
+    for (var i = 0; i < badges.length; i++) {
+      final badge = badges[i];
+      Future<void>.delayed(
+        FloatingNotification.displayDuration * i,
+        () => show(
+          l10n.achievementsUnlockedNotification,
+          badge.title,
+          achievementIcon(badge.icon),
+        ),
+      );
+    }
   }
 
   BuildContext? _navigatorContext() {

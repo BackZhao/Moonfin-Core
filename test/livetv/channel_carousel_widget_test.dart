@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:moonfin/data/models/live_tv_recording_state.dart';
 import 'package:moonfin/data/viewmodels/live_tv_guide_view_model.dart';
 import 'package:moonfin/ui/theme/app_theme.dart';
 import 'package:moonfin/ui/widgets/live_tv/channel_carousel.dart';
@@ -65,6 +66,8 @@ class _CarouselGuide extends LiveTvGuideViewModel {
     DateTime? windowStart,
     bool livePosition = true,
   }) async {
+    _loadedRevision = liveTvRecordingRevision.value;
+    duringLoad?.call();
     ready = true;
     requests.add(initialChannelIds!);
     notifyListeners();
@@ -79,6 +82,16 @@ class _CarouselGuide extends LiveTvGuideViewModel {
   Future<void> refreshCarouselPrograms() async {
     refreshCalls++;
     notifyListeners();
+  }
+
+  /// Runs inside [load] before the guide turns ready.
+  void Function()? duringLoad;
+  int recordingCatchUps = 0;
+  int _loadedRevision = 0;
+
+  @override
+  Future<void> reloadIfRecordingsChanged() async {
+    if (liveTvRecordingRevision.value != _loadedRevision) recordingCatchUps++;
   }
 
   @override
@@ -371,6 +384,36 @@ void main() {
     prewarm.dispose();
   });
 
+  testWidgets('prewarm catches up on a recording changed during its first load', (
+    tester,
+  ) async {
+    final client = _CarouselClient();
+    final channels = List.generate(
+      4,
+      (i) => GuideChannel(
+        id: 'ch$i',
+        name: 'Channel $i',
+        number: '${i + 1}',
+        rawData: const {},
+      ),
+    );
+    final vm = _CarouselGuide(client, channels)
+      ..duringLoad = notifyLiveTvRecordingsChanged;
+    final prewarm = ChannelCarouselPrewarm(
+      client,
+      viewModelFactory: (_) => vm,
+      now: () => DateTime(2026, 9, 13, 18),
+    );
+
+    prewarm.tuned(channels, 'ch1');
+    await tester.pump(ChannelCarouselPrewarm.settleDelay);
+    await tester.pump();
+
+    expect(vm.refreshCalls, 0);
+    expect(vm.recordingCatchUps, 1);
+    prewarm.dispose();
+  });
+
   testWidgets('prewarm refreshes hourly and catches a missed resume', (
     tester,
   ) async {
@@ -646,6 +689,70 @@ void main() {
       await tester.pumpWidget(const SizedBox.shrink());
     },
   );
+
+  testWidgets('UP keeps focus on the strip instead of traversing away', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1000, 600));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final above = FocusNode(debugLabel: 'above');
+    addTearDown(above.dispose);
+    final client = _CarouselClient();
+    final channels = List.generate(
+      20,
+      (i) => GuideChannel(
+        id: 'ch$i',
+        name: 'Channel $i',
+        number: '${i + 1}',
+        rawData: const {},
+      ),
+    );
+    final vm = _CarouselGuide(client, channels);
+    var dismissals = 0;
+    var controls = 0;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.buildTheme(ThemeRegistry.active),
+        home: Scaffold(
+          body: Stack(
+            children: [
+              // Something focusable above the strip, as the player always has.
+              Align(
+                alignment: Alignment.topCenter,
+                child: Focus(
+                  focusNode: above,
+                  child: const SizedBox(width: 100, height: 40),
+                ),
+              ),
+              ChannelCarouselOverlay(
+                client: client,
+                channels: channels,
+                currentChannelId: 'ch10',
+                onChannelSelected: (_) {},
+                onDismiss: () => dismissals++,
+                onShowControls: () => controls++,
+                viewModelFactory: (_) => vm,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+    expect(FocusManager.instance.primaryFocus?.debugLabel, 'ChannelCarousel');
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
+    await tester.pump();
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
+    await tester.pump();
+
+    expect(above.hasFocus, isFalse);
+    expect(FocusManager.instance.primaryFocus?.debugLabel, 'ChannelCarousel');
+    expect(dismissals, 0);
+    expect(controls, 0);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
 
   /// Pumps the strip and returns the list of centred channel indices, in the
   /// order the widget reported them.

@@ -80,6 +80,7 @@ class _AudioPreferencesScreenState extends State<_AudioPreferencesScreen> {
     final transcodeCodecs = DeviceProfileBuilder.transcodeTargetAudioCodecs(
       fallbackCodec: _prefs.get(UserPreferences.audioFallbackCodec),
       forAvFoundation: PlatformDetection.isApple || PlatformDetection.isAppleTV,
+      transcodeAudioCodecs: _prefs.resolveTranscodeAudioCodecs(),
     ).map((codec) => codec == 'opus' ? 'Opus' : codec.toUpperCase());
 
     return <Widget>[
@@ -224,33 +225,15 @@ class _AudioPreferencesScreenState extends State<_AudioPreferencesScreen> {
         AudioPassthroughMode.manual;
     final capabilities = _audioCapabilityProfile;
 
-    final iso3ToIso1 = {
-      for (final entry in kIso6391To6392.entries) entry.value: entry.key,
+    final languages = supportedLanguageOptions;
+    final defaultAudioLangOptions = {
+      'auto': l10n.autoServerDefault,
+      ...languages,
     };
-
-    final supportedIso3Codes = AppLocalizations.supportedLocales.map((locale) {
-      final lang1 = locale.languageCode;
-      return kIso6391To6392[lang1] ?? lang1;
-    }).toSet();
-
-    final defaultAudioLangOptions = {'auto': l10n.autoServerDefault};
-    final fallbackAudioLangOptions = {'': l10n.none};
-
-    for (final entry in kIso6392Languages.entries) {
-      final code = entry.key;
-      if (!supportedIso3Codes.contains(code)) {
-        continue;
-      }
-      final englishName = entry.value;
-      final iso1 = iso3ToIso1[code];
-      final displayName =
-          (iso1 != null ? kLocaleDisplayNames[iso1] : null) ?? englishName;
-      defaultAudioLangOptions[code] = displayName;
-      fallbackAudioLangOptions[code] = displayName;
-    }
+    final fallbackAudioLangOptions = {'': l10n.none, ...languages};
 
     return Scaffold(
-      appBar: buildSettingsAppBar(context, Text(l10n.settingsAudioPreferences)),
+      appBar: buildSettingsAppBar(context, Text(l10n.audio)),
       body: ListView(
         children: [
           _SectionHeader(l10n.mediaPlayerBehavior),
@@ -447,6 +430,14 @@ class _AudioPreferencesScreenState extends State<_AudioPreferencesScreen> {
                   dialogLabelOf: (v) => v == AudioFallbackCodec.auto
                       ? l10n.settingsAudioFallbackCodecAuto
                       : _fallbackCodecLabel(l10n, v),
+                ),
+                MultiSelectPreferenceTile(
+                  preference: UserPreferences.transcodeAudioCodecs,
+                  title: l10n.transcodeAudioCodecs,
+                  description: l10n.transcodeAudioCodecsDescription,
+                  icon: Icons.transform,
+                  options: DeviceProfileBuilder.transcodableAudioCodecs,
+                  emptyLabel: l10n.none,
                 ),
               ],
             ),

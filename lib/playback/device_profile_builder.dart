@@ -60,6 +60,41 @@ class DeviceProfileBuilder {
     'vorbis',
   ];
 
+  /// The codecs a user can send to the server for conversion, keyed by the
+  /// name [build] takes. Each one covers every label the profile gives it.
+  static const Map<String, String> transcodableAudioCodecs = <String, String>{
+    'aac': 'AAC',
+    'ac3': 'AC3',
+    'eac3': 'EAC3',
+    'dts': 'DTS',
+    'truehd': 'TrueHD',
+    'flac': 'FLAC',
+    'alac': 'ALAC',
+    'mp3': 'MP3',
+    'mp2': 'MP2',
+    'opus': 'Opus',
+    'vorbis': 'Vorbis',
+    'pcm': 'PCM',
+  };
+
+  static String _transcodableAudioCodecOf(String codec) => switch (codec) {
+    'aac_latm' => 'aac',
+    'dca' => 'dts',
+    'mlp' => 'truehd',
+    _ when codec.startsWith('pcm_') => 'pcm',
+    _ => codec,
+  };
+
+  static List<String> _withoutTranscodedAudio(
+    List<String> codecs,
+    Set<String> transcodeAudioCodecs,
+  ) => codecs
+      .where(
+        (codec) =>
+            !transcodeAudioCodecs.contains(_transcodableAudioCodecOf(codec)),
+      )
+      .toList(growable: false);
+
   // What each HLS container can carry. A video transcode advertises every one
   // of these it also direct plays, so the server copies the audio stream and
   // only re-encodes a source codec that isn't listed. TrueHD and MLP are the
@@ -112,8 +147,10 @@ class DeviceProfileBuilder {
     'wma',
   ];
 
+  // Emby names a live channel's container mpegts and matches names exactly,
+  // so ts alone never lets it direct play one.
   static const String defaultDirectPlayVideoContainers =
-      'asf,dash,hls,m4v,mkv,mov,mp4,ogm,ogv,ts,vob,webm,wmv,xvid';
+      'asf,dash,hls,m4v,mkv,mov,mp4,mpegts,ogm,ogv,ts,vob,webm,wmv,xvid';
 
   static Map<String, dynamic> build({
     int? maxBitrateMbps,
@@ -124,15 +161,25 @@ class DeviceProfileBuilder {
     bool dtsCorePassthroughEnabled = false,
     bool trueHdPassthroughEnabled = false,
     int maxAudioChannels = 0,
-    // Deterministic local stereo downmix. Universal-decode players keep their
-    // full direct-play advertisement and downmix after decoding, so this only
-    // shapes the transcode fallback codec, not what direct plays.
+    // A universal-decode player that downmixes on its own keeps its full
+    // direct-play list, so for it this only changes the transcode fallback
+    // codec.
     bool downmixToStereo = false,
     // The player decodes every advertised audio codec in software (FFmpeg),
     // so nothing about the output route can force a server transcode: every
     // codec direct plays and the player decodes, bitstreams or downmixes it
     // locally. Detection never subtracts from the advertised list.
     bool universalAudioDecode = false,
+    // False for a universal-decode player that can't downmix on its own, so
+    // downmixToStereo gets it the stereo offer and the server sends stereo.
+    bool appliesDownmixToStereo = true,
+    // Codecs the user wants the server to convert in a video, for an output
+    // chain that mishandles one the player decodes fine. Keys of
+    // [transcodableAudioCodecs].
+    Set<String> transcodeAudioCodecs = const {},
+    // The player re-encodes the codecs its container can't carry to EAC3 on
+    // the device, and that encoder won't open above 48 kHz.
+    bool bridgesAudioToEac3 = false,
     bool playerDecodesTrueHd = true,
     // Whether the player can decode a stereo TrueHD track. One that can't asks
     // the server for surround TrueHD only, so the rest transcodes instead of
@@ -143,22 +190,31 @@ class DeviceProfileBuilder {
     bool assDirectPlay = true,
     bool supportsEmbeddedSubtitles = true,
     bool supportsExternalTextSubtitles = true,
+    bool supportsExternalPgsSubtitles = false,
     bool supportsAvc = false,
     bool supportsAvcHigh10 = false,
     int avcMainLevel = 0,
     int avcHigh10Level = 0,
+    // Caps H.264 reference frames by width, for decoders that can't handle
+    // more. Apple players turn it off, since there it only forced 1080p
+    // encodes with more than four into a full video transcode.
+    bool capsAvcRefFrames = true,
     bool supportsHevc = false,
     bool supportsHevcMain10 = false,
     // Offers hevc ahead of h264 as the HLS transcode target. Only set from
     // the probed Jellyfin encoding options so servers that never enabled
-    // HEVC encoding keep receiving an H264-only offer.
+    // HEVC encoding keep encoding H264.
     bool transcodeHevcAllowed = false,
     // Keeps HEVC out of the MPEG-TS transcode offer and lists the fMP4
     // profile first so the server prefers it. The HLS spec only carries HEVC
     // in fMP4, and AVFoundation leaves an HEVC in TS transcode as a black
     // picture with working audio. Servers without fMP4 HLS fall through to
-    // the TS profile and encode H264, which renders.
+    // the TS profile and encode H264, which renders. It also limits HLS copies
+    // to what AVFoundation can decode.
     bool hevcRequiresFmp4Hls = false,
+    // Keeps hevc out of both HLS offers, for a device that only decodes HEVC
+    // from the original file.
+    bool hevcDirectPlayOnly = false,
     // Keeps DTS and MP2 out of both HLS transcode offers, since AVFoundation
     // decodes neither. The server copies a source track straight through
     // whenever its codec is on the offer, so leaving them there hands back a
@@ -276,9 +332,11 @@ class DeviceProfileBuilder {
     final advertisedMaxChannels = maxAudioChannels > 0
         ? maxAudioChannels
         : (universalAudioDecode ? 8 : effectiveMaxChannels);
-    final limitStereoDirectPlay = forceStereo && !universalAudioDecode;
-    // Transcode-target channel cap. A universal-decode player in stereo mode
-    // delivers stereo by downmixing locally, so its transcodes stay uncapped
+    final limitStereoDirectPlay = universalAudioDecode
+        ? downmixToStereo && !appliesDownmixToStereo
+        : forceStereo;
+    // Transcode-target channel cap. A universal-decode player that downmixes
+    // on its own delivers stereo itself, so its transcodes stay uncapped
     // (a video-forced transcode would otherwise collapse to 2ch and
     // contradict the 8ch direct-play advertisement). An explicit user cap of
     // 1-2 channels is a stated intent and stays honored end to end.
@@ -327,11 +385,20 @@ class DeviceProfileBuilder {
         )
         .toSet();
 
+    // Only the video lists lose the user's picks, so music still direct
+    // plays. With a codec off both lists the server re-encodes it and copies
+    // the video.
+    final videoAudioCodecs = _withoutTranscodedAudio(
+      effectiveAllowedAudioCodecs,
+      transcodeAudioCodecs,
+    );
+
     final mpegTsAudioCodecs = _hlsAudioCodecsForFallback(
       effectiveAudioFallbackCodec: effectiveAudioFallbackCodec,
       allowedAudioCodecs: effectiveAllowedAudioCodecs,
       containerAudioCodecs: _hlsMpegTsAudioCodecs,
       forAvFoundation: hlsAudioForAvFoundation,
+      transcodeAudioCodecs: transcodeAudioCodecs,
     );
 
     // Offer HEVC as a transcode target only when the server's encoding options
@@ -340,9 +407,13 @@ class DeviceProfileBuilder {
     // libx265 re-encode on servers that never opted in. H264 always stays in
     // the list: the server demotes disallowed codecs instead of rejecting
     // them, and a single-codec HEVC list would be encoded unconditionally.
+    // A trailing hevc still lets the server copy HEVC video when only the
+    // audio needs work. The TS offer leaves it out on AVFoundation.
+    final hevcOverHls = effectiveSupportsHevc && !hevcDirectPlayOnly;
     final hlsVideoCodecs = <String>[
-      if (transcodeHevcAllowed && effectiveSupportsHevc) 'hevc',
+      if (transcodeHevcAllowed && hevcOverHls) 'hevc',
       'h264',
+      if (!transcodeHevcAllowed && hevcOverHls) 'hevc',
     ].join(',');
 
     final hasKnownHevcDoviHdr10PlusBug =
@@ -364,12 +435,15 @@ class DeviceProfileBuilder {
 
     final directPlayProfiles = webCapabilities == null
         ? <Map<String, dynamic>>[
-            <String, dynamic>{
-              'Type': 'Video',
-              'Container': directPlayVideoContainers,
-              'VideoCodec': 'av1,h264,hevc,mpeg,mpeg2video,mpeg4,vc1,vp8,vp9',
-              'AudioCodec': effectiveAllowedAudioCodecs.join(','),
-            },
+            // An empty codec list reads as any codec, so with every one picked
+            // the entry goes and every video transcodes.
+            if (videoAudioCodecs.isNotEmpty)
+              <String, dynamic>{
+                'Type': 'Video',
+                'Container': directPlayVideoContainers,
+                'VideoCodec': 'av1,h264,hevc,mpeg,mpeg2video,mpeg4,vc1,vp8,vp9',
+                'AudioCodec': videoAudioCodecs.join(','),
+              },
             <String, dynamic>{
               'Type': 'Audio',
               'Container': _audioDirectPlayContainers.join(','),
@@ -405,6 +479,7 @@ class DeviceProfileBuilder {
           allowedAudioCodecs: effectiveAllowedAudioCodecs,
           containerAudioCodecs: _hlsFmp4AudioCodecs,
           forAvFoundation: hlsAudioForAvFoundation,
+          transcodeAudioCodecs: transcodeAudioCodecs,
         ).join(','),
         'CopyTimestamps': false,
         'EnableSubtitlesInManifest': true,
@@ -436,7 +511,7 @@ class DeviceProfileBuilder {
     final codecProfiles = _codecProfiles(
       maxAudioChannels: advertisedMaxChannels,
       passthroughAudioCodecs: passthroughAudioCodecs,
-      universalAudioDecode: universalAudioDecode,
+      bridgesAudioToEac3: bridgesAudioToEac3,
       playerDecodesStereoTrueHd: playerDecodesStereoTrueHd,
       forceStereo: limitStereoDirectPlay,
       maxResolution: maxResolution,
@@ -444,6 +519,7 @@ class DeviceProfileBuilder {
       supportsAvcHigh10: effectiveSupportsAvcHigh10,
       avcMainLevel: effectiveAvcMainLevel,
       avcHigh10Level: effectiveAvcHigh10Level,
+      capsAvcRefFrames: capsAvcRefFrames,
       supportsHevc: effectiveSupportsHevc,
       supportsHevcMain10: effectiveSupportsHevcMain10,
       hevcMainLevel: effectiveHevcMainLevel,
@@ -475,6 +551,7 @@ class DeviceProfileBuilder {
       knownHevcDoviHdr10PlusBug: hasKnownHevcDoviHdr10PlusBug,
       allowDolbyVisionProfile7ElDirectPlay:
           allowDolbyVisionProfile7ElDirectPlay,
+      hevcRequiresFmp4Hls: hevcRequiresFmp4Hls,
       webCapabilities: webCapabilities,
     );
 
@@ -492,6 +569,7 @@ class DeviceProfileBuilder {
         assDirectPlay: assDirectPlay,
         supportsEmbeddedSubtitles: supportsEmbeddedSubtitles,
         supportsExternalTextSubtitles: supportsExternalTextSubtitles,
+        supportsExternalPgsSubtitles: supportsExternalPgsSubtitles,
       ),
     };
   }
@@ -928,6 +1006,7 @@ class DeviceProfileBuilder {
     required List<String> allowedAudioCodecs,
     required List<String> containerAudioCodecs,
     required bool forAvFoundation,
+    Set<String> transcodeAudioCodecs = const {},
   }) {
     final carried = forAvFoundation
         ? containerAudioCodecs.where(
@@ -938,12 +1017,25 @@ class DeviceProfileBuilder {
       ..._fallbackTargetOrder(effectiveAudioFallbackCodec),
       ...carried,
     ];
-    final seen = <String>{};
-    return ordered
-        .where(carried.contains)
-        .where(allowedAudioCodecs.contains)
-        .where(seen.add)
-        .toList(growable: false);
+    List<String> offer(List<String> allowed) {
+      final seen = <String>{};
+      return ordered
+          .where(carried.contains)
+          .where(allowed.contains)
+          .where(seen.add)
+          .toList(growable: false);
+    }
+
+    // A transcode has to land on something, so an offer the picks would
+    // empty keeps its codecs and the server copies that audio instead.
+    // shortcut: the server prefers an offer that can copy the source audio,
+    // so a kept offer still copies a pick. Only picking every codec one
+    // container carries gets here, drop the kept offer for non-live items if
+    // that becomes a real setup.
+    final picked = offer(
+      _withoutTranscodedAudio(allowedAudioCodecs, transcodeAudioCodecs),
+    );
+    return picked.isEmpty ? offer(allowedAudioCodecs) : picked;
   }
 
   /// Every audio codec the HLS transcoding profiles offer the server, with the
@@ -952,6 +1044,7 @@ class DeviceProfileBuilder {
   static List<String> transcodeTargetAudioCodecs({
     required AudioFallbackCodec fallbackCodec,
     required bool forAvFoundation,
+    Set<String> transcodeAudioCodecs = const {},
   }) => _hlsAudioCodecsForFallback(
     effectiveAudioFallbackCodec: fallbackCodec,
     allowedAudioCodecs: _supportedAudioCodecs,
@@ -960,6 +1053,7 @@ class DeviceProfileBuilder {
       ..._hlsFmp4AudioCodecs,
     ],
     forAvFoundation: forAvFoundation,
+    transcodeAudioCodecs: transcodeAudioCodecs,
   );
 
   static bool _isAudioCodecAllowed({
@@ -1056,7 +1150,7 @@ class DeviceProfileBuilder {
   static List<Map<String, dynamic>> _codecProfiles({
     required int maxAudioChannels,
     required Set<String> passthroughAudioCodecs,
-    required bool universalAudioDecode,
+    required bool bridgesAudioToEac3,
     required bool playerDecodesStereoTrueHd,
     required bool forceStereo,
     required MaxVideoResolution maxResolution,
@@ -1064,6 +1158,7 @@ class DeviceProfileBuilder {
     required bool supportsAvcHigh10,
     required int avcMainLevel,
     required int avcHigh10Level,
+    required bool capsAvcRefFrames,
     required bool supportsHevc,
     required bool supportsHevcMain10,
     required int hevcMainLevel,
@@ -1092,6 +1187,7 @@ class DeviceProfileBuilder {
     required bool supportsDvProfile8,
     required bool knownHevcDoviHdr10PlusBug,
     required bool allowDolbyVisionProfile7ElDirectPlay,
+    required bool hevcRequiresFmp4Hls,
     required WebPlaybackCapabilities? webCapabilities,
   }) {
     final profiles = <Map<String, dynamic>>[];
@@ -1195,47 +1291,49 @@ class DeviceProfileBuilder {
       );
     }
 
-    profiles.add(
-      _codecProfile(
-        type: 'Video',
-        codec: 'h264',
-        conditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'LessThanEqual',
-            property: 'RefFrames',
-            value: '12',
-          ),
-        ],
-        applyConditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'GreaterThanEqual',
-            property: 'Width',
-            value: '1200',
-          ),
-        ],
-      ),
-    );
+    if (capsAvcRefFrames) {
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          codec: 'h264',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'LessThanEqual',
+              property: 'RefFrames',
+              value: '12',
+            ),
+          ],
+          applyConditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'GreaterThanEqual',
+              property: 'Width',
+              value: '1200',
+            ),
+          ],
+        ),
+      );
 
-    profiles.add(
-      _codecProfile(
-        type: 'Video',
-        codec: 'h264',
-        conditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'LessThanEqual',
-            property: 'RefFrames',
-            value: '4',
-          ),
-        ],
-        applyConditions: <Map<String, dynamic>>[
-          _condition(
-            condition: 'GreaterThanEqual',
-            property: 'Width',
-            value: '1900',
-          ),
-        ],
-      ),
-    );
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          codec: 'h264',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'LessThanEqual',
+              property: 'RefFrames',
+              value: '4',
+            ),
+          ],
+          applyConditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'GreaterThanEqual',
+              property: 'Width',
+              value: '1900',
+            ),
+          ],
+        ),
+      );
+    }
 
     profiles.add(
       _codecProfile(
@@ -1264,6 +1362,23 @@ class DeviceProfileBuilder {
               condition: 'EqualsAny',
               property: 'VideoProfile',
               value: 'main',
+            ),
+          ],
+        ),
+      );
+    } else if (hevcRequiresFmp4Hls) {
+      // Most Apple decoders only handle Main and Main 10, so Rext sources
+      // (4:2:2, 4:4:4 or 12 bit) get encoded instead of copied.
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          container: 'hls',
+          codec: 'hevc',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'EqualsAny',
+              property: 'VideoProfile',
+              value: 'main|main 10',
             ),
           ],
         ),
@@ -1374,6 +1489,15 @@ class DeviceProfileBuilder {
       detectedWidth: maxResolutionVc1Width,
       detectedHeight: maxResolutionVc1Height,
     );
+    // Nothing probes a decoder size for the rest of the direct play codecs,
+    // so the viewer's Max Resolution is the only cap they get.
+    _addResolutionProfile(
+      profiles: profiles,
+      codec: 'mpeg,mpeg2video,mpeg4,vp8,vp9',
+      maxResolution: maxResolution,
+      detectedWidth: 0,
+      detectedHeight: 0,
+    );
 
     final unsupportedRangeTypesAv1 = <String>{};
     if (!supportsAv1DolbyVision) {
@@ -1471,6 +1595,50 @@ class DeviceProfileBuilder {
       codec: 'av1',
       rangeTypes: unsupportedRangeTypesAv1,
     );
+    // AVFoundation plays the HLS output itself. Listing what renders makes the
+    // server keep the Dolby Vision config on a copy, and leaving out the
+    // enhancement layer gets profile 7 stripped to its HDR10 base layer. This
+    // has to come before the general entry since the server takes the first
+    // match.
+    if (hevcRequiresFmp4Hls) {
+      final hlsRangeTypes = _expandVideoRangeTypeAliases(
+        _videoRangeTypes.difference(<String>{
+          ...unsupportedRangeTypesHevc,
+          'DOVI_WITH_EL',
+          'DOVI_WITH_ELHDR10_PLUS',
+        }),
+      ).toList()..sort();
+      profiles.add(
+        _codecProfile(
+          type: 'Video',
+          container: 'hls',
+          codec: 'hevc',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'EqualsAny',
+              property: 'VideoRangeType',
+              value: hlsRangeTypes.join('|'),
+              isRequired: false,
+            ),
+          ],
+          // Servers before 10.11.6 tag a profile 8.4 copy dvh1, which Apple
+          // players refuse, and 8.2 gets dvh1 until 12.2, so both stay plain
+          // hvc1 copies.
+          applyConditions: <Map<String, dynamic>>[
+            for (final rangeType in const <String>[
+              'DOVIWithHLG',
+              'DOVIWithSDR',
+            ])
+              _condition(
+                condition: 'NotEquals',
+                property: 'VideoRangeType',
+                value: rangeType,
+                isRequired: false,
+              ),
+          ],
+        ),
+      );
+    }
     _addUnsupportedRangeProfiles(
       profiles: profiles,
       codec: 'hevc',
@@ -1494,6 +1662,22 @@ class DeviceProfileBuilder {
           ),
         );
       }
+
+      // The web player always plays a file's first audio track, so picking
+      // any other one has the server remux the stream with it.
+      profiles.add(
+        _codecProfile(
+          type: 'VideoAudio',
+          conditions: <Map<String, dynamic>>[
+            _condition(
+              condition: 'Equals',
+              property: 'IsSecondaryAudio',
+              value: 'false',
+              isRequired: false,
+            ),
+          ],
+        ),
+      );
     }
 
     if (isIOSWeb && iOSMajorVersion > 0 && iOSMajorVersion < 13) {
@@ -1544,7 +1728,7 @@ class DeviceProfileBuilder {
     // Past the bridge encoder's ceiling it refuses to open and the player has
     // nothing left to fall back to, so the track direct plays as silence.
     // Saying so here is what gets the server to re-encode it instead.
-    if (universalAudioDecode) {
+    if (bridgesAudioToEac3) {
       profiles.add(
         _codecProfile(
           type: 'VideoAudio',
@@ -1645,6 +1829,14 @@ class DeviceProfileBuilder {
     }
     return expanded;
   }
+
+  static final Set<String> _videoRangeTypes = <String>{
+    'SDR',
+    'HDR10',
+    'HLG',
+    'DOVI',
+    ..._videoRangeTypeAliases.keys,
+  };
 
   static const Map<String, List<String>> _videoRangeTypeAliases =
       <String, List<String>>{
@@ -1748,11 +1940,15 @@ class DeviceProfileBuilder {
   /// formats included, so a player that can't read them leaves the server to
   /// burn them in. [supportsExternalTextSubtitles] is narrower and only covers
   /// the plain text formats, which is why ass and ssa still offer External.
+  /// [supportsExternalPgsSubtitles] also offers PGS as External, for a player
+  /// that reads a whole .sup file. The playback manager takes that offer back
+  /// whenever the picked track is an embedded PGS one.
   static List<Map<String, dynamic>> _subtitleProfiles({
     required bool pgsDirectPlay,
     required bool assDirectPlay,
     bool supportsEmbeddedSubtitles = true,
     bool supportsExternalTextSubtitles = true,
+    bool supportsExternalPgsSubtitles = false,
   }) {
     final profiles = <Map<String, dynamic>>[];
 
@@ -1787,6 +1983,9 @@ class DeviceProfileBuilder {
     for (final format in const <String>['pgs', 'pgssub']) {
       if (pgsDirectPlay && supportsEmbeddedSubtitles) {
         add(format, 'Embed');
+      }
+      if (pgsDirectPlay && supportsExternalPgsSubtitles) {
+        add(format, 'External');
       }
       add(format, 'Encode');
     }

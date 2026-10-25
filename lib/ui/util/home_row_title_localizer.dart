@@ -21,6 +21,22 @@ String localizeSeerrRowTitle(SeerrRowType type, AppLocalizations l10n) =>
       SeerrRowType.networks => l10n.networks,
     };
 
+/// The seasonal row is titled after the holiday Moonbase picked, which it names
+/// by id.
+String seasonalHolidayTitle(String holiday, AppLocalizations l10n) =>
+    switch (holiday) {
+      'newYear' => l10n.holidayNewYear,
+      'valentines' => l10n.holidayValentines,
+      'easter' => l10n.holidayEaster,
+      'pride' => l10n.holidayPride,
+      'halloween' => l10n.holidayHalloween,
+      'thanksgiving' => l10n.holidayThanksgiving,
+      'christmas' => l10n.holidayChristmas,
+      'lunarNewYear' => l10n.holidayLunarNewYear,
+      'diwali' => l10n.holidayDiwali,
+      _ => l10n.seasonalRow,
+    };
+
 String localizeHomeRowTitle({
   required HomeRow row,
   required AppLocalizations l10n,
@@ -54,6 +70,7 @@ String localizeHomeRowTitle({
       return l10n.myMedia;
     case 'liveTv':
       return l10n.liveTv;
+    case 'onNow':
     case 'liveTvOnNow':
       return l10n.onNow;
     case 'liveTvFavorites':

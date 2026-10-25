@@ -75,12 +75,16 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
 
     final resolvedMediaSourceId =
         MediaStreamResolver.resolveStaticMediaSourceId(mediaItem, mediaSourceId);
+    final requestProfile = MediaStreamResolver.shortenLiveHlsStartup(
+      deviceProfile,
+      isLiveChannel: MediaStreamResolver.isLiveTvItem(mediaItem),
+    );
 
     Future<PlaybackInfoResult> fetchPlaybackInfo(String? sourceId) async {
       final request = PlaybackInfoRequest(
         itemId: itemId,
         mediaSourceId: sourceId,
-        deviceProfile: deviceProfile,
+        deviceProfile: requestProfile,
         maxStreamingBitrate: maxStreamingBitrate,
         audioStreamIndex: audioStreamIndex,
         subtitleStreamIndex: subtitleStreamIndex,
@@ -107,22 +111,19 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
     }
 
     // An id the item does not list passes through so the server can resolve
-    // drifted ids without discarding an explicit version pick. If the server
-    // cant resolve it either the id is just stale, so retry without it and
-    // play the server's default version instead of failing outright.
-    final staticIds = MediaStreamResolver.staticMediaSourceIds(mediaItem);
-    final isUnverifiedSourceId = resolvedMediaSourceId != null &&
-        resolvedMediaSourceId.isNotEmpty &&
-        staticIds.isNotEmpty &&
-        !staticIds.contains(resolvedMediaSourceId);
-
+    // drifted ids without discarding an explicit version pick.
     final PlaybackInfoResult info;
     try {
       PlaybackInfoResult? result;
       try {
         result = await fetchPlaybackInfo(resolvedMediaSourceId);
       } catch (_) {
-        if (!isUnverifiedSourceId) rethrow;
+        if (!MediaStreamResolver.canRetryWithoutMediaSourceId(
+          mediaItem,
+          resolvedMediaSourceId,
+        )) {
+          rethrow;
+        }
       }
       info = result ?? await fetchPlaybackInfo(null);
     } catch (e) {
@@ -147,6 +148,7 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
       source,
       isAudio: isAudio,
       enableDirectPlay: enableDirectPlay,
+      enableDirectStream: enableDirectStream,
       maxStreamingBitrate: maxStreamingBitrate,
     );
 
@@ -160,7 +162,7 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
       audioStreamIndex: audioStreamIndex ?? source.defaultAudioStreamIndex,
       subtitleStreamIndex:
           subtitleStreamIndex ?? source.defaultSubtitleStreamIndex,
-      deviceProfile: deviceProfile,
+      deviceProfile: requestProfile,
     );
 
     if (playMethod == StreamPlayMethod.transcode || playMethod == StreamPlayMethod.directStream) {
@@ -188,6 +190,12 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
     url = _appendAuth(url);
 
     final externalSubs = MediaStreamResolver.extractExternalSubtitles(source.mediaStreams, _client.baseUrl);
+    final embeddedTextSubs = MediaStreamResolver.extractEmbeddedTextSubtitles(
+      source.mediaStreams,
+      _client.baseUrl,
+      itemId: itemId,
+      mediaSourceId: source.id,
+    ).map((s) => s.withDeliveryUrl(_appendAuth(s.deliveryUrl))).toList();
     final authedSubs = externalSubs.map((s) => ExternalSubtitle(
       deliveryUrl: _appendAuth(s.deliveryUrl),
       title: s.title,
@@ -236,6 +244,7 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
       mediaType: mediaType,
       normalizationGainDb: normalizationGainDb,
       externalSubtitles: authedSubs,
+      embeddedTextSubtitles: embeddedTextSubs,
       mediaStreams: source.mediaStreams,
       selectedAudioStreamIndex: source.defaultAudioStreamIndex,
       selectedSubtitleStreamIndex: source.defaultSubtitleStreamIndex,
@@ -363,6 +372,7 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
     PlaybackMediaSource source, {
     bool isAudio = false,
     bool enableDirectPlay = true,
+    bool enableDirectStream = true,
     int? maxStreamingBitrate,
   }) {
     final remotePath = source.path;
@@ -404,6 +414,7 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
       supportsTranscoding: source.supportsTranscoding,
       hasTranscodingUrl: source.transcodingUrl != null,
       enableDirectPlay: enableDirectPlay,
+      enableDirectStream: enableDirectStream,
       isAudio: isAudio,
       transcodingReasons: source.transcodingReasons,
       bitrate: source.bitrate,
@@ -472,6 +483,7 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
     required bool supportsTranscoding,
     required bool hasTranscodingUrl,
     required bool enableDirectPlay,
+    required bool enableDirectStream,
     required bool isAudio,
     required List<String> transcodingReasons,
     required int? bitrate,
@@ -491,8 +503,10 @@ class JellyfinMediaStreamResolver implements MediaStreamResolver {
         enableDirectPlay && !requiresVideoTranscode && supportsDirectPlay;
     // A remux copies the video stream through untouched, so a reason to
     // re-encode it rules this out the same way it rules out direct play.
-    final canDirectStream =
-        supportsDirectStream && hasDirectStreamUrl && !requiresVideoTranscode;
+    final canDirectStream = enableDirectStream &&
+        supportsDirectStream &&
+        hasDirectStreamUrl &&
+        !requiresVideoTranscode;
     final canTranscode = supportsTranscoding && hasTranscodingUrl;
     final directPlayRoute = isAudio
         ? JellyfinStreamRoute.audioDirectPlay

@@ -535,7 +535,7 @@ class HtmlVideoBackend extends PlayerBackend {
     if (isExternalSubtitle &&
         externalSubtitleUrl != null &&
         externalSubtitleUrl.isNotEmpty) {
-      await addExternalSubtitle(externalSubtitleUrl, codec: subtitleCodec);
+      await _showExternalSubtitle(externalSubtitleUrl, codec: subtitleCodec);
       return;
     }
 
@@ -561,10 +561,19 @@ class HtmlVideoBackend extends PlayerBackend {
         // Safari only draws cues for a track that carries the default
         // attribute when the page supplies its own controls, as this one does.
         if (i == position) {
+          if (element.parentNode == null) {
+            _videoElement.appendChild(element);
+          }
           element.setAttribute('default', '');
           element.track.mode = 'showing';
         } else {
           element.removeAttribute('default');
+          // Chromium turns on any subtitle track the page has never set a
+          // mode on once another one is showing, and setting a track that is
+          // already disabled to disabled does not count. Only the picked track
+          // stays on the element, so the browser has nothing to add under it
+          // and nothing to bring back after Off.
+          element.remove();
         }
       }
     } catch (_) {}
@@ -632,6 +641,8 @@ class HtmlVideoBackend extends PlayerBackend {
   @override
   Future<void> setSubtitleDelay(double seconds) async {}
 
+  /// Adds the subtitle without showing it, so tracks loaded at startup stay
+  /// off until one is picked.
   @override
   Future<void> addExternalSubtitle(
     String url, {
@@ -640,19 +651,28 @@ class HtmlVideoBackend extends PlayerBackend {
     String? codec,
   }) async {
     if (_disposed || url.isEmpty) return;
+    // The overlay fetches its file when the subtitle is picked, so there is
+    // nothing to add ahead of that.
+    if (WebSubtitleOverlay.isOverlayCodec(codec)) return;
+    _addTrack(url, title: title, language: language, codec: codec);
+  }
 
+  Future<void> _showExternalSubtitle(String url, {String? codec}) async {
     if (WebSubtitleOverlay.isOverlayCodec(codec)) {
+      _showTrackAt(-1);
       await _overlay.show(url, codec);
       return;
     }
+    _showTrackAt(_addTrack(url, codec: codec));
+  }
 
-    // Selecting a subtitle asks for it by url, so a track already on the
-    // element is the one being asked for rather than a second copy of it.
+  /// Makes a track for [url], or finds the one already made, and returns its
+  /// position in add order. The track only goes on the element once it is
+  /// picked, which also keeps the browser from fetching a file nobody asked
+  /// for.
+  int _addTrack(String url, {String? title, String? language, String? codec}) {
     final existing = _externalTracks.indexWhere((track) => track.url == url);
-    if (existing >= 0) {
-      _showTrackAt(existing);
-      return;
-    }
+    if (existing >= 0) return existing;
 
     final element = web.HTMLTrackElement()
       ..kind = 'subtitles'
@@ -664,11 +684,9 @@ class HtmlVideoBackend extends PlayerBackend {
       element.setAttribute('data-codec', codec);
     }
 
-    _videoElement.appendChild(element);
     _externalTracks.add((url: url, element: element));
     _watchCuesFor(element.track);
-
-    _showTrackAt(_externalTracks.length - 1);
+    return _externalTracks.length - 1;
   }
 
   @override

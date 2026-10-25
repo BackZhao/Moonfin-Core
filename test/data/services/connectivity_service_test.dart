@@ -19,6 +19,10 @@ void main() {
   late _MockConnectivity connectivity;
   var failuresLeft = 0;
   var probes = 0;
+  var answer = HttpStatus.ok;
+
+  // A ping body labelled json. Empty means no body, as in every other case.
+  var pingBody = '';
 
   setUp(() async {
     // The test binding answers every request with a 400, and the probe has to
@@ -27,17 +31,24 @@ void main() {
     await GetIt.instance.reset();
     failuresLeft = 0;
     probes = 0;
+    answer = HttpStatus.ok;
+    pingBody = '';
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
     server.listen((request) async {
       probes++;
       request.response.statusCode = failuresLeft > 0
           ? HttpStatus.serviceUnavailable
-          : HttpStatus.ok;
+          : answer;
       if (failuresLeft > 0) failuresLeft--;
+      if (pingBody.isNotEmpty) {
+        request.response.headers.contentType = ContentType.json;
+        request.response.write(pingBody);
+      }
       await request.response.close();
     });
 
     final client = _MockMediaServerClient();
+    when(() => client.serverType).thenReturn(ServerType.jellyfin);
     when(
       () => client.baseUrl,
     ).thenReturn('http://${server.address.address}:${server.port}');
@@ -108,6 +119,44 @@ void main() {
 
     expect(probes, 1);
     expect(service.canReachServer, isTrue);
+  });
+
+  test('a ping turned down for its missing token still counts', () async {
+    answer = HttpStatus.unauthorized;
+    final service = serviceOnline(online: true);
+    addTearDown(service.dispose);
+
+    await service.recheckNow();
+
+    expect(service.canReachServer, isTrue);
+    expect(probes, 1);
+  });
+
+  // A proxy can label Emby's plain text ping as json. Decoding it used to fail
+  // the probe and send every browse call to the downloads catalog.
+  test('a ping body that is not json still counts as reachable', () async {
+    pingBody = 'Emby Server';
+    final service = serviceOnline(online: true);
+    addTearDown(service.dispose);
+
+    await service.recheckNow();
+
+    expect(service.canReachServer, isTrue);
+    expect(probes, 1);
+  });
+
+  // Jellyfin always answers the ping, so a 404 is an address that isn't the
+  // server anymore, and a 502 is a proxy with nothing behind it.
+  test('any other refusal still counts as down', () async {
+    for (final status in [HttpStatus.notFound, HttpStatus.badGateway]) {
+      answer = status;
+      final service = serviceOnline(online: true);
+
+      await service.recheckNow();
+
+      expect(service.canReachServer, isFalse, reason: '$status');
+      service.dispose();
+    }
   });
 
   test('leaves the server alone while the device itself is offline', () async {

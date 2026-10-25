@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:playback_core/playback_core.dart';
 
+import '../../../data/models/aggregated_item.dart';
 import '../../../data/services/sponsorblock_service.dart';
 import '../../../data/services/youtube_stream_resolver.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../playback/appletv_preview_player.dart';
+import '../../../playback/mpv_client_certificate.dart';
+import '../../../preference/user_preferences.dart';
 import '../../../util/platform_detection.dart';
 import '../../screensaver/screensaver_controller.dart';
 import '../../widgets/adaptive/sf_symbol.dart';
@@ -44,6 +48,9 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
   bool _sponsorBlockSeekInFlight = false;
   int _sponsorBlockToken = 0;
   final _screensaverController = GetIt.instance<ScreensaverController>();
+  final _showCaptions = GetIt.instance<UserPreferences>().get(
+    UserPreferences.mediaBarTrailerCaptions,
+  );
 
   bool get _supportsEmbeddedYouTubePlatform {
     return PlatformDetection.isAndroid ||
@@ -57,6 +64,12 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
     // Keep the screen awake and the screensaver disarmed while a trailer plays,
     // matching the other full-screen players.
     _screensaverController.setPlaybackActive(true);
+    // Background music would otherwise keep playing under the trailer.
+    final manager = GetIt.instance<PlaybackManager>();
+    final current = manager.queueService.currentItem;
+    if (current is AggregatedItem && current.isAudioLike) {
+      unawaited(manager.stop(userInitiated: false));
+    }
     final resolvedVideoId = _resolvedVideoId();
 
     if (kIsWeb) {
@@ -147,17 +160,27 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
     super.dispose();
   }
 
-  Future<({String? streamUrl, String? sponsorBlockVideoId, bool useYouTubeHeaders})>
+  Future<
+    ({
+      String? streamUrl,
+      String? sponsorBlockVideoId,
+      bool useYouTubeHeaders,
+      String? audioLanguage,
+    })
+  >
   _resolveStreamUrl() async {
     String? streamUrl;
     String? sponsorBlockVideoId;
     bool useYouTubeHeaders = false;
+    String? audioLanguage;
 
     if (widget.videoId != null && widget.videoId!.isNotEmpty) {
       sponsorBlockVideoId = widget.videoId;
-      streamUrl = await YouTubeStreamResolver.resolve(
+      final stream = await YouTubeStreamResolver.resolve(
         widget.videoId!,
       ).timeout(_resolveTimeout, onTimeout: () => null);
+      streamUrl = stream?.url;
+      audioLanguage = stream?.audioLanguage;
       if (streamUrl != null && streamUrl.isNotEmpty) {
         useYouTubeHeaders = true;
       } else {
@@ -168,9 +191,11 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
       final trailerUrl = widget.trailerUrl!;
       final youtubeVideoId = YouTubeStreamResolver.extractVideoId(trailerUrl);
       sponsorBlockVideoId = youtubeVideoId;
-      streamUrl = await YouTubeStreamResolver.resolveFromUrl(
+      final stream = await YouTubeStreamResolver.resolveFromUrl(
         trailerUrl,
       ).timeout(_resolveTimeout, onTimeout: () => null);
+      streamUrl = stream?.url;
+      audioLanguage = stream?.audioLanguage;
       if (streamUrl != null && streamUrl.isNotEmpty) {
         useYouTubeHeaders = youtubeVideoId != null;
       } else {
@@ -183,6 +208,7 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
       streamUrl: streamUrl,
       sponsorBlockVideoId: sponsorBlockVideoId,
       useYouTubeHeaders: useYouTubeHeaders,
+      audioLanguage: audioLanguage,
     );
   }
 
@@ -212,6 +238,7 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
                 ? YouTubeStreamResolver.youtubeHeaders
                 : null,
             volume: 100,
+            audioLanguage: resolved.audioLanguage,
           )
           .timeout(_openTimeout);
       if (!mounted) {
@@ -262,6 +289,18 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
       final media = useYouTubeHeaders
           ? Media(streamUrl, httpHeaders: YouTubeStreamResolver.youtubeHeaders)
           : Media(streamUrl);
+      await YouTubeStreamResolver.preferAudioLanguage(
+        _player!,
+        resolved.audioLanguage,
+      );
+      await YouTubeStreamResolver.showCaptions(
+        _player!,
+        _showCaptions,
+        language: GetIt.instance<UserPreferences>().get(
+          UserPreferences.defaultSubtitleLanguage,
+        ),
+      );
+      await applyMpvClientCertificate(_player!, streamUrl);
       await _player!.open(media).timeout(_openTimeout);
       if (!mounted) return;
       setState(() {
@@ -366,6 +405,7 @@ class _TrailerPlayerScreenState extends State<TrailerPlayerScreen> {
                         child: WebYouTubeTrailer(
                           videoId: _webVideoId!,
                           muted: false,
+                          showCaptions: _showCaptions,
                           loop: false,
                           onPlaybackStarted: _onEmbeddedPlaybackStarted,
                           onEmbeddedUnavailable: _useEmbeddedYouTube

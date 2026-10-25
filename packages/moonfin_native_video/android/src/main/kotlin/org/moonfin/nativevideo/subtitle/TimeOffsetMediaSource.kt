@@ -23,8 +23,15 @@ internal class TimeOffsetMediaSource(
     private val activePeriods = ArrayList<TimeOffsetMediaPeriod>()
 
     @Volatile
-    var timeOffsetUs: Long = initialOffsetUs
+    var isSubtitleLoading = false
         private set
+
+    private fun updateSubtitleLoading() {
+        isSubtitleLoading = activePeriods.any { it.isSubtitleLoading }
+    }
+
+    @Volatile
+    private var timeOffsetUs: Long = initialOffsetUs
 
     fun setTimeOffsetUs(offsetUs: Long) {
         timeOffsetUs = offsetUs
@@ -42,6 +49,7 @@ internal class TimeOffsetMediaSource(
         val period = TimeOffsetMediaPeriod(
             super.createPeriod(id, allocator, startPositionUs - offset),
             offset,
+            onLoadingChanged = ::updateSubtitleLoading,
         )
         activePeriods.add(period)
         return period
@@ -50,6 +58,7 @@ internal class TimeOffsetMediaSource(
     override fun releasePeriod(mediaPeriod: MediaPeriod) {
         val period = mediaPeriod as TimeOffsetMediaPeriod
         activePeriods.remove(period)
+        updateSubtitleLoading()
         // The child only knows the period it made, so the wrapper comes off.
         super.releasePeriod(period.wrappedMediaPeriod)
     }

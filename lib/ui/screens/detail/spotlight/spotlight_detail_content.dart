@@ -2,6 +2,7 @@ import 'dart:async' show unawaited;
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ import '../../../../data/services/seerr/seerr_api_models.dart';
 import '../../../../data/viewmodels/item_detail_view_model.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../preference/detail_metadata_layout.dart';
+import '../../../../preference/detail_section_layout.dart';
 import '../../../../preference/preference_constants.dart';
 import '../../../../preference/user_preferences.dart';
 import '../upcoming_episode_badge.dart';
@@ -25,6 +27,7 @@ import '../../../../util/platform_detection.dart';
 import '../../../navigation/destinations.dart';
 import '../../../navigation/playback_launcher.dart';
 import '../../../widgets/focus/can_claim_initial_focus.dart';
+import '../../../widgets/live_tv/incomplete_recording.dart';
 import '../../../widgets/logo_view.dart';
 import '../../../widgets/navigation_layout.dart';
 import '../../../widgets/offline_aware_image.dart';
@@ -42,6 +45,7 @@ import '../item_detail_screen.dart'
         PersonDates,
         selectedMediaSourceForItem,
         technicalDetailsFor;
+import '../play_item_on_screen.dart';
 import 'spotlight_cards.dart';
 import 'spotlight_images.dart';
 import 'spotlight_landscape_layout.dart';
@@ -97,7 +101,9 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
   bool _landscape = true;
   bool _modalOpen = false;
   final _scrollController = ScrollController();
+  final _cardsScrollController = ScrollController();
   final _overviewFocusNode = FocusNode(debugLabel: 'SpotlightOverview');
+  final _collectionSortFocusNode = FocusNode(debugLabel: 'SpotlightCollectionSort');
   final _cardFocusNodes = <String, FocusNode>{};
   final _trackFocusNodes = <String, FocusNode>{};
 
@@ -267,7 +273,9 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
     }
     _vm.removeListener(_onViewModelChanged);
     _scrollController.dispose();
+    _cardsScrollController.dispose();
     _overviewFocusNode.dispose();
+    _collectionSortFocusNode.dispose();
     for (final node in _cardFocusNodes.values) {
       node.dispose();
     }
@@ -323,10 +331,8 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
       final credits = await loadSeerrPersonCredits(repo, personId);
       if (!mounted) return;
       setState(() {
-        // Seerr lists a title once per credit, so a title has to be folded
-        // into a single entry before it reaches a keyed grid.
-        _seerrAppearances = groupSeerrCredits(credits.cast, isCrew: false);
-        _seerrCrewCredits = groupSeerrCredits(credits.crew, isCrew: true);
+        _seerrAppearances = credits.cast;
+        _seerrCrewCredits = credits.crew;
       });
       _selectPersonBackdrop();
     } catch (_) {
@@ -352,7 +358,9 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
   SpotlightCardActions _cardActions(AggregatedItem item) {
     return SpotlightCardActions(
       openItem: (entry) => _closeModalThen(() {
-        if (entry.serverId == 'seerr') {
+        if (item.type == 'Episode' && entry.id == item.id) {
+          playItemOnScreen(context);
+        } else if (entry.serverId == 'seerr') {
           final mediaType = entry.seerrMediaType ??
               (entry.type == 'Series' || entry.type == 'tv' ? 'tv' : 'movie');
           final tmdbId = entry.tmdbId;
@@ -367,7 +375,17 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
             ),
           );
         } else {
-          context.push(Destinations.item(entry.id, serverId: entry.serverId));
+          final location = Destinations.itemOrPhoto(
+            entry.id,
+            serverId: entry.serverId,
+            type: entry.type,
+            channelId: entry.channelId,
+          );
+          // One episode to the next takes this page's place, so Back leaves
+          // the run of episodes in one press.
+          item.type == 'Episode' && entry.type == 'Episode'
+              ? context.pushReplacement(location)
+              : context.push(location);
         }
       }),
       openPerson: (personId) => _closeModalThen(() {
@@ -410,6 +428,7 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
           _closeModalThen(() => _playItems(_vm.playlistItems, index)),
       trackFocusNode: (id) =>
           _trackFocusNodes.putIfAbsent(id, () => FocusNode()),
+      collectionSortFocusNode: _collectionSortFocusNode,
     );
   }
 
@@ -464,7 +483,7 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
         // before that lands would otherwise keep the sections it was built
         // with and never gain its Seerr rows, which is most visible on the
         // similar card. Re-derive the card while the modal is open instead.
-        refreshOn: _vm,
+        refreshOn: Listenable.merge([_vm, widget.prefs]),
         refresh: () => _liveCardContent(spec),
         // The collection grid arrives a page at a time, and this modal is the
         // only place Spotlight shows it, so it has to ask for the rest.
@@ -506,6 +525,7 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
             mainBackdropKey: _personBackdropKey,
             seerrAvailable: _seerrAvailable,
             personCardBackdrops: _personCardBackdrops,
+            selectedMediaSourceId: widget.selectedMediaSourceId,
           )
         : null;
     final card = current ?? opened;
@@ -529,6 +549,7 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
         ? _vm.imageApi.getBackdropImageUrl(
             item.id,
             maxWidth: 1920,
+            index: 0,
             tag: item.backdropImageTags.first,
           )
         : null;
@@ -655,12 +676,21 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
     );
   }
 
-  Widget _buildTitleOrLogo(BuildContext context, AggregatedItem item) {
+  /// With [showLogo] off this draws what an item with no logo gets: the
+  /// title, and on an episode the show's name above it.
+  Widget _buildTitleOrLogo(
+    BuildContext context,
+    AggregatedItem item,
+    Map<String, dynamic>? selectedSource, {
+    required bool showLogo,
+    required bool showVersionBadge,
+  }) {
     final textTheme = Theme.of(context).textTheme;
     final logoScaleFactor = _desktopScale > 1.1 ? 0.70 : 1.0;
     final isEpisode = item.type == 'Episode';
-    final logoTag =
-        item.logoImageTag ?? (isEpisode ? item.seriesLogoImageTag : null);
+    final logoTag = showLogo
+        ? item.logoImageTag ?? (isEpisode ? item.seriesLogoImageTag : null)
+        : null;
     final logoId = logoTag != null
         ? (item.logoImageTag != null ? item.id : item.seriesId)
         : null;
@@ -670,6 +700,35 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
       style: (_landscape ? textTheme.displaySmall : textTheme.headlineMedium)
           ?.copyWith(fontWeight: FontWeight.w700, color: _titleColor),
     );
+
+    Widget versionBadge() {
+      final versionName =
+          selectedSource?['Name'] as String? ??
+          AppLocalizations.of(context).defaultLabel;
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: AppColorScheme.accent.withValues(alpha: 0.15),
+          borderRadius: AppRadius.circular(4),
+          border: Border.all(
+            color: AppColorScheme.accent.withValues(alpha: 0.4),
+            width: 1,
+          ),
+        ),
+        child: Text(
+          versionName,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: textTheme.bodySmall?.copyWith(
+            color: AppColorScheme.accent,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
+    final hasMultipleVersions =
+        showVersionBadge && item.mediaSources.length > 1;
 
     if (isEpisode) {
       final seriesLogoHeight = (_landscape ? 90.0 : 64.0) * logoScaleFactor;
@@ -687,43 +746,105 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: hasSeriesLogo
-                    ? LogoView(
-                        imageUrl: _vm.imageApi.getLogoImageUrl(
-                          logoId,
-                          maxWidth: 350,
-                          tag: logoTag,
-                        ),
-                        maxHeight: seriesLogoHeight,
-                        maxWidth: seriesLogoWidth,
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          LogoView(
+                            imageUrl: _vm.imageApi.getLogoImageUrl(
+                              logoId,
+                              maxWidth: 350,
+                              tag: logoTag,
+                            ),
+                            maxHeight: seriesLogoHeight,
+                            maxWidth: seriesLogoWidth,
+                          ),
+                          if (hasMultipleVersions) ...[
+                            const SizedBox(width: 16),
+                            Flexible(child: versionBadge()),
+                          ],
+                        ],
                       )
                     : (item.seriesName != null
-                        ? Text(
-                            item.seriesName!,
-                            style: textTheme.labelLarge?.copyWith(
-                              color: AppColorScheme.onSurface.withValues(alpha: 0.7),
-                              letterSpacing: 1.2,
-                            ),
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  item.seriesName!,
+                                  style: textTheme.labelLarge?.copyWith(
+                                    color: AppColorScheme.onSurface
+                                        .withValues(alpha: 0.7),
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                              ),
+                              if (hasMultipleVersions) ...[
+                                const SizedBox(width: 16),
+                                Flexible(child: versionBadge()),
+                              ],
+                            ],
                           )
                         : const SizedBox.shrink()),
               ),
             ),
           ),
-          titleText,
+          if (!hasSeriesLogo && item.seriesName == null && hasMultipleVersions)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(child: titleText),
+                const SizedBox(width: 16),
+                Flexible(child: versionBadge()),
+              ],
+            )
+          else
+            titleText,
         ],
       );
     }
 
     if (logoTag != null && logoId != null) {
-      return LogoView(
-        imageUrl: _vm.imageApi.getLogoImageUrl(
-          logoId,
-          maxWidth: 350,
-          tag: logoTag,
+      final itemLogoHeight = (_landscape ? 90.0 : 64.0) * logoScaleFactor;
+      final itemLogoWidth = (_landscape ? 360.0 : 260.0) * logoScaleFactor;
+      return SizedBox(
+        height: itemLogoHeight,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            LogoView(
+              imageUrl: _vm.imageApi.getLogoImageUrl(
+                logoId,
+                maxWidth: 350,
+                tag: logoTag,
+              ),
+              maxHeight: itemLogoHeight,
+              maxWidth: itemLogoWidth,
+            ),
+            if (hasMultipleVersions) ...[
+              const SizedBox(width: 16),
+              Flexible(child: versionBadge()),
+            ],
+          ],
         ),
-        maxHeight: (_landscape ? 90 : 64) * logoScaleFactor,
-        maxWidth: (_landscape ? 360 : 260) * logoScaleFactor,
       );
     }
+
+    if (hasMultipleVersions) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(child: titleText),
+          const SizedBox(width: 16),
+          Flexible(child: versionBadge()),
+        ],
+      );
+    }
+
     return titleText;
   }
 
@@ -988,6 +1109,7 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
   ) {
     final overview = cleanOverview(item.overview?.trim());
     final isPerson = item.type == 'Person';
+    final visibility = DetailSectionVisibility.of(widget.prefs);
     final selectedSource = selectedMediaSourceForItem(
       item,
       widget.selectedMediaSourceId,
@@ -1005,13 +1127,16 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
             item.personalRating != null);
     final showOverview =
         overview.isNotEmpty &&
+        (!isPerson || visibility.shows(DetailSection.biography)) &&
         !hidesMediaDescription(
           itemType: item.type,
           hideMediaDescription: widget.prefs.get(
             UserPreferences.hideDetailsMediaDescription,
           ),
         );
-    final tagline = isPerson ? null : _buildTagline(context, item);
+    final tagline = isPerson || !visibility.shows(DetailSection.tagline)
+        ? null
+        : _buildTagline(context, item);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1021,9 +1146,18 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
         if (isPerson)
           _buildPersonHeader(context, item)
         else
-          _buildTitleOrLogo(context, item),
+          _buildTitleOrLogo(
+            context,
+            item,
+            selectedSource,
+            showLogo: visibility.shows(DetailSection.logo),
+            showVersionBadge: visibility.shows(DetailSection.versionBadge),
+          ),
         const SizedBox(height: 8),
-        if (!isPerson) _metadataRow(context, item, selectedSource),
+        if (!isPerson) ...[
+          _metadataRow(context, item, selectedSource),
+          IncompleteRecordingDetailLine(itemId: item.id),
+        ],
         if (techRow != null) ...[const SizedBox(height: 8), techRow],
         if (showRatings) ...[
           const SizedBox(height: 8),
@@ -1110,6 +1244,7 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
       mainBackdropKey: _personBackdropKey,
       seerrAvailable: _seerrAvailable,
       personCardBackdrops: _personCardBackdrops,
+      selectedMediaSourceId: widget.selectedMediaSourceId,
     );
     for (final card in cards) {
       _cardFocusNodes.putIfAbsent(
@@ -1126,10 +1261,12 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
   String? _cardFallbackImageUrl(AggregatedItem item) {
     final tags = item.backdropImageTags;
     if (tags.isEmpty) return widget.backdropUrl.value;
+    final index = tags.length > 1 ? 1 : 0;
     return _vm.imageApi.getBackdropImageUrl(
       item.id,
       maxWidth: 960,
-      tag: tags.length > 1 ? tags[1] : tags.first,
+      index: index,
+      tag: tags[index],
     );
   }
 
@@ -1144,6 +1281,7 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
             math.max(120.0, MediaQuery.sizeOf(context).height * 0.28),
           )
         : 150.0;
+    final cardWidth = cardHeight * (16 / 9);
 
     Widget cardAt(int i) => SpotlightSummaryCard(
       title: cards[i].title,
@@ -1158,35 +1296,46 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
 
     final Widget band;
     if (_landscape) {
-      band = LayoutBuilder(
-        builder: (context, constraints) {
-          final maxCardWidth = cardHeight * (16 / 9);
-          final cardWidth = math.max(
-            0.0,
-            math.min(
-              maxCardWidth,
-              (constraints.maxWidth - (cards.length - 1) * 16) / cards.length,
-            ),
-          );
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < cards.length; i++) ...[
-                if (i > 0) const SizedBox(width: 16),
-                SizedBox(
-                  width: cardWidth,
-                  height: cardHeight,
-                  child: cardAt(i),
-                ),
+      band = SizedBox(
+        height: cardHeight,
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(
+            scrollbars: false,
+            dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.trackpad,
+              PointerDeviceKind.stylus,
+            },
+          ),
+          child: SingleChildScrollView(
+            controller: _cardsScrollController,
+            scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (var i = 0; i < cards.length; i++) ...[
+                  if (i > 0) const SizedBox(width: 16),
+                  SizedBox(
+                    width: cardWidth,
+                    height: cardHeight,
+                    child: cardAt(i),
+                  ),
+                ],
               ],
-            ],
-          );
-        },
+            ),
+          ),
+        ),
       );
     } else if (cards.length == 1) {
       band = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SizedBox(height: cardHeight, child: cardAt(0)),
+        child: SizedBox(
+          width: cardWidth,
+          height: cardHeight,
+          child: cardAt(0),
+        ),
       );
     } else {
       // A portrait phone would squeeze five cards into ~60px each, so the
@@ -1194,13 +1343,25 @@ class _SpotlightDetailContentState extends State<SpotlightDetailContent> {
       // edges like the home rows.
       band = SizedBox(
         height: cardHeight,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          clipBehavior: Clip.none,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          itemCount: cards.length,
-          separatorBuilder: (_, _) => const SizedBox(width: 12),
-          itemBuilder: (_, i) => SizedBox(width: 250, child: cardAt(i)),
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(
+            scrollbars: false,
+            dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.trackpad,
+              PointerDeviceKind.stylus,
+            },
+          ),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: cards.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
+            itemBuilder: (_, i) =>
+                SizedBox(width: cardWidth, child: cardAt(i)),
+          ),
         ),
       );
     }

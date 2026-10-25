@@ -1,26 +1,43 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:media_kit/media_kit.dart';
 
-/// YouTube stream resolver with multi-strategy fallback.
-/// Tries Innertube → Piped → Invidious fallback.
-/// Returns a direct streamable URL or null if resolution fails.
+class YouTubeStream {
+  final String url;
+
+  /// The trailer's own soundtrack language when YouTube lists machine dubbed
+  /// ones beside it. A manifest flags none of them as the default, so a player
+  /// left to choose takes the first, which is usually a dub.
+  final String? audioLanguage;
+
+  const YouTubeStream(this.url, {this.audioLanguage});
+}
+
+typedef YouTubeVideoDetails = ({
+  String? title,
+  Duration? length,
+  String? channel,
+});
+
+/// Resolves a YouTube trailer through YouTube's own player API, asked as the
+/// Vision Pro app first for a manifest with every resolution in it, then as the
+/// Android app, whose muxed file stops at 360p.
 class YouTubeStreamResolver {
   static const _resolveTimeout = Duration(seconds: 8);
   static const _requestTimeout = Duration(seconds: 5);
-  static final Dio _dio = Dio();
+  static Dio _dio = Dio();
 
-  static const _pipedBases = [
-    'https://pipedapi.kavin.rocks',
-    'https://pipedapi.moomoo.me',
-  ];
-  static const _invidiousBases = [
-    'https://invidious.fdn.fr',
-    'https://invidious.privacyredirect.com',
-    'https://invidious.projectsegfau.lt',
-  ];
+  /// YouTube's visitor id outlives a single lookup, so the one it last handed
+  /// over is kept.
+  static String? _visitorData;
 
-  static const _firefoxUa =
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) '
-      'Gecko/20100101 Firefox/140.0';
+  @visibleForTesting
+  static void setDioForTesting(Dio dio) {
+    _dio = dio;
+    _visitorData = null;
+    _searches.clear();
+    _details.clear();
+  }
 
   static const _youtubeOrigin = 'https://www.youtube.com';
   static const _youtubeReferer = 'https://www.youtube.com/';
@@ -109,153 +126,188 @@ class YouTubeStreamResolver {
     return null;
   }
 
-  /// Resolves a YouTube video ID to a direct streamable URL.
+  /// Resolves a YouTube video ID to a streamable URL.
   /// Returns null if resolution fails or times out.
-  static Future<String?> resolve(String videoId) async {
+  static Future<YouTubeStream?> resolve(String videoId) async {
     try {
-      return await _doResolve(videoId)
+      return await _tryInnertube(videoId)
           .timeout(_resolveTimeout, onTimeout: () => null);
     } catch (_) {
       return null;
     }
   }
 
-  /// Resolves a direct playable stream URL from any trailer URL.
+  /// Resolves a playable stream from any trailer URL.
   ///
-  /// For YouTube URLs this resolves to a direct stream URL.
+  /// For YouTube URLs this resolves to a stream URL.
   /// For non-YouTube URLs this returns the original URL.
-  static Future<String?> resolveFromUrl(String trailerUrl) async {
+  static Future<YouTubeStream?> resolveFromUrl(String trailerUrl) async {
     final videoId = extractVideoId(trailerUrl);
     if (videoId == null) {
-      return trailerUrl;
+      return YouTubeStream(trailerUrl);
     }
     return resolve(videoId);
   }
 
-  static Future<String?> _doResolve(String videoId) async {
-    final innertube = await _tryInnertube(videoId);
-    if (innertube != null) return innertube;
+  static final _searches = <String, Future<String?>>{};
 
-    for (final base in _pipedBases) {
-      final piped = await _tryPiped(videoId, base);
-      if (piped != null) return piped;
+  /// A YouTube link to the top search hit for [title]'s trailer, for a server
+  /// that keeps no trailer links of its own. Asked as the web client, whose
+  /// top hit is usually the studio's own upload. Kept per title, since the
+  /// media bar comes back to the same slides, but a failed search isn't kept
+  /// so the next try asks again.
+  static Future<String?> searchTrailer(String title, {int? year}) {
+    final query = [title, ?year, 'trailer'].join(' ');
+    return _searches.putIfAbsent(
+      query,
+      () => _searchVideoId(query).then((id) {
+        if (id == null) _searches.remove(query);
+        return id == null ? null : 'https://www.youtube.com/watch?v=$id';
+      }),
+    );
+  }
+
+  static Future<String?> _searchVideoId(String query) async {
+    try {
+      final response = await _dio
+          .post<Map<String, dynamic>>(
+            'https://www.youtube.com/youtubei/v1/search?prettyPrint=false',
+            data: {
+              'context': {
+                'client': {
+                  'clientName': 'WEB',
+                  'clientVersion': '2.20260101.00.00',
+                  'hl': 'en',
+                  'gl': 'US',
+                },
+              },
+              'query': query,
+              // Videos only, leaving out channels and playlists.
+              'params': 'EgIQAQ%3D%3D',
+            },
+            options: Options(
+              sendTimeout: _requestTimeout,
+              receiveTimeout: _requestTimeout,
+              headers: {
+                'Content-Type': 'application/json',
+                'Origin': _youtubeOrigin,
+                'Referer': _youtubeReferer,
+              },
+            ),
+          )
+          .timeout(_resolveTimeout);
+      return firstSearchVideoId(response.data);
+    } catch (_) {
+      return null;
     }
+  }
 
-    for (final base in _invidiousBases) {
-      final invidious = await _tryInvidious(videoId, base);
-      if (invidious != null) return invidious;
+  /// The first video in a search answer, in the order YouTube ranked them.
+  @visibleForTesting
+  static String? firstSearchVideoId(Object? node) {
+    if (node is Map) {
+      final video = node['videoRenderer'];
+      if (video is Map && video['videoId'] is String) {
+        return video['videoId'] as String;
+      }
+      node = node.values;
     }
-
+    if (node is Iterable) {
+      for (final child in node) {
+        if (firstSearchVideoId(child) case final id?) return id;
+      }
+    }
     return null;
   }
 
-  static Future<String?> _tryPiped(String videoId, String baseUrl) async {
+  /// Points mpv at [YouTubeStream.audioLanguage]. mpv keeps the choice across
+  /// loads, so a reused player is cleared when there is no language.
+  static Future<void> preferAudioLanguage(
+    Player player,
+    String? language,
+  ) async {
+    final platform = player.platform;
+    if (platform is! NativePlayer) return;
     try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '$baseUrl/streams/$videoId',
-        options: Options(
-          sendTimeout: _requestTimeout,
-          receiveTimeout: _requestTimeout,
-          headers: {'User-Agent': _firefoxUa},
-        ),
-      );
-
-      final data = response.data;
-      if (data == null) return null;
-
-      final hls = data['hls'] as String?;
-      if (hls != null && hls.isNotEmpty) return hls;
-
-      final videoStreams = (data['videoStreams'] as List?)
-          ?.whereType<Map<String, dynamic>>()
-          .toList();
-      if (videoStreams == null) return null;
-
-      final muxed = videoStreams
-          .where((s) =>
-              (s['videoOnly'] as bool? ?? true) == false &&
-              (s['url'] as String?) != null)
-          .toList();
-
-      return _pickBestUrl(muxed);
-    } catch (_) {
-      return null;
-    }
+      final dynamic native = platform;
+      await Future<void>.value(native.setProperty('alang', language ?? ''));
+    } catch (_) {}
   }
 
-  static Future<String?> _tryInvidious(String videoId, String baseUrl) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '$baseUrl/api/v1/videos/$videoId',
-        options: Options(
-          sendTimeout: _requestTimeout,
-          receiveTimeout: _requestTimeout,
-        ),
-      );
+  static final _details = <String, Future<YouTubeVideoDetails?>>{};
 
-      final data = response.data;
-      if (data == null) return null;
+  /// A video's title, length and channel, for listing it before it plays.
+  /// Kept per video, but a failed lookup isn't kept so the next try asks
+  /// again.
+  static Future<YouTubeVideoDetails?> details(String videoId) =>
+      _details.putIfAbsent(videoId, () async {
+        YouTubeVideoDetails? details;
+        try {
+          details = videoDetailsOf(
+            await _requestPlayerWithVisitor(
+              videoId,
+              _visionOs,
+            ).timeout(_resolveTimeout),
+          );
+        } catch (_) {}
+        if (details == null) _details.remove(videoId);
+        return details;
+      });
 
-      final formatStreams = (data['formatStreams'] as List?)
-          ?.whereType<Map<String, dynamic>>()
-          .where((s) => (s['url'] as String?) != null)
-          .toList();
-
-      if (formatStreams != null && formatStreams.isNotEmpty) {
-        return _pickBestUrl(formatStreams);
-      }
-
-      return null;
-    } catch (_) {
-      return null;
-    }
+  @visibleForTesting
+  static YouTubeVideoDetails? videoDetailsOf(Map<String, dynamic>? data) {
+    final details = data?['videoDetails'];
+    if (details is! Map) return null;
+    final seconds = int.tryParse('${details['lengthSeconds']}');
+    final title = details['title'];
+    final author = details['author'];
+    return (
+      title: title is String && title.isNotEmpty ? title : null,
+      length: seconds == null || seconds <= 0
+          ? null
+          : Duration(seconds: seconds),
+      channel: author is String && author.isNotEmpty ? author : null,
+    );
   }
 
-  static Future<String?> _tryInnertube(String videoId) async {
+  static const _visionOs = _InnertubeClient(
+    name: 'VISIONOS',
+    nameId: '101',
+    version: '1.02',
+    userAgent:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 15_7_3) '
+        'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 '
+        'Safari/605.1.15',
+    needsVisitor: true,
+    extra: {
+      'deviceMake': 'Apple',
+      'deviceModel': 'RealityDevice17,1',
+      'osName': 'visionOS',
+      'osVersion': '26.5.23O471',
+    },
+  );
+
+  /// Turns captions on or off for the next load. media_kit turns on any
+  /// subtitle track it finds, so off has to be asked for outright.
+  static Future<void> showCaptions(
+    Player player,
+    bool show, {
+    String? language,
+  }) async {
+    final platform = player.platform;
+    if (platform is! NativePlayer) return;
+    try {
+      final dynamic native = platform;
+      await Future<void>.value(native.setProperty('sid', show ? 'auto' : 'no'));
+      await Future<void>.value(
+        native.setProperty('slang', show ? language ?? '' : ''),
+      );
+    } catch (_) {}
+  }
+
+  static Future<YouTubeStream?> _tryInnertube(String videoId) async {
     const clients = [
-      _InnertubeClient(
-        name: 'ANDROID_VR',
-        nameId: '28',
-        version: '1.60.19',
-        userAgent:
-            'com.google.android.apps.youtube.vr.oculus/1.60.19 '
-            '(Linux; U; Android 12L; Quest 3 Build/SQ3A.220605.009.A1) gzip',
-        apiKey: 'AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w',
-        platform: 'MOBILE',
-        extra: {
-          'deviceMake': 'Oculus',
-          'deviceModel': 'Quest 3',
-          'osName': 'Android',
-          'osVersion': '12L',
-          'androidSdkVersion': '32',
-        },
-      ),
-      _InnertubeClient(
-        name: 'TVHTML5_SIMPLY_EMBEDDED_PLAYER',
-        nameId: '85',
-        version: '2.0',
-        userAgent:
-            'Mozilla/5.0 (SMART-TV; LINUX; Tizen 6.0) AppleWebKit/538.1 '
-            '(KHTML, like Gecko) Version/6.0 TV Safari/538.1',
-        apiKey: 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
-        platform: 'TV',
-        embedContext: true,
-      ),
-      _InnertubeClient(
-        name: 'IOS',
-        nameId: '5',
-        version: '20.10.4',
-        userAgent:
-            'com.google.ios.youtube/20.10.4 (iPhone16,2; U; CPU iOS 18_3_2 like Mac OS X;)',
-        apiKey: 'AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc',
-        platform: 'MOBILE',
-        extra: {
-          'deviceMake': 'Apple',
-          'deviceModel': 'iPhone16,2',
-          'osName': 'iOS',
-          'osVersion': '18.3.2.22D82',
-        },
-      ),
+      _visionOs,
       _InnertubeClient(
         name: 'ANDROID',
         nameId: '3',
@@ -272,57 +324,16 @@ class YouTubeStreamResolver {
           'androidSdkVersion': '30',
         },
       ),
-      _InnertubeClient(
-        name: 'WEB',
-        nameId: '1',
-        version: '2.20250312.04.00',
-        userAgent: _firefoxUa,
-        apiKey: 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
-        platform: 'DESKTOP',
-      ),
     ];
 
     for (final client in clients) {
       try {
-        final response = await _dio.post<Map<String, dynamic>>(
-          'https://www.youtube.com/youtubei/v1/player?key=${client.apiKey}&prettyPrint=false',
-          data: {
-            'videoId': videoId,
-            'context': {
-              'client': {
-                'clientName': client.name,
-                'clientVersion': client.version,
-                'hl': 'en',
-                'gl': 'US',
-                'platform': client.platform,
-                ...client.extra,
-              },
-              if (client.embedContext)
-                'thirdParty': {'embedUrl': _youtubeReferer},
-            },
-            'contentCheckOk': true,
-            'racyCheckOk': true,
-          },
-          options: Options(
-            sendTimeout: _requestTimeout,
-            receiveTimeout: _requestTimeout,
-            headers: {
-              'Content-Type': 'application/json',
-              'User-Agent': client.userAgent,
-              'Origin': _youtubeOrigin,
-              'Referer': _youtubeReferer,
-              'X-YouTube-Client-Name': client.nameId,
-              'X-YouTube-Client-Version': client.version,
-            },
-          ),
-        );
-
-        final data = response.data;
+        final data = await _requestPlayerWithVisitor(videoId, client);
         if (data == null) continue;
 
-        final url = _extractInnertubeStreamUrl(data);
+        final url = extractInnertubeStreamUrl(data);
         if (url != null) {
-          return url;
+          return YouTubeStream(url, audioLanguage: originalAudioLanguage(data));
         }
       } catch (_) {}
     }
@@ -330,7 +341,137 @@ class YouTubeStreamResolver {
     return null;
   }
 
-  static String? _extractInnertubeStreamUrl(Map<String, dynamic> playerResponse) {
+  /// A client that wants a visitor id and has none kept gets turned away with a
+  /// fresh one, so it asks once more with that. A kept id YouTube stops taking
+  /// is dropped, so the next lookup starts over.
+  static Future<Map<String, dynamic>?> _requestPlayerWithVisitor(
+    String videoId,
+    _InnertubeClient client,
+  ) async {
+    final sent = client.needsVisitor ? _visitorData : null;
+    final data = await _requestPlayer(videoId, client, sent);
+    if (!client.needsVisitor) return data;
+
+    final fresh = freshVisitorData(data, sent);
+    if (fresh == null) {
+      if (isStaleVisitor(data, sent)) _visitorData = null;
+      return data;
+    }
+    _visitorData = fresh;
+    return _requestPlayer(videoId, client, fresh);
+  }
+
+  static Future<Map<String, dynamic>?> _requestPlayer(
+    String videoId,
+    _InnertubeClient client,
+    String? visitor,
+  ) async {
+    final key = client.apiKey == null ? '' : 'key=${client.apiKey}&';
+    final response = await _dio.post<Map<String, dynamic>>(
+      'https://www.youtube.com/youtubei/v1/player?${key}prettyPrint=false',
+      data: buildPlayerRequest(
+        videoId,
+        clientName: client.name,
+        clientVersion: client.version,
+        platform: client.platform,
+        extra: client.extra,
+        visitorData: visitor,
+      ),
+      options: Options(
+        sendTimeout: _requestTimeout,
+        receiveTimeout: _requestTimeout,
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': client.userAgent,
+          'Origin': _youtubeOrigin,
+          'Referer': _youtubeReferer,
+          'X-YouTube-Client-Name': client.nameId,
+          'X-YouTube-Client-Version': client.version,
+          'X-Goog-Visitor-Id': ?visitor,
+        },
+      ),
+    );
+    return response.data;
+  }
+
+  @visibleForTesting
+  static Map<String, dynamic> buildPlayerRequest(
+    String videoId, {
+    required String clientName,
+    required String clientVersion,
+    String? platform,
+    Map<String, Object?> extra = const {},
+    String? visitorData,
+  }) {
+    return {
+      'videoId': videoId,
+      'context': {
+        'client': {
+          'clientName': clientName,
+          'clientVersion': clientVersion,
+          'hl': 'en',
+          'gl': 'US',
+          'platform': ?platform,
+          'visitorData': ?visitorData,
+          ...extra,
+        },
+      },
+      'contentCheckOk': true,
+      'racyCheckOk': true,
+    };
+  }
+
+  /// Every answer carries a visitor id, even one that turned the request away
+  /// for lacking it, so asking again is only worth it when the id handed back
+  /// isnt the one that was sent.
+  @visibleForTesting
+  static String? freshVisitorData(
+    Map<String, dynamic>? playerResponse,
+    String? sent,
+  ) {
+    if (playerResponse == null) return null;
+    final playability =
+        playerResponse['playabilityStatus'] as Map<String, dynamic>?;
+    if (playability?['status'] == 'OK') return null;
+    final context =
+        playerResponse['responseContext'] as Map<String, dynamic>?;
+    final fresh = context?['visitorData'] as String?;
+    if (fresh == null || fresh.isEmpty || fresh == sent) return null;
+    return fresh;
+  }
+
+  /// YouTube turned the sent id away and handed the same one back, so asking
+  /// again with it gets nowhere.
+  @visibleForTesting
+  static bool isStaleVisitor(Map<String, dynamic>? playerResponse, String? sent) {
+    if (sent == null || playerResponse == null) return false;
+    final playability =
+        playerResponse['playabilityStatus'] as Map<String, dynamic>?;
+    if (playability?['status'] != 'LOGIN_REQUIRED') return false;
+    final context =
+        playerResponse['responseContext'] as Map<String, dynamic>?;
+    return context?['visitorData'] == sent;
+  }
+
+  /// The language YouTube flags as the trailer's own soundtrack, or null when
+  /// it lists no dubs beside it.
+  @visibleForTesting
+  static String? originalAudioLanguage(Map<String, dynamic> playerResponse) {
+    final streamingData =
+        playerResponse['streamingData'] as Map<String, dynamic>?;
+    final formats = streamingData?['adaptiveFormats'] as List?;
+    if (formats == null) return null;
+    for (final format in formats.whereType<Map<String, dynamic>>()) {
+      final track = format['audioTrack'] as Map<String, dynamic>?;
+      if (track == null || track['audioIsDefault'] != true) continue;
+      final language = (track['id'] as String? ?? '').split('.').first;
+      return language.isEmpty ? null : language;
+    }
+    return null;
+  }
+
+  @visibleForTesting
+  static String? extractInnertubeStreamUrl(Map<String, dynamic> playerResponse) {
     final playability = playerResponse['playabilityStatus'] as Map<String, dynamic>?;
     final status = playability?['status'] as String?;
     if (status != null && status != 'OK') {
@@ -386,28 +527,15 @@ class YouTubeStreamResolver {
 
   static int _streamScore(Map<String, dynamic> stream) {
     final mime = (stream['mimeType'] as String? ?? '').toLowerCase();
-    final container = (stream['container'] as String? ?? '').toLowerCase();
     final quality = _qualityFromStream(stream);
-
-    final hasAudio = _streamHasAudio(stream);
-    final isMp4 = mime.contains('video/mp4') || container == 'mp4';
-    final isH264 = mime.contains('avc1') || mime.contains('h264');
-    final isVp9 = mime.contains('vp9') || mime.contains('vp09');
-    final isAv1 = mime.contains('av01') || mime.contains('av1');
-    final isHls = (stream['hls'] as bool? ?? false) ||
-        (stream['isHLS'] as bool? ?? false);
 
     var score = 0;
 
-    if (hasAudio) score += 5000;
+    if (mime.contains('video/mp4')) score += 2500;
+    if (mime.contains('avc1')) score += 2500;
 
-    if (isMp4) score += 2500;
-    if (isH264) score += 2500;
-
-    if (isVp9) score -= 1500;
-    if (isAv1) score -= 2500;
-
-    if (isHls) score += 500;
+    if (mime.contains('vp9') || mime.contains('vp09')) score -= 1500;
+    if (mime.contains('av01')) score -= 2500;
 
     final clampedQuality = quality > 0 ? quality.clamp(144, 1080) : 480;
     final qualityDelta = (clampedQuality - 480).abs().toInt();
@@ -417,45 +545,38 @@ class YouTubeStreamResolver {
   }
 
   static int _qualityFromStream(Map<String, dynamic> stream) {
-    final qualityStr = (stream['quality'] as String? ??
-            stream['qualityLabel'] as String? ??
-            '')
-        .split(RegExp(r'[p@]'))
-        .first
-        .trim();
-    return int.tryParse(qualityStr) ?? 0;
+    final label = stream['qualityLabel'] as String? ?? '';
+    return int.tryParse(label.split(RegExp(r'[p@]')).first.trim()) ?? 0;
   }
 
   static bool _streamHasAudio(Map<String, dynamic> stream) {
     final mime = (stream['mimeType'] as String? ?? '').toLowerCase();
-    final audioCodec = (stream['audioCodec'] as String? ?? '').toLowerCase();
-    return ((stream['videoOnly'] as bool?) == false) ||
-        mime.contains('mp4a') ||
+    return mime.contains('mp4a') ||
         mime.contains('opus') ||
         mime.contains('vorbis') ||
-        mime.contains('audio') ||
-        audioCodec.isNotEmpty;
+        mime.contains('audio');
   }
 }
 
+/// A client with [needsVisitor] turns away a request that carries no visitor id.
 class _InnertubeClient {
   final String name;
   final String nameId;
   final String version;
   final String userAgent;
-  final String apiKey;
-  final String platform;
+  final String? apiKey;
+  final String? platform;
   final Map<String, Object?> extra;
-  final bool embedContext;
+  final bool needsVisitor;
 
   const _InnertubeClient({
     required this.name,
     required this.nameId,
     required this.version,
     required this.userAgent,
-    required this.apiKey,
-    required this.platform,
+    this.apiKey,
+    this.platform,
     this.extra = const {},
-    this.embedContext = false,
+    this.needsVisitor = false,
   });
 }

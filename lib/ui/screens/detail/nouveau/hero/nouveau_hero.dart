@@ -7,6 +7,7 @@ import '../../../../../data/viewmodels/item_detail_view_model.dart';
 import '../../../../../data/viewmodels/seerr_media_detail_view_model.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../../preference/detail_metadata_layout.dart';
+import '../../../../../preference/detail_section_layout.dart';
 import '../../../../../preference/user_preferences.dart';
 import '../../../../../util/overview_text.dart';
 import '../../../../../util/playback_time_label.dart';
@@ -15,6 +16,7 @@ import '../../../../widgets/navigation_layout.dart';
 import '../../../../widgets/offline_aware_image.dart';
 import '../../../../widgets/rating_display.dart';
 import '../../../../widgets/seerr/seerr_item_status.dart';
+import '../../../../widgets/live_tv/incomplete_recording.dart';
 import '../../../../widgets/seerr/seerr_status_dot.dart';
 import '../../../../widgets/seerr/seerr_status_pill.dart';
 import '../../detail_layout_metrics.dart';
@@ -24,6 +26,9 @@ class NouveauHero extends StatefulWidget {
   final AggregatedItem item;
   final ItemDetailViewModel viewModel;
   final UserPreferences prefs;
+
+  /// A hidden logo falls back to the title text.
+  final DetailSectionVisibility visibility;
   final String? selectedMediaSourceId;
   final ValueChanged<String?> onSelectedMediaSourceChanged;
   final FocusNode? initialFocusNode;
@@ -38,6 +43,7 @@ class NouveauHero extends StatefulWidget {
     required this.item,
     required this.viewModel,
     required this.prefs,
+    this.visibility = DetailSectionVisibility.all,
     required this.selectedMediaSourceId,
     required this.onSelectedMediaSourceChanged,
     required this.initialFocusNode,
@@ -356,7 +362,10 @@ class NouveauHeroState extends State<NouveauHero> {
       letterSpacing: -0.10,
     );
 
-    final logoUrl = logoTag != null && logoId != null
+    final logoUrl =
+        widget.visibility.shows(DetailSection.logo) &&
+            logoTag != null &&
+            logoId != null
         ? viewModel.imageApi.getLogoImageUrl(
             logoId,
             maxWidth: logoMaxWidth.round(),
@@ -483,6 +492,9 @@ class NouveauHeroState extends State<NouveauHero> {
     );
   }
 
+  Widget _incompleteLine() =>
+      IncompleteRecordingDetailLine(itemId: widget.viewModel.item?.id ?? '');
+
   Widget _buildPhoneContent({
     required BuildContext context,
     required Widget branding,
@@ -550,6 +562,8 @@ class NouveauHeroState extends State<NouveauHero> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: metadata,
           ),
+
+        _incompleteLine(),
 
         if (ratingsRow != null) ...[
           const SizedBox(height: 12),
@@ -660,6 +674,7 @@ class NouveauHeroState extends State<NouveauHero> {
               children: metadata,
             ),
 
+          _incompleteLine(),
         ],
       ),
     );

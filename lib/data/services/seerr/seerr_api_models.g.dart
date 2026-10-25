@@ -145,11 +145,16 @@ SeerrDownloadingItem _$SeerrDownloadingItemFromJson(
 ) => SeerrDownloadingItem(
   size: (json['size'] as num?)?.toInt(),
   sizeLeft: (json['sizeLeft'] as num?)?.toInt(),
+  downloadId: json['downloadId'] as String?,
 );
 
 Map<String, dynamic> _$SeerrDownloadingItemToJson(
   SeerrDownloadingItem instance,
-) => <String, dynamic>{'size': instance.size, 'sizeLeft': instance.sizeLeft};
+) => <String, dynamic>{
+  'size': instance.size,
+  'sizeLeft': instance.sizeLeft,
+  'downloadId': instance.downloadId,
+};
 
 SeerrExternalIds _$SeerrExternalIdsFromJson(Map<String, dynamic> json) =>
     SeerrExternalIds(
@@ -173,6 +178,7 @@ SeerrUser _$SeerrUserFromJson(Map<String, dynamic> json) => SeerrUser(
   avatar: json['avatar'] as String?,
   apiKey: json['apiKey'] as String?,
   permissions: (json['permissions'] as num?)?.toInt(),
+  streamingRegion: _readUserSetting(json, 'streamingRegion') as String?,
 );
 
 Map<String, dynamic> _$SeerrUserToJson(SeerrUser instance) => <String, dynamic>{
@@ -183,6 +189,7 @@ Map<String, dynamic> _$SeerrUserToJson(SeerrUser instance) => <String, dynamic>{
   'avatar': instance.avatar,
   'apiKey': instance.apiKey,
   'permissions': instance.permissions,
+  'streamingRegion': instance.streamingRegion,
 };
 
 SeerrDiscoverPage _$SeerrDiscoverPageFromJson(Map<String, dynamic> json) =>
@@ -307,6 +314,11 @@ SeerrMovieDetails _$SeerrMovieDetailsFromJson(
   collection: json['collection'] == null
       ? null
       : SeerrCollectionRef.fromJson(json['collection'] as Map<String, dynamic>),
+  watchProviders:
+      (json['watchProviders'] as List<dynamic>?)
+          ?.map((e) => SeerrWatchRegion.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$SeerrMovieDetailsToJson(SeerrMovieDetails instance) =>
@@ -332,6 +344,7 @@ Map<String, dynamic> _$SeerrMovieDetailsToJson(SeerrMovieDetails instance) =>
       'keywords': instance.keywords,
       'relatedVideos': instance.relatedVideos,
       'collection': instance.collection,
+      'watchProviders': instance.watchProviders,
     };
 
 SeerrTvDetails _$SeerrTvDetailsFromJson(Map<String, dynamic> json) =>
@@ -387,6 +400,11 @@ SeerrTvDetails _$SeerrTvDetailsFromJson(Map<String, dynamic> json) =>
               ?.map((e) => SeerrSeason.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      watchProviders:
+          (json['watchProviders'] as List<dynamic>?)
+              ?.map((e) => SeerrWatchRegion.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$SeerrTvDetailsToJson(SeerrTvDetails instance) =>
@@ -414,6 +432,7 @@ Map<String, dynamic> _$SeerrTvDetailsToJson(SeerrTvDetails instance) =>
       'keywords': instance.keywords,
       'relatedVideos': instance.relatedVideos,
       'seasons': instance.seasons,
+      'watchProviders': instance.watchProviders,
     };
 
 SeerrGenre _$SeerrGenreFromJson(Map<String, dynamic> json) => SeerrGenre(
@@ -453,6 +472,38 @@ SeerrStudio _$SeerrStudioFromJson(Map<String, dynamic> json) => SeerrStudio(
 );
 
 Map<String, dynamic> _$SeerrStudioToJson(SeerrStudio instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'logoPath': instance.logoPath,
+    };
+
+SeerrWatchRegion _$SeerrWatchRegionFromJson(Map<String, dynamic> json) =>
+    SeerrWatchRegion(
+      region: json['iso_3166_1'] as String,
+      flatrate:
+          (json['flatrate'] as List<dynamic>?)
+              ?.map(
+                (e) => SeerrWatchProvider.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$SeerrWatchRegionToJson(SeerrWatchRegion instance) =>
+    <String, dynamic>{
+      'iso_3166_1': instance.region,
+      'flatrate': instance.flatrate,
+    };
+
+SeerrWatchProvider _$SeerrWatchProviderFromJson(Map<String, dynamic> json) =>
+    SeerrWatchProvider(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
+      logoPath: json['logoPath'] as String?,
+    );
+
+Map<String, dynamic> _$SeerrWatchProviderToJson(SeerrWatchProvider instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

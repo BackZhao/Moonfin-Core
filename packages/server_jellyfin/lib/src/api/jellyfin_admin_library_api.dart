@@ -19,8 +19,10 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
     required String name,
     String? collectionType,
     List<String>? paths,
+    Map<String, dynamic>? libraryOptions,
     bool refreshLibrary = false,
   }) async {
+    final hasPaths = paths != null && paths.isNotEmpty;
     await _dio.post(
       '/Library/VirtualFolders',
       queryParameters: {
@@ -28,8 +30,18 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
         'collectionType': ?collectionType,
         'refreshLibrary': refreshLibrary,
       },
+      // The server reads a new library's folders from its library options and
+      // ignores any other body field. Its query list splits on commas, which
+      // breaks a folder with one in its name.
       data: {
-        'Paths': ?paths,
+        if (libraryOptions != null || hasPaths)
+          'LibraryOptions': {
+            ...?libraryOptions,
+            if (hasPaths)
+              'PathInfos': [
+                for (final path in paths) {'Path': path},
+              ],
+          },
       },
     );
   }
@@ -38,6 +50,7 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
   Future<void> removeVirtualFolder(
     String name, {
     bool refreshLibrary = false,
+    String? libraryId,
   }) async {
     await _dio.delete(
       '/Library/VirtualFolders',
@@ -53,6 +66,7 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
     String name,
     String newName, {
     bool refreshLibrary = false,
+    String? libraryId,
   }) async {
     await _dio.post(
       '/Library/VirtualFolders/Name',
@@ -65,9 +79,15 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
   }
 
   @override
-  Future<void> addMediaPath(String libraryName, String path) async {
+  Future<void> addMediaPath(
+    String libraryName,
+    String path, {
+    bool refreshLibrary = false,
+    String? libraryId,
+  }) async {
     await _dio.post(
       '/Library/VirtualFolders/Paths',
+      queryParameters: {'refreshLibrary': refreshLibrary},
       data: {
         'Name': libraryName,
         'Path': path,
@@ -78,8 +98,9 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
   @override
   Future<void> updateMediaPath(
     String libraryName,
-    Map<String, dynamic> pathInfo,
-  ) async {
+    Map<String, dynamic> pathInfo, {
+    String? libraryId,
+  }) async {
     await _dio.post(
       '/Library/VirtualFolders/Paths/Update',
       data: {
@@ -94,6 +115,7 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
     String libraryName,
     String path, {
     bool refreshLibrary = false,
+    String? libraryId,
   }) async {
     await _dio.delete(
       '/Library/VirtualFolders/Paths',
@@ -131,8 +153,11 @@ class JellyfinAdminLibraryApi implements AdminLibraryApi {
   }
 
   @override
-  Future<List<VirtualFolderInfo>> getMediaFolders() async {
-    final response = await _dio.get('/Library/MediaFolders');
+  Future<List<VirtualFolderInfo>> getMediaFolders({bool? isHidden}) async {
+    final response = await _dio.get(
+      '/Library/MediaFolders',
+      queryParameters: {'isHidden': ?isHidden},
+    );
     final data = response.data as Map<String, dynamic>;
     return (data['Items'] as List<dynamic>?)
             ?.map(

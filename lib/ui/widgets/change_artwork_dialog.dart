@@ -11,6 +11,7 @@ import '../../l10n/app_localizations.dart';
 import '../util/error_message.dart';
 import '../../util/focus/key_event_utils.dart';
 import '../../util/home_refresh_helper.dart';
+import '../../util/image_mime.dart';
 import '../../util/platform_detection.dart';
 import '../../auth/repositories/user_repository.dart';
 import '../../auth/repositories/session_repository.dart';
@@ -486,8 +487,23 @@ class _ChangeArtworkDialogState extends State<ChangeArtworkDialog> {
 
   String _getCurrentImageUrl(String category, String tag, {int? imageIndex}) {
     final client = GetIt.instance<MediaServerClient>();
-    final indexParam = imageIndex != null ? '&imageIndex=$imageIndex' : '';
-    return '${client.baseUrl}/Items/${_item.id}/Images/$category?tag=$tag&maxWidth=300$indexParam';
+    final images = client.imageApi;
+    final id = _item.id;
+    return switch (category) {
+      'Primary' => images.getPrimaryImageUrl(id, maxWidth: 300, tag: tag),
+      'Backdrop' => images.getBackdropImageUrl(
+        id,
+        maxWidth: 300,
+        index: imageIndex,
+        tag: tag,
+      ),
+      'Logo' => images.getLogoImageUrl(id, maxWidth: 300, tag: tag),
+      'Banner' => images.getBannerImageUrl(id, maxWidth: 300, tag: tag),
+      'Thumb' => images.getThumbImageUrl(id, maxWidth: 300, tag: tag),
+      _ =>
+        '${client.baseUrl}/Items/$id/Images/$category?tag=$tag&maxWidth=300'
+            '${imageIndex != null ? '&imageIndex=$imageIndex' : ''}',
+    };
   }
 
   Future<void> _checkLibrariesWriteAccess() async {
@@ -878,6 +894,16 @@ class _ChangeArtworkDialogState extends State<ChangeArtworkDialog> {
       if (result == null || result.files.isEmpty) return;
 
       final file = result.files.first;
+      // The server stores the image under this type.
+      final mimeType = imageContentTypeForFileName(file.name);
+      if (mimeType == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.adminUnsupportedImageFormat)),
+          );
+        }
+        return;
+      }
       var fileBytes = file.bytes;
 
       if (fileBytes == null && file.path != null) {
@@ -891,11 +917,6 @@ class _ChangeArtworkDialogState extends State<ChangeArtworkDialog> {
       setState(() {
         _actionInProgress.add(category);
       });
-
-      final extension = file.extension?.toLowerCase() ?? 'jpg';
-      final mimeType = extension == 'png'
-          ? 'image/png'
-          : (extension == 'webp' ? 'image/webp' : 'image/jpeg');
 
       final client = GetIt.instance<MediaServerClient>();
       await client.adminItemsApi.uploadItemImage(
@@ -1057,8 +1078,6 @@ class _ChangeArtworkDialogState extends State<ChangeArtworkDialog> {
       borderRadius: 4,
       disableScale: true,
       useBackgroundFocus: true,
-      focusColor: AppColorScheme.accent,
-      suppressFocusGlow: true,
       onSelect: () => _navigateToItem(targetId),
       onNavigateLeft: onNavigateLeft,
       onNavigateRight: onNavigateRight,

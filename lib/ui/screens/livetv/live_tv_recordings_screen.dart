@@ -4,15 +4,19 @@ import 'package:go_router/go_router.dart';
 import 'package:moonfin_design/moonfin_design.dart';
 import 'package:server_core/server_core.dart';
 
+import '../../../data/models/live_tv_recording_state.dart';
 import '../../../data/viewmodels/recordings_view_model.dart';
 import '../../../data/viewmodels/schedule_view_model.dart';
 import '../../../data/viewmodels/series_recordings_view_model.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../ui/mixins/focus_state_mixin.dart';
+import '../../../util/focus/dpad_keys.dart';
 import '../../navigation/destinations.dart';
 import '../../widgets/adaptive/adaptive_dialog.dart';
 import '../../widgets/focus/request_initial_focus.dart';
+import '../../widgets/live_tv/incomplete_recording.dart';
+import '../../widgets/live_tv/series_recording_dialog.dart';
 import '../../widgets/overlay_sheet.dart';
 import '../../widgets/offline_aware_image.dart';
 
@@ -43,14 +47,26 @@ class _LiveTvRecordingsScreenState extends State<LiveTvRecordingsScreen> {
     _vm.load();
     _scheduleVm.load();
     _seriesVm.load();
+    liveTvRecordingRevision.addListener(_onRecordingsChanged);
   }
 
   void _onChanged() {
     if (mounted) setState(() {});
   }
 
+  /// Cancelling a series rule also cancels its scheduled showings, and a rule
+  /// can be added or changed from a screen opened over this one, so every tab
+  /// re-reads rather than keep the old list.
+  void _onRecordingsChanged() {
+    if (!mounted) return;
+    _scheduleVm.refresh();
+    _seriesVm.refresh();
+    _vm.refreshScheduled();
+  }
+
   @override
   void dispose() {
+    liveTvRecordingRevision.removeListener(_onRecordingsChanged);
     _vm.removeListener(_onChanged);
     _scheduleVm.removeListener(_onChanged);
     _seriesVm.removeListener(_onChanged);
@@ -106,28 +122,44 @@ class _LiveTvRecordingsScreenState extends State<LiveTvRecordingsScreen> {
               color: Colors.white,
             ),
           ),
-          const Spacer(),
-          _RecordingsPillButton(
-            label: '${l10n.recordings} ($_recordingsCount)',
-            isActive: _activeTab == _RecordingsTab.recordings,
-            onPressed: () => setState(() => _activeTab = _RecordingsTab.recordings),
-          ),
-          const SizedBox(width: 8),
-          _RecordingsPillButton(
-            label: '${l10n.schedule} ($_scheduledCount)',
-            isActive: _activeTab == _RecordingsTab.scheduled,
-            onPressed: () => setState(() => _activeTab = _RecordingsTab.scheduled),
-          ),
-          const SizedBox(width: 8),
-          _RecordingsPillButton(
-            label: '${l10n.seriesRecordings} (${_seriesVm.seriesTimers.length})',
-            isActive: _activeTab == _RecordingsTab.series,
-            onPressed: () => setState(() => _activeTab = _RecordingsTab.series),
-          ),
-          const SizedBox(width: 12),
-          _RecordingsPillButton(
-            icon: Icons.arrow_back,
-            onPressed: () => Navigator.of(context).maybePop(),
+          const SizedBox(width: 16),
+          // A phone is too narrow for every pill beside the title, so there
+          // they wrap onto another line instead of running off the edge.
+          Expanded(
+            child: Wrap(
+              alignment: WrapAlignment.end,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _RecordingsPillButton(
+                  label: '${l10n.recordings} ($_recordingsCount)',
+                  isActive: _activeTab == _RecordingsTab.recordings,
+                  onPressed: () =>
+                      setState(() => _activeTab = _RecordingsTab.recordings),
+                ),
+                _RecordingsPillButton(
+                  label: '${l10n.schedule} ($_scheduledCount)',
+                  isActive: _activeTab == _RecordingsTab.scheduled,
+                  onPressed: () =>
+                      setState(() => _activeTab = _RecordingsTab.scheduled),
+                ),
+                _RecordingsPillButton(
+                  label:
+                      '${l10n.seriesRecordings} (${_seriesVm.seriesTimers.length})',
+                  isActive: _activeTab == _RecordingsTab.series,
+                  onPressed: () =>
+                      setState(() => _activeTab = _RecordingsTab.series),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 4),
+                  child: _RecordingsPillButton(
+                    icon: Icons.arrow_back,
+                    onPressed: () => Navigator.of(context).maybePop(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -249,7 +281,7 @@ class _LiveTvRecordingsScreenState extends State<LiveTvRecordingsScreen> {
         _SeriesTimerRow(
           timers: _seriesVm.seriesTimers,
           onItemFocused: _seriesVm.setFocusedTimer,
-          onItemTap: (timer) => _cancelSeriesTimer(timer),
+          onItemTap: (timer) => _showSeriesTimerOptions(timer),
         ),
       ],
     );
@@ -289,6 +321,43 @@ class _LiveTvRecordingsScreenState extends State<LiveTvRecordingsScreen> {
           );
         }
       }
+    }
+  }
+
+  Future<void> _showSeriesTimerOptions(SeriesTimerItem timer) async {
+    final option = await showSeriesTimerOptionsDialog(
+      context: context,
+      name: timer.name,
+      subtitle: timer.subtitle,
+    );
+    if (!mounted) return;
+    switch (option) {
+      case SeriesTimerOption.changeSettings:
+        await _changeSeriesTimer(timer);
+      case SeriesTimerOption.cancel:
+        await _cancelSeriesTimer(timer);
+      case null:
+        break;
+    }
+  }
+
+  Future<void> _changeSeriesTimer(SeriesTimerItem timer) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final changed = await changeSeriesRecordingEpisodes(
+        context: context,
+        liveTvApi: GetIt.instance<MediaServerClient>().liveTvApi,
+        seriesTimerId: timer.id,
+      );
+      if (!changed || !mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.seriesRecordingUpdated)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.failedToUpdateSeriesRecording)),
+      );
     }
   }
 
@@ -404,6 +473,13 @@ class _SeriesTimerCardState extends State<_SeriesTimerCard> with FocusStateMixin
         onFocusChange: (focused) {
           setFocused(focused);
           if (focused) widget.onFocused();
+        },
+        onKeyEvent: (_, event) {
+          if (isActivateKey(event)) {
+            widget.onTap();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
         },
         child: GestureDetector(
           onTap: widget.onTap,
@@ -628,6 +704,13 @@ class _RecordingCardState extends State<_RecordingCard> with FocusStateMixin {
           setFocused(focused);
           if (focused) widget.onFocused();
         },
+        onKeyEvent: (_, event) {
+          if (isActivateKey(event)) {
+            widget.onTap();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
         child: GestureDetector(
           onTap: widget.onTap,
           child: AnimatedScale(
@@ -655,7 +738,19 @@ class _RecordingCardState extends State<_RecordingCard> with FocusStateMixin {
                             : null,
                       ),
                       clipBehavior: Clip.antiAlias,
-                      child: _buildImage(),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          _buildImage(),
+                          Positioned(
+                            top: 6,
+                            left: 6,
+                            child: IncompleteRecordingBadge(
+                              itemId: widget.item.id,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 5),
                     Text(
