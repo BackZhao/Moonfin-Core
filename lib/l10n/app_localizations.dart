@@ -268,19 +268,19 @@ abstract class AppLocalizations {
   /// **'Subbed/Dubbed'**
   String get animeMarkerSubbedAndDubbed;
 
-  /// Short form of the Subbed badge, used when the server asks for compact anime audio labels
+  /// Short form of the Subbed badge
   ///
   /// In en, this message translates to:
   /// **'Sub'**
   String get animeMarkerSubbedShort;
 
-  /// Short form of the Dubbed badge, used when the server asks for compact anime audio labels
+  /// Short form of the Dubbed badge
   ///
   /// In en, this message translates to:
   /// **'Dub'**
   String get animeMarkerDubbedShort;
 
-  /// Short form of the Subbed/Dubbed badge, used when the server asks for compact anime audio labels
+  /// Short form of the Subbed/Dubbed badge
   ///
   /// In en, this message translates to:
   /// **'Sub/Dub'**
@@ -27177,34 +27177,130 @@ abstract class AppLocalizations {
   /// **'Unable to mark as complete'**
   String get unableToKeepAsComplete;
 
-  /// Record prompt shown when recording a program that is already airing
+  /// Title of the Record prompt for a program that is already airing
   ///
   /// In en, this message translates to:
-  /// **'This program has already started. Also record a later showing?'**
-  String get recordPromptAlreadyStarted;
+  /// **'Record {name}'**
+  String recordPromptTitle(String name);
 
-  /// Record prompt choice: record now and also record a later showing of the same episode
+  /// First line of the Record prompt, saying how long ago the program started
   ///
   /// In en, this message translates to:
-  /// **'Also Record a Later Showing'**
-  String get alsoRecordLaterShowing;
+  /// **'{minutes, plural, =1{This showing started 1 minute ago, so the recording will miss the start.} other{This showing started {minutes} minutes ago, so the recording will miss the start.}}'**
+  String recordPromptStarted(int minutes);
 
-  /// Record prompt choice: only record the program that is already airing
+  /// Record prompt question when a future showing is shown below it
   ///
   /// In en, this message translates to:
-  /// **'Just Record Now'**
-  String get justRecordNow;
+  /// **'Also record the future showing to get a complete recording?'**
+  String get recordPromptAlsoRecordLater;
 
-  /// Snackbar after recording now and asking for a later showing
+  /// Record prompt question when no future showing is known yet and Moonfin will look for one
   ///
   /// In en, this message translates to:
-  /// **'Recording started. A later showing will be recorded too.'**
+  /// **'Also record a future showing automatically once one is found, to get a complete recording?'**
+  String get recordPromptSearchLater;
+
+  /// Label of the Record prompt card for the program that is airing now
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get recordPromptNow;
+
+  /// Label of the Record prompt card for the future showing that would also be recorded
+  ///
+  /// In en, this message translates to:
+  /// **'Future showing'**
+  String get recordPromptLater;
+
+  /// Beside the progress bar on the Record prompt's Now card
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =1{1 min already aired} other{{minutes} min already aired}}'**
+  String recordPromptAired(int minutes);
+
+  /// Caution under the future showing when it has no season and episode numbers to confirm it is the same program
+  ///
+  /// In en, this message translates to:
+  /// **'Matched by title and description only. Check it\'s the same program.'**
+  String get recordPromptUncertainMatch;
+
+  /// Caution under the future showing when its description differs from the program airing now
+  ///
+  /// In en, this message translates to:
+  /// **'The descriptions differ, so this may be a different program.'**
+  String get recordPromptDescriptionsDiffer;
+
+  /// Note under the future showing when its season and episode match the program airing now
+  ///
+  /// In en, this message translates to:
+  /// **'Same episode (S{season}E{episode})'**
+  String recordPromptSameEpisode(int season, int episode);
+
+  /// Note in the future showing's card when a recording is already scheduled for it, by anyone
+  ///
+  /// In en, this message translates to:
+  /// **'Already set to record'**
+  String get recordPromptAlreadyScheduled;
+
+  /// When the future showing airs, used in the Record Now and ... button
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get recordPromptTomorrow;
+
+  /// Record prompt choice: only record the program that is airing now
+  ///
+  /// In en, this message translates to:
+  /// **'Record Now Only'**
+  String get recordNowOnly;
+
+  /// Record prompt choice: record now and the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date
+  ///
+  /// In en, this message translates to:
+  /// **'Record Now and {when}'**
+  String recordNowAnd(String when);
+
+  /// Record prompt choice when no future showing is known yet: record now and let Moonfin find a future showing
+  ///
+  /// In en, this message translates to:
+  /// **'Record Now and Future Showing'**
+  String get recordNowAndLater;
+
+  /// Record prompt choice: skip the airing now and record only the future showing. The placeholder is a time today, Tomorrow, a weekday or a short date
+  ///
+  /// In en, this message translates to:
+  /// **'Record {when} Only'**
+  String recordOnlyLater(String when);
+
+  /// Record prompt choice when no future showing is known yet: skip the airing now and let Moonfin record a future showing
+  ///
+  /// In en, this message translates to:
+  /// **'Record Future Showing Only'**
+  String get recordLaterShowingOnly;
+
+  /// Snackbar after choosing to record only the future showing
+  ///
+  /// In en, this message translates to:
+  /// **'The future showing will be recorded.'**
+  String get laterShowingOnlyRequested;
+
+  /// Snackbar when only the future showing was chosen and asking for it failed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t request the future showing, so nothing will be recorded.'**
+  String get unableToRequestLaterShowingOnly;
+
+  /// Snackbar after recording now and asking for a future showing
+  ///
+  /// In en, this message translates to:
+  /// **'Recording started. A future showing will be recorded too.'**
   String get laterShowingRequested;
 
-  /// Snackbar when the recording started but asking for a later showing failed
+  /// Snackbar when the recording started but asking for a future showing failed
   ///
   /// In en, this message translates to:
-  /// **'Recording started, but couldn\'t request a later showing.'**
+  /// **'Recording started, but couldn\'t request a future showing.'**
   String get unableToRequestLaterShowing;
 
   /// How many trailers the trailer picker lists, shown in its header

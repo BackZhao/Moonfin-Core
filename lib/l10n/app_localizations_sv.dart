@@ -15587,22 +15587,100 @@ class AppLocalizationsSv extends AppLocalizations {
   String get unableToKeepAsComplete => 'Unable to mark as complete';
 
   @override
-  String get recordPromptAlreadyStarted =>
-      'This program has already started. Also record a later showing?';
+  String recordPromptTitle(String name) {
+    return 'Record $name';
+  }
 
   @override
-  String get alsoRecordLaterShowing => 'Also Record a Later Showing';
+  String recordPromptStarted(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other:
+          'This showing started $minutes minutes ago, so the recording will miss the start.',
+      one: 'This showing started 1 minute ago, so the recording will miss the start.',
+    );
+    return '$_temp0';
+  }
 
   @override
-  String get justRecordNow => 'Just Record Now';
+  String get recordPromptAlsoRecordLater =>
+      'Also record the future showing to get a complete recording?';
+
+  @override
+  String get recordPromptSearchLater =>
+      'Also record a future showing automatically once one is found, to get a complete recording?';
+
+  @override
+  String get recordPromptNow => 'Now';
+
+  @override
+  String get recordPromptLater => 'Future showing';
+
+  @override
+  String recordPromptAired(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes min already aired',
+      one: '1 min already aired',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get recordPromptUncertainMatch =>
+      'Matched by title and description only. Check it\'s the same program.';
+
+  @override
+  String get recordPromptDescriptionsDiffer =>
+      'The descriptions differ, so this may be a different program.';
+
+  @override
+  String recordPromptSameEpisode(int season, int episode) {
+    return 'Same episode (S${season}E$episode)';
+  }
+
+  @override
+  String get recordPromptAlreadyScheduled => 'Already set to record';
+
+  @override
+  String get recordPromptTomorrow => 'Tomorrow';
+
+  @override
+  String get recordNowOnly => 'Record Now Only';
+
+  @override
+  String recordNowAnd(String when) {
+    return 'Record Now and $when';
+  }
+
+  @override
+  String get recordNowAndLater => 'Record Now and Future Showing';
+
+  @override
+  String recordOnlyLater(String when) {
+    return 'Record $when Only';
+  }
+
+  @override
+  String get recordLaterShowingOnly => 'Record Future Showing Only';
+
+  @override
+  String get laterShowingOnlyRequested =>
+      'The future showing will be recorded.';
+
+  @override
+  String get unableToRequestLaterShowingOnly =>
+      'Couldn\'t request the future showing, so nothing will be recorded.';
 
   @override
   String get laterShowingRequested =>
-      'Recording started. A later showing will be recorded too.';
+      'Recording started. A future showing will be recorded too.';
 
   @override
   String get unableToRequestLaterShowing =>
-      'Recording started, but couldn\'t request a later showing.';
+      'Recording started, but couldn\'t request a future showing.';
 
   @override
   String trailerCount(int count) {
