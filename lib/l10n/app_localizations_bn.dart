@@ -4843,6 +4843,13 @@ class AppLocalizationsBn extends AppLocalizations {
       'Moonfin, MakD এর মধ্যে বেছে নিন অথবা মিডিয়া বার বন্ধ করুন';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

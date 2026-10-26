@@ -4872,6 +4872,13 @@ class AppLocalizationsSk extends AppLocalizations {
       'Vyberte si medzi rôznymi štýlmi mediálneho panela alebo mediálny panel vypnite';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

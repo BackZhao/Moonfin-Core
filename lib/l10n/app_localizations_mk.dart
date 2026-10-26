@@ -4868,6 +4868,13 @@ class AppLocalizationsMk extends AppLocalizations {
       'Изберете помеѓу различни стилови на медиумска лента или исклучете ја медиумската лента';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

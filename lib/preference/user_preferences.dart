@@ -642,6 +642,7 @@ class UserPreferences extends ChangeNotifier {
     'navbarColor',
     'mediaBarAutoAdvance',
     'mediaBarIntervalMs',
+    'mediaBarRowPeek',
     'mediaBarTrailerPreview',
     'mediaBarTrailerAudio',
     'trailerVolume',
@@ -1130,6 +1131,13 @@ class UserPreferences extends ChangeNotifier {
 
   static bool isMediaBarModeEnabled(String? mode) {
     return normalizeMediaBarMode(mode) != mediaBarModeOff;
+  }
+
+  /// Banner already leaves the first row on screen, so only the other styles
+  /// let it peek over the bar.
+  static bool mediaBarModeAllowsRowPeek(String? mode) {
+    final normalized = normalizeMediaBarMode(mode);
+    return normalized != mediaBarModeOff && normalized != mediaBarModeBanner;
   }
 
   /// Item types the media bar can show.
@@ -2874,6 +2882,13 @@ class UserPreferences extends ChangeNotifier {
   static final mediaBarIntervalMs = Preference(
     key: 'mediaBarIntervalMs',
     defaultValue: 10000,
+  );
+
+  /// Shows the top half of the first home row over the bottom of the media
+  /// bar on TV and desktop.
+  static final mediaBarRowPeek = Preference(
+    key: 'mediaBarRowPeek',
+    defaultValue: false,
   );
 
   static final mediaBarTrailerPreview = Preference(

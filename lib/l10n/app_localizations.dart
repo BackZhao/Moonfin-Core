@@ -8566,6 +8566,18 @@ abstract class AppLocalizations {
   /// **'Choose between various media bar styles, or turn the media bar off'**
   String get mediaBarModeDescription;
 
+  /// Title of the media bar setting that lets the first home row show over the bottom of the media bar
+  ///
+  /// In en, this message translates to:
+  /// **'Peek Home Rows'**
+  String get peekHomeRows;
+
+  /// Description of the Peek Home Rows media bar setting
+  ///
+  /// In en, this message translates to:
+  /// **'Show the top half of the first row along the bottom of the media bar'**
+  String get peekHomeRowsDescription;
+
   /// Media bar style option: Moonfin
   ///
   /// In en, this message translates to:

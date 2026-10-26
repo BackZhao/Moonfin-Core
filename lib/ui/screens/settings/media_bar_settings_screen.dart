@@ -8,6 +8,7 @@ import '../../../data/repositories/media_bar_repository.dart';
 import '../../../data/services/plugin_sync_service.dart';
 import '../../../preference/user_preferences.dart';
 import '../../../util/device_performance.dart';
+import '../../../util/platform_detection.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/settings/settings_section_header.dart';
 import '../../widgets/adaptive/adaptive_list_section.dart';
@@ -247,8 +248,22 @@ class _MediaBarSettingsScreenState extends State<MediaBarSettingsScreen> {
                     UserPreferences.mediaBarModeAya: l10n.mediaBarModeAya,
                     UserPreferences.mediaBarModeOff: l10n.mediaBarModeOff,
                   },
-                  onChanged: _pushSync,
+                  onChanged: () {
+                    _pushSync();
+                    setState(() {});
+                  },
                 ),
+                if (!PlatformDetection.useMobileUi &&
+                    UserPreferences.mediaBarModeAllowsRowPeek(
+                      _prefs.get(UserPreferences.mediaBarMode),
+                    ))
+                  SwitchPreferenceTile(
+                    preference: UserPreferences.mediaBarRowPeek,
+                    title: l10n.peekHomeRows,
+                    subtitle: l10n.peekHomeRowsDescription,
+                    icon: Icons.view_day_outlined,
+                    onChanged: _pushSync,
+                  ),
                 StringPickerPreferenceTile(
                   preference: UserPreferences.mediaBarContentType,
                   title: l10n.contentType,

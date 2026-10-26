@@ -4865,6 +4865,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'Escolha entre vários estilos de barra de mídia ou desative a barra de mídia';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

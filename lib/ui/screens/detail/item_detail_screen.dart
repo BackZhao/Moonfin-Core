@@ -16208,13 +16208,8 @@ class FilmographyRow extends StatelessWidget {
         ? 0.8 * desktopScale
         : desktopScale;
     final metadataScale = desktopScale;
-    final isRowsV2 =
-        prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
-    final rowScale = isRowsV2 ? 2.0 : 1.0;
-
     final posterSize = prefs.get(UserPreferences.posterSize).upToExtraLarge;
-    final cardHeight =
-        posterSize.portraitHeight.toDouble() * platformScale * rowScale;
+    final cardHeight = posterSize.portraitHeight.toDouble() * platformScale;
 
     // Check if the items are of type 'Episode' (landscape aspect ratio 16/9)
     final isEpisode = items.isNotEmpty && items.first.type == 'Episode';
@@ -16321,13 +16316,8 @@ class SeerrAppearancesRow extends StatelessWidget {
         ? 0.8 * desktopScale
         : desktopScale;
     final metadataScale = desktopScale;
-    final isRowsV2 =
-        prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
-    final rowScale = isRowsV2 ? 2.0 : 1.0;
-
     final posterSize = prefs.get(UserPreferences.posterSize).upToExtraLarge;
-    final cardHeight =
-        posterSize.portraitHeight.toDouble() * platformScale * rowScale;
+    final cardHeight = posterSize.portraitHeight.toDouble() * platformScale;
 
     final cardWidth = isMobile ? 120.0 : cardHeight * (2 / 3);
     final rowHeight =
@@ -16410,13 +16400,8 @@ class SeerrCrewCreditsRow extends StatelessWidget {
         ? 0.8 * desktopScale
         : desktopScale;
     final metadataScale = desktopScale;
-    final isRowsV2 =
-        prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
-    final rowScale = isRowsV2 ? 2.0 : 1.0;
-
     final posterSize = prefs.get(UserPreferences.posterSize).upToExtraLarge;
-    final cardHeight =
-        posterSize.portraitHeight.toDouble() * platformScale * rowScale;
+    final cardHeight = posterSize.portraitHeight.toDouble() * platformScale;
 
     final cardWidth = isMobile ? 120.0 : cardHeight * (2 / 3);
     final rowHeight =

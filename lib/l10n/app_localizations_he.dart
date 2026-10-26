@@ -4825,6 +4825,13 @@ class AppLocalizationsHe extends AppLocalizations {
       'בחרו בין סגנונות שונים של סרגל מדיה, או כבו את סרגל המדיה';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

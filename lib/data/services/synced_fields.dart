@@ -176,6 +176,7 @@ final List<SyncedField> syncedFields = <SyncedField>[
   SyncedField('navbarAlwaysExpanded', UserPreferences.navbarAlwaysExpanded, SyncCodec.boolean),
   SyncedField('mediaBarAutoAdvance', UserPreferences.mediaBarAutoAdvance, SyncCodec.boolean),
   SyncedField('mediaBarIntervalMs', UserPreferences.mediaBarIntervalMs, SyncCodec.integer),
+  SyncedField('mediaBarRowPeek', UserPreferences.mediaBarRowPeek, SyncCodec.boolean),
   SyncedField('mediaBarTrailerPreview', UserPreferences.mediaBarTrailerPreview, SyncCodec.boolean),
   SyncedField('mediaBarTrailerAudio', UserPreferences.mediaBarTrailerAudio, SyncCodec.boolean),
   SyncedField('trailerVolume', UserPreferences.trailerVolume, SyncCodec.integer),

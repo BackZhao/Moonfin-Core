@@ -4870,6 +4870,13 @@ class AppLocalizationsTa extends AppLocalizations {
       'Moonfin, MakD ஆகியவற்றிற்கு இடையே தேர்வு செய்யவும் அல்லது மீடியா பட்டியை அணைக்கவும்';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

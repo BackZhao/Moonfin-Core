@@ -154,6 +154,7 @@ void main() {
     'mediaBarLibraryIds',
     'mediaBarOpacity',
     'mediaBarOverlayColor',
+    'mediaBarRowPeek',
     'mediaBarSourceType',
     'mediaBarTrailerAudio',
     'mediaBarTrailerCaptions',

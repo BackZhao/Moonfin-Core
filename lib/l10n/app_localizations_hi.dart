@@ -4842,6 +4842,13 @@ class AppLocalizationsHi extends AppLocalizations {
       'अलग-अलग मीडिया बार स्टाइल में से चुनें, या मीडिया बार को बंद कर दें।';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

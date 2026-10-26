@@ -6379,6 +6379,14 @@
   "@mediaBarModeDescription": {
     "description": "Description for media bar style setting"
   },
+  "peekHomeRows": "Peek Home Rows",
+  "@peekHomeRows": {
+    "description": "Title of the media bar setting that lets the first home row show over the bottom of the media bar"
+  },
+  "peekHomeRowsDescription": "Show the top half of the first row along the bottom of the media bar",
+  "@peekHomeRowsDescription": {
+    "description": "Description of the Peek Home Rows media bar setting"
+  },
   "mediaBarModeMoonfin": "Moonfin",
   "@mediaBarModeMoonfin": {
     "description": "Media bar style option: Moonfin"

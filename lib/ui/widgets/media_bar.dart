@@ -92,6 +92,9 @@ class MediaBar extends StatefulWidget {
   // Holds back the trailer only, so the slides keep advancing.
   final bool trailerPaused;
   final double height;
+  // How much of the bar's bottom a peeking home row covers. The Moonfin and
+  // MakD layouts keep their art full height and lift their content above it.
+  final double rowPeek;
   final Future<void> Function()? onNavigateDown;
   final VoidCallback? onNavigateUp;
   final VoidCallback? onNavigateLeft;
@@ -104,6 +107,7 @@ class MediaBar extends StatefulWidget {
     this.externallyPaused = false,
     this.trailerPaused = false,
     this.height = 220,
+    this.rowPeek = 0,
     this.onNavigateDown,
     this.onNavigateUp,
     this.onNavigateLeft,
@@ -809,13 +813,13 @@ class _MediaBarState extends State<MediaBar>
         Positioned(
           left: 0,
           top: 0,
-          bottom: 0,
+          bottom: widget.rowPeek,
           child: Center(child: leftArrow),
         ),
       Positioned(
         right: nextRightInset,
         top: 0,
-        bottom: 0,
+        bottom: widget.rowPeek,
         child: Center(child: rightArrow),
       ),
     ];
@@ -2031,7 +2035,9 @@ class _MediaBarState extends State<MediaBar>
         !isMobile &&
         widget.prefs.get(UserPreferences.navbarPosition) == NavbarPosition.left;
     final logoLeftInset = 40.0 + (hasLeftSidebar ? 88.0 : 0.0);
-    final infoHorizontalInset = hasLeftSidebar
+    // A peeking row lifts the info card level with the arrows, so it keeps
+    // clear of them the way it does beside the sidebar.
+    final infoHorizontalInset = hasLeftSidebar || widget.rowPeek > 0
         ? 72.0
         : (PlatformDetection.isTV ? 25.0 : 24.0);
     final navbarAtTop =
@@ -2077,24 +2083,9 @@ class _MediaBarState extends State<MediaBar>
                     ),
                   ),
                   ..._buildVideoOverlays(allowPersistentMedia3: true),
-                  // The gradient gives way to a playing trailer, and a trailer
-                  // that stops and restarts flips that within a frame or two.
-                  // Switching it outright flashes the bottom of the screen, so
-                  // the alpha fades instead, which hides a flip that short and
-                  // turns a real one into a transition.
-                  TweenAnimationBuilder<double>(
-                    tween: Tween<double>(end: _isTrailerPlaying ? 0.0 : 1.0),
-                    duration: const Duration(milliseconds: 250),
-                    builder: (_, shown, _) => shown <= 0.0
-                        ? const SizedBox.shrink()
-                        : _GradientOverlay(
-                            color: overlayColor,
-                            opacity: overlayOpacity * shown,
-                          ),
-                  ),
                   if (items.length > 1 && !_isTrailerPlaying)
                     Positioned(
-                      bottom: 8,
+                      bottom: 8 + widget.rowPeek,
                       left: 0,
                       right: 0,
                       child: _IndicatorDots(
@@ -2123,7 +2114,7 @@ class _MediaBarState extends State<MediaBar>
                     ),
                   if (currentItem != null)
                     Positioned(
-                      bottom: 0,
+                      bottom: widget.rowPeek,
                       left: 0,
                       right: 0,
                       child: GestureDetector(
@@ -2224,6 +2215,8 @@ class _MediaBarState extends State<MediaBar>
         ? MediaQuery.of(context).padding.top + 60.0
         : 0.0;
     final effectiveTopInset = isMobile ? 0.0 : toolbarInset;
+    final visibleFraction =
+        1 - widget.rowPeek / (widget.height - effectiveTopInset);
     final contentWidth = (MediaQuery.of(context).size.width * 0.42).clamp(
       280.0,
       560.0,
@@ -2326,8 +2319,16 @@ class _MediaBarState extends State<MediaBar>
                                         overlayColor.withValues(
                                           alpha: overlayOpacity * shown * 0.78,
                                         ),
+                                        overlayColor.withValues(
+                                          alpha: overlayOpacity * shown * 0.78,
+                                        ),
                                       ],
-                                      stops: const [0.0, 0.48, 1.0],
+                                      stops: [
+                                        0.0,
+                                        0.48 * visibleFraction,
+                                        visibleFraction,
+                                        1.0,
+                                      ],
                                     ),
                                   ),
                                   child: const SizedBox.expand(),
@@ -2338,7 +2339,8 @@ class _MediaBarState extends State<MediaBar>
                   if (currentItem != null)
                     Builder(
                       builder: (context) {
-                        final contentHeight = widget.height - effectiveTopInset;
+                        final contentHeight =
+                            widget.height - effectiveTopInset - widget.rowPeek;
                         final screenWidth = MediaQuery.of(context).size.width;
                         final logoTop = contentHeight * 0.22;
                         final logoWidth = (screenWidth * 0.45).clamp(
@@ -2417,7 +2419,7 @@ class _MediaBarState extends State<MediaBar>
                     Positioned(
                       left: isMobile ? 0 : 50,
                       right: isMobile ? 0 : null,
-                      bottom: isMobile ? 24 : 20,
+                      bottom: isMobile ? 24 : 20 + widget.rowPeek,
                       child: AnimatedOpacity(
                         opacity: _isTrailerPlaying ? 0 : 1,
                         duration: const Duration(milliseconds: 250),
@@ -2475,7 +2477,7 @@ class _MediaBarState extends State<MediaBar>
                           )
                         : Positioned(
                             right: 20,
-                            bottom: 24,
+                            bottom: 24 + widget.rowPeek,
                             child: _MakdDots(
                               count: items.length,
                               current: _currentIndex,
@@ -3180,34 +3182,6 @@ class _KenBurnsImageState extends State<_KenBurnsImage>
   Widget build(BuildContext context) {
     return ClipRect(
       child: ScaleTransition(scale: _scale, child: widget.child),
-    );
-  }
-}
-
-class _GradientOverlay extends StatelessWidget {
-  final Color color;
-  final double opacity;
-
-  const _GradientOverlay({required this.color, required this.opacity});
-
-  @override
-  Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              color.withValues(alpha: opacity * 0.3),
-              color.withValues(alpha: opacity * 0.1),
-              color.withValues(alpha: opacity * 0.8),
-            ],
-            stops: const [0.0, 0.4, 1.0],
-          ),
-        ),
-        child: const SizedBox.expand(),
-      ),
     );
   }
 }

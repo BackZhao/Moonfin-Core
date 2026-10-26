@@ -1242,6 +1242,13 @@ List<_SettingsSearchEntry> _buildSettingsSearchIndex({
       'recently released',
       'newest',
     ]),
+    if (!PlatformDetection.useMobileUi)
+      mediaBar.leaf(
+        'mediaBarRowPeek',
+        l10n.peekHomeRows,
+        subtitle: l10n.peekHomeRowsDescription,
+        keywords: ['peek', 'first row'],
+      ),
     mediaBar.leaf('mediaBarItemCount', l10n.itemCount),
     mediaBar.leaf('mediaBarLibraryIds', l10n.sourceLibraries),
     mediaBar.leaf('mediaBarCollectionIds', l10n.sourceCollections),

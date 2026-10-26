@@ -4881,6 +4881,13 @@ class AppLocalizationsHu extends AppLocalizations {
       'Válassz a különböző médiasáv-stílusok közül, vagy kapcsold ki a médiasávot';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

@@ -4875,6 +4875,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Valitse eri mediapalkkityylien välillä tai poista mediapalkki käytöstä';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

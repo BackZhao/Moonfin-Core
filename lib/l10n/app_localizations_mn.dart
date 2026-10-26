@@ -4852,6 +4852,13 @@ class AppLocalizationsMn extends AppLocalizations {
       'Төрөл бүрийн медиа самбарын хэв маягаас сонгох эсвэл медиа мөрийг унтраа';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override

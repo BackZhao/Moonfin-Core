@@ -746,11 +746,6 @@ class _ContentRows extends StatefulWidget {
 class _ContentRowsState extends State<_ContentRows>
     with WidgetsBindingObserver, WindowListener
     implements AudioOwnable {
-  /// A wide artwork row has no modern variant, so beside rows drawing at twice
-  /// the poster height it reads as a band of undersized cards. This brings the
-  /// two back to roughly the same height.
-  static const double _wideArtworkModernScale = 2.5;
-
   static const double _kHomeRowLabelInset = 16.0;
   static const double _kHomeRowTrailingInset = 20.0;
   static const double _focusedRowExtraSpacing = 20.0;
@@ -951,6 +946,15 @@ class _ContentRowsState extends State<_ContentRows>
   late bool _lastMedia3PreviewPreference;
   List<double> _rowTopOffsets = [];
   List<double> _rowExtents = [];
+  // How far the first row reaches up over the media bar, from the top of its
+  // slot to the middle of its artwork, and the part of that its title and
+  // cards cover. Both are 0 when the row doesn't peek.
+  double _rowPeek = 0;
+  double _rowPeekCover = 0;
+  // The first row's title band as laid out, keyed by the row it was measured
+  // on, since fonts and the desktop scroll buttons change it.
+  String? _rowPeekHeaderRowId;
+  double? _rowPeekHeader;
   List<double> _cachedRowTargetOffsets = [];
   double _cachedRowTargetMaxScrollExtent = -1.0;
   bool _cachedRowTargetFullScreenRows = false;
@@ -1350,7 +1354,14 @@ class _ContentRowsState extends State<_ContentRows>
     final desktopScale = _desktopUiScaleFactor();
     final infoAreaHeight = InfoArea.fixedHeight(isMobile: PlatformDetection.useMobileUi, desktopScale: desktopScale);
     final infoBottomPadding = includeMediaBar ? 20.0 : 8.0;
-    final infoOverlayPlaceholder = showInfoOverlay ? infoTopPadding + infoAreaHeight + infoBottomPadding : 0.0;
+
+    final rowExtents = _computeRowExtents(rows, posterSize, prefs);
+    _computeRowPeek(rows, rowExtents, posterSize);
+    // A peeking row already sits well below the info area, so it needs no band
+    // reserved for it.
+    final infoOverlayPlaceholder = showInfoOverlay && _rowPeek == 0
+        ? infoTopPadding + infoAreaHeight + infoBottomPadding
+        : 0.0;
 
     final overlayBottom = _isHomeRowsStyleV2()
         ? (fullScreenRows ? (navbarHeight > 48.0 ? navbarHeight : 48.0) : navbarHeight)
@@ -1358,7 +1369,6 @@ class _ContentRowsState extends State<_ContentRows>
             ? infoTopPadding + infoAreaHeight
             : (fullScreenRows ? safeTop + 48.0 : 0.0);
 
-    final rowExtents = _computeRowExtents(rows, posterSize, prefs);
     final rowTopOffsets = <double>[];
     var currentTop =
         listTopPadding +
@@ -1366,7 +1376,7 @@ class _ContentRowsState extends State<_ContentRows>
             ? (_infoRevealed ? infoOverlayPlaceholder : 0.0)
             : infoOverlayPlaceholder);
     if (includeMediaBar) {
-      currentTop += _mediaBarHeight();
+      currentTop += _mediaBarExtent();
     }
     final focusedRowSpacing =
         PlatformDetection.isTV && !fullScreenRows && !showInfoOverlay
@@ -2188,11 +2198,7 @@ class _ContentRowsState extends State<_ContentRows>
     return widget.prefs.get(UserPreferences.homeRowsStyle) == HomeRowsStyle.v2;
   }
 
-  PosterSize _homePosterSize() {
-    final prefs = widget.prefs;
-    if (!_isHomeRowsStyleV2()) return prefs.get(UserPreferences.posterSize);
-    return modernPosterSize(prefs);
-  }
+  PosterSize _homePosterSize() => widget.prefs.get(UserPreferences.posterSize);
 
   bool _showHomeRowInfoOverlay() {
     if (PlatformDetection.useMobileUi) {
@@ -2363,6 +2369,127 @@ class _ContentRowsState extends State<_ContentRows>
     return screenHeight * 0.55;
   }
 
+  /// The media bar's slot in the list. A peeking first row starts higher up,
+  /// over the bottom of the bar.
+  double _mediaBarExtent() => _rowPeek > 0
+      ? MediaQuery.sizeOf(context).height - _rowPeek
+      : _mediaBarHeight();
+
+  /// Places the middle of the first row's artwork on the bottom edge of the
+  /// screen when Peek Home Rows is on, on TV and desktop only.
+  void _computeRowPeek(
+    List<HomeRow> rows,
+    List<double> rowExtents,
+    PosterSize posterSize,
+  ) {
+    _rowPeek = 0;
+    _rowPeekCover = 0;
+    final prefs = widget.prefs;
+    if (PlatformDetection.useMobileUi ||
+        !prefs.get(UserPreferences.mediaBarRowPeek) ||
+        !UserPreferences.mediaBarModeAllowsRowPeek(
+          prefs.get(UserPreferences.mediaBarMode),
+        ) ||
+        _fullScreenRowsEnabled(prefs) ||
+        !_isMediaBarIncluded() ||
+        rows.isEmpty) {
+      return;
+    }
+    final row = rows.first;
+    final metadataScale = _desktopUiScaleFactor();
+    final imageHeight = _rowImageHeight(row, posterSize, prefs);
+    final slack = (rowExtents.first - _rowContentHeight(row, posterSize, prefs))
+        .clamp(0.0, double.infinity);
+    final extraTopPadding = _isRowModern(row, prefs) ? slack * 0.1 : slack / 2;
+    final header = _rowPeekHeaderRowId == row.id && _rowPeekHeader != null
+        ? _rowPeekHeader!
+        : _rowHeaderHeight(row);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final measured = _measureFirstRowHeader();
+      if (measured == null || (measured - header).abs() < 0.5) return;
+      setState(() {
+        _rowPeekHeaderRowId = row.id;
+        _rowPeekHeader = measured;
+      });
+    });
+    _rowPeekCover = header +
+        (5.0 * metadataScale) +
+        _focusHeadroom(
+          imageHeight,
+          prefs.get(UserPreferences.cardFocusExpansion),
+        ) +
+        imageHeight / 2;
+    _rowPeek = extraTopPadding + _rowPeekCover;
+  }
+
+  /// How far the first row's cards sit below the top of its title band, or
+  /// null before both are laid out.
+  double? _measureFirstRowHeader() {
+    final container =
+        _rowContainerKey(0).currentContext?.findRenderObject() as RenderBox?;
+    final cards = _rowKey(0).currentContext?.findRenderObject() as RenderBox?;
+    if (container == null ||
+        cards == null ||
+        !container.attached ||
+        !cards.attached) {
+      return null;
+    }
+    return cards.localToGlobal(Offset.zero, ancestor: container).dy;
+  }
+
+  /// Height of the title band _buildTitledRow puts above a row's cards, used
+  /// until the real one is measured.
+  double _rowHeaderHeight(HomeRow row) {
+    final textTheme = Theme.of(context).textTheme;
+    final textScaler = MediaQuery.textScalerOf(context);
+    double lineHeight(TextStyle? style) {
+      final painter = TextPainter(
+        text: TextSpan(text: 'Hg', style: style),
+        textDirection: TextDirection.ltr,
+        textScaler: textScaler,
+      )..layout();
+      final height = painter.height;
+      painter.dispose();
+      return height;
+    }
+
+    final subtitle = _rowSubtitle(row, AppLocalizations.of(context));
+    return (_isHomeRowsStyleV2() ? 7.0 : 24.0) +
+        lineHeight(textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)) +
+        (subtitle != null && subtitle.isNotEmpty
+            ? 2.0 + lineHeight(textTheme.bodySmall)
+            : 0.0);
+  }
+
+  /// The tallest artwork in a row, which sets the height of its cards.
+  double _rowImageHeight(
+    HomeRow row,
+    PosterSize posterSize,
+    UserPreferences prefs,
+  ) {
+    final platformScale = _rowPlatformScale(_desktopUiScaleFactor());
+    if (_isRowModern(row, prefs)) {
+      return modernImageHeight(posterSize, platformScale);
+    }
+    final rowImageType = _isSeerrFilterRow(row)
+        ? ImageType.thumb
+        : _homeRowImageTypeForRow(row, prefs);
+    var maxImageHeight = 0.0;
+    for (final item in row.items) {
+      final aspectRatio = _aspectRatioForRowItem(item, row, rowImageType);
+      final imageHeight =
+          (aspectRatio > 1
+              ? posterSize.landscapeHeight.toDouble()
+              : posterSize.portraitHeight.toDouble()) *
+          platformScale;
+      if (imageHeight > maxImageHeight) maxImageHeight = imageHeight;
+    }
+    return maxImageHeight == 0.0
+        ? posterSize.portraitHeight.toDouble() * platformScale
+        : maxImageHeight;
+  }
+
   bool _isBookshelfMode() {
     final mode = UserPreferences.normalizeMediaBarMode(
       widget.prefs.get(UserPreferences.mediaBarMode),
@@ -2386,7 +2513,7 @@ class _ContentRowsState extends State<_ContentRows>
   }
 
   double _pinnedInfoCollapseOffset() {
-    return (_mediaBarHeight() - (_pinTransitionDistance / 2)).clamp(
+    return (_mediaBarExtent() - (_pinTransitionDistance / 2)).clamp(
       0.0,
       double.infinity,
     );
@@ -2771,7 +2898,7 @@ class _ContentRowsState extends State<_ContentRows>
     final metadataScale = desktopScale;
     final isRowsV2 = _isRowModern(row, prefs);
     final fullScreenRows = _fullScreenRowsEnabled(prefs);
-    final platformScale = _rowPlatformScale(row, desktopScale);
+    final platformScale = _rowPlatformScale(desktopScale);
 
     double childHeight = 0.0;
     if (row.isLoading) {
@@ -3759,13 +3886,8 @@ class _ContentRowsState extends State<_ContentRows>
     return widget.prefs.get(UserPreferences.desktopUiScale).scaleFactor;
   }
 
-  double _rowPlatformScale(HomeRow row, double desktopScale) {
-    final base = PlatformDetection.isTV ? 0.8 * desktopScale : desktopScale;
-    if (_isHomeRowsStyleV2() && _isWideArtworkRow(row)) {
-      return base * _wideArtworkModernScale;
-    }
-    return base;
-  }
+  double _rowPlatformScale(double desktopScale) =>
+      PlatformDetection.isTV ? 0.8 * desktopScale : desktopScale;
 
   double _squarePosterSide(PosterSize posterSize) {
     final scaleFactor = _desktopUiScaleFactor();
@@ -3799,41 +3921,12 @@ class _ContentRowsState extends State<_ContentRows>
       final rowHeight = squarePosterSide + (56 * metadataScale);
       return _libraryRowExtent(rowHeight, metadataScale: metadataScale);
     } else {
-      final isSeerrRowOverride = _isSeerrFilterRow(row);
-      final isRowsV2 = _isRowModern(row, prefs);
-      final rowImageType = isSeerrRowOverride
-          ? ImageType.thumb
-          : (isRowsV2 ? ImageType.poster : _homeRowImageTypeForRow(row, prefs));
-      final platformScale = _rowPlatformScale(row, desktopScale);
-      var maxCardHeight = 0.0;
-      var maxImageHeight = 0.0;
-      if (isRowsV2) {
-        final imageHeight =
-            modernImageHeight(posterSize, platformScale);
-        maxImageHeight = imageHeight;
-        final budget = _v2MetadataBudgetFor(row, prefs);
-        maxCardHeight =
-            imageHeight + (budget * metadataScale);
-      } else {
-        for (final item in row.items) {
-          final aspectRatio = _aspectRatioForRowItem(item, row, rowImageType);
-          final imageHeight =
-              (aspectRatio > 1
-                  ? posterSize.landscapeHeight.toDouble()
-                  : posterSize.portraitHeight.toDouble()) *
-              platformScale;
-          if (imageHeight > maxImageHeight) maxImageHeight = imageHeight;
-          final cardHeight = imageHeight + (_classicCardMetadataHeight * metadataScale);
-          if (cardHeight > maxCardHeight) {
-            maxCardHeight = cardHeight;
-          }
-        }
-        if (maxCardHeight == 0.0) {
-          maxImageHeight = posterSize.portraitHeight.toDouble() * platformScale;
-          maxCardHeight = maxImageHeight + (_classicCardMetadataHeight * metadataScale);
-        }
-        maxCardHeight += _classicRowPadding(row, prefs);
-      }
+      final maxImageHeight = _rowImageHeight(row, posterSize, prefs);
+      final maxCardHeight = _isRowModern(row, prefs)
+          ? maxImageHeight + (_v2MetadataBudgetFor(row, prefs) * metadataScale)
+          : maxImageHeight +
+                (_classicCardMetadataHeight * metadataScale) +
+                _classicRowPadding(row, prefs);
       final headroom = _focusHeadroom(
         maxImageHeight,
         prefs.get(UserPreferences.cardFocusExpansion),
@@ -4222,7 +4315,21 @@ class _ContentRowsState extends State<_ContentRows>
     _updateOffsets();
     final includeMediaBar = _isMediaBarIncluded();
     final bannerMode = _isBannerMode();
-    final mediaBarHeight = _mediaBarHeight();
+    final mediaBarExtent = _mediaBarExtent();
+    final mediaBarMode = UserPreferences.normalizeMediaBarMode(
+      prefs.get(UserPreferences.mediaBarMode),
+    );
+    // Moonfin and MakD keep their backdrop full height under a peeking row and
+    // move their content above it. The other styles shrink to what is left.
+    final mediaBarUnderRows =
+        mediaBarMode == UserPreferences.mediaBarModeMoonfin ||
+        mediaBarMode == UserPreferences.mediaBarModeMakd;
+    final mediaBarHeight = _rowPeek == 0
+        ? _mediaBarHeight()
+        : mediaBarUnderRows
+        ? MediaQuery.sizeOf(context).height
+        : MediaQuery.sizeOf(context).height - _rowPeekCover;
+    final mediaBarRowPeek = mediaBarUnderRows ? _rowPeekCover : 0.0;
     final showInfoOverlay = _showHomeRowInfoOverlay();
     final safeTop = MediaQuery.of(context).padding.top;
     final desktopScale = _desktopUiScaleFactor();
@@ -4263,7 +4370,7 @@ class _ContentRowsState extends State<_ContentRows>
     final infoBottomPadding = includeMediaBar ? 20.0 : 8.0;
     // Reserve the info band height up-front so revealing/hiding the InfoArea
     // overlay (a Stack child) does not shift row positions in the ListView.
-    final infoOverlayPlaceholder = showInfoOverlay
+    final infoOverlayPlaceholder = showInfoOverlay && _rowPeek == 0
         ? infoTopPadding + infoAreaHeight + infoBottomPadding
         : 0.0;
 
@@ -4394,7 +4501,7 @@ class _ContentRowsState extends State<_ContentRows>
                                               chromeAudioActive ||
                                               _screensaverVisible.value;
 
-                                          return RepaintBoundary(
+                                          final bar = RepaintBoundary(
                                             child: bannerMode
                                               ? BannerMediaBar(
                                                   viewModel: widget.mediaBarViewModel,
@@ -4438,6 +4545,7 @@ class _ContentRowsState extends State<_ContentRows>
                                                       PlatformDetection.isTV &&
                                                       !_mediaBarFocusNode.hasFocus,
                                                   height: mediaBarHeight,
+                                                  rowPeek: mediaBarRowPeek,
                                                   onNavigateDown: _moveFocusFromMediaBarToRows,
                                                   onNavigateUp: _navigateFromMediaBarToNavbar,
                                                   onNavigateLeft: navbarIsLeft
@@ -4445,6 +4553,18 @@ class _ContentRowsState extends State<_ContentRows>
                                                       : null,
                                                   focusNode: _mediaBarFocusNode,
                                                 ),
+                                          );
+                                          if (_rowPeek == 0) return bar;
+                                          // The slot ends where the first row
+                                          // starts, and the bar draws on under it.
+                                          return SizedBox(
+                                            height: mediaBarExtent,
+                                            child: OverflowBox(
+                                              alignment: Alignment.topCenter,
+                                              minHeight: mediaBarHeight,
+                                              maxHeight: mediaBarHeight,
+                                              child: bar,
+                                            ),
                                           );
                                         },
                                       );
@@ -4821,7 +4941,7 @@ class _ContentRowsState extends State<_ContentRows>
             : _homeRowImageTypeForRow(row, prefs));
     final desktopScale = _desktopUiScaleFactor();
     final metadataScale = desktopScale;
-    final platformScale = _rowPlatformScale(row, desktopScale);
+    final platformScale = _rowPlatformScale(desktopScale);
     final v2ImageHeight =
         modernImageHeight(posterSize, platformScale);
     final v2MetadataHeightBudget = _v2MetadataBudgetFor(row, prefs);
@@ -5956,7 +6076,7 @@ class _ContentRowsState extends State<_ContentRows>
         : (isRowsV2
               ? (isModernMyMediaStatic ? ImageType.thumb : ImageType.poster)
               : _homeRowImageTypeForRow(row, prefs));
-    final platformScale = _rowPlatformScale(row, _desktopUiScaleFactor());
+    final platformScale = _rowPlatformScale(_desktopUiScaleFactor());
     final isMyMediaRow = row.rowType == HomeRowType.libraryTiles;
     if (isRowsV2 && !isModernMyMediaStatic) {
       final v2ImageHeight =

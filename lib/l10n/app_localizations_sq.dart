@@ -4874,6 +4874,13 @@ class AppLocalizationsSq extends AppLocalizations {
       'Zgjidhni midis stileve të ndryshme të shiritit të medias ose çaktivizoni shiritin e medias';
 
   @override
+  String get peekHomeRows => 'Peek Home Rows';
+
+  @override
+  String get peekHomeRowsDescription =>
+      'Show the top half of the first row along the bottom of the media bar';
+
+  @override
   String get mediaBarModeMoonfin => 'Moonfin';
 
   @override
