@@ -4330,6 +4330,9 @@ class _ContentRowsState extends State<_ContentRows>
         ? MediaQuery.sizeOf(context).height
         : MediaQuery.sizeOf(context).height - _rowPeekCover;
     final mediaBarRowPeek = mediaBarUnderRows ? _rowPeekCover : 0.0;
+    // The peeking row steps aside with the navbar while a trailer fills the
+    // screen.
+    final rowsFadeForTrailer = mediaBarRowPeek > 0;
     final showInfoOverlay = _showHomeRowInfoOverlay();
     final safeTop = MediaQuery.of(context).padding.top;
     final desktopScale = _desktopUiScaleFactor();
@@ -4637,6 +4640,20 @@ class _ContentRowsState extends State<_ContentRows>
                             child: rowChild,
                           )
                         : rowChild;
+                    final shownRowChild = rowsFadeForTrailer
+                        ? ListenableBuilder(
+                            listenable:
+                                NavigationLayout.trailerChromeListenable,
+                            builder: (context, child) => AnimatedOpacity(
+                              opacity: NavigationLayout.trailerHidesChrome
+                                  ? 0.0
+                                  : 1.0,
+                              duration: const Duration(milliseconds: 200),
+                              child: child,
+                            ),
+                            child: paddedRowChild,
+                          )
+                        : paddedRowChild;
 
                     // Padding only bites if rows honour the extent worked out
                     // above, so all of them are pinned to it apart from mobile
@@ -4651,7 +4668,7 @@ class _ContentRowsState extends State<_ContentRows>
                           valueListenable: _scrollOffsetNotifier,
                           builder: (context, scrollOffset, _) {
                             return _buildShiftedRow(
-                              child: paddedRowChild,
+                              child: shownRowChild,
                               rowIndex: rowIndex,
                               rowTopOffsets: rowTopOffsets,
                               rowExtents: rowExtents,
@@ -4690,7 +4707,7 @@ class _ContentRowsState extends State<_ContentRows>
                               valueListenable: _scrollOffsetNotifier,
                               builder: (context, scrollOffset, _) {
                                 return _buildShiftedRow(
-                                  child: paddedRowChild,
+                                  child: shownRowChild,
                                   rowIndex: rowIndex,
                                   rowTopOffsets: rowTopOffsets,
                                   rowExtents: rowExtents,

@@ -2113,10 +2113,19 @@ class _MediaBarState extends State<MediaBar>
                       ),
                     ),
                   if (currentItem != null)
-                    Positioned(
-                      bottom: widget.rowPeek,
-                      left: 0,
-                      right: 0,
+                    // While a trailer has the peeking row out of the way, the
+                    // shrunken card drops back down out of the picture.
+                    ListenableBuilder(
+                      listenable: NavigationLayout.trailerChromeListenable,
+                      builder: (context, child) => AnimatedPositioned(
+                        duration: const Duration(milliseconds: 200),
+                        bottom: NavigationLayout.trailerHidesChrome
+                            ? 0
+                            : widget.rowPeek,
+                        left: 0,
+                        right: 0,
+                        child: child!,
+                      ),
                       child: GestureDetector(
                         behavior: PlatformDetection.useMobileUi
                             ? HitTestBehavior.translucent
