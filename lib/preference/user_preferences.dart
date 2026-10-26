@@ -653,6 +653,7 @@ class UserPreferences extends ChangeNotifier {
     'mediaBarLibraryIds',
     'mediaBarCollectionIds',
     'mediaBarExcludedGenres',
+    'mediaBarExternalLists',
     'themeMusicEnabled',
     'themeMusicVolume',
     'themeMusicOnHomeRows',
@@ -2924,6 +2925,13 @@ class UserPreferences extends ChangeNotifier {
 
   static final mediaBarExcludedGenres = Preference(
     key: 'mediaBarExcludedGenres',
+    defaultValue: '',
+  );
+
+  /// The outside lists the media bar also draws from, by the id each one's
+  /// home row has.
+  static final mediaBarExternalLists = Preference(
+    key: 'mediaBarExternalLists',
     defaultValue: '',
   );
 

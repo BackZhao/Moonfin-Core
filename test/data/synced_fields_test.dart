@@ -149,6 +149,7 @@ void main() {
     'mediaBarAutoAdvance',
     'mediaBarCollectionIds',
     'mediaBarExcludedGenres',
+    'mediaBarExternalLists',
     'mediaBarIntervalMs',
     'mediaBarItemCount',
     'mediaBarLibraryIds',

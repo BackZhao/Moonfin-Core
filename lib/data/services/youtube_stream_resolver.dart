@@ -234,6 +234,25 @@ class YouTubeStreamResolver {
     } catch (_) {}
   }
 
+  /// Keeps mpv on a 1080p variant of a YouTube HLS master for a preview. Left
+  /// to itself it opens the highest bitrate, often 4K VP9, which most TVs
+  /// can't decode behind the home screen. 5 Mbps sits above YouTube's 1080p
+  /// H.264 variant and below its 1440p ones. Anything else gets mpv's default
+  /// back, since the setting stays on a reused player.
+  static Future<void> capPreviewBitrate(
+    Player player, {
+    required bool youTube,
+  }) async {
+    final platform = player.platform;
+    if (platform is! NativePlayer) return;
+    try {
+      final dynamic native = platform;
+      await Future<void>.value(
+        native.setProperty('hls-bitrate', youTube ? '5000000' : 'max'),
+      );
+    } catch (_) {}
+  }
+
   static final _details = <String, Future<YouTubeVideoDetails?>>{};
 
   /// A video's title, length and channel, for listing it before it plays.
