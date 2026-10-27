@@ -81,7 +81,7 @@ jobs:
 
             const rows = [
               { platform: 'Android',       job: 'android',       artifact: 'android',              files: 'Moonfin_Android_v* (apk/aab)' },
-              { platform: 'Android TV',    job: 'android',       artifact: 'android-tv',           files: 'Moonfin_AndroidTV_v* (apk/aab)' },
+              { platform: 'Android TV',    job: 'android_tv',       artifact: 'android-tv',           files: 'Moonfin_AndroidTV_v* (apk/aab)' },
               { platform: 'iOS',           job: 'ios',           artifact: 'ios-ipa',              files: 'Moonfin_iOS_v*_unsigned.ipa' },
               { platform: 'macOS',         job: 'macos',         artifact: 'macos-dmg',            files: 'Moonfin_macOS_v*.dmg' },
               { platform: 'tvOS',          job: 'tvos',          artifact: 'tvos-ipa',             files: 'Moonfin_tvOS_v*_unsigned.ipa' },

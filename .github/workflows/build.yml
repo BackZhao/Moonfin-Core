@@ -6,9 +6,13 @@ on:
       run_all:
         description: Run all platform jobs
         type: boolean
-        default: true
+        default: false
       android:
-        description: Run Android job
+        description: Run Android mobile job
+        type: boolean
+        default: true
+      android_tv:
+        description: Run Android TV job
         type: boolean
         default: false
       ios:
@@ -58,20 +62,11 @@ env:
   FLUTTER_TVOS_REF: 'v3.47.2-tvos.1.10.0'
 
 jobs:
-  # Android APK + AAB, with mobile and TV on their own runners
+  # Android mobile APK + AAB. This is the default build: it runs on every PR
+  # and tag, and on manual runs when "android" or "run_all" is selected.
   android:
     if: ${{ (github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.android) && inputs.distribution != 'testflight' }}
-    name: android (${{ matrix.target }})
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - target: mobile
-            artifact: android
-            files: Moonfin_Android_v*.*
-          - target: tv
-            artifact: android-tv
-            files: Moonfin_AndroidTV_v*.*
+    name: android
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -121,16 +116,77 @@ jobs:
       - name: Build
         run: |
           chmod +x build-android.sh
-          ./build-android.sh ${{ matrix.target }}
+          ./build-android.sh mobile
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
-          path: ${{ matrix.files }}
+          name: android
+          path: Moonfin_Android_v*.*
+
+  # Android TV APK + AAB. Skipped by default (PRs and manual runs); built only
+  # on tags or when "android_tv"/"run_all" is selected.
+  android-tv:
+    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.android_tv))) && inputs.distribution != 'testflight' }}
+    name: android-tv
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: Set up signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_TYPE: ${{ secrets.ANDROID_KEYSTORE_TYPE }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          # On PRs from forks the signing secrets are not available. Skip signing
+          # setup so Gradle falls back to debug signing and the build still runs.
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "No Android keystore secret; skipping release signing (debug-signed build)."
+            exit 0
+          fi
+
+          # Use printf (not echo) to avoid adding a trailing newline that can corrupt binary decode on some shells.
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/release.keystore
+
+          cat > android/keystore.properties <<EOF
+          storeFile=../release.keystore
+          storeType=$STORE_TYPE
+          storePassword=$STORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+
+          # Fail fast with a clearer error if the keystore secret or type is wrong.
+          if [ -n "$STORE_TYPE" ]; then
+            keytool -list -v -keystore android/app/release.keystore -storetype "$STORE_TYPE" -storepass "$STORE_PASSWORD" >/dev/null
+          else
+            keytool -list -v -keystore android/app/release.keystore -storepass "$STORE_PASSWORD" >/dev/null
+          fi
+
+      - name: Build
+        run: |
+          chmod +x build-android.sh
+          ./build-android.sh tv
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-tv
+          path: Moonfin_AndroidTV_v*.*
 
   # iOS: an unsigned IPA for releases, or a TestFlight upload
   ios:
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.ios }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.ios)) }}
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
@@ -219,7 +275,7 @@ jobs:
 
   # macOS: a signed and notarized DMG for releases, or a TestFlight upload
   macos:
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.macos }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.macos)) }}
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
@@ -302,7 +358,7 @@ jobs:
 
   # tvOS: an unsigned IPA for releases, or a TestFlight upload
   tvos:
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.tvos }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.tvos)) }}
     runs-on: macos-26
     timeout-minutes: 60
     steps:
@@ -476,7 +532,7 @@ jobs:
 
   # Windows installer EXE
   windows:
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.windows) && inputs.distribution != 'testflight' }}
+    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.windows))) && inputs.distribution != 'testflight' }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -553,7 +609,7 @@ jobs:
 
   # Windows ARM64 installer EXE (native build on an ARM64 runner)
   windows-arm64:
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.windows_arm64) && inputs.distribution != 'testflight' }}
+    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.windows_arm64))) && inputs.distribution != 'testflight' }}
     runs-on: windows-11-arm
     steps:
       - uses: actions/checkout@v4
@@ -653,7 +709,7 @@ jobs:
 
   # Linux packages, built natively for each architecture
   linux:
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.linux) && inputs.distribution != 'testflight' }}
+    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.linux))) && inputs.distribution != 'testflight' }}
     strategy:
       fail-fast: false
       matrix:
@@ -916,7 +972,7 @@ jobs:
   # to report.
   save-pr-results:
     if: always() && github.event_name == 'pull_request'
-    needs: [android, ios, macos, tvos, windows, windows-arm64, linux, web, tests]
+    needs: [android, android-tv, ios, macos, tvos, windows, windows-arm64, linux, web, tests]
     runs-on: ubuntu-latest
     steps:
       - name: Write outcomes.json
@@ -926,6 +982,7 @@ jobs:
             "pr_number": ${{ github.event.pull_request.number }},
             "sha": "${{ github.event.pull_request.head.sha }}",
             "android": "${{ needs.android.result }}",
+            "android_tv": "${{ needs.android-tv.result }}",
             "ios": "${{ needs.ios.result }}",
             "macos": "${{ needs.macos.result }}",
             "tvos": "${{ needs.tvos.result }}",
@@ -945,7 +1002,7 @@ jobs:
   # GitHub Release
   release:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [android, ios, macos, tvos, windows, windows-arm64, linux]
+    needs: [android, android-tv, ios, macos, tvos, windows, windows-arm64, linux]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
