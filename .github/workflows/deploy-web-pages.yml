@@ -20,6 +20,8 @@ env:
 
 jobs:
   build:
+    # Only deploy Pages from the upstream repo; forks skip this workflow.
+    if: github.event.repository.fork == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
