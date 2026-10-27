@@ -64,18 +64,15 @@ env:
 jobs:
   # Android APK + AAB, with mobile and TV on their own runners
   android:
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.android) && inputs.distribution != 'testflight' && (!(github.event_name == 'push' && github.ref == 'refs/heads/fix_dlna') || matrix.target == 'mobile') }}
+    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.run_all || inputs.android) && inputs.distribution != 'testflight' }}
     name: android (${{ matrix.target }})
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - target: mobile
-            artifact: android
-            files: Moonfin_Android_v*.*
-          - target: tv
-            artifact: android-tv
-            files: Moonfin_AndroidTV_v*.*
+      # fix_dlna branch pushes build the phone target only; every other trigger
+      # (tag, PR, manual run) builds both phone and TV. The matrix context is
+      # not available in the job-level if, so the matrix itself is dynamic.
+      matrix: >-
+        ${{ github.event_name == 'push' && github.ref == 'refs/heads/fix_dlna' && fromJSON('{"include": [{"target": "mobile", "artifact": "android", "files": "Moonfin_Android_v*.*"}]}') || fromJSON('{"include": [{"target": "mobile", "artifact": "android", "files": "Moonfin_Android_v*.*"}, {"target": "tv", "artifact": "android-tv", "files": "Moonfin_AndroidTV_v*.*"}]}') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
