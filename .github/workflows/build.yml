@@ -47,6 +47,8 @@ on:
           - release
           - testflight
   push:
+    branches:
+      - main
     tags:
       - '[0-9]+.[0-9]+.[0-9]+*'
   pull_request:
@@ -126,7 +128,7 @@ jobs:
   # Android TV APK + AAB. Skipped by default (PRs and manual runs); built only
   # on tags or when "android_tv"/"run_all" is selected.
   android-tv:
-    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.android_tv))) && inputs.distribution != 'testflight' }}
+    if: ${{ (startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.android_tv))) && inputs.distribution != 'testflight' }}
     name: android-tv
     runs-on: ubuntu-latest
     steps:
@@ -186,7 +188,7 @@ jobs:
 
   # iOS: an unsigned IPA for releases, or a TestFlight upload
   ios:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.ios)) }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.ios)) }}
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
@@ -275,7 +277,7 @@ jobs:
 
   # macOS: a signed and notarized DMG for releases, or a TestFlight upload
   macos:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.macos)) }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.macos)) }}
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
@@ -358,7 +360,7 @@ jobs:
 
   # tvOS: an unsigned IPA for releases, or a TestFlight upload
   tvos:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.tvos)) }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.tvos)) }}
     runs-on: macos-26
     timeout-minutes: 60
     steps:
@@ -532,7 +534,7 @@ jobs:
 
   # Windows installer EXE
   windows:
-    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.windows))) && inputs.distribution != 'testflight' }}
+    if: ${{ (startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.windows))) && inputs.distribution != 'testflight' }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -609,7 +611,7 @@ jobs:
 
   # Windows ARM64 installer EXE (native build on an ARM64 runner)
   windows-arm64:
-    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.windows_arm64))) && inputs.distribution != 'testflight' }}
+    if: ${{ (startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.windows_arm64))) && inputs.distribution != 'testflight' }}
     runs-on: windows-11-arm
     steps:
       - uses: actions/checkout@v4
@@ -709,7 +711,7 @@ jobs:
 
   # Linux packages, built natively for each architecture
   linux:
-    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.linux))) && inputs.distribution != 'testflight' }}
+    if: ${{ (startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && (inputs.run_all || inputs.linux))) && inputs.distribution != 'testflight' }}
     strategy:
       fail-fast: false
       matrix:
