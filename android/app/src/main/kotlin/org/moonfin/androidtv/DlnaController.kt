@@ -57,6 +57,16 @@ class DlnaController(private val context: Context) {
         private const val DISCOVERY_TIMEOUT_MS = 3000
         private const val AVTRANSPORT_URN = "urn:schemas-upnp-org:service:AVTransport:1"
         private const val RENDERINGCONTROL_URN = "urn:schemas-upnp-org:service:RenderingControl:1"
+        private const val MEDIARENDERER_URN = "urn:schemas-upnp-org:device:MediaRenderer:1"
+        private const val SSDP_ALL = "ssdp:all"
+
+        // 发现时按此顺序广播多个搜索目标:设备类型最标准、ssdp:all 最宽、
+        // 服务类型兜底,以覆盖不同厂商渲染器对 SSDP ST 的响应差异。
+        private val SEARCH_TARGETS = listOf(
+            MEDIARENDERER_URN,
+            SSDP_ALL,
+            AVTRANSPORT_URN,
+        )
     }
 
     fun setEventSink(sink: EventChannel.EventSink?) {
@@ -142,17 +152,19 @@ class DlnaController(private val context: Context) {
             socket.joinGroup(group)
             socket.soTimeout = DISCOVERY_TIMEOUT_MS
 
-            val searchMessage = buildString {
-                append("M-SEARCH * HTTP/1.1\r\n")
-                append("HOST: $SSDP_ADDRESS:$SSDP_PORT\r\n")
-                append("MAN: \"ssdp:discover\"\r\n")
-                append("MX: 2\r\n")
-                append("ST: $AVTRANSPORT_URN\r\n")
-                append("\r\n")
+            for (searchTarget in SEARCH_TARGETS) {
+                val searchMessage = buildString {
+                    append("M-SEARCH * HTTP/1.1\r\n")
+                    append("HOST: $SSDP_ADDRESS:$SSDP_PORT\r\n")
+                    append("MAN: \"ssdp:discover\"\r\n")
+                    append("MX: 2\r\n")
+                    append("ST: $searchTarget\r\n")
+                    append("\r\n")
+                }
+                val data = searchMessage.toByteArray()
+                val packet = DatagramPacket(data, data.size, group, SSDP_PORT)
+                socket.send(packet)
             }
-            val data = searchMessage.toByteArray()
-            val packet = DatagramPacket(data, data.size, group, SSDP_PORT)
-            socket.send(packet)
 
             val buf = ByteArray(4096)
             val deadline = System.currentTimeMillis() + DISCOVERY_TIMEOUT_MS
@@ -420,14 +432,15 @@ class DlnaController(private val context: Context) {
                         "eventSubURL" -> serviceEventSubUrl = child.textContent
                     }
                 }
-                if (serviceType == AVTRANSPORT_URN && serviceControlUrl != null) {
+                val normalizedType = serviceType?.trim()
+                if (normalizedType?.equals(AVTRANSPORT_URN, ignoreCase = true) == true && serviceControlUrl != null) {
                     controlUrl = resolveUrl(locationUrl, serviceControlUrl)
                     if (serviceEventSubUrl != null) {
                         discoveredEventSubUrls[controlUrl] = resolveUrl(locationUrl, serviceEventSubUrl)
                     }
                     continue
                 }
-                if (serviceType == RENDERINGCONTROL_URN && serviceControlUrl != null) {
+                if (normalizedType?.equals(RENDERINGCONTROL_URN, ignoreCase = true) == true && serviceControlUrl != null) {
                     renderingControlUrl = resolveUrl(locationUrl, serviceControlUrl)
                 }
             }
